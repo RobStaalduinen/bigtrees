@@ -1,0 +1,93 @@
+<div class = "header-image">
+			<div id = "feature-box">
+				<div id = "feature-inner-box">
+					Certified, Licenced, Insured <br />
+					<span id = "arborist-title">Arborist and Utility Arborist</span><br />
+					<%= link_to controller: 'estimate', action: 'new' do %>
+							<div class = "estimate-link">Call Now</div>
+					<% end %>
+				</div>
+			</div>
+
+			<div id = "feature-box">
+				<div id = "feature-inner-box">
+					Help Us Change the World!
+					<br />
+					<br />
+					<%= link_to pages_path(page: "cut_one") do %>
+						<div class = "estimate-link">Cut 1 => Plant 2</div>
+					<% end %>
+				</div>
+			</div>
+</div>
+
+<div id = "estimate-bar">
+	<div id = "estimate-bar-internal">
+		<div id = "estimate-bar-description">
+			Free Estimate Online in Minutes
+		</div>
+		<%= link_to new_estimate_path do %>
+			<div id = "estimate-bar-button">
+				Start Now
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div id = "services">
+	<%= link_to pages_path(page: "services"), class: "services-box-link" do %>
+		<div class = "services-box" id = "residential-services">
+			<p>Residential Services</p>
+		</div>
+	<% end %>
+	<%= link_to pages_path(page: "commercial"), class: "services-box-link" do %>
+		<div class = "services-box" id = "commercial-services">
+			<p>Commercial Services</p>
+		</div>
+	<% end %>
+</div>
+
+<div class = "row">
+	<div class = "col-lg-6 col-lg-offset-3">
+		<div id = "testimonial-container">
+			<div class = "testimonial-box">
+				"We wouldn't use anyone else. On short notice last summer I called the Big Tree team to fix the broken tree at our cottage. He spent a full day at our place, and the next day on a couple more trees. We have more trees for them to do next year."
+				<div class = "testimonial-signature">
+					Paul, Toronto
+				</div>
+			</div>
+
+			<div class = "testimonial-box">
+				"The Big Tree crew removed a massive pine in our backyard. I went to pick up a pizza for the guys for lunch and when I came back, the tree was cut and they were in the process of cleaning up. My neighbours on both sides have scheduled them for additional work. Will definitely use Big Tree again. Thanks!!!!"
+				<div class = "testimonial-signature">
+					Sherry, Peterborough
+				</div>
+			</div>
+
+			<div class = "testimonial-box">
+				"The Big Tree crew did a great job. We had a couple Ash trees that had died, and some apple trees that needed to be trimmed. The work was on time and well executed. Their workmanship was excellent and the clean up at the end of each day was well done. The entire crew was very professional."
+				<div class = "testimonial-signature">
+					Dwayne, Hamilton
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script>
+	var slideIndex = 0;
+	rotateReviews();
+
+	function rotateReviews() {
+	    var i;
+	    var x = document.getElementsByClassName("testimonial-box");
+	    for (i = 0; i < x.length; i++) {
+	      if(x[i]){ x[i].style.display = "none" }
+	    }
+	    slideIndex++;
+	    if (slideIndex > x.length) {slideIndex = 1}
+	    x[slideIndex-1].style.display = "block";
+	    setTimeout(rotateReviews, 8000); // Change image every 2 seconds
+	}
+</script>

@@ -1,0 +1,20 @@
+.static-page-title{
+  background-color: var(--main-color);
+  width: 90%;
+  padding: 10px 10px 5px 10px;
+
+  border-bottom: 5px solid var(--main-color-dark);
+
+}
+
+.static-page-title-text{
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.static-page-content{
+  font-size: 16pt;
+  margin: 20px 20px 20px 20px;
+}

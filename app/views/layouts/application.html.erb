@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>That's A Big Tree</title>
+  <meta name="description" content="Tree Services, Removal and Maintenance in Toronto and the GTA, Ottawa, and Southern Ontario">
+  <meta name="description" content="Trees, Tree Services, Removal, GTA, Ottawa, Toronto, Cutting, Arborist, Licensed, Insured">  
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+
+  <%= csrf_meta_tags %>
+
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script>
+    function toggleMenu() {
+      var x = document.getElementById("navbar");
+      var items = x.getElementsByTagName("li");
+      if(items[0].className === "menu-icon-open"){
+        items[0].className = "menu-icon"
+      }
+      else{
+        items[0].className = "menu-icon-open"
+      }
+
+      for(var i = 1; i < items.length; ++i){
+        if (items[i].className === "menu-item") {
+            items[i].className = "menu-item-responsive";
+        } else {
+            items[i].className = "menu-item";
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  		<script>
+			$('body').on('hidden.bs.modal', '.modal', function () {
+				$(this).removeData('bs.modal');
+			});
+		</script>
+
+
+			<div class = "container-fluid">
+				<div class = "row main-header" id = "header-row">
+					<div id = "header-container" class = "col-lg-6 col-lg-offset-3" >
+						<div id = "header-content">
+							<div id = "header-title">
+								<%= image_tag "BigTreeLogo-Re.png", :id => 'logo-image' %>
+							</div>
+              <div id = "header-contact">
+
+              <a class = "contact-button" href="mailto:tbrewer@bigislandgroup.ca">
+                <span>Email</span>
+                <span class = "contact-icon"><i class="fa fa-envelope"></i></span>
+              </a>
+
+              <a class = "contact-button"  href="tel:1-877-542-5551">
+                <div>Call</div>
+                <div class = "contact-icon"><i class="fa fa-phone"></i></div>
+              </a>
+              </div>
+						</div>
+            <div id = "header-subtitle"><strong>Proudly Serving the GTA and Cottage Country</strong></div>
+					</div>
+				</div>
+
+				<div class = "row", id = "nav-bar-row">
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<ul class="nav navbar-center" id="navbar">
+            <li class = "menu-icon" onclick="toggleMenu()"><i class="fa fa-bars"></i></li>
+						<li class = "menu-item"><%= link_to "Home", pages_path(page: "home") %></li>
+						<li class = "menu-item"><%= link_to "Our Promise", pages_path(page: "promise") %></li>
+            <li class = "menu-item"><%= link_to "Services", pages_path(page: "services") %></li>
+            <li class = "menu-item"><%= link_to "Commercial", pages_path(page: "commercial") %></li>
+						<li class = "menu-item"><%= link_to "Estimates", new_estimate_path %></li>
+            <li class = "menu-item"><%= link_to "Careers", pages_path(page: "careers") %></li>
+            <li class = "menu-item"><%= link_to "Contact Us", pages_path(page: "contact_us") %></li>
+					</ul>
+				</div>
+
+
+				<div class="row">
+					<div id = "main-box">
+						<%= yield %>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class = ".col-md-3"></div>
+					<div id = "footer-container" class = ".col-md-6">
+						Certified by the Ontario Colleges of Trade<br />
+						Fully Insured by State Farm
+					</div>
+					<div class = ".col-md-3"></div>
+				</div>
+			</div>
+
+
+		<div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+				</div>
+			</div>
+		</div>
+
+
+</body>
+</html>

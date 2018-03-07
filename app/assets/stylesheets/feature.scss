@@ -1,0 +1,280 @@
+#feature-panel{
+	padding-top: 0px;
+	padding-bottom: 20px;
+	display: flex;
+  flex-direction: column;
+}
+
+
+
+.header-image{
+	background-image: image-url("MapleTreeGoldLowSat.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+#feature-box{
+	background-color: var(--main-color-transparent);
+
+	border-color: white;
+	border-style: solid;
+	border-width: 4px;
+
+	color: white;
+	font-size: 20px;
+
+	width: 80%;
+	font-weight: bold;
+
+  height: 200px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+
+#arborist-title{
+  font-size: 24px;
+}
+
+#feature-inner-box{
+	text-align: center;
+
+	width: 90%;
+
+	border-color: white;
+	border-style: solid;
+	border-width: 2px;
+
+  height: 80%;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.estimate-link{
+	font-size: 20pt;
+	color: white;
+	font-weight: bold;
+	text-decoration: underline
+
+}
+
+
+
+
+#feature-title{
+		background-color:rgba(1, 56, 11, 0.85);
+		padding: 10px 0 10px 0;
+		margin: 0 0 50px 0;
+		font-size: 24pt;
+		color: white;
+		text-align: center;
+}
+#title-image{
+	display: block;
+	margin: 0 auto 0 auto;
+}
+
+#buttons{
+	width: 70%;
+	margin: 0 auto;
+}
+
+#feature-text{
+	float: left;
+	font-size: 18pt;
+	position: absolute;
+	top: 320px;
+	left: 40px;
+	z-index: 2;
+}
+
+#estimate-bar{
+	width: 100%;
+	height: 80px;
+	background-color: var(--dark-grey);
+	display: flex;
+	align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+#estimate-bar-internal{
+  width: 100%;
+  max-width: 960px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#estimate-bar-description{
+	color: white;
+
+	height: 40px;
+	width: 70%;
+	float: left;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+#estimate-bar-button{
+	width: 100px;
+	height: 40px;
+	margin: 0 auto;
+
+	color: white;
+	background-color: var(--main-color);
+
+	border-width: 0 0 4px 0;
+	border-style: solid;
+	border-color: var(--main-color-dark);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#services{
+  display: flex;
+  flex-direction: column;
+}
+
+#residential-services{
+  background-image: image-url("Residential.jpg");
+}
+
+#commercial-services{
+  background-image: image-url("Commercial.jpg");
+}
+
+.services-box-link{
+
+}
+
+.services-box{
+  background-size: cover;
+  background-repeat:   no-repeat;
+  background-position: center center;
+  width: 100%;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-style: solid;
+  border-width: 2px 0px;
+  border-color: var(--dark-grey);
+}
+
+.services-box p{
+  font-size: 36px;
+  color: white;
+  text-shadow: 4px 4px 4px var(--dark-grey);
+}
+
+@media (min-width:480px) and(max-width: 768px) {
+
+
+  #estimate-bar{
+    font-size: 20px;
+  }
+
+  #estimate-bar-button{
+    width: 120px;
+    padding: 20px 5px;
+  }
+}
+@media (min-width:769px) and (max-width:1009px) {
+  #feature-box{
+    width: 70%;
+    height: 220px;
+  }
+
+  #feature-inner-box{
+    height: 160px;
+  }
+
+  #estimate-bar{
+    font-size: 22px;
+  }
+
+  #estimate-bar-description{
+    width: 50%;
+  }
+
+  #estimate-bar-button{
+    width: 140px;
+    padding: 20px 5px;
+  }
+
+  #services{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .services-box{
+    width: 50%;
+  }
+}
+@media (min-width:1010px) {
+  #feature-box{
+    width: 600px;
+    height: 240px;
+
+    font-size: 24px;
+  }
+
+  #feature-inner-box{
+    height: 180px;
+  }
+
+  #estimate-bar{
+    font-size: 24px;
+  }
+
+  #estimate-bar-button{
+    width: 160px;
+    padding: 25px 5px;
+  }
+
+  #estimate-bar-description{
+  	width: 50%;
+  }
+
+  #services{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .services-box-link{
+    width: 50%;
+  }
+
+  .services-box{
+    width: 100%;
+  }
+
+  .services-box p{
+    font-size: 40px;
+  }
+}

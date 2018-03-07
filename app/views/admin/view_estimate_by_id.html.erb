@@ -1,0 +1,94 @@
+<div id = "admin-estimate-display">
+<%= link_to "Back to Admin Panel", controller: 'admin', action: 'admin_panel' %>
+<h2>Estimate Number <%= @estimate.id %></h2>
+<h3> Status: - <%= @estimate.response %>  Last Change: <%= @estimate.last_change %> </h3>
+<table>
+<tr>
+<td><b>Change Status: </b></td>
+<td><%= button_to "Responded", controller: 'admin', action: 'change_response', estimate_id: @estimate.id, response_type: 'RESPONDED', class: 'status-button'  %></td>
+<td><%= button_to "Complete", controller: 'admin', action: 'change_response', estimate_id: @estimate.id, response_type: 'COMPLETE' %></td>
+</tr>
+</table>
+<h3>Personal Info</h3>
+<div class = 'info-display'>
+	<div class = 'info-block'>
+		<strong>Name: </strong> <br />
+		<%= @estimate.name %>
+	</div>
+
+	<div class = 'info-block'>
+		<strong>Street Address: </strong> <br />
+		<%= @estimate.address %>
+	</div>
+
+	<div class = 'info-block'>
+		<strong>City: </strong> <br />
+		<%= @estimate.city %>
+	</div>
+
+	<div class = 'info-block'>
+		<strong>Number of Trees: </strong> <br />
+		<%= @estimate.tree_quantity %>
+	</div>
+
+	<div class = 'info-block'>
+		<strong>Contact Type: </strong> <br />
+		<%= @estimate.contact_type %>
+	</div>
+
+	<div class = 'info-block'>
+		<strong>Contact Method: </strong> <br />
+		<%= @estimate.contact_method %>
+	</div>
+</div>
+
+<br />
+<h3>Work Required</h3>
+<table class = 'info-table'>
+	<tr>
+		<th>Tree Number</th>
+		<th>Work</th>
+	</tr>
+	<% @estimate_work.each do |est| %>
+		<tr>
+			<td><%= est.tree_index %></td>
+			<td><%= est.work_type %></td>
+		</tr>
+	<% end %>
+</table>
+
+<h4>Tree Info</h4>
+<table class = 'info-table'>
+	<tr>
+		<th>Stump Removal</th>
+		<th>Vehicle Access</th>
+		<th>Breakables</th>
+		<th>Wood Removal</th>
+	</tr>
+	<tr>
+		<td><%= @estimate.stump_removal %></td>
+		<td><%= @estimate.vehicle_access %></td>
+		<td><%= @estimate.breakables %></td>
+		<td><%= @estimate.wood_removal %></td>
+	</tr>
+</table>
+
+</div>
+
+	<div id = "appointment-tree-images">
+		<% if @images_attached == false %>
+			<b>No Images Included</b>
+		<% else %>
+			<% i = 0 %>
+			<% @tree_image_array.each do |image_array| %>
+			<% i = i + 1 %>
+			<h4>Tree #<%= i %></h4>
+				<% image_array.each do |img| %>
+					<% img_path = "/TreeImages/" + img %>
+					<div class = 'image-box'>
+						<%= link_to img_path, :class => 'image-link' do %><%= image_tag(img_path, :alt => "Image", :class => 'tree-image') %><% end %>
+					</div>
+				<% end %>
+			<% end %>
+		<% end %>
+	</div>

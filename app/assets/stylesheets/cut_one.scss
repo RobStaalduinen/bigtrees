@@ -1,0 +1,23 @@
+.tree-planting-image-container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-planting-image{
+  width: 100%;
+  margin: 10px 0;
+}
+
+.phone-number-text{
+  text-decoration: underline;
+  color: var(--main-color);
+}
+
+@media (min-width:1010px) {
+  .tree-planting-image{
+    width: 75%;
+    margin: 10px 0;
+  }
+}

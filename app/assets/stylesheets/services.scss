@@ -1,0 +1,9 @@
+#service-list{
+  margin-top: 10px;
+  list-style: none;
+}
+
+#service-list li:before{
+  content: "•  ";
+  color: var(--main-color);
+}

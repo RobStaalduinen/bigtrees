@@ -1,0 +1,456 @@
+// Place all the styles related to the main controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
+
+:root {
+	--main-color: #8A0000;
+	--main-color-dark: #660000;
+	--main-color-transparent: rgba(138, 0, 0, 0.85);
+	--secondary-color: #D1B500;
+	--secondary-color-transparent: rgba(209,0,0,0.65);
+	--bigtrees-grey: #EDEDED;
+	--dark-grey: #191919;
+	--light-grey: #969494;
+}
+
+html{
+	height: 100%;
+    overflow-y: scroll;
+
+}
+
+body{
+	height: 100%;
+	-webkit-text-size-adjust: 100%;
+	margin: 0;
+	background-color: var(--bigtrees-grey);
+	font-size: 14px;
+	line-height: 180%;
+
+	font-family: "Nunito Sans" !important;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.shadow-box{
+	box-shadow: 2px 4px 5px #A6A6A6, -2px 4px 5px #A6A6A6;
+}
+
+.white-row{
+	background-color: white;
+}
+
+.grey-row{
+	background-color: #EDEDED;
+}
+
+.no-padding{
+	padding: 0px !important;
+}
+
+#content-main{
+	width: 960px;
+	margin: 0 auto;
+	box-shadow: 6px 0px 20px #2B2B2B, -6px 0px 20px #2B2B2B;
+
+}
+
+#main-box{
+	width: 100%;
+	background-color: var(--bigtrees-grey);
+	min-height: 500px;
+	overflow: hidden;
+	position: relative;
+	min-height: 720px;
+}
+
+.sub-page-header{
+	height: 150px;
+	position: relative;
+}
+
+.sub-page-header-title{
+	background-color: var(--main-color-transparent);
+
+	padding: 25px 40px;
+	display: inline-block;
+
+	position: absolute;
+	bottom: 0px;
+	left: 15px;
+}
+
+.sub-header-column{
+	height: 100%;
+}
+
+.sub-page-header-text{
+	color: white;
+	font-size: 20pt;
+	padding: 20px 25px;
+	border-color: white;
+	border-style: solid;
+	border-width: 2px;
+	font-weight: bold;
+}
+
+#services-list > li{
+	border-style: solid;
+	border-color: var(--main-color);
+	border-width: 0 0 1px 0;
+	padding: 0;
+	padding: 10px;
+	font-weight: bold;
+}
+
+.green-header{
+	background: var(--main-color);
+
+}
+
+#footer-container{
+	background-color: var(--main-color);
+	border-width: 8px 0 0 0;
+	border-style: solid;
+	border-color: black;
+	min-height: 61px;
+
+	color: white;
+	font-size: 9pt;
+	text-align: center;
+	vertical-align: middle;
+	padding-top: 10px;
+}
+
+
+#style-line{
+	border-width: 0 0 1px 0;
+	border-style: solid;
+	border-color: #C9C9C9;
+
+	width: 85%;
+	margin: 0 auto;
+}
+
+#front-page-notes{
+	font-size: 14pt;
+	text-align: center;
+	padding: 20px;
+	margin: 0;
+	width: 100%;
+
+	background-color: #E8E8E8;
+
+	border-style: solid;
+	border-width: 2px 0 0 0;
+	border-color: #01380B;
+}
+
+//ABOUT US
+
+#about-page-container{
+	margin: 20px 50px 0px 50px;
+	font-size: 12pt;
+
+}
+
+#about-us{
+	padding: 20px 15px;
+	margin-top: 20px;
+}
+
+
+#about-us-text{
+	float: left;
+	font-size: 14pt;
+	width: 70%;
+	padding: 0px 0px 0px 5%;
+}
+
+#about-us-image-container{
+	width: 25%;
+	float: left;
+}
+
+#about-us-image{
+	width: 100%;
+}
+
+#about-us-content{
+	padding: 20px;
+	margin-top: 10px;
+}
+
+#services-box{
+	background-color: white;
+	margin: 20px 0;
+	padding: 20px;
+
+	border-style: solid;
+	border-width: 8px 0 0 0;
+	border-color: var(--main-color);
+}
+
+#services-title{
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+#services-description{
+	padding: 10px 0;
+	margin-bottom: 10px;
+	border-style: solid;
+	border-width: 0 0 2px 0;
+	font-size: 14pt;
+	border-color: var(--main-color);
+}
+
+#services-list{
+	list-style: none;
+	-webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+
+
+//CONTACT
+
+#contact-methods{
+	width: 90%;
+	margin: 40px auto;
+	display:flex;
+	justify-content:space-between;
+}
+
+#contact-box{
+	width: 42%;
+	margin: 0 auto;
+	background-color: var(--main-color);
+	color: white;
+	white-space:nowrap;
+	padding: 20px 25px;
+}
+
+#contact-text{
+	text-align: center;
+	font-size: 16pt;
+	line-height: 2em;
+	padding: 10px 15px;
+
+	border-style: solid;
+	border-color: white;
+	border-width: 2px;
+}
+
+#contact-description{
+	font-size: 14pt;
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+
+
+//MISC
+
+.modal-link{
+	margin: 0 5px;
+}
+
+#error-message-box{
+	width: 60%;
+	margin: 150px auto;
+	text-align: center;
+}
+
+// MEDIA SIZES
+
+@media (min-width:200px) and(max-width: 480px) {
+	/* smartphones, iPhone, portrait 480x320 phones */
+
+	#contact-methods{
+		width: 100%;
+		margin: 20px auto;
+		display:inline-block;
+		justify-content:none;
+	}
+
+	#contact-box{
+		width: 95%;
+		margin: 10px auto;
+		background-color: var(--main-color);
+		color: white;
+		white-space:nowrap;
+		padding: 20px 25px;
+	}
+
+	#contact-text{
+		text-align: center;
+		font-size: 4.5vw;
+		line-height: 2em;
+		padding: 10px 15px;
+
+		border-style: solid;
+		border-color: white;
+		border-width: 2px;
+	}
+
+	#contact-description{
+		font-size: 5vw;
+		padding: 50px 0;
+	}
+
+
+	#about-us-text{
+		float: none;
+		font-size: 4vw;
+		width: 100%;
+		padding: 10px;
+	}
+
+	#about-us-image-container{
+		width: 45%;
+		float: left;
+		margin: 10px;
+	}
+
+	#about-us-image{
+		width: 100%;
+		display: inline-block;
+	}
+
+	#services-list{
+		font-size: 3vw;
+		padding: 0;
+	}
+	#services-list > li {
+		min-height: 65px;
+		padding: 5px;
+	}
+
+
+}
+/* 320 END */
+
+
+@media (min-width:480px) and(max-width: 640px) {
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+
+	#about-us-text{
+		float: none;
+		font-size: 3vw;
+		width: 100%;
+		padding: 10px;
+	}
+
+	#about-us-image-container{
+		width: 46%;
+		float: left;
+		margin: 10px;
+	}
+
+	#about-us-image{
+		width: 100%;
+		display: inline-block;
+	}
+
+	#services-list{
+		font-size: 2.5vw;
+		padding: 0;
+	}
+	#services-list > li {
+		min-height: 65px;
+		padding: 5px;
+	}
+
+	#contact-methods{
+		width: 100%;
+		margin: 20px auto 10px auto;
+		display:inline-block;
+		justify-content:none;
+	}
+
+	#contact-box{
+		width: 75%;
+		margin: 10px auto;
+		background-color: var(--main-color);
+		color: white;
+		white-space:nowrap;
+		padding: 20px 25px;
+	}
+
+	#contact-text{
+		text-align: center;
+		font-size: 3vw;
+		line-height: 2em;
+		padding: 10px 15px;
+
+		border-style: solid;
+		border-color: white;
+		border-width: 2px;
+	}
+
+	#contact-description{
+		font-size: 3vw;
+		padding: 50px 0;
+	}
+
+}
+@media (min-width:641px) and (max-width:920px) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+
+	#contact-methods{
+		width: 100%;
+		margin: 20px auto 10px auto;
+		display:inline-block;
+		justify-content:none;
+	}
+
+	#contact-box{
+		width: 75%;
+		margin: 10px auto;
+		background-color: var(--main-color);
+		color: white;
+		white-space:nowrap;
+		padding: 20px 25px;
+	}
+
+	#contact-text{
+		text-align: center;
+		font-size: 3vw;
+		line-height: 2em;
+		padding: 10px 15px;
+
+		border-style: solid;
+		border-color: white;
+		border-width: 2px;
+	}
+
+	#contact-description{
+		font-size: 3vw;
+		padding: 50px 0;
+	}
+
+}
+@media (min-width:961px) { /* tablet, landscape iPad, lo-res laptops ands desktops */
+	.sub-page-header-title{
+		margin-left: calc((100% - 960px)/2) !important;
+	}
+}
+@media (min-width:1010px) { /* hi-res laptops and desktops */
+	.col-lg-6 {
+		width: 960px !important;
+		height: 100%;
+	}
+
+	.col-lg-offset-3{
+		margin-left : calc((100% - 960px)/2) !important;
+	}
+}
