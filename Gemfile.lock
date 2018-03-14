@@ -720,6 +720,9 @@ GEM
     rdoc (4.2.0)
       json (~> 1.4)
     ref (2.0.0)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     ruby-ole (1.2.12)
     sass (3.5.5)
       sass-listen (~> 4.0.0)
@@ -812,6 +815,7 @@ DEPENDENCIES
   mysql2 (~> 0.3.18)
   protected_attributes
   rails (= 4.2.4)
+  responders (~> 2.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sitemap_generator
