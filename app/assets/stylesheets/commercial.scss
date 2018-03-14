@@ -59,27 +59,27 @@
 }
 
 #utility-service{
-  background-image: url('/assets/Utility.jpg');
+  background-image: image-url('Utility.jpg');
 }
 
 #remote-service{
-  background-image: url('/assets/CPRail.jpg');
+  background-image: image-url('CPRail.jpg');
 }
 
 #roadside-service{
-  background-image: url('/assets/Roadside.jpg');
+  background-image: image-url('Roadside.jpg');
 }
 
 #railroad-service{
-  background-image: url('/assets/CrossingCutting.jpg');
+  background-image: image-url('CrossingCutting.jpg');
 }
 
 #insurance-service{
-  background-image: url('/assets/IceStorm.jpg');
+  background-image: image-url('IceStorm.jpg');
 }
 
 #commercial-service{
-  background-image: url('/assets/Commercial.jpg');
+  background-image: image-url('Commercial.jpg');
 }
 
 @media (min-width:480px) and(max-width: 768px) {
