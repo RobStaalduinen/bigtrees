@@ -89,6 +89,22 @@ a:hover, a:focus{
 // }
 /* 320 END */
 
+@media (min-width: 360px) and (max-width: 479px){
+	#header-title{
+		width: 60%;
+	}
+
+	#header-contact{
+		width: 40%;
+		height: 70px;
+	}
+
+	.contact-button{
+		font-size: 14px;
+		padding: 2px;
+	}
+}
+
 
 @media (min-width:480px) and(max-width: 768px) {
   .contact-button{

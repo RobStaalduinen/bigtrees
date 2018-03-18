@@ -192,6 +192,23 @@
   text-shadow: 4px 4px 4px var(--dark-grey);
 }
 
+@media (min-width: 360px) and (max-width: 479px){
+	#feature-box{
+		width: 90%;
+	}
+
+	#estimate-bar-description{
+		width: 65%;
+		margin-right: 2%;
+	}
+
+	#estimate-bar{
+		font-size: 16px;
+		height: 70px;
+	}
+
+}
+
 @media (min-width:480px) and(max-width: 768px) {
 
 
