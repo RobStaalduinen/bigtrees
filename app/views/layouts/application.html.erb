@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>That's A Big Tree - Tree Care | Professional Tree Services</title>
-  <meta name="description" content="Tree Services, Removal and Maintenance in Toronto and the GTA, Ottawa, and Southern Ontario">
-  <meta name="description" content="Trees, Tree Services, Removal, GTA, Ottawa, Toronto, Cutting, Arborist, Licensed, Insured">
+  <title><%= ["Big Tree Services", yield(:title)].join(" | ") %></title>
+  <meta name="description" content='<%= yield(:description) %>'>
+
+  <link rel="canonical" href="http://bigtreeservices.com/" />
+
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
 
