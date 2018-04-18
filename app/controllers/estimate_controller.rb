@@ -1,22 +1,22 @@
 class EstimateController < ApplicationController
 	require 'date'
 	$work_data = ["tree_work_1", "tree_work_2", "tree_work_3"]
-	
+
 	$one_man_labour_hour_cost = 142.61
 	$two_man_labour_hour_cost = 167.88
 	$supervisor_hour_cost = 25.36
 	$fuel_cost = 15
 	$CDN_tax_rate = 1.13
 	$interac_cost = 1.02
-	
+
 	$trim_options = ['0-10%', '10-25%', '25-50%']
-	
+
 	$months = ["NULL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 	def create
-	
+
 	end
-	
+
 	def new
 		SiteStat.increment_estimates()
 		if params[:trees].nil?
@@ -31,10 +31,10 @@ class EstimateController < ApplicationController
 			format.js {}
 		end
 	end
-	
+
 	def submit_new_estimate
 		@do_remote = true
-		
+
 		new_estimate = Estimate.new
 		new_estimate.name = params[:name]
 		new_estimate.address = params[:address_line_1]
@@ -47,30 +47,30 @@ class EstimateController < ApplicationController
 		today = dt.year.to_s + "-" + dt.month.to_s + "-" + dt.day.to_s
 		new_estimate.date_submitted = today
 		new_estimate.last_change = today
-		
+
 		new_estimate.save
-		
-		@estimate = new_estimate		
-		
-		
+
+		@estimate = new_estimate
+
+
 		for i in 0..$work_data.length - 1
 			new_work_activity = params[$work_data[i]]
 			if !new_work_activity.nil?
 				work = WorkAction.new
-				
+
 				work.estimate_id = new_estimate.id
 				work.work_type = new_work_activity
 				work.tree_index = (i+1)
 				work.status = "IN PROGRESS"
 				work.save
 			end
-			
+
 		end
 		respond_to do |format|
 		  format.js
 		end
 	end
-	
+
 	def submit_tree_images
 		@estimate = Estimate.find_by_id(params[:estimate_id])
 		if params[:commit] != "Skip"
@@ -85,17 +85,17 @@ class EstimateController < ApplicationController
 					if !user_image.nil?
 						logger.debug "TEST44444"
 						fileName = "Est" + params[:estimate_id] + "_" + tree_string + File.extname(user_image.original_filename).to_s
-						path = File.join(Rails.root, 'public', 'TreeImages', fileName)
+						path = File.join('/var/www/bigtrees/shared/public/TreeImages', fileName)
 						File.open(path, 'wb') do |file|
 							file.write(user_image.read)
-						end		
-						
+						end
+
 						new_image = TreeImage.new
 						new_image.estimate_id = @estimate.id
 						new_image.filename = fileName
 						new_image.tree_number = i
 						new_image.save
-						
+
 
 					end
 				end
@@ -107,22 +107,22 @@ class EstimateController < ApplicationController
 		@estimate.save
 		redirect_to :action => 'display_estimate', :estimate_id => @estimate.id
 	end
-	
+
 	def submit_job_questions
 		@estimate = Estimate.find_by_id(params[:estimate_id])
-		
+
 		@estimate.stump_removal = params[:stump]
 		@estimate.vehicle_access = params[:vehicle]
 		@estimate.breakables = params[:break]
 		@estimate.wood_removal = params[:wood]
 		@estimate.status = "AWAITING IMAGES"
 		@estimate.save
-		
+
 		respond_to do |format|
 		  format.js
 		end
 	end
-	
+
 	def file_tree_forms
 		workArray = WorkAction.where("estimate_id = ? AND status = ?", params[:estimate_id], "IN PROGRESS").order(tree_index: :asc)
 		logger.debug "LENGTH: " + (workArray.length.to_s)
@@ -136,7 +136,7 @@ class EstimateController < ApplicationController
 		  format.js {}
 		end
 	end
-	
+
 	def submit_tree_form
 		current_work = WorkAction.find_by_id(params[:work_id])
 
@@ -145,42 +145,42 @@ class EstimateController < ApplicationController
 		else
 			info = params[:percentage] + "|" + params[:vehicle] + "|" + params[:break] + "|" + params[:wood]
 		end
-		
+
 		current_work.tree_stories = params[:size]
 		current_work.info = info
 		current_work.status = "COMPLETE"
-		
+
 		if current_work.work_type == "Removal"
 			tree_cost = calculate_removal_costs(current_work)
 		else
 			tree_cost = calculate_trim_costs(current_work)
 		end
-		
+
 		current_work.cost = tree_cost
-		
+
 		current_work.save
 		if !params[:do_remote].nil? and params[:do_remote] == "true"
 			redirect_to :action => 'file_tree_forms', :format => 'js', :estimate_id => current_work.estimate_id
 		else
 			redirect_to :action => 'lookup_estimate', :estimate_id => current_work.estimate_id
 		end
-		
+
 	end
-	
+
 	def display_estimate
 		@current_estimate = nil
 		@current_estimate = Estimate.find_by_id(params[:estimate_id])
-		
+
 		if @current_estimate.nil?
 			redirect_to :action => 'new'
 		end
-		
+
 	end
-	
+
 	def change_trees
 		logger.debug "Change Trees Called"
 	end
-	
+
 	def lookup_estimate
 		if !params[:estimate_id].nil?
 			estimate = Estimate.find_by_id(params[:estimate_id])
@@ -192,7 +192,7 @@ class EstimateController < ApplicationController
 			redirect_to :action => 'new'
 		end
 	end
-	
+
 	def estimate_tooltips
 		if params[:tooltip] == "Stump"
 			@modal_header = "Stump Removal"
@@ -216,7 +216,7 @@ class EstimateController < ApplicationController
 			@modal_body = "Content Not Found"
 		end
 	end
-	
+
 	def email_estimate
 		logger.debug "Sending Email..."
 		EstimateMailer.estimate_email(params[:estimate_id], params[:email]).deliver_later
@@ -224,52 +224,52 @@ class EstimateController < ApplicationController
 			format.js {}
 		end
 	end
-	
+
 	private
-	
+
 		def estimate_params
 			params.require(:estimate).permit(:name, :date_submitted, :tree_quantity, :address, :labour_hours, :total_cost, :status)
 		end
-		
+
 		def complete_estimate(estimate)
 			allWork = WorkAction.where("estimate_id = ?", estimate.id)
 			total_cost = 0
 			allWork.each do |workItem|
 				total_cost += workItem.cost
 			end
-			
+
 			#Pre-cutting supervisor work + fuel
 			total_cost += 2.5 * $supervisor_hour_cost
 			total_cost += 2 * $fuel_cost
-			
+
 			#Variable Hourly Rate
 			total_cost += 2 * $fuel_cost
 			total_cost += 2 * $one_man_labour_hour_cost
-			
+
 			#After-cutting costs
 			total_cost += 1 * $supervisor_hour_cost
-		
+
 			#Tax
 			total_cost = total_cost * $CDN_tax_rate
-			
+
 			#Transfer-fee
 			total_cost = total_cost * $interac_cost
-			
+
 			#Round
 			total_cost = total_cost.round(2)
-			
+
 			estimate.total_cost = total_cost
 			estimate.status = "COMPLETE"
 			estimate.save
 		end
-		
+
 		def calculate_removal_costs(work)
 			tree_hours = 0
 			stump_hours = 0
 			truck_hours = 0
 			breakable_hours = 0
 			wood_hours = 0
-			
+
 			hourly_rate = 0
 			if work.tree_stories == 1
 				tree_hours = 2.5
@@ -293,39 +293,39 @@ class EstimateController < ApplicationController
 				wood_hours = 3
 				hourly_rate = $two_man_labour_hour_cost
 			end
-			
-			
+
+
 			rData = RemovalData.new(work.info)
-			
+
 			if rData.stump_removal
 				tree_hours += stump_hours
 			end
-			
+
 			if !rData.vehicle_access
 				tree_hours += truck_hours
 			end
-			
+
 			if rData.breakable
 				tree_hours += breakable_hours
 			end
-			
+
 			if !rData.keeping_wood
 				tree_hours += wood_hours
 			end
-			
+
 			cost = tree_hours * hourly_rate
 			cost = cost.round(2)
-			
+
 			return cost
 		end
-		
+
 		def calculate_trim_costs(work)
 			tree_hours = 0
 			trim_hours = 0
 			truck_hours = 0
 			breakable_hours = 0
 			wood_hours = 0
-			
+
 			hourly_rate = 0
 			if work.tree_stories == 1
 				tree_hours = 1
@@ -346,31 +346,30 @@ class EstimateController < ApplicationController
 				wood_hours = 2
 				hourly_rate = $two_man_labour_hour_cost
 			end
-			
+
 			tData = TrimData.new(work.info)
-			
+
 			index = $trim_options.index(tData.percentage)
 			if !index.nil?
 				tree_hours += (0.5 * (index + 1))
 			end
-			
+
 			if !tData.vehicle_access
 				tree_hours += truck_hours
 			end
-			
+
 			if tData.breakable
 				tree_hours += breakable_hours
 			end
-			
+
 			if !tData.keeping_wood
 				tree_hours += wood_hours
 			end
-			
+
 			cost = tree_hours * hourly_rate
 			cost = cost.round(2)
-			
+
 			return cost
 		end
-	
-end
 
+end

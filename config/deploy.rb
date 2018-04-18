@@ -3,7 +3,7 @@ lock "~> 3.10.1"
 
 server '159.203.26.93', port: 22, user: 'root', roles: [:web, :app, :db], primary: true
 
-set :application, 'mobile-galaxy'
+set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
 set :user, 'root'
