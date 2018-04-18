@@ -85,7 +85,7 @@ class EstimateController < ApplicationController
 					if !user_image.nil?
 						logger.debug "TEST44444"
 						fileName = "Est" + params[:estimate_id] + "_" + tree_string + File.extname(user_image.original_filename).to_s
-						path = File.join('/var/www/bigtrees/shared/public/TreeImages', fileName)
+						path = File.join(Rails.root, 'public', 'TreeImagesTmp', fileName)
 						File.open(path, 'wb') do |file|
 							file.write(user_image.read)
 						end

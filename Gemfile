@@ -29,6 +29,8 @@ gem "font-awesome-rails"
 
 gem "sitemap_generator"
 
+gem 'dropbox_api'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
