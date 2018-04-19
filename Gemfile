@@ -30,6 +30,9 @@ gem "font-awesome-rails"
 gem "sitemap_generator"
 
 gem 'dropbox_api'
+gem 'paperclip'
+gem 'fog-aws'
+gem 'figaro'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -53,20 +56,20 @@ group :development do
   gem 'spring'
 
   gem 'capistrano', '~> 3.0'
-gem 'capistrano-bundler'
-gem 'capistrano-rails'
-gem 'capistrano-npm'
-gem 'capistrano-passenger'
-gem 'capistrano-figaro-yml'
-gem 'capistrano3-delayed-job'
-gem 'capistrano-rails-console'
-gem 'capistrano-db-tasks', require: false, git: 'https://github.com/sgruhier/capistrano-db-tasks.git'
-gem 'capistrano-nc', '~> 0.1'
-gem 'capistrano-maintenance', require: false
-gem 'capistrano-upload-config'
-gem 'capistrano-rake', require: false
-gem 'capistrano-rbenv', '~> 2.1'
-gem 'cap-ec2'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-npm'
+  gem 'capistrano-passenger'
+  gem 'capistrano-figaro-yml'
+  gem 'capistrano3-delayed-job'
+  gem 'capistrano-rails-console'
+  gem 'capistrano-db-tasks', require: false, git: 'https://github.com/sgruhier/capistrano-db-tasks.git'
+  gem 'capistrano-nc', '~> 0.1'
+  gem 'capistrano-maintenance', require: false
+  gem 'capistrano-upload-config'
+  gem 'capistrano-rake', require: false
+  gem 'capistrano-rbenv', '~> 2.1'
+  gem 'cap-ec2'
 end
 
 gem 'twitter-bootstrap-rails'

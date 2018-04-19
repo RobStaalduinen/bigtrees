@@ -1,1 +1,7 @@
-
+development:
+  AWS_ACCESS_KEY_ID: 
+  AWS_SECRET_ACCESS_KEY: 
+  FOG_PROVIDER: AWS
+  FOG_BUCKET: stagelink
+  FOG_DIRECTORY: stagelink
+  FOG_REGION: eu-west-1
