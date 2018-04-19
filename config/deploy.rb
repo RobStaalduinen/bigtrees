@@ -6,7 +6,7 @@ server '159.203.26.93', port: 22, user: 'root', roles: [:web, :app, :db], primar
 set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
-set :user, 'root'
+set :usecd r, 'root'
 set :deploy_to, '/var/www/bigtrees'
 set :rbenv_type, :user
 set :rbenv_ruby, '2.3.1'
@@ -20,7 +20,7 @@ set :nc_terminal, 'com.googlecode.iterm2'
 append :linked_files, 'config/application.yml', 'config/database.yml'
 
 # Default value for linked_dirs is []
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/locks', 'public/system'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/locks', 'public/system', 'public/TreeImages'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

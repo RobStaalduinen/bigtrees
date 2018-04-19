@@ -84,7 +84,7 @@
 			<% i = i + 1 %>
 			<h4>Tree #<%= i %></h4>
 				<% image_array.each do |img| %>
-					<% img_path = "/TreeImagesTmp/" + img %>
+					<% img_path = "/TreeImages/" + img %>
 					<div class = 'image-box'>
 						<%= link_to img_path, :class => 'image-link' do %><%= image_tag(img_path, :alt => "Image", :class => 'tree-image') %><% end %>
 					</div>
