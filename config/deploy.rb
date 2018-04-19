@@ -6,7 +6,7 @@ server '159.203.26.93', port: 22, user: 'root', roles: [:web, :app, :db], primar
 set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
-set :usecd r, 'root'
+set :use, 'root'
 set :deploy_to, '/var/www/bigtrees'
 set :rbenv_type, :user
 set :rbenv_ruby, '2.3.1'
