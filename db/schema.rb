@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314161346) do
+ActiveRecord::Schema.define(version: 20180419194239) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -56,9 +56,12 @@ ActiveRecord::Schema.define(version: 20180314161346) do
   end
 
   create_table "tree_images", force: :cascade do |t|
-    t.integer "estimate_id", limit: 4,   null: false
-    t.string  "filename",    limit: 255, null: false
-    t.integer "tree_number", limit: 4,   null: false
+    t.integer  "estimate_id",        limit: 4,   null: false
+    t.integer  "tree_number",        limit: 4,   null: false
+    t.string   "asset_file_name",    limit: 255
+    t.string   "asset_content_type", limit: 255
+    t.integer  "asset_file_size",    limit: 4
+    t.datetime "asset_updated_at"
   end
 
   create_table "users", force: :cascade do |t|

@@ -84,16 +84,20 @@ class EstimateController < ApplicationController
 					user_image = params[tree_string]
 					if !user_image.nil?
 						logger.debug "TEST44444"
-						fileName = "Est" + params[:estimate_id] + "_" + tree_string + File.extname(user_image.original_filename).to_s
-						path = File.join(Rails.root, 'public', 'TreeImages', fileName)
-						File.open(path, 'wb') do |file|
-							file.write(user_image.read)
-						end
+						# fileName = "Est" + params[:estimate_id] + "_" + tree_string + File.extname(user_image.original_filename).to_s
+						# path = File.join(Rails.root, 'public', 'TreeImages', fileName)
+						# File.open(path, 'wb') do |file|
+						# 	file.write(user_image.read)
+						# end
+						#
+						# new_image = TreeImage.new
+						# new_image.estimate_id = @estimate.id
+						# new_image.filename = fileName
+						# new_image.tree_number = i
+						# new_image.save
 
-						new_image = TreeImage.new
-						new_image.estimate_id = @estimate.id
-						new_image.filename = fileName
-						new_image.tree_number = i
+						new_image = TreeImage.new(estimate_id: @estimate.id, tree_number: i)
+						new_image.asset = user_image
 						new_image.save
 
 

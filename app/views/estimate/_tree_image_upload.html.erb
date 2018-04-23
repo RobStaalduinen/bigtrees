@@ -1,3 +1,12 @@
+<script>
+	function startLoad(){
+		alert("YAAA");
+		document.getElementById('loading-spinner').style.display = 'block';
+		document.getElementById('appointment-skip').style.display = 'none';
+		document.getElementById('image-submit').style.display = 'none';
+	}
+</script>
+
 <div id = "estimate-form">
 
 <%= form_tag( {:controller => 'estimate', :action => 'submit_tree_images'}, method: :put, multipart: true) do %>
@@ -25,11 +34,14 @@
 		</table>
 	</div>
 	<div id = "appointment-submit-buttons">
+		<div id = "loading-spinner-div" style="float: right;">
+			<%= image_tag "/loading_spinner.gif", id: "loading-spinner", style: "width: 50px; margin: 10px 30px 10px auto; display: none;" %>
+		</div>
 		<div id = "appointment-skip">
 			<%= submit_tag "Skip", :id => 'submit-element' %>
 		</div>
 		<div id = "image-submit">
-			<%= submit_tag "Next", :id => 'submit-element' %>
+			<%= submit_tag "Next", :id => 'submit-element', onclick: "startLoad()" %>
 		</div>
 	</div>
 <% end %>

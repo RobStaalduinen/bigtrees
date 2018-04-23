@@ -9,3 +9,5 @@ Paperclip::Attachment.default_options.merge!(
   fog_directory: ENV['FOG_DIRECTORY'],
   bucket: ENV['FOG_DIRECTORY']
 )
+
+Paperclip::DataUriAdapter.register
