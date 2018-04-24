@@ -74,38 +74,20 @@ class EstimateController < ApplicationController
 	def submit_tree_images
 		@estimate = Estimate.find_by_id(params[:estimate_id])
 		if params[:commit] != "Skip"
-			logger.debug "TEST1"
 			@num_trees = params[:num_trees].to_i
 			for i in 1..3
-				logger.debug "TEST222"
 				for j in 1..4
-					logger.debug "TEST333"
 					tree_string = "tree_" + i.to_s + "_image_" + j.to_s
 					user_image = params[tree_string]
 					if user_image.present?
-						logger.debug "TEST44444"
-						# fileName = "Est" + params[:estimate_id] + "_" + tree_string + File.extname(user_image.original_filename).to_s
-						# path = File.join(Rails.root, 'public', 'TreeImages', fileName)
-						# File.open(path, 'wb') do |file|
-						# 	file.write(user_image.read)
-						# end
-						#
-						# new_image = TreeImage.new
-						# new_image.estimate_id = @estimate.id
-						# new_image.filename = fileName
-						# new_image.tree_number = i
-						# new_image.save
-
 						new_image = TreeImage.new(estimate_id: @estimate.id, tree_number: i)
 						new_image.asset = user_image
 						new_image.save
-
-
 					end
 				end
 			end
 		end
-		# EstimateMailer.estimate_alert(params[:estimate_id]).deliver_later
+		EstimateMailer.estimate_alert(params[:estimate_id]).deliver_later
 		@estimate.response = "RESPONSE REQRUIRED"
 		@estimate.status = "COMPLETE"
 		@estimate.save
