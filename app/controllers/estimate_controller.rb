@@ -105,7 +105,7 @@ class EstimateController < ApplicationController
 				end
 			end
 		end
-		EstimateMailer.estimate_alert(params[:estimate_id]).deliver_later
+		# EstimateMailer.estimate_alert(params[:estimate_id]).deliver_later
 		@estimate.response = "RESPONSE REQRUIRED"
 		@estimate.status = "COMPLETE"
 		@estimate.save
