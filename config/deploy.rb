@@ -27,3 +27,13 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/locks',
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
+
+set :delayed_job_server_role, :worker
+set :delayed_job_args, "-n 2"
+
+after 'deploy:publishing', 'deploy:restart'
+namespace :deploy do
+  task :restart do
+    invoke 'delayed_job:restart'
+  end
+end
