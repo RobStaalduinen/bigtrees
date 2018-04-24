@@ -29,7 +29,7 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/locks',
 set :keep_releases, 5
 
 set :delayed_job_server_role, :worker
-set :delayed_job_args, "-n 2"
+set :delayed_job_workers, 1
 
 after 'deploy:publishing', 'deploy:restart'
 namespace :deploy do

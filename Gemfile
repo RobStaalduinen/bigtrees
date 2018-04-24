@@ -34,6 +34,7 @@ gem 'paperclip'
 gem 'fog-aws'
 gem 'figaro'
 
+gem 'daemons'
 gem 'delayed_job_active_record'
 
 # Use ActiveModel has_secure_password

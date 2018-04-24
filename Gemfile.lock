@@ -854,6 +854,7 @@ DEPENDENCIES
   capistrano-upload-config
   capistrano3-delayed-job
   coffee-rails (~> 4.1.0)
+  daemons
   delayed_job_active_record
   dropbox_api
   exception_handler
