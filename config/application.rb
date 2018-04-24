@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Bigtrees
   class Application < Rails::Application
-  
+
     Rails.application.config.assets.precompile += %w( jquery-1.11.3.js )
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

@@ -1,5 +1,5 @@
 class EstimateMailer < ApplicationMailer
-	default from: 'no-reply@bigtrees.ca'
+	default from: 'no-reply@bigtreeservices.com'
 	add_template_helper(ApplicationHelper)
 	 include Rails.application.routes.url_helpers
 	include ActionView::Helpers::UrlHelper
@@ -20,7 +20,9 @@ class EstimateMailer < ApplicationMailer
 	def estimate_alert(estimate_id)
 		@estimate = Estimate.find_by_id(estimate_id)
 		mail(to: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.name)
-		mail(to: 'Tbrewer@bigislandgroup.ca', subject: "BigTree Estimate Request from " + @estimate.name)
+		if Rails.env.production?
+			mail(to: 'Tbrewer@bigislandgroup.ca', subject: "BigTree Estimate Request from " + @estimate.name)
+		end
 	end
 
 	def test_email(recipient)
