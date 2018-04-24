@@ -83,7 +83,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address => 'smtp-relay.sendinblue.com',
     :port => 587,
-    :domain => 'bigtreecare.com',
+    :domain => 'bigtreeservices.com',
     :user_name => ENV["EMAIL_USERNAME"],
     :password => ENV["EMAIL_PASSWORD"],
     :authentication => 'login',
