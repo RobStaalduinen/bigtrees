@@ -4,7 +4,6 @@ SitemapGenerator::Sitemap.default_host = "http://www.bigtreeservices.com"
 SitemapGenerator::Sitemap.create do
   add '/main/home'
   add '/main/services'
-  add '/main/cut_one'
   add '/main/promise'
   add '/main/commercial'
   add '/main/contact_us'
