@@ -1,11 +1,4 @@
-#nav-bar-row{
-	background-color: var(--dark-grey);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.nav{
+#navbar{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,55 +6,49 @@
 
   height: 100%;
   width: 100%;
-	max-width: 960px;
+  max-width: 960px;
+  padding: 0px;
+  margin-bottom: 0px;
 }
 
-.nav > li{
-	padding: 10px 10px;
-	font-size: 16px;
-	color: #F5F5F5;
+.menu-icon {
+  display: block;
+  font-size: 26px;
 }
 
+.menu-icon-open {
+  display: block;
+  font-size: 26px;
+}
 
-.nav li.menu-item {
-  color: white;
-  font-size: 18px;
+.nav-link{
+  color: black;
+}
+
+.menu-item{
+  padding: 10px 10px;
+  font-size: 16px;
+  font-weight: 600;
   display: none;
-  width: 100%;
-}
-.nav li.menu-icon {
-  display: block;
-  color: white;
-  font-size: 26px;
-  width: 100%;
 }
 
-.nav li.menu-icon-open {
-  display: block;
-  color: white;
-  background-color: var(--main-color);
-  font-size: 26px;
+.menu-item-responsive{
+  display: flex;
+  justify-content: flex-start;
   width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 15px;;
 }
 
-.nav li.menu-item-responsive {
-  display: block;
-  color: white;
-  font-size: 18px;
-  width: 100%;
-	padding: 0;
+.menu-item-responsive:hover{
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--main-color);
 }
 
-.nav > li > a {
-  padding: 0;
-  color: white;
-	width: 100%;
-	height: 100%;
-	padding: 10px;
-}
-
-.nav > li > a:focus {
-	background-color: var(--main-color);
+.menu-divider{
+  display: none;
 }
 
 @media (min-width:480px) and(max-width: 768px) {
@@ -70,7 +57,11 @@
 @media (min-width:769px) and (max-width:1009px) {
 
 }
-@media (min-width:1010px) {
+@media (min-width:760px) {
+  #navbar{
+    flex-direction: row;  
+  }
+
   #nav-bar-container{
     height: 80px;
     width: 100%;
@@ -82,34 +73,17 @@
     align-items: center;
   }
 
-  .nav li {
-    display: inline-block;
-    font-size: 20px;
-    color: #F5F5F5;
-    padding: 0;
+  .menu-item{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
   }
 
-  .nav li a{
-    color: white;
-		padding: 15px 5px;
-  }
-
-  .nav li.menu-icon {
+  .menu-icon {
     display: none;
   }
 
-  .nav li.menu-item {
-    display: block;
-  }
-  .nav li.menu-icon {
-    display: none;
-  }
-
-  .nav li a{
-    text-align: center;
-  }
-
-	.nav > li > a:hover {
-		background-color: var(--main-color);
-	}
 }

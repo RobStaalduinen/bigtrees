@@ -13,3 +13,7 @@ Rails.application.config.assets.version = '1.0'
  #Rails.application.config.assets.precompile += %w( jquery.modal.min.js )
 # ails.application.config.assets.precompile += %w( jquery.modal.js )
 # Rails.application.config.assets.precompile += %w( jquery.modal.css )
+
+Dir.glob("#{Rails.root}/app/assets/images/**/").each do |path|
+  Rails.application.config.assets.paths << path
+end

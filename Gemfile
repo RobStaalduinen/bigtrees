@@ -78,7 +78,7 @@ end
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'less-rails'
-gem 'mysql2', '~> 0.3.18'
+gem 'mysql2'
 gem 'protected_attributes'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'

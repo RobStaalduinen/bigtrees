@@ -5,9 +5,10 @@
 			<div id = "feature-box">
 				<div id = "feature-inner-box">
 					Certified, Licenced, Insured <br />
-					<span id = "arborist-title">Arborist and Utility Arborist</span><br />
-					<%= link_to controller: 'estimate', action: 'new' do %>
-							<div class = "estimate-link">Call Now</div>
+					<span id = "arborist-title">Arborist and Utility Arborist</span>
+					Serving the GTA and Cottage Country <br /> <br />
+					<%= link_to pages_path(page: "contact_us") do %>
+							<div class = "estimate-link">Contact us today</div>
 					<% end %>
 				</div>
 			</div>
@@ -26,18 +27,12 @@
 	</div>
 </div>
 
-<div id = "services">
-	<%= link_to pages_path(page: "services"), class: "services-box-link" do %>
-		<div class = "services-box" id = "residential-services">
-			<p>Residential Services</p>
-		</div>
-	<% end %>
-	<%= link_to pages_path(page: "commercial"), class: "services-box-link" do %>
-		<div class = "services-box" id = "commercial-services">
-			<p>Commercial Services</p>
-		</div>
-	<% end %>
+<div id = "promise-and-stumping">
+	<%= render 'main/components/stumping' %>
+	<%= render 'main/components/promise' %>
 </div>
+
+<div id="divider"></div>
 
 <div class = "row">
 	<div class = "col-lg-6 col-lg-offset-3">

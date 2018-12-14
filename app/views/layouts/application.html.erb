@@ -28,14 +28,8 @@
     function toggleMenu() {
       var x = document.getElementById("navbar");
       var items = x.getElementsByTagName("li");
-      if(items[0].className === "menu-icon-open"){
-        items[0].className = "menu-icon"
-      }
-      else{
-        items[0].className = "menu-icon-open"
-      }
-
-      for(var i = 1; i < items.length; ++i){
+      
+      for(var i = 0; i < items.length; ++i){
         if (items[i].className === "menu-item") {
             items[i].className = "menu-item-responsive";
         } else {
@@ -46,50 +40,13 @@
   </script>
 </head>
 <body>
-  		<script>
+  	<script>
 			$('body').on('hidden.bs.modal', '.modal', function () {
 				$(this).removeData('bs.modal');
 			});
 		</script>
 
-
-			<div class = "container-fluid">
-				<div class = "row main-header" id = "header-row">
-					<div id = "header-container" class = "col-lg-6 col-lg-offset-3" >
-						<div id = "header-content">
-							<div id = "header-title">
-								<%= image_tag "BigTreeLogo-Re.png", :id => 'logo-image' %>
-							</div>
-              <div id = "header-contact">
-
-              <a class = "contact-button" href="mailto:tbrewer@bigislandgroup.ca">
-                <span>Email</span>
-                <span class = "contact-icon"><i class="fa fa-envelope"></i></span>
-              </a>
-
-              <a class = "contact-button"  href="tel:1-877-542-5551">
-                <div>Call</div>
-                <div class = "contact-icon"><i class="fa fa-phone"></i></div>
-              </a>
-              </div>
-						</div>
-            <div id = "header-subtitle"><strong>Proudly Serving the GTA and Cottage Country</strong></div>
-					</div>
-				</div>
-
-				<div class = "row", id = "nav-bar-row">
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<ul class="nav navbar-center" id="navbar">
-            <li class = "menu-icon" onclick="toggleMenu()"><i class="fa fa-bars"></i></li>
-						<li class = "menu-item"><%= link_to "Home", pages_path(page: "home") %></li>
-						<li class = "menu-item"><%= link_to "Our Promise", pages_path(page: "promise") %></li>
-            <li class = "menu-item"><%= link_to "Services", pages_path(page: "services") %></li>
-            <li class = "menu-item"><%= link_to "Commercial", pages_path(page: "commercial") %></li>
-						<li class = "menu-item"><%= link_to "Estimates", new_estimate_path %></li>
-            <li class = "menu-item"><%= link_to "Careers", pages_path(page: "careers") %></li>
-            <li class = "menu-item"><%= link_to "Contact Us", pages_path(page: "contact_us") %></li>
-					</ul>
-				</div>
+      <%= render 'layouts/common/header' %>
 
 
 				<div class="row">
@@ -117,6 +74,6 @@
 			</div>
 		</div>
 
-
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700" media="none" onload="this.media='all';">
 </body>
 </html>

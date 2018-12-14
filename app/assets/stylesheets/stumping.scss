@@ -1,0 +1,56 @@
+#stumping-box{
+  width: 100%;
+  box-shadow: 0 5px 3px -3px rgba(153, 153, 153, 0.2);
+  border: 1px solid lightgrey;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#stumping-box-header{
+  font-size: 22px;
+  font-weight: 600;
+}
+
+#stumping-box-image{
+  margin-top: 16px;
+}
+
+#stumping-box-content{
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+#stumping-button{
+	width: 120px;
+	height: 50px;
+	margin: 0 auto;
+
+	color: white;
+	background-color: var(--main-color);
+
+	border-width: 0 0 4px 0;
+	border-style: solid;
+	border-color: var(--main-color-dark);
+
+	display: flex;
+	align-items: center;
+  justify-content: center;
+  
+  font-size: 16px;
+
+  margin-top: 16px;
+}
+
+@media (min-width: 760px){
+  #stumping-box{
+    width: 50%;
+
+    margin-top: 16px;
+  }
+
+  #stumping-box-image{
+    width: 100%;
+  }
+}

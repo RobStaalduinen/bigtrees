@@ -26,20 +26,20 @@ ActiveRecord::Schema.define(version: 20180424191655) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   limit: 4,     default: 0, null: false
-    t.integer  "attempts",   limit: 4,     default: 0, null: false
-    t.text     "handler",    limit: 65535,             null: false
-    t.text     "last_error", limit: 65535
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by",  limit: 255
-    t.string   "queue",      limit: 255
+    t.string   "locked_by"
+    t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "estimates", force: :cascade do |t|
     t.string  "estimate_number", limit: 15
@@ -72,11 +72,11 @@ ActiveRecord::Schema.define(version: 20180424191655) do
   end
 
   create_table "tree_images", force: :cascade do |t|
-    t.integer  "estimate_id",        limit: 4,   null: false
-    t.integer  "tree_number",        limit: 4,   null: false
-    t.string   "asset_file_name",    limit: 255
-    t.string   "asset_content_type", limit: 255
-    t.integer  "asset_file_size",    limit: 4
+    t.integer  "estimate_id",        limit: 4, null: false
+    t.integer  "tree_number",        limit: 4, null: false
+    t.string   "asset_file_name"
+    t.string   "asset_content_type"
+    t.integer  "asset_file_size"
     t.datetime "asset_updated_at"
   end
 
