@@ -2,6 +2,10 @@
   width: 100%;
   background-color: white;
   padding: 8px 16px;
+
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--main-color);
 }
 
 #header-inner{
@@ -23,10 +27,6 @@
     padding: 16px 32px 0px 32px;
     display: flex;
     justify-content: space-between;
-
-    border-width: 0 0 4px 0;
-    border-style: solid;
-    border-color: var(--main-color);
   }
 
   #header-inner{
