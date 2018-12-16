@@ -1,0 +1,27 @@
+#log-in-form{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+#log-in-table td{
+	padding: 5px 10px;
+}
+
+#log-in-button{
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 40px;
+  margin-top: 16px;
+  padding: 0 16px;
+  color: white;
+  background-color: var(--main-color);
+
+  border-width: 0 0 4px 0;
+  border-color: var(--main-color-dark);
+  border-style: solid;
+}

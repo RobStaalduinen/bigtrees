@@ -1,0 +1,26 @@
+#footer-container{
+  width: 100%;
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 16px;
+}
+
+#footer-left{
+  width: 70%;
+}
+
+#footer-right{
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#footer-log-in{
+  color: white;
+}
+
+#footer-log-in:active{
+  color: white;
+}

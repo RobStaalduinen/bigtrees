@@ -114,21 +114,6 @@ body{
 
 }
 
-#footer-container{
-	background-color: var(--main-color);
-	border-width: 8px 0 0 0;
-	border-style: solid;
-	border-color: black;
-	min-height: 61px;
-
-	color: white;
-	font-size: 9pt;
-	text-align: center;
-	vertical-align: middle;
-	padding-top: 10px;
-}
-
-
 #style-line{
 	border-width: 0 0 1px 0;
 	border-style: solid;
@@ -266,14 +251,6 @@ body{
 	border-width: 2px;
 }
 
-#contact-description{
-	font-size: 14pt;
-	text-align: center;
-	width: 100%;
-	margin: 0 auto;
-	padding: 50px 0;
-}
-
 
 //MISC
 
@@ -319,10 +296,6 @@ body{
 		border-width: 2px;
 	}
 
-	#contact-description{
-		font-size: 5vw;
-		padding: 50px 0;
-	}
 
 
 	#about-us-text{
@@ -454,6 +427,10 @@ body{
 		padding: 50px 0;
 	}
 
+	.main-container{
+		width: 100%;
+	}
+
 }
 @media (min-width:961px) { /* tablet, landscape iPad, lo-res laptops ands desktops */
 	.sub-page-header-title{
@@ -475,6 +452,14 @@ body{
 	#promise-and-stumping{
 		max-width: 860px;
 		margin: 0 auto;
+		flex-direction: row;
 		justify-content: space-between;
+		align-items: flex-start;
+	}
+
+	.main-container{
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
 	}
 }

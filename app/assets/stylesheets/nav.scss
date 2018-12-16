@@ -23,6 +23,8 @@
 
 .nav-link{
   color: black;
+  padding: 10px 15px;;
+  width: 100%;
 }
 
 .menu-item{
@@ -38,25 +40,14 @@
   width: 100%;
   font-size: 16px;
   font-weight: 600;
-  padding: 10px 15px;;
 }
 
-.menu-item-responsive:hover{
-  border-width: 0 0 2px 0;
-  border-style: solid;
-  border-color: var(--main-color);
-}
+
 
 .menu-divider{
   display: none;
 }
 
-@media (min-width:480px) and(max-width: 768px) {
-
-}
-@media (min-width:769px) and (max-width:1009px) {
-
-}
 @media (min-width:760px) {
   #navbar{
     flex-direction: row;  
@@ -84,6 +75,12 @@
 
   .menu-icon {
     display: none;
+  }
+
+  .menu-item-responsive:hover{
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    border-color: var(--main-color);
   }
 
 }

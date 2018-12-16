@@ -49,21 +49,12 @@
       <%= render 'layouts/common/header' %>
 
 
-				<div class="row">
 					<div id = "main-box">
 						<%= yield %>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class = ".col-md-3"></div>
-					<div id = "footer-container" class = ".col-md-6">
-						Certified by the Ontario Colleges of Trade<br />
-						Fully Insured by State Farm
-					</div>
-					<div class = ".col-md-3"></div>
-				</div>
-			</div>
+      <%= render 'layouts/common/footer' %>
+
 
 
 		<div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal" aria-hidden="true">
