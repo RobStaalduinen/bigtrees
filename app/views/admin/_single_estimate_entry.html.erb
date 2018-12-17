@@ -1,0 +1,47 @@
+<div id="single-estimate">
+  <div id="single-estimate__row">
+    <div id="single-estimate__status">
+      <%= estimate.formatted_status %>
+    </div>
+
+    <div id="single-estimate__entry">
+      <div id="single-estimate__entry-label">Date Sent</div>
+      <%= estimate.created_at.strftime("%Y-%m-%d") %>
+    </div>
+
+  </div>
+
+  <div id="single-estimate__row">
+    <div id="single-estimate__entry">
+      <div id="single-estimate__entry-label">Contact name</div> 
+      <%= estimate.person_name %>
+    </div>
+
+    <div id="single-estimate__entry">
+      <div id="single-estimate__entry-label">Contact</div> 
+      <%= estimate.phone_or_email %>
+    </div>
+  </div>
+
+  <div id="single-estimate__row">
+    <div id="single-estimate__entry">
+      <div id="single-estimate__entry-label">City</div> 
+      <%= estimate.city %>
+    </div>
+
+    <div id="single-estimate__entry">
+      <div id="single-estimate__entry-label">Number of Trees</div>
+      <%= estimate.tree_quantity %>
+    </div>
+  </div>
+
+  <div id="single-estimate__row">
+    <div id="single-estimate__entry">
+      <%= link_to "/admin/view_estimate?id=#{estimate.id}" do %>
+        <div id="single-estimate__action-button">
+          View Details
+        </div> 
+      <% end %>
+    </div>
+  </div>
+</div>

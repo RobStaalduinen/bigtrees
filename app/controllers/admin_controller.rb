@@ -20,11 +20,22 @@ class AdminController < ApplicationController
 	end
 
 def admin_panel
-	@estimates = Estimate.where(status: "COMPLETE").where("response != ?", "COMPLETE").order("id DESC").limit(20)
-	@current_start_date = SiteConfig.where(attribute_name: "start_date").first.attribute_value
-
-	set_stats()
+	@estimates = Estimate.submitted
+	# @current_start_date = SiteConfig.where(attribute_name: "start_date").first.attribute_value
 end
+
+def view_estimate
+	@estimate = Estimate.find(params[:id])
+end
+
+def update_costs
+	@estimate = Estimate.find(params[:id])
+end
+
+
+
+
+
 
 def view_all_appointments_and_estimates
 	@appointments = Appointment.where(status: "COMPLETE").order("id DESC")
@@ -178,26 +189,6 @@ def change_response
 end
 
 private
-	def set_stats
-		statMonths = SiteStat.all
-
-		@statsArray = Array.new
-		statMonths.each do |entry|
-			queryString = entry.year + "-" + entry.month + "-"
-
-			estInProgress = Estimate.where("status = ? AND date_submitted REGEXP ?", "IN PROGRESS", "#{queryString}[0-9]+").length
-			estImages = Estimate.where("status = ? AND date_submitted REGEXP ?", "AWAITING IMAGES", "#{queryString}[0-9]+").length
-			estCompleted = Estimate.where("status = ? AND date_submitted REGEXP ?", "COMPLETE", "#{queryString}[0-9]+").length
-			estPercentage = ((estCompleted.to_f / (estCompleted + estInProgress + estImages).to_f) * 100.0).round(2)
-
-
-
-			statsHash = {date: entry.year + "-" + entry.month, est_requested: entry.estimates_started, est_in_progress: estInProgress, est_images: estImages, est_complete: estCompleted, est_percentage: estPercentage}
-			@statsArray.push(statsHash)
-			logger.debug "IN PROGRESS: " + (estInProgress.to_s)
-		end
-
-	end
 
 	def signed_in_user
 		logger.debug "SIGNED IN USER"

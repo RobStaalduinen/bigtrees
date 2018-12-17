@@ -1,0 +1,9 @@
+<div class='page-container'>
+
+  <h2>Estimate #<%= @estimate.id %></h2>
+  <span>Date sent: <%= @estimate.created_at.strftime("%Y-%m-%d") %></span>
+
+  <%= render 'view_estimate_basics', estimate: @estimate %>
+  <%= render 'view_estimate_next', estimate: @estimate %>
+
+</div>

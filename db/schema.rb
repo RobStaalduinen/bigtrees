@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424191655) do
+ActiveRecord::Schema.define(version: 20181217110816) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -42,21 +42,20 @@ ActiveRecord::Schema.define(version: 20180424191655) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "estimates", force: :cascade do |t|
-    t.string  "estimate_number", limit: 15
-    t.string  "name",            limit: 255,   null: false
-    t.string  "date_submitted",  limit: 40,    null: false
-    t.integer "tree_quantity",   limit: 4,     null: false
-    t.text    "address",         limit: 65535, null: false
-    t.string  "city",            limit: 100
-    t.string  "contact_type",    limit: 255
-    t.string  "contact_method",  limit: 255
-    t.string  "status",          limit: 255,   null: false
-    t.string  "response",        limit: 20
-    t.string  "last_change",     limit: 12
-    t.string  "stump_removal",   limit: 5
-    t.string  "vehicle_access",  limit: 5
-    t.string  "breakables",      limit: 5
-    t.string  "wood_removal",    limit: 5
+    t.integer  "tree_quantity",        default: 1
+    t.string   "person_name"
+    t.string   "street"
+    t.string   "city"
+    t.string   "phone"
+    t.string   "email"
+    t.boolean  "stump_removal",        default: false
+    t.boolean  "vehicle_access",       default: false
+    t.boolean  "breakables",           default: false
+    t.boolean  "wood_removal",         default: false
+    t.integer  "status",               default: 0,     null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "submission_completed", default: false
   end
 
   create_table "site_config", force: :cascade do |t|
@@ -79,6 +78,15 @@ ActiveRecord::Schema.define(version: 20180424191655) do
     t.integer  "asset_file_size"
     t.datetime "asset_updated_at"
   end
+
+  create_table "trees", force: :cascade do |t|
+    t.integer "estimate_id"
+    t.integer "work_type",   default: 0
+    t.integer "sequence",    default: 0
+    t.decimal "cost"
+  end
+
+  add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id"
 
   create_table "users", force: :cascade do |t|
     t.string "username",      limit: 50,  null: false

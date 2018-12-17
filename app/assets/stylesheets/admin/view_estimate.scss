@@ -1,0 +1,40 @@
+#view-estimate__row{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 16px;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: grey;
+
+  padding: 0 0 16px 0;
+}
+
+#view-estimate__next-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: grey;
+
+  padding: 0 0 16px 0;
+}
+
+#view-estimate__row-entry{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#view_estimate__entry-header{
+  font-weight: 600;
+}
+
+#view_estimate__entry-header-large{
+  font-weight: 600;
+  font-size: 22px;
+}
