@@ -32,6 +32,18 @@ def update_costs
 	@estimate = Estimate.find(params[:id])
 end
 
+def set_work_date
+	@estimate = Estimate.find(params[:id])
+end
+
+def update_estimate
+	@estimate = Estimate.find(params[:estimate_id])
+	@estimate.update(estimate_params)
+	@estimate.set_status
+
+	redirect_to admin_estimates_path(id: @estimate.id)
+end
+
 def submit_updated_costs
 	@estimate = Estimate.find(params[:estimate_id])
 
@@ -202,6 +214,10 @@ def change_response
 end
 
 private
+
+	def estimate_params
+		params.require(:estimate).permit(:status, :work_date)
+	end
 
 	def signed_in_user
 		logger.debug "SIGNED IN USER"

@@ -1,0 +1,36 @@
+<div class='page-container'>
+
+  <div id='view-estimate__box'>
+    <div id="view-estimate__costs-header">
+      <span class="text-large">Set Work Date</span>
+    </div>
+    <%= form_tag("/admin/update_estimate", method: "patch") do %>
+      <%= hidden_field_tag("estimate_id", @estimate.id) %>
+      <div id='estimate-forms__row'>
+          <div id="view-estiamte__costs-label">
+            Date:
+          </div>
+        <input 
+          type="text"
+          name="estimate[work_date]"
+          data-provide='datepicker'
+          class="form-field"
+          id="work-date-picker"
+          placeholder="Enter the date..."  
+        >
+        
+      </div>
+      <div id='estimate-forms__row'>
+        <%= submit_tag("Update", id: 'update-costs__submit') %>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+
+<script>
+  $('#work-date-picker').datepicker({
+    format: "dd/mm/yyyy",
+    autoclose: true
+});
+</script>

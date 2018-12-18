@@ -73,6 +73,9 @@ group :development do
   gem 'capistrano-rake', require: false
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'cap-ec2'
+
+  gem 'pry'
+  gem 'pry-byebug'
 end
 
 gem 'twitter-bootstrap-rails'
@@ -82,6 +85,7 @@ gem 'mysql2'
 gem 'protected_attributes'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
+gem 'bootstrap-datepicker-rails'
 
 gem 'spreadsheet'
 

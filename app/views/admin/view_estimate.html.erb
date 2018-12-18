@@ -1,7 +1,10 @@
 <div class='page-container'>
 
   <h2>Estimate #<%= @estimate.id %></h2>
-  <span>Date sent: <%= @estimate.created_at.strftime("%Y-%m-%d") %></span>
+  <span>Date sent: <%= @estimate.created_at.strftime("%B %d, %Y") %></span> <br />
+  <% if @estimate.work_date.present? %>
+    <span>Work Scheduled for: <%= @estimate.work_date.strftime("%B %d, %Y") %></span>
+  <% end %>
 
   <%= render 'view_estimate_next', estimate: @estimate %>
   <%= render 'view_estimate_basics', estimate: @estimate %>

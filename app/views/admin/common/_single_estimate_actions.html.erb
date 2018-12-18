@@ -21,9 +21,11 @@
 <% end %>
 
 <% if estimate.status == "quote_accepted" %>
-  <div id="single-estimate__action-button">
-    Schedule Work
-  </div>
+  <%= link_to "/admin/set_work_date?id=#{estimate.id}" do %>
+    <div id="single-estimate__action-button">
+      Schedule Work
+    </div>
+  <% end %>
 <% end %>
 
 <% if estimate.status == "pending_quote" %>

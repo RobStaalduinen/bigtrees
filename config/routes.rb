@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
   post ':controller/:action'
 
+  patch ':controller/:action'
+
+
   match '*path' => 'main#not_found', via: :all
 
   # The priority is based upon order of creation: first created -> highest priority.

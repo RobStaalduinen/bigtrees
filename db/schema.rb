@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181217194030) do
+ActiveRecord::Schema.define(version: 20181218092708) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(version: 20181217194030) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.boolean  "submission_completed", default: false
+    t.date     "quote_sent_date"
+    t.date     "quote_accepted_date"
+    t.date     "work_date"
   end
 
   create_table "site_config", force: :cascade do |t|
