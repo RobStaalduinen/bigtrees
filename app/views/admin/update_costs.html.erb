@@ -1,0 +1,21 @@
+<h3>Update costs</h3>
+
+
+<%= form_tag("/admin/submit_updated_costs", method: "post") do %>
+<%= hidden_field_tag("estimate_id", @estimate.id) %>
+  <div id="update-costs">
+    <% @estimate.trees.each do |tree| %>
+      <% base_cost = tree.cost || nil %>
+      <%= hidden_field_tag("trees[][id]", tree.id) %>
+      <div id="update-costs__row">
+        <div id="update_costs__element">Tree #<%= tree.sequence + 1 %></div>
+        <div id="update_costs__element"><%= tree.work_type.capitalize %></div>
+        <div id="update_costs__element"><%= number_field_tag("trees[][cost]", base_cost) %></div>
+      </div>
+    <% end %>
+
+    <div id="update-costs__submit-row">
+      <%= submit_tag("Update", id: 'update-costs__submit') %>
+    </div>
+  </div>
+<% end %>

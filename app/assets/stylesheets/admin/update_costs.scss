@@ -1,0 +1,41 @@
+#update-costs{
+  width: 100%;
+  padding: 8px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#update-costs__row{
+  margin-top: 8px;
+  padding: 8px;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
+#update-costs__submit-row{
+  margin-top: 8px;
+}
+
+#update-costs__submit{
+  background-color: var(--main-color);
+  border-color: var(--main-color-dark);
+  border-style: solid;
+  border-width: 0 0 4px 0;
+  padding: 8px;
+
+  color: white;
+  font-weight: 600;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#update-costs__element{
+  width: 100%;
+}

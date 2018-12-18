@@ -17,6 +17,12 @@ class EstimateController < ApplicationController
 
 	end
 
+	def update
+		@estimate = Estimate.find(params[:id])
+		@estimate.update(estimate_params)
+		redirect_to admin_estimates_path(id: @estimate.id)
+	end
+
 	def new
 		SiteStat.increment_estimates()
 		if params[:trees].nil?
@@ -213,149 +219,11 @@ class EstimateController < ApplicationController
 
 	private
 
+		# def estimate_params
+		# 	params.require(:estimate).permit(:name, :date_submitted, :tree_quantity, :address, :labour_hours, :total_cost, :status)
+		# end
+
 		def estimate_params
-			params.require(:estimate).permit(:name, :date_submitted, :tree_quantity, :address, :labour_hours, :total_cost, :status)
+			params.require(:estimate).permit(:status)
 		end
-
-		def complete_estimate(estimate)
-			allWork = WorkAction.where("estimate_id = ?", estimate.id)
-			total_cost = 0
-			allWork.each do |workItem|
-				total_cost += workItem.cost
-			end
-
-			#Pre-cutting supervisor work + fuel
-			total_cost += 2.5 * $supervisor_hour_cost
-			total_cost += 2 * $fuel_cost
-
-			#Variable Hourly Rate
-			total_cost += 2 * $fuel_cost
-			total_cost += 2 * $one_man_labour_hour_cost
-
-			#After-cutting costs
-			total_cost += 1 * $supervisor_hour_cost
-
-			#Tax
-			total_cost = total_cost * $CDN_tax_rate
-
-			#Transfer-fee
-			total_cost = total_cost * $interac_cost
-
-			#Round
-			total_cost = total_cost.round(2)
-
-			estimate.total_cost = total_cost
-			estimate.status = "COMPLETE"
-			estimate.save
-		end
-
-		def calculate_removal_costs(work)
-			tree_hours = 0
-			stump_hours = 0
-			truck_hours = 0
-			breakable_hours = 0
-			wood_hours = 0
-
-			hourly_rate = 0
-			if work.tree_stories == 1
-				tree_hours = 2.5
-				stump_hours = 2
-				truck_hours = 0
-				breakable_hours = 1
-				wood_hours = 0
-				hourly_rate = $one_man_labour_hour_cost
-			elsif work.tree_stories == 2
-				tree_hours = 6
-				stump_hours = 3
-				truck_hours = 1.5
-				breakable_hours = 2
-				wood_hours = 2
-				hourly_rate = $two_man_labour_hour_cost
-			else
-				tree_hours = 8
-				stump_hours = 4
-				truck_hours = 3
-				breakable_hours = 3
-				wood_hours = 3
-				hourly_rate = $two_man_labour_hour_cost
-			end
-
-
-			rData = RemovalData.new(work.info)
-
-			if rData.stump_removal
-				tree_hours += stump_hours
-			end
-
-			if !rData.vehicle_access
-				tree_hours += truck_hours
-			end
-
-			if rData.breakable
-				tree_hours += breakable_hours
-			end
-
-			if !rData.keeping_wood
-				tree_hours += wood_hours
-			end
-
-			cost = tree_hours * hourly_rate
-			cost = cost.round(2)
-
-			return cost
-		end
-
-		def calculate_trim_costs(work)
-			tree_hours = 0
-			trim_hours = 0
-			truck_hours = 0
-			breakable_hours = 0
-			wood_hours = 0
-
-			hourly_rate = 0
-			if work.tree_stories == 1
-				tree_hours = 1
-				truck_hours = 0.5
-				breakable_hours = 0.5
-				wood_hours = 0.5
-				hourly_rate = $one_man_labour_hour_cost
-			elsif work.tree_stories == 2
-				tree_hours = 2
-				truck_hours = 1.5
-				breakable_hours = 1
-				wood_hours = 1
-				hourly_rate = $two_man_labour_hour_cost
-			else
-				tree_hours = 3
-				truck_hours = 2.5
-				breakable_hours = 2
-				wood_hours = 2
-				hourly_rate = $two_man_labour_hour_cost
-			end
-
-			tData = TrimData.new(work.info)
-
-			index = $trim_options.index(tData.percentage)
-			if !index.nil?
-				tree_hours += (0.5 * (index + 1))
-			end
-
-			if !tData.vehicle_access
-				tree_hours += truck_hours
-			end
-
-			if tData.breakable
-				tree_hours += breakable_hours
-			end
-
-			if !tData.keeping_wood
-				tree_hours += wood_hours
-			end
-
-			cost = tree_hours * hourly_rate
-			cost = cost.round(2)
-
-			return cost
-		end
-
 end

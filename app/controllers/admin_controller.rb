@@ -32,6 +32,19 @@ def update_costs
 	@estimate = Estimate.find(params[:id])
 end
 
+def submit_updated_costs
+	@estimate = Estimate.find(params[:estimate_id])
+
+	params[:trees].each do |tree|
+		db_tree = Tree.find(tree[:id])
+		db_tree.update(cost: tree[:cost])
+	end
+
+	@estimate.update(status: :quote_sent)
+
+	redirect_to admin_estimates_path(id: @estimate.id)
+end
+
 
 
 

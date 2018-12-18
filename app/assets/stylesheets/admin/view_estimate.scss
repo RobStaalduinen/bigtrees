@@ -1,14 +1,24 @@
+@import "common/_mixins.scss";
+
+#view-estimate__box{
+  @include shadow-box;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin-top: 16px;
+} 
+
+#view-estimate__box-header{
+  border-width: 0 0 2px 0;
+  border-color: var(--main-color);
+  border-style: solid;
+}
+
 #view-estimate__row{
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 16px;
-
-  border-width: 0 0 1px 0;
-  border-style: solid;
-  border-color: grey;
-
-  padding: 0 0 16px 0;
 }
 
 #view-estimate__next-row{
@@ -37,4 +47,41 @@
 #view_estimate__entry-header-large{
   font-weight: 600;
   font-size: 22px;
+}
+
+// Costs section
+
+#view-estimate__costs{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+#view-estimate__costs-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  border-width: 0 0 2px 0;
+  border-color: var(--main-color);
+  border-style: solid;
+}
+
+#view-estimate__edit{
+  font-size: 20px;
+}
+
+#view-estimate__costs-row{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+#view-estiamte__costs-label{
+  font-weight: 600;
+}
+
+#view-estimate__cost-value{
 }

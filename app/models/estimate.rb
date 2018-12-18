@@ -1,16 +1,18 @@
 class Estimate < ActiveRecord::Base
 	attr_accessible *column_names
 
-	has_many :tree_images
+	has_many :trees
 
 	scope :submitted, -> { where(submission_completed: true) }
 
 	enum status: { 
 		needs_costs: 0,
-		quote_sent: 1, 
-		quote_accepted: 2, 
-		work_scheduled: 3,
-		work_completed: 4
+		pending_quote: 1,
+		quote_sent: 2, 
+		quote_accepted: 4, 
+		work_scheduled: 5,
+		work_completed: 6,
+		cancelled: 10
 	}
 
 	def formatted_status
@@ -23,5 +25,9 @@ class Estimate < ActiveRecord::Base
 
 	def answer_for(attribute)
 		self[attribute] ? "Yes" : "No"
+	end
+
+	def costs?
+		!self.trees.pluck(:costs).select{ |c| c == nil}.any?
 	end
 end

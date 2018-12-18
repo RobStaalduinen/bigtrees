@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181217110816) do
+ActiveRecord::Schema.define(version: 20181217194030) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20181217110816) do
     t.string   "asset_content_type"
     t.integer  "asset_file_size"
     t.datetime "asset_updated_at"
+    t.integer  "tree_id"
   end
 
   create_table "trees", force: :cascade do |t|

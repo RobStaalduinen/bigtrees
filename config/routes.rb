@@ -10,7 +10,9 @@ Rails.application.routes.draw do
 	match '/estimate/submit_job_questions' => 'estimate#submit_job_questions', :as => :submit_questions, via: :all
 	match '/estimate/submit_tree_images' => 'estimate#submit_tree_images', :as => :submit_images, via: :all
 	match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display_estimate, via: :all
-	match '/estimate/estimate_tooltips' => 'estimate#estimate_tooltips', :as => :estimate_tooltips, via: :all
+  match '/estimate/estimate_tooltips' => 'estimate#estimate_tooltips', :as => :estimate_tooltips, via: :all
+  
+  match '/admin/view_estimate', :as => :admin_estimates, via: :get
 	resources :estimate
 
   match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all

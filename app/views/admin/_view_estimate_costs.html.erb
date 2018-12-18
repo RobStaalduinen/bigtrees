@@ -1,0 +1,23 @@
+<div id='view-estimate__box'>
+  <div id="view-estimate__costs-header">
+    <span class = "text-large">Tree Costs</span>
+    
+    <%= link_to "/admin/update_costs?id=#{estimate.id}" do %>
+      <span id="view-estimate__edit">Edit</span>
+    <% end %>
+  </div>
+
+  <% estimate.trees.each do |tree| %>
+    <div id='view-estimate__costs-row'>
+      <div id="view-estiamte__costs-label">
+        <%= "Tree #{tree.sequence + 1}" %>
+      </div>
+      <div id="view-estimate__cost-value">
+        <%= tree.work_type.capitalize %>
+      </div>
+      <div id="view-estimate__cost-value">
+        $<%= tree.cost %>
+      </div>
+    </div>
+  <% end %>
+</div>

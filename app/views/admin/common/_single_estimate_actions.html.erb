@@ -6,7 +6,28 @@
 <% end %>
 
 <% if estimate.status == "needs_costs" %>
+  <%= link_to "/admin/update_costs?id=#{estimate.id}" do %>
+    <div id="single-estimate__action-button">
+      Add Costs
+    </div> 
+  <% end %>
+<% end %>
+
+<% if estimate.status == "quote_sent" %>
+  <%= form_tag("/estimate/#{estimate.id}", method: "patch") do %>
+    <%= hidden_field_tag("estimate[status]", "quote_accepted") %>
+    <%= submit_tag("Accept Quote", id: 'single-estimate__action-button') %>
+  <% end %>
+<% end %>
+
+<% if estimate.status == "quote_accepted" %>
   <div id="single-estimate__action-button">
-    Add Costs
-  </div> 
+    Schedule Work
+  </div>
+<% end %>
+
+<% if estimate.status == "pending_quote" %>
+  <div id="single-estimate__action-button">
+    Send Quote
+  </div>
 <% end %>

@@ -1,89 +1,100 @@
-<h3>Contact</h3>
-  <div id='view-estimate__row'>
+  <div id="view-estimate__box">
+    <span class="text-large" id="view-estimate__box-header">Contact</span>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Name
+    <div id='view-estimate__row'>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Name
+        </div>
+        <div>
+          <%= estimate.person_name %>
+        </div>
       </div>
-      <div>
-        <%= estimate.person_name %>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Contact Method
+        </div>
+        <div>
+          <%= estimate.phone_or_email %>
+        </div>
       </div>
+
     </div>
-
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Contact Method
-      </div>
-      <div>
-        <%= estimate.phone_or_email %>
-      </div>
-    </div>
-
   </div>
 
 
-  <h3>Address</h3>
+  
 
+  <div id="view-estimate__box">
+  <span class="text-large" id="view-estimate__box-header">Address</span>
   <div id='view-estimate__row'>
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Street
+        </div>
+        <div>
+          <%= estimate.street %>
+        </div>
+      </div>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Street
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          City
+        </div>
+        <div>
+          <%= estimate.city %>
+        </div>
       </div>
-      <div>
-        <%= estimate.street %>
-      </div>
+
     </div>
-
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        City
-      </div>
-      <div>
-        <%= estimate.city %>
-      </div>
-    </div>
-
   </div>
 
-  <h3>Site Info</h3>
 
-  <div id='view-estimate__row'>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Stump Removal
+  <div id="view-estimate__box">
+    <span class="text-large" id="view-estimate__box-header">Site Info</span>
+
+    <div id='view-estimate__row'>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Stump Removal
+        </div>
+        <div>
+          <%= estimate.answer_for(:stump_removal) %>
+        </div>
       </div>
-      <div>
-        <%= estimate.answer_for(:stump_removal) %>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Vehicle Access
+        </div>
+        <div>
+          <%= estimate.answer_for(:vehicle_access) %>
+        </div>
       </div>
     </div>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Vehicle Access
+    <div id='view-estimate__row'>
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Breakables
+        </div>
+        <div>
+          <%= estimate.answer_for(:breakables) %>
+        </div>
       </div>
-      <div>
-        <%= estimate.answer_for(:vehicle_access) %>
-      </div>
-    </div>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Breakables
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Wood Removal
+        </div>
+        <div>
+          <%= estimate.answer_for(:wood_removal) %>
+        </div>
       </div>
-      <div>
-        <%= estimate.answer_for(:breakables) %>
-      </div>
-    </div>
 
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header">
-        Wood Removal
-      </div>
-      <div>
-        <%= estimate.answer_for(:wood_removal) %>
-      </div>
     </div>
-
   </div>

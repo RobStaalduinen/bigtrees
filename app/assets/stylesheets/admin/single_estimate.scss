@@ -22,7 +22,7 @@
   border-style: solid;
   border-width: 2px;
 
-  background-color: var(--main-color);
+  background-color: var(--main-color-light);
   color: white;
   font-weight: 600;
 
@@ -55,6 +55,8 @@
   border-color: var(--main-color-dark);
   border-style: solid;
   border-width: 0 0 4px 0;
+
+  width: 100%;
 
   display: flex;
   justify-content: center;
