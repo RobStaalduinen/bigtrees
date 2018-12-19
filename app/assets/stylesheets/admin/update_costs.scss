@@ -6,6 +6,21 @@
   flex-direction: column;
 }
 
+#update-costs__box{
+  background-color: #f2f2f2;
+  margin-top: 16px;
+}
+
+#update-costs__header{
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  border-width: 0 0 1px 0;
+  border-color: var(--main-color);
+  border-style: solid;
+  padding: 8px;
+}
+
 #update-costs__row{
   margin-top: 16px;
   padding: 8px;
@@ -14,7 +29,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f2f2f2;
 }
 
 #update-costs__submit-row{

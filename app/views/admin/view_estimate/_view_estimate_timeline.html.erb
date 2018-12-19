@@ -1,0 +1,48 @@
+<div id='view-estimate__box'>
+  <div id="view-estimate__box-header">
+    <span class = "text-large">Timeline</span>
+  </div>
+
+  <div id="view-estimate__timeline-row">
+    <span id="view-estimate__timeline-header">
+      Date sent: 
+    </span>
+    <span id="view-estimate__timeline-entry">
+      <%= estimate.created_at.strftime("%B %d, %Y") %>
+    </span>
+  </div>
+
+  <% if estimate.quote_sent_date.present? %>
+    <div id="view-estimate__timeline-row">
+      <span id="view-estimate__timeline-header">
+        Quote sent:
+      </span>
+      <span id="view-estimate__timeline-entry">
+        <%= estimate.quote_sent_date.strftime("%B %d, %Y") %>
+      </span>
+    </div>
+  <% end %>
+
+  <% if estimate.quote_accepted_date.present? %>
+    <div id="view-estimate__timeline-row">
+      <span id="view-estimate__timeline-header">
+        Quote accepted:
+      </span>
+      <span id="view-estimate__timeline-entry">
+        <%= estimate.quote_accepted_date.strftime("%B %d, %Y") %>
+      </span>
+    </div>
+  <% end %>
+
+
+  <% if estimate.work_date.present? %>
+    <div id="view-estimate__timeline-row">
+      <span id="view-estimate__timeline-header">
+        Work Scheduled For:
+      </span>
+      <span id="view-estimate__timeline-entry">
+        <%= estimate.work_date.strftime("%B %d, %Y") %>
+      </span>
+    </div>
+  <% end %>
+</div>

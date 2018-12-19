@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181218092708) do
+ActiveRecord::Schema.define(version: 20181218141032) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20181218092708) do
     t.date     "quote_sent_date"
     t.date     "quote_accepted_date"
     t.date     "work_date"
+    t.decimal  "extra_cost"
+    t.string   "extra_cost_notes"
   end
 
   create_table "site_config", force: :cascade do |t|
@@ -88,6 +90,7 @@ ActiveRecord::Schema.define(version: 20181218092708) do
     t.integer "work_type",   default: 0
     t.integer "sequence",    default: 0
     t.decimal "cost"
+    t.string  "notes"
   end
 
   add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id"

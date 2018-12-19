@@ -49,10 +49,11 @@ def submit_updated_costs
 
 	params[:trees].each do |tree|
 		db_tree = Tree.find(tree[:id])
-		db_tree.update(cost: tree[:cost])
+		db_tree.update(cost: tree[:cost], notes: tree[:notes])
 	end
 
-	@estimate.update(status: :quote_sent)
+	@estimate.update(estimate_params)
+	@estimate.set_status
 
 	redirect_to admin_estimates_path(id: @estimate.id)
 end
@@ -216,7 +217,7 @@ end
 private
 
 	def estimate_params
-		params.require(:estimate).permit(:status, :work_date)
+		params.require(:estimate).permit(:status, :work_date, :extra_cost, :extra_cost_notes)
 	end
 
 	def signed_in_user

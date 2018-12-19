@@ -1,14 +1,12 @@
 <div class='page-container'>
+  <%= render 'admin/common/back_button', back_link: '/admin/admin_panel'%>
 
   <h2>Estimate #<%= @estimate.id %></h2>
-  <span>Date sent: <%= @estimate.created_at.strftime("%B %d, %Y") %></span> <br />
-  <% if @estimate.work_date.present? %>
-    <span>Work Scheduled for: <%= @estimate.work_date.strftime("%B %d, %Y") %></span>
-  <% end %>
+  <%= render 'admin/view_estimate/view_estimate_timeline', estimate: @estimate%>
 
-  <%= render 'view_estimate_next', estimate: @estimate %>
-  <%= render 'view_estimate_basics', estimate: @estimate %>
-  <%= render 'view_estimate_costs', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_next', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_basics', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_costs', estimate: @estimate %>
   
 
 </div>
