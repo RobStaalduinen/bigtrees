@@ -43,6 +43,10 @@ class Estimate < ActiveRecord::Base
 		self.work_date.present?
 	end
 
+	def full_address
+		[self.street, self.city].join(", ")
+	end
+
 	def set_status
 		new_status = if(self.trees.any? && !self.costs?)
 			:needs_costs

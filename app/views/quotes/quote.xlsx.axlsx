@@ -1,0 +1,84 @@
+wb = xlsx_package.workbook
+wb.use_shared_strings = true
+wb.styles.fonts.first.name = 'Calibri'
+wb.styles.fonts.first.sz = 10
+
+wb.add_worksheet(name: "Quote") do |sheet|
+  right = sheet.styles.add_style(alignment: { horizontal: :right })
+  bold = wb.styles.add_style(b: true)
+  bold_italic = wb.styles.add_style(b: true, i: true)
+  center = sheet.styles.add_style(alignment: { horizontal: :center })
+  currency_format_code = "_$* #,##0.00"
+  currency = sheet.styles.add_style format_code: currency_format_code
+
+  top_border = sheet.styles.add_style :border => { :style => :thin, :color => "00", :edges => [:top] }
+  top_border_right = sheet.styles.add_style(alignment: { horizontal: :right }, :border => { :style => :thin, :color => "00", :edges => [:top] })
+  top_border_center = sheet.styles.add_style(alignment: { horizontal: :center }, :border => { :style => :thin, :color => "00", :edges => [:top] })
+
+    img = Rails.root.join('app', 'assets', 'images', 'logo_horizontal.png').to_s
+    sheet.add_image(image_src: img, start_at: "B1") do |image|
+      image.width = 250
+      image.height = 52
+    end
+    sheet.add_row [nil]
+    sheet.add_row ([nil] * 6) + ["Urban Forestry"]
+    sheet.add_row ([nil] * 6) + ["www.BigTreeServices.ca"]
+
+    sheet.add_row [nil]
+    sheet.add_row [nil]
+
+    sheet.add_row [nil] + ["Date Tendered:"] + ([nil] * 4) + ["Completion Date:"],
+    style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3),
+    height: 12
+    sheet.add_row [nil] + ["Customer Name:", @estimate.person_name] + ([nil] * 3) + ["Arborist's Name:", "Tyler Brewer"],
+    style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
+    sheet.add_row [nil] + ["Phone Number:", @estimate.phone] + ([nil] * 3) + ["Arborist Cert:", "400184807"],
+    style: ([nil, right, top_border_center])+ ([center] * 3) + ([right]) + ([top_border_center] * 3)
+    sheet.add_row [nil] + ["Email Address:", @estimate.email] + ([nil] * 3) + ["Cell Phone:", "705 943 7374"],
+    style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
+    sheet.add_row [nil] + ["Address:", @estimate.full_address] + ([nil] * 3) + ["Email:", "tbrewer@bigislandgroup.ca"],
+    style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
+
+    (6..10).each do |cell|
+    sheet.merge_cells("C#{cell}:E#{cell}")
+    sheet.merge_cells("H#{cell}:J#{cell}")
+    end
+
+    sheet.add_row ["Description of Work"] + ([nil] * 6) + ["Cost", nil],
+    style: [bold_italic] + ([nil] * 6) + [bold_italic]
+
+    costs = @estimate.trees.map { |t| [t.notes, t.cost] } 
+    costs << [@estimate.extra_cost_notes, @estimate.extra_cost.to_f]
+
+    (0..8).each do |i|
+      if costs.count >= (i+1)
+        cost = costs[i]
+        sheet.add_row [cost[0]] + ([nil] * 6) + [cost[1]],
+        style: ([nil] * 7) + [currency]
+      else
+        sheet.add_row [nil]
+      end
+    end
+
+    (11..20).each do |cell|
+    sheet.merge_cells("A#{cell}:G#{cell}")
+    sheet.merge_cells("H#{cell}:I#{cell}")
+    end
+
+    subtotal = costs.map{ |c| c[1] }.sum
+    sheet.add_row ([nil] * 6) + ["SUB TOTAL", subtotal.round(2)],
+    style: ([nil] * 6) + [right, currency, currency, currency]
+    sheet.add_row ([nil] * 6) + ["HST", (subtotal * 0.13).round(2)],
+    style: ([nil] * 6) + [right, currency, currency, currency]
+    sheet.add_row ([nil] * 6)
+    sheet.add_row ([nil] * 6) + ["TOTAL", (subtotal * 1.13).round(2)],
+    style: ([nil] * 6) + [right, currency, currency, currency]
+
+    (21..24).each do |cell|
+      sheet.merge_cells("H#{cell}:I#{cell}")
+    end
+
+
+    sheet.column_widths *([8] * 12)
+    sheet.rows.each { |r| r.height = 18}
+end

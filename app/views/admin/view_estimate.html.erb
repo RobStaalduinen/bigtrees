@@ -4,6 +4,9 @@
   <h2>Estimate #<%= @estimate.id %></h2>
   <%= render 'admin/view_estimate/view_estimate_timeline', estimate: @estimate%>
 
+  <%= link_to('Download Excel Quote', estimate_quotes_path(estimate_id: @estimate.id, format: :xlsx)) %>
+
+
   <%= render 'admin/view_estimate/view_estimate_next', estimate: @estimate %>
   <%= render 'admin/view_estimate/view_estimate_basics', estimate: @estimate %>
   <%= render 'admin/view_estimate/view_estimate_costs', estimate: @estimate %>

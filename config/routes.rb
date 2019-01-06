@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   match '/estimate/estimate_tooltips' => 'estimate#estimate_tooltips', :as => :estimate_tooltips, via: :all
   
   match '/admin/view_estimate', :as => :admin_estimates, via: :get
-	resources :estimate
+  resources :estimates do
+    resources :quotes, only: [ :index ]
+  end
 
   match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all
 
@@ -24,6 +26,7 @@ Rails.application.routes.draw do
   post ':controller/:action'
 
   patch ':controller/:action'
+  
 
 
   match '*path' => 'main#not_found', via: :all
