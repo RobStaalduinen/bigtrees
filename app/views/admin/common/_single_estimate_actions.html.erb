@@ -13,6 +13,14 @@
   <% end %>
 <% end %>
 
+<% if estimate.status == "needs_arborist" %>
+  <%= link_to "/arborist/assign?estimate_id=#{estimate.id}" do %>
+    <div id="single-estimate__action-button">
+      Assign Arborist
+    </div> 
+  <% end %>
+<% end %>
+
 <% if estimate.status == "quote_sent" %>
   <%= form_tag("/estimate/#{estimate.id}", method: "patch") do %>
     <%= hidden_field_tag("estimate[status]", "quote_accepted") %>

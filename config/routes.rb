@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :quotes, only: [ :index ]
   end
 
+  resources :arborists
+
   match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all
 
   get ':controller/:action'

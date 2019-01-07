@@ -1,0 +1,25 @@
+#arborist-table__container{
+  width: 100%;
+  margin-top: 16px;
+}
+
+#arborist-table{
+  width: 100%;
+  border: 1px solid grey;
+}
+
+#arborist-table__row{
+  border-width: 1px 0 0 0;
+  border-color: grey;
+  border-style: solid;
+}
+
+#arborist-table__row-entry{
+  padding: 10px 5px;
+}
+
+#arborist-table__add-link{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

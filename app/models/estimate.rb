@@ -2,13 +2,15 @@ class Estimate < ActiveRecord::Base
 	attr_accessible *column_names
 
 	has_many :trees
+	belongs_to :arborist
 
 	scope :submitted, -> { where(submission_completed: true) }
 
 	enum status: { 
 		needs_costs: 0,
-		pending_quote: 1,
-		quote_sent: 2, 
+		needs_arborist: 1,
+		pending_quote: 2,
+		quote_sent: 3, 
 		quote_accepted: 4, 
 		work_scheduled: 5,
 		work_completed: 6,

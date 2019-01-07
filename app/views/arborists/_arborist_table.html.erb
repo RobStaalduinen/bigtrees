@@ -1,0 +1,31 @@
+<div id="arborist-table__container">
+  
+  <div class="flex-row-between">
+    <h3>Arborists</h3>
+
+    <%= link_to "/arborists/new", id: "arborist-table__add-link" do %>
+      <h4>+ Add new</h4>
+    <% end %>
+  </div>
+
+  <table id="arborist-table">
+    <tr>
+      <th id="arborist-table__row-entry">Name</th>
+      <th id="arborist-table__row-entry">Cert.</th>
+      <th id="arborist-table__row-entry"></th>
+    </tr>
+    <% arborists.each do |arborist| %>
+      <tr id="arborist-table__row">
+        <td id="arborist-table__row-entry">
+          <%= arborist.name %>
+        </td>
+        <td id="arborist-table__row-entry">
+          <%= arborist.certification %>
+        </td>
+        <td  id="arborist-table__row-entry" style="text-align: right;">
+          Delete
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

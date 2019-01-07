@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181218141032) do
+ActiveRecord::Schema.define(version: 20190106134819) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(version: 20181218141032) do
     t.string  "contact_method", limit: 255, null: false
     t.string  "contact_type",   limit: 20
     t.string  "status",         limit: 50,  null: false
+  end
+
+  create_table "arborists", force: :cascade do |t|
+    t.string "name",          null: false
+    t.string "certification", null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -61,6 +66,7 @@ ActiveRecord::Schema.define(version: 20181218141032) do
     t.date     "work_date"
     t.decimal  "extra_cost"
     t.string   "extra_cost_notes"
+    t.integer  "arborst_id"
   end
 
   create_table "site_config", force: :cascade do |t|
