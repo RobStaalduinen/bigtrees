@@ -1,10 +1,9 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "http://www.bigtreeservices.com"
+SitemapGenerator::Sitemap.default_host = "https://www.bigtreeservices.ca"
 
 SitemapGenerator::Sitemap.create do
   add '/main/home'
   add '/main/services'
-  add '/main/promise'
   add '/main/commercial'
   add '/main/contact_us'
 
