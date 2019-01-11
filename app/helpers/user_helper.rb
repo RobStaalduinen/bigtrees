@@ -16,7 +16,7 @@ module UserHelper
 	
 	def current_user
 		session_token = cookies[:session_token]
-		@current_user ||= User.where(session_token: session_token)
+		@current_user ||= Arborist.where(session_token: session_token)
 						
     end
 	

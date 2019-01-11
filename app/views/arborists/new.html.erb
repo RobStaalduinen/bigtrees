@@ -1,5 +1,8 @@
-<h3>Create new arborist</h3>
+<div id="create-arborist">
+  <h3>Create new arborist</h3>
 
-<%= form_tag("/arborists", method: "post") do %>
-  
-<% end %>
+  <%= form_tag("/arborists", method: "post") do %>
+    <%= render 'arborists/arborist_form', arborist: Arborist.new %>
+  <% end %>
+
+</div>

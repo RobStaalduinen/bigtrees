@@ -7,7 +7,7 @@ class AdminController < ApplicationController
 
 	def log_in
 		if !params[:commit].nil? and params[:commit].eql?"Log In"
-			user = User.where("username LIKE ?", params[:username]).first
+			user = Arborist.where("email LIKE ?", params[:username]).first
 				if !user.nil? && params[:password] == user.password
 					logger.debug "Sign In"
 					sign_in(user)

@@ -1,0 +1,60 @@
+<% if @arborist.present? %>
+  <%= hidden_field_tag :id, @arborist.id %>
+<% end %>
+<div id="form__box">
+
+  <div id="form__row">
+    <div id="form__element-25">
+      <b>Name: </b>
+    </div>
+
+    <div id="form__element-75">
+      <%= text_field_tag("arborist[name]", @arborist.name, class: 'form-text-field') %>
+    </div>
+  </div>
+
+  <div id="form__row">
+    <div id="form__element-25">
+      <b>Cert: </b>
+    </div>
+
+    <div id="form__element-75">
+      <%= text_field_tag("arborist[certification]", @arborist.certification, class: 'form-text-field') %>
+    </div>
+  </div>
+
+  <div id="form__row">
+    <div id="form__element-25">
+      <b>Phone: </b>
+    </div>
+
+    <div id="form__element-75">
+      <%= text_field_tag("arborist[phone_number]", @arborist.phone_number, class: 'form-text-field') %>
+    </div>
+  </div>
+
+  <div id="form__row">
+    <div id="form__element-25">
+      <b>Email: </b>
+    </div>
+
+    <div id="form__element-75">
+      <%= text_field_tag("arborist[email]", @arborist.email, class: 'form-text-field') %>
+    </div>
+  </div>
+
+  <div id="form__row">
+    <div id="form__element-25">
+      <b>Password: </b>
+    </div>
+
+    <div id="form__element-75">
+      <%= text_field_tag("arborist[password]", @arborist.password, class: 'form-text-field') %>
+    </div>
+  </div>
+
+  <div id="form__row">
+    <%= submit_tag("Update", id: 'form__submit') %>
+  </div>
+
+</div>

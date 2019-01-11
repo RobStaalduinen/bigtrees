@@ -79,11 +79,19 @@
   margin-top: 8px;
 }
 
-#view-estiamte__costs-label{
+#view-estimate__costs-label{
   font-weight: 600;
+  width: 35%
+}
+
+#view-estimate__costs-text{
+  width: 35%;
 }
 
 #view-estimate__cost-value{
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 

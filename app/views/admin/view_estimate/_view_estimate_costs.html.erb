@@ -9,10 +9,10 @@
 
   <% estimate.trees.each do |tree| %>
     <div id='view-estimate__costs-row'>
-      <div id="view-estiamte__costs-label">
+      <div id="view-estimate__costs-label">
         <%= "Tree #{tree.sequence + 1}" %>
       </div>
-      <div id="view-estimate__cost-value">
+      <div id="view-estimate__costs-text">
         <%= tree.work_type.capitalize %>
       </div>
       <div id="view-estimate__cost-value">
@@ -22,14 +22,38 @@
   <% end %>
 
   <div id='view-estimate__costs-row'>
-    <div id="view-estiamte__costs-label">
+    <div id="view-estimate__costs-label">
       Extra costs 
     </div>
-    <div id="view-estimate__cost-value">
+    <div id="view-estimate__costs-text">
       <%= estimate.extra_cost_notes %>
     </div>
     <div id="view-estimate__cost-value">
       $<%= estimate.extra_cost %>
+    </div>
+  </div>
+
+  <div id='view-estimate__costs-row'>
+    <div id="view-estimate__costs-label">
+      -
+    </div>
+    <div id="view-estimate__costs-text">
+      Subtotal
+    </div>
+    <div id="view-estimate__cost-value">
+      $<%= estimate.total_cost %>
+    </div>
+  </div>
+
+    <div id='view-estimate__costs-row'>
+    <div id="view-estimate__costs-text">
+      -
+    </div>
+    <div id="view-estimate__costs-text">
+      Total
+    </div>
+    <div id="view-estimate__cost-value">
+      <b>$<%= (estimate.total_cost * 1.13).round(2) %></b>
     </div>
   </div>
 

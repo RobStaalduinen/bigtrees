@@ -49,6 +49,10 @@ class Estimate < ActiveRecord::Base
 		[self.street, self.city].join(", ")
 	end
 
+	def total_cost
+		self.trees.sum(:cost) + self.extra_cost
+	end
+
 	def set_status
 		new_status = if(self.trees.any? && !self.costs?)
 			:needs_costs

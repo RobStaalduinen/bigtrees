@@ -10,20 +10,19 @@
 
   <table id="arborist-table">
     <tr>
-      <th id="arborist-table__row-entry">Name</th>
-      <th id="arborist-table__row-entry">Cert.</th>
-      <th id="arborist-table__row-entry"></th>
+      <th id="arborist-table__row-entry">Name/Cert</th>
+      <th id="arborist-table__row-entry">Contact</th>
     </tr>
     <% arborists.each do |arborist| %>
       <tr id="arborist-table__row">
         <td id="arborist-table__row-entry">
-          <%= arborist.name %>
-        </td>
-        <td id="arborist-table__row-entry">
+          <%= link_to arborist.name, edit_arborist_path(arborist.id) %>
+          <br />
           <%= arborist.certification %>
         </td>
-        <td  id="arborist-table__row-entry" style="text-align: right;">
-          Delete
+        <td id="arborist-table__row-entry">
+          <%= arborist.phone_number %> <br />
+          <%= arborist.email %>
         </td>
       </tr>
     <% end %>
