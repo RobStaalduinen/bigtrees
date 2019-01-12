@@ -16,18 +16,23 @@ module UserHelper
 	
 	def current_user
 		session_token = cookies[:session_token]
-		@current_user ||= Arborist.where(session_token: session_token)
-						
-    end
+		@current_user ||= Arborist.where(session_token: session_token).first			
+  end
 	
 	def signed_in?
-		if current_user.nil? or current_user.empty?
+		if current_user.blank?
 			logger.debug "NO USER"
 			return false
 		else
 			logger.debug "CURRENT_USER"
 			return true
 		end
+	end
 
+	def signed_in_user
+		logger.debug "SIGNED IN USER"
+		if !signed_in?
+			redirect_to controller: 'admin', action: 'log_in'
+		end
 	end
 end

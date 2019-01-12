@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190111134956) do
+ActiveRecord::Schema.define(version: 20190111144836) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -72,6 +72,20 @@ ActiveRecord::Schema.define(version: 20190111134956) do
     t.decimal  "extra_cost"
     t.string   "extra_cost_notes"
     t.integer  "arborst_id"
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.integer  "arborist_id"
+    t.date     "date"
+    t.string   "category"
+    t.string   "job"
+    t.string   "payment_method"
+    t.string   "description"
+    t.decimal  "cost"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   create_table "site_config", force: :cascade do |t|

@@ -58,3 +58,80 @@
   width: 100%;
   border: 1px solid grey;
 }
+
+
+// Class based - replace all with this eventually
+
+.form__submit{
+  background-color: var(--main-color);
+  border-color: var(--main-color-dark);
+  border-style: solid;
+  border-width: 0 0 4px 0;
+  padding: 8px;
+
+  color: white;
+  font-weight: 600;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form__submit-link{
+  color: inherit;
+}
+
+.form__row{
+  margin-top: 16px;
+  padding: 8px 0;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form__row-vertical{
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.form__row-bottom{
+  align-items: flex-end;
+}
+
+.form__element{
+  width: 100%;
+}
+
+.form__element-25{
+  width: 25%;
+}
+
+.form__element-75{
+  width: 75%;
+}
+
+.form__element-40{
+  width: 40%;
+}
+
+.form__element-60{
+  width: 60%;
+}
+
+.form__label{
+  font-weight: 600;
+}
+
+.form__field-full{
+  width: 100%;
+  height: 30px;
+}
+
+.form__box{
+  background-color: #F5F5F5;
+  margin-top: 16px;
+  padding: 8px
+}

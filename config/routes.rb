@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :arborists
+  resources :receipts
 
   match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all
 

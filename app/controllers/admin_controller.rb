@@ -220,12 +220,4 @@ private
 	def estimate_params
 		params.require(:estimate).permit(:status, :work_date, :extra_cost, :extra_cost_notes)
 	end
-
-	def signed_in_user
-		logger.debug "SIGNED IN USER"
-		if !signed_in?
-			redirect_to controller: 'admin', action: 'log_in'
-		end
-	end
-
 end
