@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190111144836) do
+ActiveRecord::Schema.define(version: 20190113153313) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20190111144836) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.integer  "vehicle_id"
   end
 
   create_table "site_config", force: :cascade do |t|
@@ -125,6 +126,12 @@ ActiveRecord::Schema.define(version: 20190111144836) do
     t.string "password",      limit: 50,  null: false
     t.string "session_token", limit: 100, null: false
   end
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string "name"
+  end
+
+  add_index "vehicles", ["name"], name: "index_vehicles_on_name"
 
   create_table "work_actions", force: :cascade do |t|
     t.integer "estimate_id",  limit: 4,     null: false

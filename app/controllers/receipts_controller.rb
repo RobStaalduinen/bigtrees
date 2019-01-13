@@ -3,9 +3,14 @@ class ReceiptsController < ApplicationController
 
   before_action :signed_in_user
 
+  def index
+    @receipts = current_user.get_receipts
+  end
+
   def new
     @arborist = current_user
     @all_arborists = Arborist.real
+    @vehicles = Vehicle.all
   end
 
   def create
@@ -19,7 +24,7 @@ class ReceiptsController < ApplicationController
     def receipt_params
       params.require(:receipt).
              permit(
-               :date, :arborist_id, :category, :job,
+               :date, :arborist_id, :vehicle_id, :category, :job,
                :payment_method, :cost, :category,
                :description, :photo
              )

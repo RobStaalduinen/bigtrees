@@ -22,6 +22,7 @@ class AdminController < ApplicationController
 def admin_panel
 	@estimates = Estimate.submitted
 	@arborists = Arborist.all || []
+	@receipt_number = current_user.receipts.count
 	# @current_start_date = SiteConfig.where(attribute_name: "start_date").first.attribute_value
 end
 

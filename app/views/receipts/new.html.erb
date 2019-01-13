@@ -17,7 +17,7 @@
           class="form-field"
           id="receipt-date-picker"
           placeholder="Enter the date..." ,
-          required: true 
+          required=true 
         >
     </div>
 
@@ -28,7 +28,7 @@
       </div>  
 
         <%= 
-          select_tag 'receipt[arborist]',
+          select_tag 'receipt[arborist_id]',
           options_from_collection_for_select(@all_arborists, 'id', 'name', @arborist.id),
           class:"form-field form__field-full",
           required: true
@@ -75,11 +75,24 @@
     </div>
 
     <div class="form__row form__row-vertical">
+      <div class=" form__label">
+        Vehicle (if applicable)
+      </div>  
+
+        <%= 
+          select_tag 'receipt[vehicle_id]',
+          options_from_collection_for_select(@vehicles, 'id', 'name'),
+          include_blank: "None",
+          class:"form-field form__field-full"
+        %>
+    </div>
+
+    <div class="form__row form__row-vertical">
       <div class="form__label">
         Amount*
       </div>  
 
-        <%= number_field_tag('receipt[cost]', '', class: "form-field form__field-full") %>
+        <%= number_field_tag('receipt[cost]', '', class: "form-field form__field-full", required: true) %>
     </div>
 
 
@@ -96,7 +109,7 @@
         Receipt Picture*
       </div>  
 
-        <%= file_field_tag('receipt[photo]') %>
+        <%= file_field_tag('receipt[photo]', required: true) %>
     </div>
 
     <div class="form__row">

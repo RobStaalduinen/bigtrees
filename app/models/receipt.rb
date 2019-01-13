@@ -1,4 +1,7 @@
 class Receipt < ActiveRecord::Base
+  belongs_to :arborist
+  belongs_to :vehicle
+  
   has_attached_file :photo
 
   CATEGORIES = ['Fuel', 'Tools', 'Repairs', 'Travel', 'Other'].freeze

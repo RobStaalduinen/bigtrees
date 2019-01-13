@@ -1,0 +1,24 @@
+<div class="container">
+  <%= render 'admin/common/back_button', back_link: '/admin/admin_panel'%>
+  <h3>My Receipts</h3>
+
+  <table id="receipt-table">
+    <% @receipts.each do |receipt| %>
+      <tr>
+        <td style='width: 70%;'>
+          <b><%= receipt.date.strftime("%d/%m/%Y") %></b>
+          <br />
+          <%= receipt.arborist.name %>
+          <br />
+          <%= "$#{receipt.cost} (#{receipt.category})" %>
+        </td>
+
+        <td style='width: 30%;'>
+          <div class='form__submit'>
+            Details
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

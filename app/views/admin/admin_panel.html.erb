@@ -5,6 +5,11 @@
 				Create Receipt
 			<% end %>
 		</div>
+			<div id="admin-nav-element" class="form__submit">
+				<%= link_to '/receipts', class: "form__submit-link" do %>
+					My Receipts
+				<% end %>
+			</div>
 	</div>
 	<h3>Running work</h3>
 
@@ -13,6 +18,7 @@
 			<%= render "single_estimate_entry", estimate: estimate %>
 		<% end %>
 	</div>
+
 
 	<%= render "arborists/arborist_table", arborists: @arborists %>
 </section>
