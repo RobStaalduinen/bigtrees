@@ -2,6 +2,7 @@
   <%= render 'admin/common/back_button', back_link: '/admin/admin_panel'%>
   <h3>My Receipts</h3>
 
+  <%= link_to('Download As Excel', receipts_xlsx_path(format: :xlsx)) %>
   <table id="receipt-table">
     <% @receipts.each do |receipt| %>
       <tr>

@@ -90,6 +90,9 @@ gem 'protected_attributes'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'rubyXL'
+gem 'libreconv'
+gem 'letter_opener'
 
 gem 'spreadsheet'
 

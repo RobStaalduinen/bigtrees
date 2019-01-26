@@ -1,0 +1,27 @@
+<div class = 'container'>
+<%= render 'admin/common/back_button', back_link: "/admin/view_estimate?id=#{@estimate.id}" %>
+  <h3>Assign Arborist</h3>
+
+  <%= form_tag("/estimates/#{@estimate.id}", method: 'patch') do %>
+
+    <div class="form__box">
+      <div class="form__row form__row-vertical">
+        <div class=" form__label">
+          Arborist*
+        </div>  
+          <% current_arborist_id = @estimate.arborist.present? ? @estimate.arborist_id : nil %>
+          <%= 
+            select_tag 'estimate[arborist_id]',
+            options_from_collection_for_select(@arborists, 'id', 'name', current_arborist_id),
+            class:"form-field form__field-full",
+            required: true
+          %>
+      </div>
+
+      <div class="form__row">
+        <%= submit_tag('Submit', class: "form__submit") %>
+      </div>
+
+    </div>
+  <% end %>
+</div>

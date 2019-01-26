@@ -14,7 +14,7 @@
 <% end %>
 
 <% if estimate.status == "needs_arborist" %>
-  <%= link_to "/arborist/assign?estimate_id=#{estimate.id}" do %>
+  <%= link_to assign_arborist_estimate_path(id: estimate.id) do %>
     <div id="single-estimate__action-button">
       Assign Arborist
     </div> 
@@ -37,7 +37,9 @@
 <% end %>
 
 <% if estimate.status == "pending_quote" %>
-  <div id="single-estimate__action-button">
-    Send Quote
-  </div>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id) do %>
+    <div id="single-estimate__action-button">
+      Send Quote
+    </div>
+  <% end %>
 <% end %>

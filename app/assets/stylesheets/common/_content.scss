@@ -1,0 +1,46 @@
+@import "common/_mixins.scss";
+
+.content__box{
+  @include shadow-box;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin-top: 16px;
+} 
+
+.content__row{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 16px;
+}
+
+.content__row-vertical{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.content__space{
+  margin-top: 16px;
+}
+
+
+.content__row-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  border-width: 0 0 2px 0;
+  border-color: var(--main-color);
+  border-style: solid;
+}
+
+.content__row-entry-full{
+  width: 100%;
+}
+
+.content__label{
+  font-weight: 600;
+} 

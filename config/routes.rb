@@ -13,12 +13,17 @@ Rails.application.routes.draw do
   match '/estimate/estimate_tooltips' => 'estimate#estimate_tooltips', :as => :estimate_tooltips, via: :all
   
   match '/admin/view_estimate', :as => :admin_estimates, via: :get
+  match '/estimates/:id', to: 'estimate#update', via: :patch
   resources :estimates do
     resources :quotes, only: [ :index ]
+    resources :quote_mailouts, only: [ :new, :create ]
+    get '/assign_arborist', to: 'estimate#assign_arborist', on: :member
   end
 
   resources :arborists
+  match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx
   resources :receipts
+  resources :vehicles
 
   match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all
 

@@ -1,59 +1,61 @@
 <% if @arborist.present? %>
   <%= hidden_field_tag :id, @arborist.id %>
+<% else %>
+  <% @arborist = Arborist.new %>
 <% end %>
-<div id="form__box">
+<div class="form__box">
 
-  <div id="form__row">
-    <div id="form__element-25">
+  <div class="form__row-vertical">
+    <div class="form__element">
       <b>Name: </b>
     </div>
 
-    <div id="form__element-75">
+    <div class="form__element">
       <%= text_field_tag("arborist[name]", @arborist.name, class: 'form-text-field') %>
     </div>
   </div>
 
-  <div id="form__row">
-    <div id="form__element-25">
+  <div class="form__row-vertical">
+    <div class="form__element">
       <b>Cert: </b>
     </div>
 
-    <div id="form__element-75">
+    <div class="form__element">
       <%= text_field_tag("arborist[certification]", @arborist.certification, class: 'form-text-field') %>
     </div>
   </div>
 
-  <div id="form__row">
-    <div id="form__element-25">
+  <div class="form__row-vertical">
+    <div class="form__element">
       <b>Phone: </b>
     </div>
 
-    <div id="form__element-75">
+    <div class="form__element">
       <%= text_field_tag("arborist[phone_number]", @arborist.phone_number, class: 'form-text-field') %>
     </div>
   </div>
 
-  <div id="form__row">
-    <div id="form__element-25">
+  <div class="form__row-vertical">
+    <div class="form__element">
       <b>Email: </b>
     </div>
 
-    <div id="form__element-75">
+    <div class="form__element">
       <%= text_field_tag("arborist[email]", @arborist.email, class: 'form-text-field') %>
     </div>
   </div>
 
-  <div id="form__row">
-    <div id="form__element-25">
+  <div class="form__row-vertical">
+    <div class="form__element">
       <b>Password: </b>
     </div>
 
-    <div id="form__element-75">
+    <div class="form__element">
       <%= text_field_tag("arborist[password]", @arborist.password, class: 'form-text-field') %>
     </div>
   </div>
 
-  <div id="form__row">
+  <div class="form__row-vertical">
     <%= submit_tag("Update", id: 'form__submit') %>
   </div>
 

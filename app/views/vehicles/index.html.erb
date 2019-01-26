@@ -1,0 +1,16 @@
+<div class='container'>
+  <%= render 'admin/common/back_button', back_link: "/admin/admin_panel" %>
+  
+  <div class="full-spread-row">
+    <h3>Vehicles</h3>
+    <%= link_to "+ Add new", '/vehicles/new' %>
+  </div>
+
+  <table class='full-table alternate-table'>
+    <% @vehicles.each do |vehicle| %>
+      <tr>
+        <td><%= vehicle.name %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

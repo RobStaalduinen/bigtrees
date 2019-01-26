@@ -41,7 +41,7 @@ end
 def update_estimate
 	@estimate = Estimate.find(params[:estimate_id])
 	@estimate.update(estimate_params)
-	@estimate.set_status
+	# @estimate.set_status
 
 	redirect_to admin_estimates_path(id: @estimate.id)
 end
@@ -55,7 +55,7 @@ def submit_updated_costs
 	end
 
 	@estimate.update(estimate_params)
-	@estimate.set_status
+	# @estimate.set_status
 
 	redirect_to admin_estimates_path(id: @estimate.id)
 end

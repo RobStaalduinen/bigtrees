@@ -1,0 +1,30 @@
+wb = xlsx_package.workbook
+wb.use_shared_strings = true
+wb.styles.fonts.first.name = 'Calibri'
+wb.styles.fonts.first.sz = 10
+
+wb.add_worksheet(name: "Quote") do |sheet|
+  right = sheet.styles.add_style(alignment: { horizontal: :right })
+  bold = wb.styles.add_style(b: true)
+  bold_italic = wb.styles.add_style(b: true, i: true)
+  center = sheet.styles.add_style(alignment: { horizontal: :center })
+  currency_format_code = "_$* #,##0.00"
+  currency = sheet.styles.add_style format_code: currency_format_code
+
+  sheet.add_row ["Date", "Arborist", "Cost", "Payment Method", "Category", "Description", "Job", "Vehicle", "Photo"],
+  style: ( [bold] * 8)
+
+  @receipts.each do |receipt|
+    sheet.add_row [
+      receipt.date,
+      receipt.arborist.name,
+      receipt.cost,
+      receipt.payment_method,
+      receipt.category,
+      receipt.description,
+      receipt.job,
+      receipt.vehicle.name,
+      receipt.photo.url
+    ] 
+  end
+end

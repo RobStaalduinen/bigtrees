@@ -1,26 +1,32 @@
   <div id="view-estimate__box">
     <span class="text-large" id="view-estimate__box-header">Contact</span>
 
-    <div id='view-estimate__row'>
-
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Name
-        </div>
-        <div>
-          <%= estimate.person_name %>
-        </div>
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Name
       </div>
-
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Contact Method
-        </div>
-        <div>
-          <%= estimate.phone_or_email %>
-        </div>
+      <div>
+        <%= estimate.person_name %>
       </div>
+    </div>
 
+
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Email
+      </div>
+      <div>
+        <%= estimate.email %>
+      </div>
+    </div>
+
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Phone
+      </div>
+      <div>
+        <%= estimate.phone %>
+      </div>
     </div>
   </div>
 
@@ -29,26 +35,24 @@
 
   <div id="view-estimate__box">
   <span class="text-large" id="view-estimate__box-header">Address</span>
-  <div id='view-estimate__row'>
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Street
-        </div>
-        <div>
-          <%= estimate.street %>
-        </div>
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Street
       </div>
-
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          City
-        </div>
-        <div>
-          <%= estimate.city %>
-        </div>
+      <div>
+        <%= estimate.street %>
       </div>
-
     </div>
+
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        City
+      </div>
+      <div>
+        <%= estimate.city %>
+      </div>
+    </div>
+
   </div>
 
 

@@ -16,3 +16,29 @@
   width: 24px;
   margin-right: 8px;
 }
+
+.full-table{
+  width: 100%;
+  border: 1px solid gray;
+}
+
+.full-table tr{
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  border-color: gray;
+}
+
+.alternate-table tr:nth-child(even){
+  background: #F5F5F5;
+
+}
+
+.alternate-table td{
+  padding: 8px;
+}
+
+.full-spread-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

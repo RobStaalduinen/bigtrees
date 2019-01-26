@@ -1,0 +1,20 @@
+<div class='container'>
+  <%= render 'admin/common/back_button', back_link: "/vehicles" %>
+  <h3>Create new vehicle</h3>
+
+  <%= form_tag '/vehicles', method: :post do %>
+    <div class="form__box">
+      <div class="form__row form__row-vertical">
+        <div class=" form__label">
+          Name*
+        </div>  
+        <%= text_field_tag 'vehicle[name]', '', required: true, class: 'form__field form__field-full' %>
+      </div>
+
+
+      <div class="form__row">
+        <%= submit_tag('Submit', class: "form__submit") %>
+      </div>
+    </div>
+  <% end %>
+</div>

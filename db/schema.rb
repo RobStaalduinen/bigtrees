@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190113153313) do
+ActiveRecord::Schema.define(version: 20190126124223) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -71,7 +71,8 @@ ActiveRecord::Schema.define(version: 20190113153313) do
     t.date     "work_date"
     t.decimal  "extra_cost"
     t.string   "extra_cost_notes"
-    t.integer  "arborst_id"
+    t.integer  "arborist_id"
+    t.integer  "invoice_number"
   end
 
   create_table "receipts", force: :cascade do |t|

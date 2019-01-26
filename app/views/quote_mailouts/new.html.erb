@@ -1,0 +1,34 @@
+<div class='container'>
+  <h3>Mailout new quote</h3>
+
+  <div class='content__box'>
+    <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
+      <%= hidden_field_tag('estimate_id', @estimate.id) %>
+      <div class='content__row-vertical'>
+        <div class='content__label'>
+          Customer Email
+        </div>
+        <%= text_field_tag("dest_email", @estimate.email, class: "form-field form__field-full") %>
+      </div>
+
+      <div class='content__row-vertical'>
+        <div class='content__label'>
+          Subject
+        </div>
+        <%= text_field_tag("subject", 'Big Tree Services', class: "form-field form__field-full") %>
+      </div>
+
+      <div class='content__row-vertical'>
+        <div class='content__label'>
+          Content
+        </div>
+        <%= text_area_tag("content", I18n.t('quote_mailout.new.content'), class: "form-field form__field-full", id: 'mailouts__text-area') %>
+      </div>
+
+      <div class='content__row-vertical'>
+        <%= submit_tag('Submit', class: "form__submit") %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

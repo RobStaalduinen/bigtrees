@@ -1,0 +1,21 @@
+  <div id="view-estimate__box">
+    <span class="text-large" id="view-estimate__box-header">Quotes</span>
+
+    <div id='view-estimate__row'>
+      <div id='view-estimate__row-entry'>
+        <%= link_to estimate_quotes_path(estimate_id: estimate.id, format: :xlsx) do %>
+          <div class='form__submit view-estimate__quote-button'>
+            Excel
+          </div>
+        <% end %>
+      </div>
+
+      <div id='view-estimate__row-entry'>
+        <%= link_to estimate_quotes_path(estimate_id: estimate.id, format: :pdf) do %>
+          <div class='form__submit view-estimate__quote-button'>
+            PDF
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>

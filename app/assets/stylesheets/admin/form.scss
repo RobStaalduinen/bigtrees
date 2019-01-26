@@ -95,6 +95,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  margin-top: 8px;
 }
 
 .form__row-bottom{
@@ -133,5 +134,5 @@
 .form__box{
   background-color: #F5F5F5;
   margin-top: 16px;
-  padding: 8px
+  padding: 0 8px 8px 8px;
 }

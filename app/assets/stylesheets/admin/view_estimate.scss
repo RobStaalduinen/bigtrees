@@ -21,6 +21,12 @@
   margin-top: 16px;
 }
 
+#view-estimate__row-vertical{
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
 #view-estimate__next-row{
   display: flex;
   justify-content: space-between;
@@ -92,6 +98,23 @@
   width: 30%;
   display: flex;
   justify-content: flex-end;
+}
+
+.view-estimate__label{
+  font-weight: 600;
+  width: 35%
+}
+
+.view-estimate__label{
+  font-weight: 600;
+  
+}
+.view-estimate__text-full{
+  width: 100%;
+}
+
+.view-estimate__quote-button{
+  width: 95%;
 }
 
 

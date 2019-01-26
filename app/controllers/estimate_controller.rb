@@ -13,16 +13,6 @@ class EstimateController < ApplicationController
 
 	$months = ["NULL", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-	def create
-
-	end
-
-	def update
-		@estimate = Estimate.find(params[:id])
-		@estimate.update(estimate_params)
-		redirect_to admin_estimates_path(id: @estimate.id)
-	end
-
 	def new
 		SiteStat.increment_estimates()
 		if params[:trees].nil?
@@ -37,6 +27,23 @@ class EstimateController < ApplicationController
 			format.js {}
 		end
 	end
+
+	def create
+
+	end
+
+	def update
+		@estimate = Estimate.find(params[:id])
+		@estimate.update(estimate_params)
+		@estimate.set_status
+		
+		redirect_to admin_estimates_path(id: @estimate.id)
+	end
+
+	def assign_arborist
+		@estimate = Estimate.find(params[:id])
+		@arborists = Arborist.real
+  end
 
 	def submit_new_estimate
 		@do_remote = true
@@ -224,6 +231,6 @@ class EstimateController < ApplicationController
 		# end
 
 		def estimate_params
-			params.require(:estimate).permit(:status)
+			params.require(:estimate).permit(:status, :arborist_id)
 		end
 end
