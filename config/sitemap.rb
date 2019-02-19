@@ -1,5 +1,5 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://www.bigtreeservices.ca"
+SitemapGenerator::Sitemap.default_host = "https://bigtreeservices.ca"
 
 SitemapGenerator::Sitemap.create do
   add '/main/home'
@@ -7,7 +7,7 @@ SitemapGenerator::Sitemap.create do
   add '/main/commercial'
   add '/main/contact_us'
 
-  add '/estimates/new'
+  add '/estimate/new'
   # Put links creation logic here.
   #
   # The root path '/' and sitemap index file are added automatically for you.
