@@ -1,12 +1,17 @@
 class Estimate < ActiveRecord::Base
 	attr_accessible *column_names
 
+	SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
+	SIGN_DISCOUNT = -25.0
+
 	before_save :set_status
 
 	has_many :trees
 	belongs_to :arborist
 
-	scope :submitted, -> { where(submission_completed: true) }
+	scope :submitted, -> { incomplete.where(submission_completed: true).where(cancelled_at: nil) }
+	scope :incomplete, -> { where.not(status: 8) }
+	scope :complete, -> { where(status: 8) }
 
 	enum status: { 
 		needs_costs: 0,
@@ -17,7 +22,7 @@ class Estimate < ActiveRecord::Base
 		work_scheduled: 5,
 		work_completed: 6,
 		payment_finalized: 7,
-		final_invoice_sent: 8,
+		completed: 8,
 		cancelled: 10
 	}
 
@@ -58,7 +63,9 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def total_cost
-		self.trees.sum(:cost) + self.extra_cost
+		total_cost = self.trees.sum(:cost) + self.extra_cost
+		total_cost += SIGN_DISCOUNT if self.discount_applied
+		total_cost
 	end
 
 	def first_name
@@ -76,8 +83,23 @@ class Estimate < ActiveRecord::Base
 		"#{self.first_name}-#{self.street}-#{self.city}.pdf"
 	end
 
+	def payment_finalized?
+		self.invoice_number.present?
+	end
+
+	def completed?
+		self.final_invoice_sent_at.present?
+	end
+
+	def self.next_invoice_number
+		(Estimate.select("invoice_number").order("estimates.invoice_number DESC").first.invoice_number || 19207) + 1
+	end
+	
+
 	def set_status
-		new_status = if(self.trees.any? && !self.costs?)
+		new_status = if(self.cancelled_at.present?)
+			:cancelled
+		elsif(self.trees.any? && !self.costs?)
 			:needs_costs
 		elsif(self.costs? && !self.arborist?)
 			:needs_arborist
@@ -87,10 +109,12 @@ class Estimate < ActiveRecord::Base
 			:quote_sent
 		elsif(self.quote_accepted? && !self.work_scheduled?)
 			:quote_accepted
-		elsif(self.work_scheduled?)
+		elsif(self.work_scheduled? && !self.payment_finalized?)
 			:work_scheduled
-		else
-			:work_completed
+		elsif(self.payment_finalized? && !self.completed?)
+			:payment_finalized
+		elsif(self.completed?)
+			:completed
 		end
 
 		self.status =  new_status

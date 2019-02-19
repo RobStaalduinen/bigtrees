@@ -1,0 +1,29 @@
+<script>
+  function createEstimate(treeNumber){
+    console.log("WOOOO!");
+    let quantity = document.querySelector('input[name="quantity"]:checked').value
+    console.log(quantity);
+
+    $("#quantity-container").fadeOut(600, function(){
+      $("#site-container").fadeIn(600);
+    });
+  }
+  
+</script>
+
+<div class='page-container'>
+
+  <div id="quantity-container">
+    <%= 
+      render 'estimate_form/quantity',
+      question: 'How many trees require work?'
+    %>
+  </div>
+
+  <div id="site-container" style="display: none;">
+    <%=
+      render 'estimate_form/site'
+    %>
+  </div>
+
+</div>

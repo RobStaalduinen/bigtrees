@@ -1,0 +1,33 @@
+<div class='container'>
+  <h3>Update Contact Details</h3>
+  <%= form_tag("/estimates/#{@estimate.id}", method: 'patch') do %>
+    
+    <div class='form__box'>
+      <div class='form__row-vertical'>
+        <b>Name</b>
+
+        <%= text_field_tag("estimate[person_name]", @estimate.person_name, class: 'form-field form__field-full') %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b>Email</b>
+
+        <%= text_field_tag("estimate[email]", @estimate.email, class: 'form-field form__field-full') %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b>Phone</b>
+
+        <%= text_field_tag("estimate[phone]", @estimate.phone, class: 'form-field form__field-full') %>
+      </div>
+
+      <div id="form__row">
+        <%= submit_tag("Update", id: 'form__submit') %>
+      </div>
+    </div>
+
+
+    
+
+  <% end %>
+</div>

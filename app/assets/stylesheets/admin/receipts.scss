@@ -12,6 +12,9 @@
   border-style: solid;
   border-color: gray;
   border-width: 1px;
+
+  max-height: 300px;
+  overflow: auto;
 }
 
 #receipt-table td{
@@ -27,4 +30,8 @@
 
 #receipt-table tr:nth-child(even) {
   background: #F5F5F5;
+}
+
+.receipt__image{
+  object-fit: contain;
 }

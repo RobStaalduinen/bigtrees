@@ -1,0 +1,38 @@
+
+<div class='container'>
+  <h3>Finalize Payment</h3>
+  <%= form_tag("/estimates/#{@estimate.id}", method: 'patch') do %>
+    
+    <div class='form__box'>
+      <div class='form__row'>
+        <b>Sign Discount Applied:</b>
+        <%= hidden_field_tag 'estimate[discount_applied]', false %>
+        <%= check_box_tag('estimate[discount_applied]', 1, @estimate.discount_applied, class:'form__checkbox')%>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b>Payment Method</b>
+          <%= 
+            select_tag 'estimate[payment_method]',
+            options_for_select(['Cash', 'Credit', 'Cheque'], @estimate.payment_method),
+            class:"form-field form__field-full",
+            required: true
+          %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b>Invoice Number</b>
+
+        <%= text_field_tag("estimate[invoice_number]", (@estimate.invoice_number || Estimate.next_invoice_number), class: 'form-field form__field-full') %>
+      </div>
+
+      <div id="form__row">
+        <%= submit_tag("Finalize Payment", id: 'form__submit') %>
+      </div>
+    </div>
+
+
+    
+
+  <% end %>
+</div>

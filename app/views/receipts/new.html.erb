@@ -93,7 +93,7 @@
         Amount*
       </div>  
 
-        <%= number_field_tag('receipt[cost]', '', class: "form-field form__field-full", required: true) %>
+        <%= number_field_tag('receipt[cost]', '', class: "form-field form__field-full", required: true, :step => 0.01) %>
     </div>
 
 

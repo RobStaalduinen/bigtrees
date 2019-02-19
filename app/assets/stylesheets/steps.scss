@@ -1,0 +1,66 @@
+#step-entry{
+  width: 100%;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+
+#step-text{
+  display: flex;
+  flex-direction: column;
+}
+
+#step-text-header{
+  padding-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#step-text-subheader{
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+#step-left{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  margin-right: 16px;
+}
+
+#step-number{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--main-color);
+
+  border: 2px solid var(--main-color-dark);
+
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+
+  font-size: 18px;
+  color: white;
+}
+
+#step-divider{
+  width: 4px;
+  background-color: var(--main-color);
+  height: 100px;
+  margin-top: 8px;
+}
+
+@media (min-width: 760px){
+  #step-container{
+    width: 50%;
+    padding: 32px;
+
+  }
+
+  #step-divider{
+    height: 40px;
+  }
+}

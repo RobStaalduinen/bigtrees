@@ -1,0 +1,71 @@
+@import "common/_mixins.scss";
+
+#estimate-form__container{
+  @include shadow-box;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+#estimate-form__question{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+#estimate-form__radio-buttons{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+#estimat-form__subtext{
+  font-size: 16px;
+}
+
+#estimate-form__quantity-question{
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+#estimate-form__link{
+  font-weight: 600;
+  color: var(--main-color);
+}
+
+#estimate-form__submit{
+  width: 100%;
+  background-color: var(--main-color);
+
+  border-width: 0 0 4px 0;
+  border-color: var(--main-color-dark);
+  border-style: solid;
+
+  padding: 8px;
+  margin-top: 16px;
+  
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+}
+
+#estimate-form__field-group{
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+#estimate-form__label{
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+#estimate-form__radio-question{
+  display: flex;
+  margin-top: 4px;
+}

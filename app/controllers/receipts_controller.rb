@@ -4,7 +4,8 @@ class ReceiptsController < ApplicationController
   before_action :signed_in_user
 
   def index
-    @receipts = current_user.get_receipts.order("date DESC")
+    @receipts = current_user.get_receipts.regular.order("date DESC")
+    @cheques = current_user.get_receipts.cheque.order("date DESC")
   end
 
   def new
@@ -19,11 +20,23 @@ class ReceiptsController < ApplicationController
     redirect_to "/admin/admin_panel"
   end
 
+  def show
+    @receipt = Receipt.find(params[:id])
+  end
+
   def xlsx
-    @receipts = current_user.get_receipts.order("date DESC")
+    @receipts = current_user.get_receipts.regular.order("date DESC")
 
     respond_to do |format| 
       format.xlsx {render xlsx: 'receipts', filename: "receipts.xlsx"}
+    end
+  end
+
+  def cheque_xlsx
+    @cheques = current_user.get_receipts.cheque.order("date DESC")
+
+    respond_to do |format| 
+      format.xlsx {render xlsx: 'cheques', filename: "cheques.xlsx"}
     end
   end
 

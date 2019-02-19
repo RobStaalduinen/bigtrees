@@ -93,4 +93,6 @@ Rails.application.configure do
     :authentication => 'login',
     :enable_starttls_auto => true
   }
+
+  Rails.application.routes.default_url_options[:host] = 'https://bigtreeservices.ca'
 end

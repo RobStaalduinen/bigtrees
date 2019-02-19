@@ -1,0 +1,53 @@
+
+<script>
+  var clicky = function(){
+    var modal = document.getElementById('myModal');
+    modal.style.display = "none";
+  }
+</script>
+<div id="view-estimate__box">
+  <div id="view-estimate__main-header">
+    <span class = "text-large">Tree Details</span>
+  </div>
+
+<% estimate.trees.each_with_index do |tree, i| %>
+  <div id="view-estimate__tree-header" >Tree #<%= i + 1 %> - <%= tree.work_name_for_type %></div>
+
+  <div id="trees__image-container">
+    <% tree.tree_images.each do |tree_image| %>
+      <div id="trees__single-image-container">
+        <img src="<%= tree_image.asset.url%>" id="trees__image" onclick='openImage("<%= tree_image.asset.url %>")'>
+      </div>
+    <% end %>
+  </div>
+
+<% end %>
+
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <div id="close-button" onClick="clicky()">CLOSE</div>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>
+
+<script>
+// Get the modal
+  var modal = document.getElementById('myModal');
+
+  // Get the image and insert it inside the modal - use its "alt" text as a caption
+  var modalImg = document.getElementById("img01");
+  var captionText = document.getElementById("caption");
+
+  var openImage = function(src){
+    modal.style.display = "block";
+    modalImg.src = src;
+  }
+</script>

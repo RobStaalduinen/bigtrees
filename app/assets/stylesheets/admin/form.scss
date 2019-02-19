@@ -95,7 +95,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .form__row-bottom{
@@ -135,4 +135,23 @@
   background-color: #F5F5F5;
   margin-top: 16px;
   padding: 0 8px 8px 8px;
+}
+
+.form__checkbox{
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 1px solid grey;
+}
+
+.form__radio-button{
+  margin: 0 16px 0 0 !important;
+  height: 24px;
+  width: 24px;
+}
+
+.form__radio-group{
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
 }

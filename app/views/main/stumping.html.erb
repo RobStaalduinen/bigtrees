@@ -1,0 +1,59 @@
+<% content_for :title, "Stump Grinding services Services" %>
+<% content_for :description, "Stump griding services in Ontario, Toronto and the GTA" %>
+
+<div class = "row header-image sub-page-header">
+	<div class = "sub-page-header-title">
+		<div class = "sub-page-header-text">
+			Stump Grinding
+		</div>
+	</div>
+</div>
+
+<div class="page-container">
+
+  <div id="stumping__content-box">
+    <div id="stumping__content-text">
+      Grinding is the most common and effective way to remove unsightly stumps from your yard. Using this method, we can grind the stump up to 16" beneath the surface, fill the resulting hole, and leave your lawn clean. 
+      <br /><br />
+      The team at BigTrees uses a top of the line stump grinder to complete the job quickly, safely and effectively. We can handle stumps of all shapes and sizes, and
+      our equipment can fit through a standard 36" backyard gate.
+    </div>
+
+    <%= image_tag("StumpGrinder.jpg", id: "stumping__content-image") %>
+  </div>
+
+  <div id="stumping__method-box">
+    <div id="stumping__method-box-header">
+      <div id="stumping__method-box-title">
+        Our Method
+      </div>
+    </div>
+
+    <div id="stumping__method-box-steps">
+      <%= 
+        render 'main/components/single_step',
+        step_number: 1,
+        title: 'Measure',
+        content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. The stump grinder is moved into place.',
+        is_final: false
+      %>
+
+      <%= 
+        render 'main/components/single_step',
+        step_number: 2,
+        title: 'Grind',
+        content: 'With multiple passes of 2 inches at a time, the stump is slowly ground into mulch until the desired depth is reached.',
+        is_final: false
+      %> 
+
+      <%= 
+        render 'main/components/single_step',
+        step_number: 3,
+        title: 'Fill',
+        content: 'The resulting hole is filled using the created mulch. This can be left as-is, or replaced with topsoil if desried.',
+        is_final: true
+      %> 
+    </div>
+  </div>
+
+</div>

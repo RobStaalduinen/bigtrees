@@ -10,6 +10,11 @@
     <%= render 'admin/view_estimate/view_estimate_arborist', estimate: @estimate %>
   <% end %>
   <%= render 'admin/view_estimate/view_estimate_costs', estimate: @estimate %>
+  <% if @estimate.payment_finalized? %>
+    <%= render 'admin/view_estimate/view_estimate_payment', estimate: @estimate %>
+  <% end %>
+  <%= render 'admin/view_estimate/view_estimate_trees', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_cancel', estimate: @estimate %>
   
 
 </div>

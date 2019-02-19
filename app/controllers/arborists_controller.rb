@@ -1,5 +1,9 @@
 class ArboristsController < ApplicationController
   
+  def index
+    @arborists = Arborist.all
+  end
+
   def new 
 
   end

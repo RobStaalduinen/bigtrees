@@ -1,9 +1,17 @@
 <div class='container'>
   <h3>Mailout new quote</h3>
+  <% if @is_final %>
+    <% subject = 'Big Tree Services Final Invoice '%>
+    <% content = I18n.t('quote_mailout.final.content')%>
+  <% else %>
+    <% subject = 'Big Tree Services Quote '%>
+    <% content = I18n.t('quote_mailout.new.content')%>
+  <% end %>
 
   <div class='content__box'>
     <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
       <%= hidden_field_tag('estimate_id', @estimate.id) %>
+      <%= hidden_field_tag('is_final', @is_final) %>
       <div class='content__row-vertical'>
         <div class='content__label'>
           Customer Email
@@ -15,14 +23,14 @@
         <div class='content__label'>
           Subject
         </div>
-        <%= text_field_tag("subject", 'Big Tree Services', class: "form-field form__field-full") %>
+        <%= text_field_tag("subject", subject, class: "form-field form__field-full") %>
       </div>
 
       <div class='content__row-vertical'>
         <div class='content__label'>
           Content
         </div>
-        <%= text_area_tag("content", I18n.t('quote_mailout.new.content'), class: "form-field form__field-full", id: 'mailouts__text-area') %>
+        <%= text_area_tag("content", content, class: "form-field form__field-full", id: 'mailouts__text-area') %>
       </div>
 
       <div class='content__row-vertical'>

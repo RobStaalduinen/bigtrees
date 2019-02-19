@@ -7,10 +7,10 @@
     <% end %>
   </div>
 
-  <% estimate.trees.each do |tree| %>
+  <% estimate.trees.each_with_index do |tree, i| %>
     <div id='view-estimate__costs-row'>
       <div id="view-estimate__costs-label">
-        <%= "Tree #{tree.sequence + 1}" %>
+        <%= "Tree #{i + 1}" %>
       </div>
       <div id="view-estimate__costs-text">
         <%= tree.work_type.capitalize %>
@@ -32,6 +32,20 @@
       $<%= estimate.extra_cost %>
     </div>
   </div>
+
+  <% if estimate.discount_applied %>
+    <div id='view-estimate__costs-row'>
+      <div id="view-estimate__costs-label">
+        Discount
+      </div>
+      <div id="view-estimate__costs-text">
+        For Sign
+      </div>
+      <div id="view-estimate__cost-value">
+        $<%= Estimate::SIGN_DISCOUNT %>
+      </div>
+    </div>
+  <% end %>
 
   <div id='view-estimate__costs-row'>
     <div id="view-estimate__costs-label">

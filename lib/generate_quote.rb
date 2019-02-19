@@ -13,6 +13,11 @@ class GenerateQuote
 
     # binding.pry
 
+    if estimate.invoice_number.present?
+      # Invoice Number
+      worksheet[3][4].change_contents("Invoice ##{estimate.invoice_number}")
+    end
+
     # Date
     worksheet[4][2].change_contents(Date.today.strftime("%d/%m/%Y"))
     # Customer Name
@@ -25,6 +30,11 @@ class GenerateQuote
     worksheet[8][2].change_contents(estimate.full_address)
 
     arborist = estimate.arborist
+
+    if estimate.work_date.present?
+      # Completion Date
+      worksheet[4][7].change_contents(estimate.work_date.strftime("%d/%m/%Y"))
+    end
     # Arborist Name
     worksheet[5][7].change_contents(arborist.name)
     # Arborist Cert
@@ -45,6 +55,15 @@ class GenerateQuote
     worksheet[10 + tree_count][7].change_contents(estimate.extra_cost.to_f)
 
     subtotal = estimate.trees.sum(:cost) + estimate.extra_cost
+
+    if estimate.discount_applied
+      worksheet[10 + tree_count + 1][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
+      worksheet[10 + tree_count + 1][7].change_contents(Estimate::SIGN_DISCOUNT)
+      subtotal += Estimate::SIGN_DISCOUNT
+    end
+
+    
+
     hst = (subtotal * 0.13).round(2)
     worksheet[19][7].change_contents("$#{sprintf("%.2f", subtotal.to_f)}")
     worksheet[20][7].change_contents("$#{sprintf("%.2f", hst.to_f)}")

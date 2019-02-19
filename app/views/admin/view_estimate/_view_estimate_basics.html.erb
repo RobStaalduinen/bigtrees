@@ -1,5 +1,11 @@
   <div id="view-estimate__box">
-    <span class="text-large" id="view-estimate__box-header">Contact</span>
+    <div id="view-estimate__main-header">
+      <span class = "text-large">Contact</span>
+      
+      <%= link_to update_contact_details_estimate_path(estimate.id) do %>
+        <span id="view-estimate__edit">Edit</span>
+      <% end %>
+    </div>
 
     <div id='view-estimate__row-vertical'>
       <div id="view_estimate__entry-header">
@@ -34,25 +40,18 @@
   
 
   <div id="view-estimate__box">
-  <span class="text-large" id="view-estimate__box-header">Address</span>
+    <div id="view-estimate__main-header">
+      <span class = "text-large">Address</span>
+      
+      <%= link_to update_address_estimate_path(estimate.id) do %>
+        <span id="view-estimate__edit">Edit</span>
+      <% end %>
+    </div>
     <div id='view-estimate__row-vertical'>
-      <div id="view_estimate__entry-header">
-        Street
-      </div>
       <div>
-        <%= estimate.street %>
+        <%= estimate.full_address %>
       </div>
     </div>
-
-    <div id='view-estimate__row-vertical'>
-      <div id="view_estimate__entry-header">
-        City
-      </div>
-      <div>
-        <%= estimate.city %>
-      </div>
-    </div>
-
   </div>
 
 

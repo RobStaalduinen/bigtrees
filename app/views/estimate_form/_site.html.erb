@@ -1,0 +1,93 @@
+<div id='estimate-form__container'>
+  <div id='estimate-form__question'>
+    Tell us a bit about your site.
+  </div>
+
+  <div id='estimate-form__field-group'>
+    <div id='estimate-form__label'>
+      Street
+    </div>
+    <%= text_field_tag('estimate[street]', '' , id: 'estimate-form__field') %>
+  </div>
+
+  <div id='estimate-form__field-group'>
+    <div id='estimate-form__label'>
+      City
+    </div>
+    <%= text_field_tag('estimate[city]', '' , id: 'estimate-form__field') %>
+  </div>
+
+  <div id='estimate-form__field-group'>
+    <div id='estimate-form__label'>
+      Do you want the wood removed?
+    </div>
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'estimate[wood_removal]',
+        value: 'no',
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'estimate[wood_removal]',
+        value: 'yes',
+        checked: false
+      %>
+    </div>
+  </div>
+
+  <div id='estimate-form__field-group'>
+    <div id='estimate-form__label'>
+      Is there vehicle access to your trees?
+    </div>
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'estimate[vehicle_access]',
+        value: 'no',
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'estimate[vehicle_access]',
+        value: 'yes',
+        checked: false
+      %>
+    </div>
+  </div>
+
+  <div id='estimate-form__field-group'>
+    <div id='estimate-form__label'>
+      Are there breakables near your trees?
+    </div>
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'estimate[breakables]',
+        value: 'no',
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'estimate[breakables]',
+        value: 'yes',
+        checked: false
+      %>
+    </div>
+  </div>
+
+  <div id="estimate-form__submit" onClick="createEstimate(1);">
+    Next
+  </div>
+
+</div>

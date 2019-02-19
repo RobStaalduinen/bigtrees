@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190126124223) do
+ActiveRecord::Schema.define(version: 20190128200854) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -52,20 +52,20 @@ ActiveRecord::Schema.define(version: 20190126124223) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "estimates", force: :cascade do |t|
-    t.integer  "tree_quantity",        default: 1
+    t.integer  "tree_quantity",         default: 1
     t.string   "person_name"
     t.string   "street"
     t.string   "city"
     t.string   "phone"
     t.string   "email"
-    t.boolean  "stump_removal",        default: false
-    t.boolean  "vehicle_access",       default: false
-    t.boolean  "breakables",           default: false
-    t.boolean  "wood_removal",         default: false
-    t.integer  "status",               default: 0,     null: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.boolean  "submission_completed", default: false
+    t.boolean  "stump_removal",         default: false
+    t.boolean  "vehicle_access",        default: false
+    t.boolean  "breakables",            default: false
+    t.boolean  "wood_removal",          default: false
+    t.integer  "status",                default: 0,     null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "submission_completed",  default: false
     t.date     "quote_sent_date"
     t.date     "quote_accepted_date"
     t.date     "work_date"
@@ -73,6 +73,10 @@ ActiveRecord::Schema.define(version: 20190126124223) do
     t.string   "extra_cost_notes"
     t.integer  "arborist_id"
     t.integer  "invoice_number"
+    t.boolean  "discount_applied",      default: false
+    t.string   "payment_method"
+    t.date     "final_invoice_sent_at"
+    t.date     "cancelled_at"
   end
 
   create_table "receipts", force: :cascade do |t|

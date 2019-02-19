@@ -1,0 +1,36 @@
+<div id="view-estimate__box">
+  <div id="view-estimate__main-header">
+    <span class = "text-large">Payment Details</span>
+    
+    <%= link_to finalize_payment_estimate_path(estimate.id) do %>
+      <span id="view-estimate__edit">Edit</span>
+    <% end %>
+  </div>
+
+  <div id='view-estimate__row-vertical'>
+    <div id="view_estimate__entry-header">
+      Invoice Number
+    </div>
+    <div>
+      <%= "##{estimate.invoice_number}" %>
+    </div>
+  </div>
+
+  <div id='view-estimate__row-vertical'>
+    <div id="view_estimate__entry-header">
+      Payment Method
+    </div>
+    <div>
+      <%= estimate.payment_method %>
+    </div>
+  </div>
+
+  <div id='view-estimate__row-vertical'>
+    <div id="view_estimate__entry-header">
+      Sign Discount Applied?
+    </div>
+    <div>
+      <%= estimate.discount_applied ? "Yes" : "No" %>
+    </div>
+  </div>
+</div>

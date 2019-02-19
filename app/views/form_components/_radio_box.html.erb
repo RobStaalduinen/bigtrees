@@ -1,0 +1,15 @@
+<% checked ||= nil %>
+
+<label id="form__radio-box">
+  <div id="form__radio-box-label">
+    <%= label %>
+  </div>
+  <% if checked.present? && checked %>
+    <input type="radio" name="<%= name %>" value="<%= value %>" checked />
+  <% else %>
+    <input type="radio" name="<%= name %>" value="<%= value %>" />
+  <% end %>
+  <span id="form__radio-box-checkmark">
+    <span id="form__radio-box-checkmark-inner">
+  </span>
+</label>

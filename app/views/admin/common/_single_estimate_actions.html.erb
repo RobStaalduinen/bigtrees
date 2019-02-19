@@ -1,10 +1,4 @@
   
-<% if estimate.status == "work_scheduled" %>
-  <div id="single-estimate__action-button">
-    Complete
-  </div> 
-<% end %>
-
 <% if estimate.status == "needs_costs" %>
   <%= link_to "/admin/update_costs?id=#{estimate.id}" do %>
     <div id="single-estimate__action-button">
@@ -40,6 +34,22 @@
   <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id) do %>
     <div id="single-estimate__action-button">
       Send Quote
+    </div>
+  <% end %>
+<% end %>
+
+<% if estimate.status == "work_scheduled" %>
+  <%= link_to finalize_payment_estimate_path(id: estimate.id) do %>
+    <div id="single-estimate__action-button">
+      Finalize Payment
+    </div>
+  <% end %>
+<% end %>
+
+<% if estimate.status == "payment_finalized" %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, is_final: true) do %>
+    <div id="single-estimate__action-button">
+      Send Final Invoice
     </div>
   <% end %>
 <% end %>

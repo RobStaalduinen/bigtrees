@@ -19,4 +19,12 @@ en:
         Thanks,
 
         Tyler
+    final:
+      content: |
+        Hi,
+
+        Here is your final invoice.
+
+        Thanks,
+        Tyler
       

@@ -1,0 +1,23 @@
+<div id='step-entry'>
+  <div id='step-left'>
+    <div id='step-number'>
+      <%= step_number %>
+    </div>
+
+    <% unless is_final %>
+      <div id='step-divider'>
+
+      </div>
+    <% end %>
+    
+  </div>
+  <div id='step-text'>
+    <span id='step-text-header'>
+      <%= title %>
+    </span>
+
+    <span id='step-text-subheader'>
+      <%= content %>
+    </span>
+  </div>
+</div>

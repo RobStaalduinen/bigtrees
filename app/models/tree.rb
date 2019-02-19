@@ -7,4 +7,10 @@ class Tree < ActiveRecord::Base
 		trim: 1, 
 		broken_limbs: 2
 	}
+
+	WORK_NAMES={'removal' => "Removal", 'trim' => "Trim", 'broken_limbs' => "Broken Limbs"}
+
+	def work_name_for_type
+		WORK_NAMES[self.work_type]
+	end
 end

@@ -17,3 +17,23 @@
 #admin-nav-element{
 	width: 40%;
 }
+
+#admin__estimate-header{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	font-size: 22px;
+	margin-top: 32px;
+}
+
+#admin__trackers-link{
+	font-size: 16px;
+}
+
+@media(min-width: 760px){
+
+	#admin-container{
+		max-width: 960px;
+		margin: 0 auto;
+	}
+}

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-	default_url_options :host => "thatsabigtree.ca"
+	# default_url_options :host => "https://thatsabigtree.ca"
 
   root 'main#show', page: "home"
 
@@ -18,10 +18,18 @@ Rails.application.routes.draw do
     resources :quotes, only: [ :index ]
     resources :quote_mailouts, only: [ :new, :create ]
     get '/assign_arborist', to: 'estimate#assign_arborist', on: :member
+    get '/finalize_payment', to: 'estimate#finalize_payment', on: :member
+    get '/update_contact_details', to: 'estimate#update_contact_details', on: :member
+    get '/update_address', to: 'estimate#update_address', on: :member
+    post '/cancel', to: 'estimate#cancel', on: :member
   end
 
+  resources :trackers, only: [ :new, :index ]
   resources :arborists
+  resources :requests
+  
   match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx
+  match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx
   resources :receipts
   resources :vehicles
 

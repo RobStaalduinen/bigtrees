@@ -4,7 +4,10 @@ class Receipt < ActiveRecord::Base
   
   has_attached_file :photo
 
-  CATEGORIES = ['Fuel', 'Tools', 'Repairs', 'Travel', 'Other'].freeze
+  scope :cheque, -> { where(category: 'Cheque' )}
+  scope :regular, -> { where.not(category: 'Cheque' )}
+
+  CATEGORIES = ['Fuel', 'Tools', 'Repairs', 'Travel', 'Cheque', 'Other'].freeze
   DEFAULT_CATEGORY = 'Fuel'
   JOBS = ['Big Trees', 'Big Properties', 'Big Stumps'].freeze
   DEFAULT_JOB = 'Big Trees'

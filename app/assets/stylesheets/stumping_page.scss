@@ -1,0 +1,58 @@
+@import "common/_mixins.scss";
+
+#stumping__content-box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
+
+#stumping__content-text{
+  margin-bottom: 16px;
+}
+
+#stumping__content-image{
+  width: 100%;
+}
+
+#stumping__method-box{
+  @include shadow-box;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#stumping__method-box-header{
+  width: 100%;
+  background-color: var(--main-color);
+  padding: 8px 16px;
+}
+
+#stumping__method-box-title{
+  font-size: 18px;
+  color: white;
+}
+
+#stumping__method-box-steps{
+  padding: 16px;
+}
+
+@media (min-width: 760px){
+  #stumping__content-box{
+    flex-direction: row;
+  }
+
+  #stumping__content-text{
+    width: 65%;
+    margin-bottom: 0px;
+    padding-right: 32px;
+  }
+
+  #stumping__content-image{
+    width: 35%;
+    height: auto;
+    align-self: center;
+  }
+}

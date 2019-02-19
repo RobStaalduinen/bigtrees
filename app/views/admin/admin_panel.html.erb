@@ -18,10 +18,22 @@
 				Vehicles
 			<% end %>
 		</div>
+
+		<div id="admin-nav-element" class="form__submit">
+			<%= link_to '/arborists', class: "form__submit-link" do %>
+				Arborists
+			<% end %>
+		</div>
+
 	</div>
 
 
-	<h3>Running work</h3>
+	<div id="admin__estimate-header">
+	Running work
+	<%= link_to(new_tracker_path) do %>
+		<span id="admin__trackers-link">Master Trackers</span>
+	<% end %>
+	</div>
 
 	<div id ="admin__estimate-table">
 		<% @estimates.each do |estimate| %>
@@ -29,6 +41,4 @@
 		<% end %>
 	</div>
 
-
-	<%= render "arborists/arborist_table", arborists: @arborists %>
 </section>

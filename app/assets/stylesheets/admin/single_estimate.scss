@@ -1,48 +1,59 @@
-#single-estimate{
+#single-estimate__box{
   width: 100%;
   margin-top: 16px;
 
   border: 1px solid grey;
+  
+  display: flex;
+  flex-direction: column;
+}
 
-  padding: 0 16px 16px 16px;
+#single-estimate__header{
+  background-color: var(--main-color);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+
+  padding: 6px 0;
+
+  display: flex;
+  justify-content: center;
+}
+
+#single-estimate__inner-box{
+  width: 100%;
+  padding: 8px;
 
   display: flex;
   flex-direction: column;
 }
 
 #single-estimate__row{
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-}
+  padding: 6px 0;
 
-#single-estimate__status{
-  border-color: var(--main-color);
+  border-width: 0 0 1px 0;
   border-style: solid;
-  border-width: 2px;
-
-  background-color: var(--main-color-light);
-  color: white;
-  font-weight: 600;
-
-  padding: 2px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 50%;
+  border-color: lightgrey;
 }
 
-#single-estimate__entry{
+#single-estimate__label{
+  font-weight: 600;
+  width: 30%;
+
   display: flex;
-  flex-direction: column;
-  width: 45%;
+  justify-content: flex-end;
+  padding-right: 16px;
 }
 
-#single-estimate__entry-label{
-  font-weight: 600;
+#single-estimate__content{
+  width: 70%;
+}
+
+#single-estimate__details-link{
+  width: 100%;
 }
 
 #single-estimate__action-button{
