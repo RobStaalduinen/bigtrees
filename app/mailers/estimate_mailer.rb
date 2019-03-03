@@ -28,6 +28,7 @@ class EstimateMailer < ApplicationMailer
 	end
 
 	def test_email(recipient)
-		mail(to: 'rob.staalduinen@gmail.com', subject: "Test")
+
+		mail(to: 'rob.staalduinen@gmail.com', subject: "Test - #{Date.today.strftime("%D-%M")}")
 	end
 end
