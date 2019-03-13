@@ -79,18 +79,18 @@ Rails.application.configure do
 
   config.action_mailer.perform_deliveries = true
 
-  config.action_mailer.default_url_options = { :host => "bigtreeservices.com" }
+  config.action_mailer.default_url_options = { :host => "bigtreeservices.ca" }
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.smtp_settings = {
-    :address => 'smtp-relay.sendinblue.com',
+    :address => 'smtp.sendgrid.net',
     :port => 587,
-    :domain => 'bigtreeservices.com',
+    :domain => 'bigtreeservices.ca',
     :user_name => ENV["EMAIL_USERNAME"],
     :password => ENV["EMAIL_PASSWORD"],
-    :authentication => 'login',
+    :authentication => 'plain',
     :enable_starttls_auto => true
   }
 
