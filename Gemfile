@@ -49,6 +49,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'rubyXL'
 gem 'libreconv'
 gem 'letter_opener'
+gem 'less-rails'
 
 gem 'spreadsheet'
 
