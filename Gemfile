@@ -39,6 +39,23 @@ gem 'axlsx', '~> 2.0' # excel files generation
 gem 'axlsx_rails'
 gem 'whenever', require: false
 
+gem 'twitter-bootstrap-rails'
+gem 'therubyracer', platforms: :ruby
+gem 'less-rails'
+gem 'mysql2'
+gem 'protected_attributes'
+gem 'jquery-ui-rails'
+gem 'jquery-modal-rails'
+gem 'bootstrap-datepicker-rails'
+gem 'rubyXL'
+gem 'libreconv'
+gem 'letter_opener'
+
+gem 'spreadsheet'
+
+gem 'exception_handler'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -81,19 +98,3 @@ group :development do
   gem 'pry'
   gem 'pry-byebug'
 end
-
-gem 'twitter-bootstrap-rails'
-gem 'therubyracer', platforms: :ruby
-gem 'less-rails'
-gem 'mysql2'
-gem 'protected_attributes'
-gem 'jquery-ui-rails'
-gem 'jquery-modal-rails'
-gem 'bootstrap-datepicker-rails'
-gem 'rubyXL'
-gem 'libreconv'
-gem 'letter_opener'
-
-gem 'spreadsheet'
-
-gem 'exception_handler'
