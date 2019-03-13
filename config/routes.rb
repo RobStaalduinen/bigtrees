@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   root 'main#show', page: "home"
 
-	get "/main/:page" => "main#show", as: :pages
+  get "/main/:page" => "main#show", as: :pages
+  get 'health' => 'main#health'
 
 	match '/estimate/submit_new_estimate' => 'estimate#submit_new_estimate', :as => :submit_estimate, via: :all
 	match '/estimate/submit_job_questions' => 'estimate#submit_job_questions', :as => :submit_questions, via: :all

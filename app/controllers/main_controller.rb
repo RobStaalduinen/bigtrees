@@ -8,6 +8,10 @@ def show
   end
 end
 
+def health
+  render json: { status: :ok }
+end
+
 private
   def page_is_valid?
     File.exist?(Pathname.new(Rails.root + "app/views/main/#{params[:page]}.html.erb"))
