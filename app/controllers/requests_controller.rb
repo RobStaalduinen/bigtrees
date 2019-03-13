@@ -16,7 +16,7 @@ class RequestsController < ApplicationController
     estimate.update(request_params)
 
     if params[:estimate][:submission_completed]
-      EstimateMailer.estimate_alert(estimate).deliver_later
+      # EstimateMailer.estimate_alert(estimate).deliver_later
     end
 
     render json: { status: :ok }
