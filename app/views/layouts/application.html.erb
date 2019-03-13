@@ -4,24 +4,32 @@
   <title><%= ["Big Tree Services", yield(:title)].join(" | ") %></title>
   <meta name="description" content='<%= yield(:description) %>'>
 
-  <link rel="canonical" href="http://bigtreeservices.com/" />
+  <link rel="canonical" href="http://bigtreeservices.ca/" />
 
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
 
   <%= csrf_meta_tags %>
 
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PBWVZF5');</script>
+  <!-- End Google Tag Manager -->
+
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117068568-1"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131458415-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
-    gtag('config', 'UA-117068568-1');
+    gtag('config', 'UA-131458415-1');
   </script>
 
   <script>
@@ -40,11 +48,16 @@
   </script>
 </head>
 <body>
-  	<script>
-			$('body').on('hidden.bs.modal', '.modal', function () {
-				$(this).removeData('bs.modal');
-			});
-		</script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBWVZF5"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+	<script>
+		$('body').on('hidden.bs.modal', '.modal', function () {
+			$(this).removeData('bs.modal');
+		});
+	</script>
 
       <%= render 'layouts/common/header' %>
 

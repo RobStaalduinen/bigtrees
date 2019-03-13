@@ -1,5 +1,5 @@
 class EstimateMailer < ApplicationMailer
-	default from: 'Big Tree Care <no-reply@bigtreeservices.com>'
+	default from: 'Big Tree Care <no-reply@bigtreeservices.ca>'
 	add_template_helper(ApplicationHelper)
 	 include Rails.application.routes.url_helpers
 	include ActionView::Helpers::UrlHelper
@@ -28,6 +28,7 @@ class EstimateMailer < ApplicationMailer
 	end
 
 	def test_email(recipient)
-		mail(to: 'rob.staalduinen@gmail.com', subject: "Test")
+
+		mail(to: 'rob.staalduinen@gmail.com', subject: "Test - #{Date.today.strftime("%D-%M")}")
 	end
 end

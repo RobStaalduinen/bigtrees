@@ -8,8 +8,6 @@ set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
 set :use, 'root'
 set :deploy_to, '/var/www/bigtrees'
-set :rbenv_type, :user
-set :rbenv_ruby, '2.3.1'
 
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies
