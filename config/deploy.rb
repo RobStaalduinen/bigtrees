@@ -1,12 +1,11 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.10.1"
 
-server '159.203.26.93', port: 22, user: 'root', roles: [:web, :app, :db], primary: true
+server '50.17.61.15', port: 22, user: 'ubuntu', roles: [:web, :app, :db], primary: true
 
 set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
-set :use, 'root'
 set :deploy_to, '/var/www/bigtrees'
 
 # set :npm_roles, :web

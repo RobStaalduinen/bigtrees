@@ -18,3 +18,5 @@
 
 config/application.*.yml
 config/application.yml
+config/database.*.yml
+config/database.yml
