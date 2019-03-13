@@ -29,8 +29,8 @@ set :delayed_job_server_role, :worker
 set :delayed_job_workers, 1
 
 after 'deploy:publishing', 'deploy:restart'
-namespace :deploy do
-  task :restart do
-    invoke 'delayed_job:restart'
-  end
-end
+# namespace :deploy do
+#   task :restart do
+#     invoke 'delayed_job:restart'
+#   end
+# end
