@@ -39,7 +39,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def costs?
-		!self.trees.pluck(:cost).select{ |c| c == nil}.any?
+		self.trees.pluck(:cost).select{ |c| c == nil}.all?
 	end
 
 	def quote_sent?
@@ -62,8 +62,13 @@ class Estimate < ActiveRecord::Base
 		[self.street, self.city].join(", ")
 	end
 
+	def contact_methods
+		[self.phone, self.email].join(" | ")
+	end
+
 	def total_cost
-		total_cost = self.trees.sum(:cost) + self.extra_cost
+		extra = self.extra_cost || 0.0
+		total_cost = self.trees.sum(:cost) + extra
 		total_cost += SIGN_DISCOUNT if self.discount_applied
 		total_cost
 	end

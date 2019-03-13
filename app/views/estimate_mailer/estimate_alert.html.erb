@@ -1,16 +1,14 @@
-You have received a new estimate request on ThatsABigTree.ca
+You have received a new estimate request on bigtreeservices.ca
 <br />
 <br />
 <h3>Estimate</h3>
 <p>
-<b>Request From: </b><%= @estimate.name %> <br />
-<b>Address: </b><%= @estimate.address %> <br />
-<b>City: </b><%= @estimate.city %> <br /> <br />
+<b>Request From: </b><%= @estimate.person_name %> <br />
+<b>Address: </b><%= @estimate.full_address %> <br />
 
-<b>Contact Method: </b><%= @estimate.contact_type %> <br />
-<b>Contact At: </b><%= @estimate.contact_method %> <br /><br />
+<b>Contact At: </b><%= @estimate.contact_methods %> <br /><br />
 
-<b>See the full estimate: </b> <%= link_to "HERE", controller: 'admin', action: 'view_estimate_by_id', estimate_id: @estimate.id %>
+<b>See the full estimate: </b> <a href="https://bigtreeservices.ca/admin/admin_panel?id=#{@estimate.id}">Here</a>
 
 
 

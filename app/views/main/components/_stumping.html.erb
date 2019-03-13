@@ -4,7 +4,7 @@
   </span>
 
   <div id="stumping-box-image-wrapper">
-    <%= image_tag "TreeStumpRemover-Temp.jpg", :id => 'stumping-box-image' %>
+    <%= image_tag "StumpGrinder.jpg", :id => 'stumping-box-image' %>
   </div>
   <div id='stumping-box-content'>
     The Big Tree team is able to offer a full range of stump removal services,
@@ -13,8 +13,10 @@
   </div>
 
   <div id="stumping-button-wrapper">
-    <div id='stumping-button'>
-      Learn more
-    </div>
+    <%= link_to('/main/stumping') do %>
+      <div id='stumping-button'>
+        Learn more
+      </div>
+    <% end %>
   </div>
 </div>

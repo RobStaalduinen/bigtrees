@@ -1,3 +1,32 @@
+<script>
+  function submitQuantity(){
+    let quantity = document.querySelector('input[name="estimate[tree_quantity]"]:checked').value
+
+    let params = {
+      estimate:{
+        tree_quantity: quantity
+      }
+    }
+    // Set quantity from form data
+    totalTrees = quantity;
+
+    postApi(
+      '/requests', 'POST', params
+    )
+    .then(function(response){
+      console.log(response);
+      estimateId = response.estimate_id
+      
+      $("#quantity-container").fadeOut(600, function(){
+        $("#site-container").fadeIn(600);
+      });
+
+    });
+  }
+</script>
+
+<%= form_tag("#", method: 'post', id:'quantity-form' ) do %>
+
 <div id='estimate-form__container'>
   <div id='estimate-form__question'>
     <%= question  %>
@@ -7,24 +36,26 @@
 
     <%= 
       render 'form_components/radio_box', 
-      name: 'quantity',
+      name: 'estimate[tree_quantity]',
       label: '1',
       value: 1,
-      checked: 'checked'
+      checked: true
     %>
 
     <%= 
       render 'form_components/radio_box', 
-      name: 'quantity',
+      name: 'estimate[tree_quantity]',
       label: '2',
-      value: 2
+      value: 2,
+      checked: false
     %>
 
     <%= 
       render 'form_components/radio_box', 
-      name: 'quantity',
+      name: 'estimate[tree_quantity]',
       label: '3',
-      value: 3
+      value: 3,
+      checked: false
     %>
 
   </div>
@@ -35,7 +66,8 @@
     </div>
   </div>
 
-  <div id="estimate-form__submit" onClick="createEstimate(1);">
+  <div id='estimate-form__submit' onClick="submitQuantity();" >
     Next
   </div>
 </div>
+<% end %>

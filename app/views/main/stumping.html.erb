@@ -29,30 +29,36 @@
       </div>
     </div>
 
-    <div id="stumping__method-box-steps">
-      <%= 
-        render 'main/components/single_step',
-        step_number: 1,
-        title: 'Measure',
-        content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. The stump grinder is moved into place.',
-        is_final: false
-      %>
+    <div id="stumping__method-box-inner">
+      <div id="stumping__method-box-image">
+        <%= image_tag('StumpGrinder2-min.jpg', id: 'stumping__steps-image') %>
+      </div>
 
-      <%= 
-        render 'main/components/single_step',
-        step_number: 2,
-        title: 'Grind',
-        content: 'With multiple passes of 2 inches at a time, the stump is slowly ground into mulch until the desired depth is reached.',
-        is_final: false
-      %> 
+      <div id="stumping__method-box-steps">
+        <%= 
+          render 'main/components/single_step',
+          step_number: 1,
+          title: 'Measure',
+          content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. The stump grinder is moved into place.',
+          is_final: false
+        %>
 
-      <%= 
-        render 'main/components/single_step',
-        step_number: 3,
-        title: 'Fill',
-        content: 'The resulting hole is filled using the created mulch. This can be left as-is, or replaced with topsoil if desried.',
-        is_final: true
-      %> 
+        <%= 
+          render 'main/components/single_step',
+          step_number: 2,
+          title: 'Grind',
+          content: 'With multiple passes of 2 inches at a time, the stump is slowly ground into mulch until the desired depth is reached.',
+          is_final: false
+        %> 
+
+        <%= 
+          render 'main/components/single_step',
+          step_number: 3,
+          title: 'Fill',
+          content: 'The resulting hole is filled using the created mulch. This can be left as-is, or replaced with topsoil if desried.',
+          is_final: true
+        %> 
+      </div>
     </div>
   </div>
 

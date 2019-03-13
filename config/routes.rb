@@ -27,7 +27,9 @@ Rails.application.routes.draw do
   resources :trackers, only: [ :new, :index ]
   resources :arborists
   resources :requests
-  
+  resources :trees
+  resources :tree_images, only: [ :create ]
+
   match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx
   match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx
   resources :receipts

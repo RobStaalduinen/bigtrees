@@ -1,14 +1,13 @@
-<% checked ||= nil %>
+<% checked ||= false %>
+<% onChange ||= nil %>
+<% smallLabel ||= false %>
+<% fontSize = smallLabel ? '24px' : '40px' %>
 
 <label id="form__radio-box">
-  <div id="form__radio-box-label">
+  <div id="form__radio-box-label" style="font-size: <%= fontSize %>">
     <%= label %>
   </div>
-  <% if checked.present? && checked %>
-    <input type="radio" name="<%= name %>" value="<%= value %>" checked />
-  <% else %>
-    <input type="radio" name="<%= name %>" value="<%= value %>" />
-  <% end %>
+  <%= radio_button_tag(name, value, checked, onChange: onChange) %>
   <span id="form__radio-box-checkmark">
     <span id="form__radio-box-checkmark-inner">
   </span>

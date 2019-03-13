@@ -1,0 +1,114 @@
+<script>
+  function changeContactQuestion(){
+    let contactMethod = document.querySelector('input[name="contact_method"]:checked').value
+
+    let emailGroup = document.getElementById('email-group')
+    let emailField = document.querySelector('input[name="email"]')
+    let phoneGroup = document.getElementById('phone-group')
+    let phoneField = document.querySelector('input[name="phone"]')
+
+    if(contactMethod == 'phone'){
+      emailGroup.style.display = 'none';
+      emailField.required = false;
+      phoneGroup.style.display = 'flex';
+      phoneField.required = true;
+    }
+    else{
+      emailGroup.style.display = 'flex';
+      emailField.required = true;
+      phoneGroup.style.display = 'none';
+      phoneField.required = false;
+    }
+  }
+
+  function submitContact(){
+    let form = document.getElementById("contact-form");
+
+    if(!form.checkValidity()){
+      document.getElementById('contact-submit').click();
+      return;
+    }
+
+    let email = document.querySelector('input[name="email"]').value
+    let phone = document.querySelector('input[name="phone"]').value
+    let name = document.querySelector('input[name="person_name"]').value
+
+    let params = { 
+      estimate: { 
+        person_name: name,
+        email: email,
+        phone: phone,
+        submission_completed: true
+      } 
+    }
+
+    postApi(
+      `/requests/${estimateId}`, 'PUT', params
+    )
+    .then(function(response){
+      console.log(response);
+      
+      $("#contact-method-container").fadeOut(600, function(){
+        $("#thank-you-container").fadeIn(600);
+      });
+
+    });
+  }
+</script>
+
+<%= form_tag('/#', method: :post, id: 'contact-form') do %>
+<div id='estimate-form__container'>
+  <div id='estimate-form__question'>
+    How should we contact you?
+  </div>
+
+    <div id="estimate-form__radio-buttons">
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
+        label: 'Phone',
+        value: 'phone',
+        checked: 'checked',
+        smallLabel: true,
+        onChange: 'changeContactQuestion();'
+      %>
+
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
+        label: 'Email',
+        value: 'email',
+        smallLabel: true,
+        onChange: 'changeContactQuestion();'
+      %>
+    </div>
+
+    <div class='estimate-form__field-group' id="phone-group">
+      <div class='estimate-form__label'>
+        Phone Number
+      </div>
+      <%= text_field_tag('phone', '' , id: 'estimate-form__field', required: true) %>
+    </div>
+
+    <div class='estimate-form__field-group' style="display: none;" id="email-group">
+      <div class='estimate-form__label'>
+        Email
+      </div>
+      <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
+    </div>
+
+    <div class='estimate-form__field-group'>
+      <div class='estimate-form__label'>
+        Your Name
+      </div>
+      <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
+    </div>
+
+    <div id="estimate-form__submit" onClick="submitContact();">
+      Next
+    </div>
+
+    <%= submit_tag "Submit", style: 'display: none', id: 'contact-submit' %>
+
+</div>
+<% end %>

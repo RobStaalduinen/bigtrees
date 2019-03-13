@@ -18,3 +18,7 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+every 3.hours do
+  script 'delayed_job restart'
+end

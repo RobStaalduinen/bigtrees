@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190128200854) do
+ActiveRecord::Schema.define(version: 20190228210717) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -107,8 +107,6 @@ ActiveRecord::Schema.define(version: 20190128200854) do
   end
 
   create_table "tree_images", force: :cascade do |t|
-    t.integer  "estimate_id",        limit: 4, null: false
-    t.integer  "tree_number",        limit: 4, null: false
     t.string   "asset_file_name"
     t.string   "asset_content_type"
     t.integer  "asset_file_size"
@@ -118,10 +116,12 @@ ActiveRecord::Schema.define(version: 20190128200854) do
 
   create_table "trees", force: :cascade do |t|
     t.integer "estimate_id"
-    t.integer "work_type",   default: 0
-    t.integer "sequence",    default: 0
+    t.integer "work_type",     default: 0
+    t.integer "sequence",      default: 0
     t.decimal "cost"
     t.string  "notes"
+    t.string  "description"
+    t.boolean "stump_removal"
   end
 
   add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id"

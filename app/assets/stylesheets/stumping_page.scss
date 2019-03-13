@@ -39,6 +39,18 @@
   padding: 16px;
 }
 
+#stumping__method-box-inner{
+  display: flex;
+}
+#stumping__method-box-image{
+  display: none;
+  padding: 16px;
+}
+
+#stumping__steps-image{
+  width: 100%;
+}
+
 @media (min-width: 760px){
   #stumping__content-box{
     flex-direction: row;
@@ -48,6 +60,11 @@
     width: 65%;
     margin-bottom: 0px;
     padding-right: 32px;
+  }
+
+  #stumping__method-box-image{
+    display: block;
+    width: 300px;
   }
 
   #stumping__content-image{

@@ -11,7 +11,21 @@
   </div>
 
 <% estimate.trees.each_with_index do |tree, i| %>
-  <div id="view-estimate__tree-header" >Tree #<%= i + 1 %> - <%= tree.work_name_for_type %></div>
+  <div id="view-estimate__tree-header" >Tree #<%= i + 1 %> - <%= tree.work_type %></div>
+
+  <% if tree.work_type == 'removal' %>
+    <div id="view-estimate__stump">
+      <b>Stump Removal: </b> <%= tree.stump_removal_answer %>
+    </div>
+  <% end %>
+
+  <% if tree.description.present? %>
+    <b>Customer Description</b>
+    <div id="view-estimate__description">
+      <%= tree.description %>
+    </div>
+  <% end %>
+  
 
   <div id="trees__image-container">
     <% tree.tree_images.each do |tree_image| %>

@@ -8,7 +8,7 @@ SitemapGenerator::Sitemap.create do
   add '/main/commercial'
   add '/main/contact_us'
 
-  add '/estimates/new'
+  add '/requests/new'
   # Put links creation logic here.
   #
   # The root path '/' and sitemap index file are added automatically for you.

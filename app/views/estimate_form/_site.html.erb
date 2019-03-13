@@ -1,93 +1,139 @@
+<script>
+  function submitSite(){
+    let form = document.getElementById("site-form");
+
+    if(!form.checkValidity()){
+      document.getElementById('site-submit').click();
+      return;
+    }
+
+    let street = document.querySelector('input[name="street"]').value
+    let city = document.querySelector('input[name="city"]').value
+
+    let wood = document.querySelector('input[name="wood_removal"]:checked').value
+    let vehicle = document.querySelector('input[name="vehicle_access"]:checked').value
+    let breakables = document.querySelector('input[name="breakables"]:checked').value
+
+    let params = {
+      estimate:{
+        street: street,
+        city: city,
+        wood_removal: wood,
+        vehicle_access: vehicle,
+        breakables: breakables
+      }
+    }
+
+
+    postApi(
+      `/requests/${estimateId}`, 'PUT', params
+    )
+    .then(function(response){
+      console.log(response);
+      
+      $("#site-container").fadeOut(600, function(){
+        $("#tree-container").fadeIn(600);
+      });
+
+    });
+  }
+</script>
+
+<%= form_tag('/#', method: :post, id: 'site-form') do %>
 <div id='estimate-form__container'>
   <div id='estimate-form__question'>
     Tell us a bit about your site.
   </div>
 
-  <div id='estimate-form__field-group'>
-    <div id='estimate-form__label'>
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
       Street
     </div>
-    <%= text_field_tag('estimate[street]', '' , id: 'estimate-form__field') %>
+    <%= text_field_tag('street', '' , id: 'estimate-form__field', required: true) %>
   </div>
 
-  <div id='estimate-form__field-group'>
-    <div id='estimate-form__label'>
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
       City
     </div>
-    <%= text_field_tag('estimate[city]', '' , id: 'estimate-form__field') %>
+    <%= text_field_tag('city', '' , id: 'estimate-form__field', required: true) %>
   </div>
 
-  <div id='estimate-form__field-group'>
-    <div id='estimate-form__label'>
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
       Do you want the wood removed?
     </div>
     <div id='estimate-form__radio-question'>
       <%= 
         render 'form_components/radio_field',
         label: 'No',
-        name: 'estimate[wood_removal]',
-        value: 'no',
+        name: 'wood_removal',
+        value: false,
         checked: true
       %>
 
       <%= 
         render 'form_components/radio_field',
         label: 'Yes',
-        name: 'estimate[wood_removal]',
-        value: 'yes',
+        name: 'wood_removal',
+        value: true,
         checked: false
       %>
     </div>
   </div>
 
-  <div id='estimate-form__field-group'>
-    <div id='estimate-form__label'>
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
       Is there vehicle access to your trees?
     </div>
     <div id='estimate-form__radio-question'>
       <%= 
         render 'form_components/radio_field',
         label: 'No',
-        name: 'estimate[vehicle_access]',
-        value: 'no',
+        name: 'vehicle_access',
+        value: false,
         checked: true
       %>
 
       <%= 
         render 'form_components/radio_field',
         label: 'Yes',
-        name: 'estimate[vehicle_access]',
-        value: 'yes',
+        name: 'vehicle_access',
+        value: true,
         checked: false
       %>
     </div>
   </div>
 
-  <div id='estimate-form__field-group'>
-    <div id='estimate-form__label'>
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
       Are there breakables near your trees?
     </div>
     <div id='estimate-form__radio-question'>
       <%= 
         render 'form_components/radio_field',
         label: 'No',
-        name: 'estimate[breakables]',
-        value: 'no',
+        name: 'breakables',
+        value: false,
         checked: true
       %>
 
       <%= 
         render 'form_components/radio_field',
         label: 'Yes',
-        name: 'estimate[breakables]',
-        value: 'yes',
+        name: 'breakables',
+        value: true,
         checked: false
       %>
     </div>
   </div>
 
-  <div id="estimate-form__submit" onClick="createEstimate(1);">
+  <div id="estimate-form__submit" onClick="submitSite();">
     Next
   </div>
+
+  <%= submit_tag "Submit", style: 'display: none', id: 'site-submit' %>
+
+<% end %>
 
 </div>

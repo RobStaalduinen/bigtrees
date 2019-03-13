@@ -3,7 +3,11 @@
 
   <h2>Estimate #<%= @estimate.id %></h2>
   <%= render 'admin/view_estimate/view_estimate_timeline', estimate: @estimate %>
-  <%= render 'admin/view_estimate/view_estimate_quotes', estimate: @estimate %>
+
+  <% if @estimate.arborist.present? %>
+    <%= render 'admin/view_estimate/view_estimate_quotes', estimate: @estimate %>
+  <% end%>
+  
   <%= render 'admin/view_estimate/view_estimate_next', estimate: @estimate %>
   <%= render 'admin/view_estimate/view_estimate_basics', estimate: @estimate %>
   <% if @estimate.arborist.present? %>
