@@ -41,7 +41,6 @@ gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer', platforms: :ruby
-gem 'less-rails'
 gem 'mysql2', '~> 0.4.0'
 gem 'protected_attributes'
 gem 'jquery-ui-rails'
