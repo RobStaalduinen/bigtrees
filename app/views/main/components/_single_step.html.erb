@@ -4,9 +4,13 @@
       <%= step_number %>
     </div>
 
-    <% unless is_final %>
+    <% unless is_final || is_long %>
       <div id='step-divider'>
+      </div>
+    <% end %>
 
+    <% if is_long && !is_final %>
+      <div id='step-divider-long'>
       </div>
     <% end %>
     

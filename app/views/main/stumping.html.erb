@@ -41,8 +41,9 @@
           render 'main/components/single_step',
           step_number: 1,
           title: 'Measure',
-          content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. If necessary, we can arrange locates for power lines and telecommunications free of charge.',
-          is_final: false
+          content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. If necessary, we will schedule for the telecommunications companies to do an inspection of the area for any underground utilty/gas lines free of charge.',
+          is_final: false,
+          is_long: true
         %>
 
         <%= 
@@ -50,7 +51,8 @@
           step_number: 2,
           title: 'Grind',
           content: 'With multiple passes, the stump is slowly ground into mulch until the desired depth is reached.',
-          is_final: false
+          is_final: false,
+          is_long: false
         %> 
 
         <%= 
@@ -58,7 +60,8 @@
           step_number: 3,
           title: 'Fill',
           content: 'The resulting hole is filled using the created mulch. This can be left as-is, or replaced with topsoil for an additional cost.',
-          is_final: true
+          is_final: true,
+          is_long: false
         %> 
       </div>
     </div>

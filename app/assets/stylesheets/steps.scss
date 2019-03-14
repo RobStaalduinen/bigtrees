@@ -53,6 +53,13 @@
   margin-top: 8px;
 }
 
+#step-divider-long{
+  width: 4px;
+  background-color: var(--main-color);
+  height: 220px;
+  margin-top: 8px;
+}
+
 @media (min-width: 760px){
   #step-container{
     width: 50%;
@@ -62,5 +69,9 @@
 
   #step-divider{
     height: 40px;
+  }
+
+  #step-divider-long{
+    height: 80px;
   }
 }
