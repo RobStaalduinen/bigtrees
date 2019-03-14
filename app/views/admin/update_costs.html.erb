@@ -1,55 +1,57 @@
-<h3>Update costs</h3>
+<div class="container">
+  <h3>Update costs</h3>
 
 
-<%= form_tag("/admin/submit_updated_costs", method: "post") do %>
-<%= hidden_field_tag("estimate_id", @estimate.id) %>
-  <div id="update-costs">
-    <% @estimate.trees.each do |tree| %>
-      <%= hidden_field_tag("trees[][id]", tree.id) %>
+  <%= form_tag("/admin/submit_updated_costs", method: "post") do %>
+  <%= hidden_field_tag("estimate_id", @estimate.id) %>
+    <div id="update-costs">
+      <% @estimate.trees.each do |tree| %>
+        <%= hidden_field_tag("trees[][id]", tree.id) %>
+
+        <div id="form__box">
+          <div id="form__header">
+            <div id="form__element">
+              Tree #<%= tree.sequence + 1 %>
+            </div>
+
+            <div id="form__element">
+              <%= tree.work_type.capitalize %>
+            </div>
+          </div>
+
+          <div id="form__row">
+            <div id="form__element">
+              Notes<br />
+              <%= text_field_tag("trees[][notes]", tree.notes) %>
+            </div>
+            <div id="form__element">
+              Cost<br />
+              <%= number_field_tag("trees[][cost]", tree.cost) %>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
       <div id="form__box">
         <div id="form__header">
-          <div id="form__element">
-            Tree #<%= tree.sequence + 1 %>
-          </div>
-
-          <div id="form__element">
-            <%= tree.work_type.capitalize %>
-          </div>
+          Other Costs
         </div>
 
         <div id="form__row">
           <div id="form__element">
             Notes<br />
-            <%= text_field_tag("trees[][notes]", tree.notes) %>
+            <%= text_field_tag("estimate[extra_cost_notes]", @estimate.extra_cost_notes) %>
           </div>
           <div id="form__element">
             Cost<br />
-            <%= number_field_tag("trees[][cost]", tree.cost) %>
+            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost) %>
           </div>
         </div>
       </div>
-    <% end %>
 
-    <div id="form__box">
-      <div id="form__header">
-        Other Costs
-      </div>
-
-      <div id="form__row">
-        <div id="form__element">
-          Notes<br />
-          <%= text_field_tag("estimate[extra_cost_notes]", @estimate.extra_cost_notes) %>
-        </div>
-        <div id="form__element">
-          Cost<br />
-          <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost) %>
-        </div>
+      <div id="update-costs__submit-row">
+        <%= submit_tag("Update", id: 'form__submit') %>
       </div>
     </div>
-
-    <div id="update-costs__submit-row">
-      <%= submit_tag("Update", id: 'form__submit') %>
-    </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
