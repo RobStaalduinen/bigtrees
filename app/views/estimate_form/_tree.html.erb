@@ -132,9 +132,13 @@
     </div>
 
     <div class='estimate-form__field-group'>
-      <div class='estimate-form__label'>
+      <div class='estimate-form__label' id='work-label'>
         What type of work do to need?
       </div>
+
+      <script>
+        document.getElementById('work-label').innerHTML = `What type of work do you need for ${getPageTitle()}?`;
+      </script>
 
       <%= select_tag 'work_type',
         options_for_select(Tree::WORK_TYPES),
@@ -176,9 +180,13 @@
     </div>
 
     <div class='estimate-form__uploader-group'>
-      <div class='estimate-form__label'>
-        Upload a few images of your tree (optional)
+      <div class='estimate-form__label' id="image-label">
+        Upload a few images of Tree #1 (optional)
       </div>
+
+      <script>
+        document.getElementById('image-label').innerHTML = `Upload a few images of ${getPageTitle()} (optional)`;
+      </script>
       <%= 
         render 'form_components/image_uploader',
         name: 'tree_images[0]',

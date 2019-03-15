@@ -88,6 +88,16 @@
   justify-content: center;
 }
 
+#tree-page-title{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--main-color);
+}
+
 .estimate-form__field-group{
   display: flex;
   flex-direction: column;
