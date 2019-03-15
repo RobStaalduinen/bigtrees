@@ -10,18 +10,29 @@
     // Set quantity from form data
     totalTrees = quantity;
 
-    postApi(
-      '/requests', 'POST', params
-    )
-    .then(function(response){
-      console.log(response);
-      estimateId = response.estimate_id
+    // postApi(
+    //   '/requests', 'POST', params
+    // )
+    // .then(function(response){
+
+
+    // });
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("POST", '/requests');
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){
+      console.log(xmlhttp.response);
+      estimateId = xmlhttp.response.estimate_id
       
       $("#quantity-container").fadeOut(600, function(){
         $("#site-container").fadeIn(600);
       });
+    }
 
-    });
   }
 </script>
 
