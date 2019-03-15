@@ -26,7 +26,9 @@
 
     xmlhttp.onload = function(){
       console.log(xmlhttp.response);
-      estimateId = xmlhttp.response.estimate_id
+      let response = JSON.parse(xmlhttp.response)
+      estimateId = response.estimate_id;
+      console.log(estimateId);
       
       $("#quantity-container").fadeOut(600, function(){
         $("#site-container").fadeIn(600);
