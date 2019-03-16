@@ -85,12 +85,12 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.smtp_settings = {
-    :address => 'email-smtp.us-east-1.amazonaws.com',
+    :address => 'smtp.sendgrid.net',
     :port => 587,
     :domain => 'bigtreeservices.ca',
-    :user_name => ENV["SES_USERNAME"],
-    :password => ENV["SES_PASSWORD"],
-    :authentication => :login,
+    :user_name => ENV["EMAIL_USERNAME"],
+    :password => ENV["EMAIL_PASSWORD"],
+    :authentication => 'plain',
     :enable_starttls_auto => true
   }
 

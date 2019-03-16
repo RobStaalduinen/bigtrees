@@ -1,7 +1,7 @@
 class EstimateMailer < ApplicationMailer
  #default from: 'Big Tree Care <no-reply@bigtreeservices.ca>'
- default from: 'Big Tree Care <rob.staalduinen@gmail.com>'
-
+ default from: 'Big Tree Care <no-reply@bigtreeservices.ca>'
+ 
 	add_template_helper(ApplicationHelper)
 	 include Rails.application.routes.url_helpers
 	include ActionView::Helpers::UrlHelper
