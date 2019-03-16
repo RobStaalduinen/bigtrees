@@ -88,9 +88,9 @@ Rails.application.configure do
     :address => 'email-smtp.us-east-1.amazonaws.com',
     :port => 587,
     :domain => 'bigtreeservices.ca',
-    :user_name => ENV["EMAIL_USERNAME"],
-    :password => ENV["EMAIL_PASSWORD"],
-    :authentication => 'plain',
+    :user_name => ENV["SES_USERNAME"],
+    :password => ENV["SES_PASSWORD"],
+    :authentication => :login,
     :enable_starttls_auto => true
   }
 
