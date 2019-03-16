@@ -85,7 +85,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.smtp_settings = {
-    :address => 'smtp.sendgrid.net',
+    :address => 'email-smtp.us-east-1.amazonaws.com',
     :port => 587,
     :domain => 'bigtreeservices.ca',
     :user_name => ENV["EMAIL_USERNAME"],
