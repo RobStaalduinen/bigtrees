@@ -2,7 +2,7 @@ en:
   quote_mailout:
     new:
       content: |
-        Hi,
+        Hi %{name},
 
         As we discussed, your quote is attached with a firm price and all of our company information including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.
 
@@ -21,7 +21,7 @@ en:
         Tyler
     final:
       content: |
-        Hi,
+        Hi %{name},
 
         Here is your final invoice.
 
