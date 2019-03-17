@@ -23,6 +23,7 @@ require 'capistrano/figaro_yml'
 require 'capistrano/console'
 require 'capistrano/maintenance'
 require 'capistrano/delayed_job'
+require 'whenever/capistrano'
 
 
 require 'capistrano/rails/console'
