@@ -1,17 +1,17 @@
-<div class="container">
+<div class="page-container">
   <h3>Update costs</h3>
 
 
   <%= form_tag("/admin/submit_updated_costs", method: "post") do %>
   <%= hidden_field_tag("estimate_id", @estimate.id) %>
     <div id="update-costs">
-      <% @estimate.trees.each do |tree| %>
+      <% @estimate.trees.order("id ASC").each_with_index do |tree, i| %>
         <%= hidden_field_tag("trees[][id]", tree.id) %>
 
         <div id="form__box">
           <div id="form__header">
             <div id="form__element">
-              Tree #<%= tree.sequence + 1 %>
+              Tree #<%= i + 1 %>
             </div>
 
             <div id="form__element">

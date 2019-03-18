@@ -9,11 +9,11 @@ class EstimateMailer < ApplicationMailer
 	def estimate_alert(estimate_id)
 		@estimate = Estimate.find_by_id(estimate_id)
 
-		# if Rails.env.production?
-		# 	mail(to: 'Tbrewer@bigislandgroup.ca', bcc: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
-		# else
-		mail(to: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
-		# end
+		if Rails.env.production?
+			mail(to: 'Tbrewer@bigislandgroup.ca', bcc: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
+		else
+			mail(to: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
+		end
 	end
 
 	def test_email(recipient)

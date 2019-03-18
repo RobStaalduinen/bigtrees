@@ -8,7 +8,7 @@ class QuoteMailer < ApplicationMailer
 		@content = content
 		file = estimate.pdf_quote
 		attachments[estimate.pdf_file_name] = File.read(file)
-		# mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'tbrewer@bigislandgroup.ca'])
-		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
+		# mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
+		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'tbrewer@bigislandgroup.ca'])
   end
 end

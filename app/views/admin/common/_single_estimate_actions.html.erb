@@ -17,7 +17,7 @@
 
 <% if estimate.status == "quote_sent" %>
   <%= form_tag("/estimates/#{estimate.id}", method: "patch") do %>
-    <%= hidden_field_tag("estimate[status]", 4) %>
+    <%= hidden_field_tag("estimate[quote_accepted_date]", Date.today) %>
     <%= submit_tag("Accept Quote", id: 'single-estimate__action-button') %>
   <% end %>
 <% end %>

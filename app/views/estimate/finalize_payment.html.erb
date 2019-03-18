@@ -1,12 +1,13 @@
 
-<div class='container'>
+<div class='page-container'>
   <h3>Finalize Payment</h3>
   <%= form_tag("/estimates/#{@estimate.id}", method: 'patch') do %>
     
     <div class='form__box'>
-      <div class='form__row'>
+      <div class='form__row-vertical'>
         <b>Sign Discount Applied:</b>
         <%= hidden_field_tag 'estimate[discount_applied]', false %>
+        <br />
         <%= check_box_tag('estimate[discount_applied]', 1, @estimate.discount_applied, class:'form__checkbox')%>
       </div>
 
