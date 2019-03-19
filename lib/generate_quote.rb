@@ -51,10 +51,13 @@ class GenerateQuote
 
     tree_count = estimate.trees.count
 
-    worksheet[10 + tree_count][0].change_contents(estimate.extra_cost_notes)
-    worksheet[10 + tree_count][7].change_contents(estimate.extra_cost.to_f)
+    if estimate.extra_cost.present?
+      worksheet[10 + tree_count][0].change_contents(estimate.extra_cost_notes)
+      worksheet[10 + tree_count][7].change_contents(estimate.extra_cost.to_f)
+    end
 
-    subtotal = estimate.trees.sum(:cost) + estimate.extra_cost
+    subtotal = estimate.trees.sum(:cost)
+    subtotal += estimate.extra_cost if estimate.extra_cost.present?
 
     if estimate.discount_applied
       worksheet[10 + tree_count + 1][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
