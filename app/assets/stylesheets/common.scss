@@ -43,6 +43,12 @@
   align-items: center;
 }
 
+.contact-link{
+  text-decoration: none;
+  color: var(--main-color);
+  cursor: pointer;
+}
+
 @media(min-width: 760px){
   .page-container{
     max-width: 960px;
