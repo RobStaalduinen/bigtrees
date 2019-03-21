@@ -22,10 +22,6 @@
 #feature-box{
 	background-color: var(--main-color-transparent);
 
-	border-color: white;
-	border-style: solid;
-	border-width: 4px;
-
 	color: white;
 	font-size: 16px;
 
@@ -42,6 +38,9 @@
   margin-top: 10px;
   margin-bottom: 10px;
 
+  border-width: 0 0 6px 0;
+  border-style: solid;
+  border-color: var(--main-color-dark-transparent);
 }
 
 #arborist-title{
@@ -51,14 +50,14 @@
 #feature-inner-box{
 	text-align: center;
 
-	width: 90%;
+	width: 95%;
 
 	border-color: white;
 	border-style: solid;
 	border-width: 2px;
 
-  height: 80%;
-  padding: 10px;
+  height: 95%;
+  padding: 6px;
 
   display: flex;
   flex-direction: column;
@@ -103,19 +102,38 @@
 	z-index: 2;
 }
 
+#estimate-bar-top{
+  padding: 4px;
+  font-size: 18px;
+  background-color: var(--main-color);
+  color: white;
+
+  display: flex;
+  justify-content: center;
+
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--main-color-dark);
+}
+
 #estimate-bar{
 	width: 100%;
 	height: 80px;
 	background-color: var(--dark-grey);
-	display: flex;
+  display: flex;
+  flex-direction: column;
+  color: white;
 	align-items: center;
   justify-content: center;
   font-size: 18px;
+  padding: 8px 0;
 }
 
 #estimate-bar-internal{
   width: 100%;
   max-width: 960px;
+
+  padding: 16px;
 
   display: flex;
   align-items: center;
@@ -126,7 +144,6 @@
 	color: white;
 
 	height: 40px;
-	width: 70%;
 	float: left;
 
 	display: flex;
@@ -136,7 +153,7 @@
 
 #estimate-bar-button{
 	width: 100px;
-	height: 40px;
+	padding: 8px;
 	margin: 0 auto;
 
 	color: white;
@@ -194,17 +211,6 @@
 	#feature-box{
 		width: 95%;
   }
-  
-  #estimate-bar-internal{
-    padding: 0 16px;
-  }
-
-	#estimate-bar-description{
-		width: 65%;
-    margin-right: 2%;
-   
-    justify-content: flex-start;
-	}
 
 	#estimate-bar{
 		font-size: 16px;
@@ -222,10 +228,13 @@
     height: 220px;
     margin: 60px 0;
     font-size: 16px;
+
+    padding: 16px;
   }
 
   #feature-inner-box{
-    height: 160px;
+    width: 100%;
+    height: 100%;
   }
 
   #estimate-bar{
@@ -246,7 +255,6 @@
 
   #estimate-bar-button{
     width: 120px;
-    padding: 20px 5px;
   }
 
   #services{

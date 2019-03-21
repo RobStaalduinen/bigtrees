@@ -1,7 +1,7 @@
 
 #form__radio-box{
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
 
   //border-color: var(--main-color);
   border-color: var(--main-color-transparent);
@@ -46,6 +46,12 @@
   border-radius: 50%;
 }
 
+@media(min-width: 360px){
+  #form__radio-box{
+    width: 100px;
+    height: 100px;
+  }
+}
 
 
 /* When the checkbox is checked, add a background */

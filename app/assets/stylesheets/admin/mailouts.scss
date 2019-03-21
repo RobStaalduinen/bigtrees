@@ -1,3 +1,9 @@
 #mailouts__text-area{
   height: 1100px;
 }
+
+@media(min-width: 760px){
+  #mailouts__text-area{
+    height: 850px;
+  }
+}

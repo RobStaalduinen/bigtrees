@@ -26,7 +26,7 @@
             </div>
             <div id="form__element">
               Cost<br />
-              <%= number_field_tag("trees[][cost]", tree.cost) %>
+              <%= number_field_tag("trees[][cost]", tree.cost, step: :any) %>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
           </div>
           <div id="form__element">
             Cost<br />
-            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost) %>
+            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost, step: :any) %>
           </div>
         </div>
       </div>

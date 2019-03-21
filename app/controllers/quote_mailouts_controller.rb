@@ -11,6 +11,10 @@ class QuoteMailoutsController < ApplicationController
   def create
     @estimate = Estimate.find(params[:estimate_id])
 
+    if @estimate.email.blank?
+      @estimate.update(email: params[:dest_email])
+    end
+
     QuoteMailer.quote_email(@estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
 
     if params[:is_final] == 'true'
