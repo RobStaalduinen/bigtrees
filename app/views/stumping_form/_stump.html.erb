@@ -6,15 +6,14 @@
   function submitTree(){
     toggleLoading();
 
-    let backyardField = document.querySelector('input[name="in_backyard"]:checked')
+    let backyardField = document.querySelector('input[name="in_backyard"]:checked').value
 
-    let imageOne = document.querySelector('input[name="tree_images[0]"]')
-
-    let treeImages = [imageOne].filter(image => image.value != "").map(image => image.files[0]);
+    let imageOne = document.querySelector('input[name="tree_images[0]"]').files[0];
 
     const formData = new FormData();
 
-    formData.append('imageOne', imageOne.files[0]);
+    console.log(imageOne.files);
+    formData.append('imageOne', imageOne, imageOne.name);
 
 
     let params = {
@@ -26,19 +25,24 @@
       }
     }
 
-    postApi(
-      '/trees', 'POST', params
-    )
-    .then(function(response){
-      fetch(`/tree_images?tree_id=${response.tree_id}`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(function(response){
-        console.log(response); 
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("POST", `/trees`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){  
+      let response = JSON.parse(xmlhttp.response)
+      var imageHttp = new XMLHttpRequest();
+
+      imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
+      imageHttp.send(formData);
+
+      imageHttp.onload = function(){ 
+        console.log("images uploaded");
         advanceTree();
-      });
-    });
+      }
+    }
   }
 
   function setTreePageTitle(){

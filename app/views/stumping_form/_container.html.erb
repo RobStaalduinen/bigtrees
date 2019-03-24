@@ -55,16 +55,29 @@
       %>
     </div>
 
-  <div id="site-container" style="display: none;">
-    <%=
-      render 'stumping_form/site'
-    %>
+    <div id="site-container" style="display: none;">
+      <%=
+        render 'stumping_form/site'
+      %>
+    </div>
+
+    <div id="tree-container" style="display: none;">
+      <%=
+        render 'stumping_form/stump'
+      %>
+    </div>
+
+    <div id="contact-method-container" style="display: none;">
+      <%= 
+        render 'estimate_form/contact'
+      %>
+    </div>
+
+    <div id="thank-you-container" style="display: none;">
+      <%= 
+        render 'estimate_form/thank_you'
+      %>
+    </div>
   </div>
 
-  <div id="tree-container" style="display: none;">
-    <%=
-      render 'stumping_form/stump'
-    %>
-  </div>
-
-  </div>
+</div>
