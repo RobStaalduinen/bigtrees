@@ -1,0 +1,70 @@
+<script>
+  let treeNumber = 1;
+  let totalTrees = null;
+  let estimateId = null
+
+  function setId(id){
+    estimateId = id;
+  }
+
+  function setQuantity(quantity){
+    totalTrees = quantity;
+  }
+
+  function postApi(url, method, params){
+    return fetch(url, {
+      method: method,
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    .then(function(response){
+      console.log("RESPONDED WITH: " + response.status);
+      if(response.status >= 200 && response.status < 300){
+        return response.json();
+      }
+      else{
+        throw new Error(response.status);
+      }
+    })
+    .catch(function(err){
+      console.log("ERROR");
+    });
+  }
+
+  function updateSite(){
+    $("#site-container").fadeOut(600, function(){
+      $("#tree-container").fadeIn(600);
+    });
+  }
+  
+</script>
+
+<div class='estimate-container'>
+  <div id="estimate-form__info">
+    <%= render 'estimate_form/info' %>
+  </div>
+
+  <div id="estimate-form__inputs">
+    <div id="quantity-container">
+      <%= 
+        render 'stumping_form/quantity',
+        question: 'How many stumps need to be removed?'
+      %>
+    </div>
+
+  <div id="site-container" style="display: none;">
+    <%=
+      render 'stumping_form/site'
+    %>
+  </div>
+
+  <div id="tree-container" style="display: none;">
+    <%=
+      render 'stumping_form/stump'
+    %>
+  </div>
+
+  </div>

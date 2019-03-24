@@ -8,7 +8,7 @@ class Tree < ActiveRecord::Base
 		removal: 0,
 		trim: 1, 
 		broken_limbs: 2,
-		stump_remova: 3
+		stump_removal: 3
 	}
 
 	#WORK_NAMES={'removal' => "Removal", 'trim' => "Trim", 'broken_limbs' => "Broken Limbs"}

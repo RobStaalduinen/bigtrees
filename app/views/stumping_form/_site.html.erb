@@ -1,0 +1,74 @@
+<script>
+  function submitSite(){
+    let form = document.getElementById("site-form");
+
+    if(!form.checkValidity()){
+      document.getElementById('site-submit').click();
+      return;
+    }
+
+    let street = document.querySelector('input[name="street"]').value
+    let city = document.querySelector('input[name="city"]').value
+
+    let access_width = document.querySelector('select[name="access_width"]').value
+
+    let params = {
+      estimate:{
+        street: street,
+        city: city,
+        access_width: access_width
+      }
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("PUT", `/requests/${estimateId}`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){  
+      $("#site-container").fadeOut(600, function(){
+        $("#tree-container").fadeIn(600);
+      });
+    }
+  }
+</script>
+
+<%= form_tag('/#', method: :post, id: 'site-form') do %>
+<div id='estimate-form__container'>
+  <div id='estimate-form__question'>
+    Tell us a bit about your site.
+  </div>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      Street
+    </div>
+    <%= text_field_tag('street', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      City
+    </div>
+    <%= text_field_tag('city', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      How wide is the access(i.e backyard gate) to your stump(s)?
+    </div>
+    <div id='estimate-form__radio-question'>
+      <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>
+    </div>
+  </div>
+
+  <div id="estimate-form__submit" onClick="submitSite();">
+    Next
+  </div>
+
+  <%= submit_tag "Submit", style: 'display: none', id: 'site-submit' %>
+
+<% end %>
+
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190228210717) do
+ActiveRecord::Schema.define(version: 20190324144803) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(version: 20190228210717) do
     t.string   "payment_method"
     t.date     "final_invoice_sent_at"
     t.date     "cancelled_at"
+    t.boolean  "stumping_only",         default: false
+    t.string   "access_width"
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -122,6 +124,7 @@ ActiveRecord::Schema.define(version: 20190228210717) do
     t.string  "notes"
     t.string  "description"
     t.boolean "stump_removal"
+    t.boolean "in_backyard",   default: false
   end
 
   add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id"

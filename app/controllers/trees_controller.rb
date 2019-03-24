@@ -15,7 +15,7 @@ class TreesController < ApplicationController
 
     def tree_params
       params.require(:tree).permit(
-        :stump_removal, :description
+        :stump_removal, :description, :in_backyard
       )
     end
 end

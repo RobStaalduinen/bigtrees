@@ -1,0 +1,142 @@
+<script>
+  function getPageTitle(){
+    return "Stump #" + treeNumber
+  }
+
+  function submitTree(){
+    toggleLoading();
+
+    let backyardField = document.querySelector('input[name="in_backyard"]:checked')
+
+    let imageOne = document.querySelector('input[name="tree_images[0]"]')
+
+    let treeImages = [imageOne].filter(image => image.value != "").map(image => image.files[0]);
+
+    const formData = new FormData();
+
+    formData.append('imageOne', imageOne.files[0]);
+
+
+    let params = {
+      estimate_id: estimateId,
+      tree:{
+        work_type_string: 'Stump Removal',
+        in_backyard: backyardField
+
+      }
+    }
+
+    postApi(
+      '/trees', 'POST', params
+    )
+    .then(function(response){
+      fetch(`/tree_images?tree_id=${response.tree_id}`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(response){
+        console.log(response); 
+        advanceTree();
+      });
+    });
+  }
+
+  function setTreePageTitle(){
+    document.getElementById("tree-page-title").innerHTML = "Tree #" + treeNumber
+  }
+
+  function advanceTree(){
+    if(treeNumber < totalTrees){
+      treeNumber += 1;
+
+      $("#tree-container").fadeOut(600, function(){
+        document.getElementById("tree-form").reset();
+        toggleLoading();
+        setTreePageTitle();
+        $("#tree-container").fadeIn(600);
+      });
+    }
+    else{
+      $("#tree-container").fadeOut(600, function(){
+        $("#contact-method-container").fadeIn(600);
+      });
+    }
+  }
+
+  var loading = false;
+
+  function toggleLoading(){
+    let submit = document.getElementById("estimate-form__tree-submit");
+    let loadingIcon = document.getElementById("estimate-form__loading");
+
+    if(!loading){
+      loading = true;
+      submit.style.display = "none";
+      loadingIcon.style.display = "flex";
+    }
+    else{
+      loading = false;
+      submit.style.display = "flex";
+      loadingIcon.style.display = "none";
+    }
+  }
+
+  
+</script>
+
+<%= form_tag('/', method: 'post', id: 'tree-form') do %>
+
+  <div id='estimate-form__container'>
+    <div id='estimate-form__question'>
+      <span id="tree-page-title">Stump #1</span>
+    </div>
+
+    <div class='estimate-form__field-group' id='stump-removal'>
+      <div class='estimate-form__label'>
+        Is this stump in your back yard?
+      </div>
+      <div id='estimate-form__radio-question'>
+        <%= 
+          render 'form_components/radio_field',
+          label: 'No',
+          name: 'in_backyard',
+          value: false,
+          checked: true
+        %>
+
+        <%= 
+          render 'form_components/radio_field',
+          label: 'Yes',
+          name: 'in_backyard',
+          value: true,
+          checked: false
+        %>
+      </div>
+    </div>
+
+    <div class='estimate-form__uploader-group'>
+      <div class='estimate-form__label' id="image-label">
+        Upload a few images of Tree #1 (optional)
+      </div>
+
+      <script>
+        document.getElementById('image-label').innerHTML = `Upload a picture of ${getPageTitle()} (optional)`;
+      </script>
+      <%= 
+        render 'form_components/image_uploader',
+        name: 'tree_images[0]',
+        number: 1
+      %>
+    </div>
+
+
+    <div id="estimate-form__tree-submit" onClick="submitTree();">
+      Next
+    </div>
+
+    <div id="estimate-form__loading" style="display: none; justify-content: center; margin-top: 16px;">
+      <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
+    </div>
+
+  </div>  
+<% end %>
