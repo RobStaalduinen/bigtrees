@@ -1,13 +1,15 @@
 <section id='header-container'>
-  <section id='header-inner'>
-    <%= link_to "/" do %>
-      <%= image_tag "logo_horizontal.png", :id => 'header-logo' %>
-    <% end %>
+  <section id='header-container-inner'>
+    <section id='header-inner'>
+      <%= link_to "/" do %>
+        <%= image_tag "logo_horizontal.png", :id => 'header-logo' %>
+      <% end %>
 
-    <span class = "menu-icon" onclick="toggleMenu()"><i class="fa fa-bars"></i></li>
+      <span class = "menu-icon" onclick="toggleMenu()"><i class="fa fa-bars"></i></li>
+    </section>
+
+    <div id="header__nav-container">
+      <%= render 'layouts/common/nav' %>
+    </div>
   </section>
-
-  <div id="header__nav-container">
-    <%= render 'layouts/common/nav' %>
-  </div>
 </section>
