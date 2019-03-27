@@ -50,11 +50,21 @@
   margin-top: 16px;
 }
 
+#stumping-button-wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
 @media (min-width: 760px){
   #stumping-box{
     width: 50%;
     margin: 0;
     margin-top: 16px;
+  }
+
+  #stumping-button{
+    width: 160px;
   }
 
   #stumping-box-image{

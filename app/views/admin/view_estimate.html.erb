@@ -1,7 +1,7 @@
 <div class='page-container'>
   <%= render 'admin/common/back_button', back_link: '/admin/admin_panel'%>
 
-  <h2>Estimate #<%= @estimate.id %></h2>
+  <h2>Estimate #<%= @estimate.id %><%= " - Stumping Only" if @estimate.stumping_only %></h2>
   <%= render 'admin/view_estimate/view_estimate_timeline', estimate: @estimate %>
 
   <% if @estimate.arborist.present? %>

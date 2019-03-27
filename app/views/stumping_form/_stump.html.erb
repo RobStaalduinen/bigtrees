@@ -1,6 +1,6 @@
 <script>
   function getPageTitle(){
-    return "Stump #" + treeNumber
+    return "Stump #" + stumpNumber
   }
 
   function submitTree(){
@@ -12,9 +12,11 @@
 
     const formData = new FormData();
 
-    console.log(imageOne.files);
-    formData.append('imageOne', imageOne, imageOne.name);
-
+    let sendImage = false;
+    if(imageOne != null){
+      sendImage = true;
+      formData.append('imageOne', imageOne, imageOne.name);
+    }
 
     let params = {
       estimate_id: estimateId,
@@ -33,30 +35,36 @@
 
     xmlhttp.onload = function(){  
       let response = JSON.parse(xmlhttp.response)
-      var imageHttp = new XMLHttpRequest();
+      if(sendImage){
+        var imageHttp = new XMLHttpRequest();
 
-      imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
-      imageHttp.send(formData);
+        imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
+        imageHttp.send(formData);
 
-      imageHttp.onload = function(){ 
-        console.log("images uploaded");
+        imageHttp.onload = function(){ 
+          console.log("images uploaded");
+          advanceTree();
+        }
+      }
+      else{
         advanceTree();
       }
     }
   }
 
   function setTreePageTitle(){
-    document.getElementById("tree-page-title").innerHTML = "Tree #" + treeNumber
+    document.getElementById("tree-page-title").innerHTML = "Stump #" + stumpNumber
   }
 
   function advanceTree(){
-    if(treeNumber < totalTrees){
-      treeNumber += 1;
+    if(stumpNumber < totalTrees){
+      stumpNumber += 1;
 
       $("#tree-container").fadeOut(600, function(){
         document.getElementById("tree-form").reset();
         toggleLoading();
         setTreePageTitle();
+        setImageText();
         $("#tree-container").fadeIn(600);
       });
     }
@@ -65,6 +73,10 @@
         $("#contact-method-container").fadeIn(600);
       });
     }
+  }
+
+  function setImageText(){
+    document.getElementById('image-label').innerHTML = `Upload a picture of ${getPageTitle()} (optional)`;
   }
 
   var loading = false;
@@ -97,7 +109,7 @@
 
     <div class='estimate-form__field-group' id='stump-removal'>
       <div class='estimate-form__label'>
-        Is this stump in your back yard?
+        Is this stump in your backyard?
       </div>
       <div id='estimate-form__radio-question'>
         <%= 
@@ -120,12 +132,9 @@
 
     <div class='estimate-form__uploader-group'>
       <div class='estimate-form__label' id="image-label">
-        Upload a few images of Tree #1 (optional)
+        Upload a picture of Stump #1 (optional)
       </div>
 
-      <script>
-        document.getElementById('image-label').innerHTML = `Upload a picture of ${getPageTitle()} (optional)`;
-      </script>
       <%= 
         render 'form_components/image_uploader',
         name: 'tree_images[0]',

@@ -1,29 +1,31 @@
 <section id="admin-container">
 	<div id="admin-nav-bar">		
-		<div id="admin-nav-element" class="form__submit">
-			<%= link_to '/receipts/new', class: "form__submit-link" do %>
+		
+		<%= link_to '/receipts/new', class: "form__submit-link" do %>
+			<div id="admin-nav-element" class="form__submit">	
 				Create Receipt
-			<% end %>
-		</div>
-			<div id="admin-nav-element" class="form__submit">
-				<%= link_to '/receipts', class: "form__submit-link" do %>
-					My Receipts
-				<% end %>
 			</div>
+		<% end %>
+
+		<%= link_to '/receipts', class: "form__submit-link" do %>
+			<div id="admin-nav-element" class="form__submit">
+				My Receipts
+			</div>
+		<% end %>
 	</div>
 
 	<div id="admin-nav-bar">		
-		<div id="admin-nav-element" class="form__submit">
-			<%= link_to '/vehicles', class: "form__submit-link" do %>
+		<%= link_to '/vehicles', class: "form__submit-link" do %>
+			<div id="admin-nav-element" class="form__submit">
 				Vehicles
-			<% end %>
-		</div>
+			</div>
+		<% end %>
 
-		<div id="admin-nav-element" class="form__submit">
-			<%= link_to '/arborists', class: "form__submit-link" do %>
+		<%= link_to '/arborists', class: "form__submit-link" do %>
+			<div id="admin-nav-element" class="form__submit">
 				Arborists
-			<% end %>
-		</div>
+			</div>
+		<% end %>
 
 	</div>
 

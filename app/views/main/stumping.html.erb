@@ -1,3 +1,19 @@
+<script>
+  function scrollToEstimate(){
+    var hash = (window.location.hash).replace('#', '');
+
+    if(hash.length > 0 && hash == 'estimate'){
+        setTimeout(function(){ 
+          document.getElementById('stumping__estimate').scrollIntoView({ 
+          behavior: 'smooth' 
+        }); 
+      }, 100);
+
+    }
+   
+  }
+</script>
+
 <% content_for :title, "Stump Grinding services Services" %>
 <% content_for :description, "Stump griding services in Ontario, Toronto and the GTA" %>
 
@@ -67,4 +83,12 @@
     </div>
   </div>
 
+  <div id="stumping__estimate">
+    <%= render 'stumping_form/container' %>
+  </div>
+  <script>
+    $(window).bind("load", function() {
+      scrollToEstimate();
+    });
+  </script>
 </div>

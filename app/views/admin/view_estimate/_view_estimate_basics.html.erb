@@ -55,43 +55,55 @@
   </div>
 
 
-
+  
   <div id="view-estimate__box">
     <span class="text-large" id="view-estimate__box-header">Site Info</span>
 
-    <div id='view-estimate__row'>
+    <% unless estimate.stumping_only %>
+      <div id='view-estimate__row'>
 
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Vehicle Access
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Vehicle Access
+          </div>
+          <div>
+            <%= estimate.answer_for(:vehicle_access) %>
+          </div>
         </div>
-        <div>
-          <%= estimate.answer_for(:vehicle_access) %>
+
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Breakables
+          </div>
+          <div>
+            <%= estimate.answer_for(:breakables) %>
+          </div>
         </div>
+        
       </div>
 
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Breakables
+      <div id='view-estimate__row'>
+
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Wood Removal
+          </div>
+          <div>
+            <%= estimate.answer_for(:wood_removal) %>
+          </div>
         </div>
-        <div>
-          <%= estimate.answer_for(:breakables) %>
+
+      </div>
+    <% else %>
+      <div id='view-estimate__row'>
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Gate Width
+          </div>
+          <div>
+            <%= estimate.access_width %>
+          </div>
         </div>
       </div>
-      
-    </div>
-
-    <div id='view-estimate__row'>
-
-
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Wood Removal
-        </div>
-        <div>
-          <%= estimate.answer_for(:wood_removal) %>
-        </div>
-      </div>
-
-    </div>
+    <% end %>
   </div>

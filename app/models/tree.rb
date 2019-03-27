@@ -18,6 +18,10 @@ class Tree < ActiveRecord::Base
 		Tree::WORK_TYPES.index(name)
 	end
 
+	def work_name
+		self.work_type.capitalize.gsub("_", " ")
+	end
+
 	def stump_removal_answer
 		self.stump_removal? ? 'Yes' : 'No'
 	end

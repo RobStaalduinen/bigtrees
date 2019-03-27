@@ -20,7 +20,7 @@ class AdminController < ApplicationController
 	end
 
 def admin_panel
-	@estimates = Estimate.submitted
+	@estimates = Estimate.submitted.order('id DESC')
 	@receipt_number = current_user.receipts.count
 	# @current_start_date = SiteConfig.where(attribute_name: "start_date").first.attribute_value
 end
