@@ -27,7 +27,8 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :street, :city, :wood_removal, :breakables, :vehicle_access,
-        :person_name, :email, :phone, :submission_completed, :stumping_only, :access_width
+        :person_name, :email, :phone, :submission_completed, :stumping_only, :access_width,
+        :preferred_contact
       )
     end
 

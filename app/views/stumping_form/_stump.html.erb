@@ -18,6 +18,12 @@
       formData.append('imageOne', imageOne, imageOne.name);
     }
 
+    console.log(backyardField);
+    if(backyardField == 'true'){
+      console.log("setting...");
+      displayAccess = true;
+    }
+
     let params = {
       estimate_id: estimateId,
       tree:{
@@ -69,9 +75,7 @@
       });
     }
     else{
-      $("#tree-container").fadeOut(600, function(){
-        $("#contact-method-container").fadeIn(600);
-      });
+      nextForm();
     }
   }
 

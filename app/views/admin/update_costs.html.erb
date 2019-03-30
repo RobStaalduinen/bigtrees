@@ -5,10 +5,12 @@
   <%= form_tag("/admin/submit_updated_costs", method: "post") do %>
   <%= hidden_field_tag("estimate_id", @estimate.id) %>
     <div id="update-costs">
+    <% include_identifier = @estimate.trees.count > 1 %>
+
       <% @estimate.trees.order("id ASC").each_with_index do |tree, i| %>
         <%= hidden_field_tag("trees[][id]", tree.id) %>
 
-        <div id="form__box">
+        <div class="form__box">
           <div id="form__header">
             <div id="form__element">
               Tree #<%= i + 1 %>
@@ -19,32 +21,49 @@
             </div>
           </div>
 
-          <div id="form__row">
+          <% identifier = include_identifier ? "##{i+1}" : nil %>          
+          <% notes = tree.notes || tree.formatted_work_name(identifier) %>
+          <div id="form__row-vertical">
             <div id="form__element">
-              Notes<br />
-              <%= text_field_tag("trees[][notes]", tree.notes) %>
+              Notes
             </div>
             <div id="form__element">
-              Cost<br />
-              <%= number_field_tag("trees[][cost]", tree.cost, step: :any) %>
+              <%= text_field_tag("trees[][notes]", notes, class: 'form-text-field') %>
             </div>
           </div>
+
+          <div id="form__row-vertical">
+            <div id="form__element">
+              Cost
+            </div>
+            <div id="form__element">
+              <%= number_field_tag("trees[][cost]", tree.cost, step: :any, class: 'form-text-field') %>
+            </div>
+          </div>
+
         </div>
       <% end %>
 
-      <div id="form__box">
+      <div class="form__box">
         <div id="form__header">
           Other Costs
         </div>
 
-        <div id="form__row">
+        <div id="form__row-vertial">
           <div id="form__element">
-            Notes<br />
-            <%= text_field_tag("estimate[extra_cost_notes]", @estimate.extra_cost_notes) %>
+            Notes
           </div>
           <div id="form__element">
-            Cost<br />
-            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost, step: :any) %>
+            <%= text_field_tag("estimate[extra_cost_notes]", @estimate.extra_cost_notes, class: 'form-text-field') %>
+          </div>
+        </div>
+
+        <div id="form__row-vertial">
+          <div id="form__element">
+            Cost
+          </div>
+          <div id="form__element">
+            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost, step: :any, class: 'form-text-field') %>
           </div>
         </div>
       </div>

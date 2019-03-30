@@ -16,6 +16,15 @@
       </div>
     </div>
 
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Preferred Contact
+      </div>
+      <div>
+        <%= estimate.preferred_contact_method %>
+      </div>
+    </div>
+
 
     <div id='view-estimate__row-vertical'>
       <div id="view_estimate__entry-header">
@@ -95,15 +104,20 @@
 
       </div>
     <% else %>
-      <div id='view-estimate__row'>
-        <div id='view-estimate__row-entry'>
-          <div id="view_estimate__entry-header">
-            Gate Width
-          </div>
-          <div>
-            <%= estimate.access_width %>
+        <div id='view-estimate__row'>
+          <div id='view-estimate__row-entry'>
+            <div id="view_estimate__entry-header">
+              Gate Width
+            </div>
+            <div>
+              <% unless estimate.access_width.blank? %>
+                <%= estimate.access_width %>
+              <% else %>
+                All stumps in front yard
+              <% end %>
+            </div>
           </div>
         </div>
-      </div>
+
     <% end %>
   </div>

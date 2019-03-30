@@ -16,8 +16,11 @@
       estimate:{
         street: street,
         city: city,
-        access_width: access_width
       }
+    }
+
+    if(displayAccess){
+      params.estimate.access_width = access_width;
     }
 
     var xmlhttp = new XMLHttpRequest();
@@ -27,9 +30,19 @@
     xmlhttp.send(JSON.stringify(params));
 
     xmlhttp.onload = function(){  
-      $("#site-container").fadeOut(600, function(){
-        $("#tree-container").fadeIn(600);
-      });
+      nextForm();
+    }
+  }
+
+  function setupQuestions(){
+    let accessField = document.getElementById("access-question");
+
+    console.log(displayAccess);
+    if(displayAccess){
+      accessField.style.display = 'flex';
+    }
+    else{
+      accessField.style.display = 'none';
     }
   }
 </script>
@@ -54,7 +67,7 @@
     <%= text_field_tag('city', '' , id: 'estimate-form__field', required: true) %>
   </div>
 
-  <div class='estimate-form__field-group'>
+  <div class='estimate-form__field-group' id ='access-question' style="display: none;">
     <div class='estimate-form__label'>
       How wide is the access(i.e backyard gate) to your stump(s)?
     </div>

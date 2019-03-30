@@ -6,12 +6,21 @@
     let emailField = document.querySelector('input[name="email"]')
     let phoneGroup = document.getElementById('phone-group')
     let phoneField = document.querySelector('input[name="phone"]')
+    let phoneLabel = document.getElementById('phone-label')
 
     if(contactMethod == 'phone'){
       emailGroup.style.display = 'none';
       emailField.required = false;
       phoneGroup.style.display = 'flex';
       phoneField.required = true;
+      phoneLabel.innerHTML = 'Phone Number'
+    }
+    else if(contactMethod == 'text'){
+      emailGroup.style.display = 'none';
+      emailField.required = false;
+      phoneGroup.style.display = 'flex';
+      phoneField.required = true;
+      phoneLabel.innerHTML = 'Mobile Number'
     }
     else{
       emailGroup.style.display = 'flex';
@@ -23,6 +32,7 @@
 
   function submitContact(){
     let form = document.getElementById("contact-form");
+    let contactMethod = document.querySelector('input[name="contact_method"]:checked').value
 
     if(!form.checkValidity()){
       document.getElementById('contact-submit').click();
@@ -38,21 +48,22 @@
         person_name: name,
         email: email,
         phone: phone,
-        submission_completed: true
+        submission_completed: true,
+        preferred_contact: contactMethod
       } 
     }
 
-    postApi(
-      `/requests/${estimateId}`, 'PUT', params
-    )
-    .then(function(response){
-      console.log(response);
-      
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("PUT", `/requests/${estimateId}`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){  
       $("#contact-method-container").fadeOut(600, function(){
         $("#thank-you-container").fadeIn(600);
       });
-
-    });
+    }
   }
 </script>
 
@@ -66,9 +77,18 @@
       <%= 
         render 'form_components/radio_box', 
         name: 'contact_method',
+        label: 'Email',
+        value: 'email',
+        smallLabel: true,
+        checked: 'checked',
+        onChange: 'changeContactQuestion();'
+      %>
+
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
         label: 'Phone',
         value: 'phone',
-        checked: 'checked',
         smallLabel: true,
         onChange: 'changeContactQuestion();'
       %>
@@ -76,25 +96,25 @@
       <%= 
         render 'form_components/radio_box', 
         name: 'contact_method',
-        label: 'Email',
-        value: 'email',
+        label: 'Text',
+        value: 'text',
         smallLabel: true,
         onChange: 'changeContactQuestion();'
       %>
     </div>
 
-    <div class='estimate-form__field-group' id="phone-group">
-      <div class='estimate-form__label'>
-        Phone Number
-      </div>
-      <%= text_field_tag('phone', '' , id: 'estimate-form__field', required: true) %>
-    </div>
-
-    <div class='estimate-form__field-group' style="display: none;" id="email-group">
+    <div class='estimate-form__field-group' id="email-group">
       <div class='estimate-form__label'>
         Email
       </div>
-      <%= text_field_tag('email', '' , id: 'estimate-form__field') %>
+      <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
+    </div>
+
+    <div class='estimate-form__field-group'  style="display: none;" id="phone-group">
+      <div class='estimate-form__label' id='phone-label'>
+        Phone Number
+      </div>
+      <%= text_field_tag('phone', '' , id: 'estimate-form__field') %>
     </div>
 
     <div class='estimate-form__field-group'>

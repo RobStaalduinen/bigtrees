@@ -18,6 +18,10 @@ class Tree < ActiveRecord::Base
 		Tree::WORK_TYPES.index(name)
 	end
 
+	def formatted_work_name(identifier)
+		[WORK_TYPES[self[:work_type]], identifier].compact.join(" ")
+	end
+
 	def work_name
 		self.work_type.capitalize.gsub("_", " ")
 	end

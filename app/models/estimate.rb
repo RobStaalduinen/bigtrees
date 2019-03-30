@@ -63,7 +63,11 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def contact_methods
-		[self.phone, self.email].join(" | ")
+		[self.phone, self.email].compact.join(" | ")
+	end
+
+	def preferred_contact_method
+		self.preferred_contact.present? ? self.preferred_contact.capitalize : "None given"
 	end
 
 	def total_cost
