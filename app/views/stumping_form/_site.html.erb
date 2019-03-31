@@ -37,7 +37,6 @@
   function setupQuestions(){
     let accessField = document.getElementById("access-question");
 
-    console.log(displayAccess);
     if(displayAccess){
       accessField.style.display = 'flex';
     }
@@ -69,7 +68,7 @@
 
   <div class='estimate-form__field-group' id ='access-question' style="display: none;">
     <div class='estimate-form__label'>
-      How wide is the access(i.e backyard gate) to your stump(s)?
+      How wide is the access to your backyard?
     </div>
     <div id='estimate-form__radio-question'>
       <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>

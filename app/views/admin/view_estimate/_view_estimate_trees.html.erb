@@ -13,9 +13,12 @@
 <% estimate.trees.each_with_index do |tree, i| %>
   <div id="view-estimate__tree-header" >Tree #<%= i + 1 %> - <%= tree.work_name %></div>
 
-  <% if tree.work_type == 'removal' %>
+  <% if tree.work_type == 'removal' || tree.work_type == 'stump_removal' %>
     <div id="view-estimate__stump">
-      <b>Stump Removal: </b> <%= tree.stump_removal_answer %>
+      <b>Stump Removal: </b> <%= tree.stump_removal_answer %> <br />
+      <% if tree.stump_removal_answer == 'Yes' %>
+        <b>In Backyard: </b> <%= tree.in_backyard ? "Yes" : "No" %>
+      <% end %>
     </div>
   <% end %>
 

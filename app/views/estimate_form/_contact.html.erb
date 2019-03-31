@@ -60,9 +60,7 @@
     xmlhttp.send(JSON.stringify(params));
 
     xmlhttp.onload = function(){  
-      $("#contact-method-container").fadeOut(600, function(){
-        $("#thank-you-container").fadeIn(600);
-      });
+      nextForm();
     }
   }
 </script>

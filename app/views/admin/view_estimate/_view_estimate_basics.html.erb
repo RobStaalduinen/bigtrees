@@ -31,7 +31,13 @@
         Email
       </div>
       <div>
-        <%= estimate.email %>
+        <% if estimate.email.present? %>
+          <a href="mailto:<%= estimate.email %>">
+            <%= estimate.email %>
+          </a>
+        <% else %>
+          -
+        <% end %>
       </div>
     </div>
 
@@ -40,7 +46,13 @@
         Phone
       </div>
       <div>
-        <%= estimate.phone %>
+        <% if estimate.phone.present? %>
+          <a href="tel:<%= estimate.phone %>">
+            <%= estimate.phone %>
+          </a>
+        <% else %>
+          -
+        <% end %>
       </div>
     </div>
   </div>
@@ -103,21 +115,21 @@
         </div>
 
       </div>
-    <% else %>
-        <div id='view-estimate__row'>
-          <div id='view-estimate__row-entry'>
-            <div id="view_estimate__entry-header">
-              Gate Width
-            </div>
-            <div>
-              <% unless estimate.access_width.blank? %>
-                <%= estimate.access_width %>
-              <% else %>
-                All stumps in front yard
-              <% end %>
-            </div>
+    <% end %>
+
+      <div id='view-estimate__row'>
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Gate Width
+          </div>
+          <div>
+            <% if estimate.should_display_access? %>
+              <%= estimate.access_width %>
+            <% else %>
+              N/A
+            <% end %>
           </div>
         </div>
+      </div>
 
-    <% end %>
   </div>

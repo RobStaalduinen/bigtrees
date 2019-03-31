@@ -1,5 +1,7 @@
+<% onChange ||= nil %>
+
 <label id="estimate-form__radio-box">
-  <%= radio_button_tag(name, value, checked) %>
+  <%= radio_button_tag(name, value, checked, onChange: onChange) %>
   <span id="form__radio-box-checkmark">
     <span id="form__radio-box-checkmark-inner">
 

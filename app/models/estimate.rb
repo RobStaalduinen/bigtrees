@@ -103,6 +103,10 @@ class Estimate < ActiveRecord::Base
 	def self.next_invoice_number
 		(Estimate.select("invoice_number").order("estimates.invoice_number DESC").first.invoice_number || 19207) + 1
 	end
+
+	def should_display_access?
+		self.trees.stumping_possible.any? && self.trees.pluck(:in_backyard).any?
+	end
 	
 
 	def set_status

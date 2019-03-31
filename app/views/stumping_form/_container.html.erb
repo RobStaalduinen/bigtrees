@@ -1,9 +1,9 @@
 <script>
-  let stumpNumber = 1;
-  let totalTrees = null;
-  let estimateId = null
-  let currentStep = 'quantity'
-  let displayAccess = false;
+  var stumpNumber = 1;
+  var totalTrees = null;
+  var estimateId = null;
+  var currentStep = 'quantity';
+  var displayAccess = false;
 
   function setId(id){
     estimateId = id;
@@ -32,8 +32,8 @@
     }
     else if(currentStep == 'contact'){
       fadeOut = "#contact-method-container";
-      fadeIn = "#contact-method-container";
-      currentStep = "contact";
+      fadeIn = "#thank-you-container";
+      currentStep = "thank-you";
     }
 
     $(fadeOut).fadeOut(600, function(){

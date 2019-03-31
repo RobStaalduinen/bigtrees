@@ -1,7 +1,9 @@
 <script>
-  let treeNumber = 1;
-  let totalTrees = null;
-  let estimateId = null
+  var treeNumber = 1;
+  var totalTrees = null;
+  var estimateId = null;
+  var currentStep = 'quantity';
+  var displayAccess = false;
 
   function setId(id){
     estimateId = id;
@@ -11,32 +13,31 @@
     totalTrees = quantity;
   }
 
-  function postApi(url, method, params){
-    return fetch(url, {
-      method: method,
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(params)
-    })
-    .then(function(response){
-      console.log("RESPONDED WITH: " + response.status);
-      if(response.status >= 200 && response.status < 300){
-        return response.json();
-      }
-      else{
-        throw new Error(response.status);
-      }
-    })
-    .catch(function(err){
-      console.log("ERROR");
-    });
-  }
+  function nextForm(){
+    if(currentStep == 'quantity'){
+      fadeOut = "#quantity-container";
+      fadeIn = "#tree-container";
+      currentStep = "trees";
+    }
+    else if(currentStep == 'trees'){
+      setupQuestions();
+      fadeOut = "#tree-container";
+      fadeIn = "#site-container";
+      currentStep = "site";
+    }
+    else if(currentStep == 'site'){
+      fadeOut = "#site-container";
+      fadeIn = "#contact-method-container";
+      currentStep = "contact";
+    }
+    else if(currentStep == 'contact'){
+      fadeOut = "#contact-method-container";
+      fadeIn = "#thank-you-container";
+      currentStep = "thank-you";
+    }
 
-  function updateSite(){
-    $("#site-container").fadeOut(600, function(){
-      $("#tree-container").fadeIn(600);
+    $(fadeOut).fadeOut(600, function(){
+      $(fadeIn).fadeIn(600);
     });
   }
   
@@ -55,15 +56,15 @@
       %>
     </div>
 
-    <div id="site-container" style="display: none;">
-      <%=
-        render 'estimate_form/site'
-      %>
-    </div>
-
     <div id="tree-container" style="display: none;">
       <%=
         render 'estimate_form/tree'
+      %>
+    </div>
+
+    <div id="site-container" style="display: none;">
+      <%=
+        render 'estimate_form/site'
       %>
     </div>
 

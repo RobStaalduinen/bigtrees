@@ -8,7 +8,7 @@
       }
     }
     // Set quantity from form data
-    totalTrees = quantity;
+   setQuantity(quantity);
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -17,14 +17,10 @@
     xmlhttp.send(JSON.stringify(params));
 
     xmlhttp.onload = function(){
-      console.log(xmlhttp.response);
       let response = JSON.parse(xmlhttp.response)
-      estimateId = response.estimate_id;
-      console.log(estimateId);
+      setId(response.estimate_id);
       
-      $("#quantity-container").fadeOut(600, function(){
-        $("#site-container").fadeIn(600);
-      });
+      nextForm();
     }
 
   }

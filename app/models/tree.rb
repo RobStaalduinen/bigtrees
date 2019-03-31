@@ -4,6 +4,8 @@ class Tree < ActiveRecord::Base
 	
 	accepts_nested_attributes_for :tree_images
 
+	scope :stumping_possible, -> { where(work_type: [1,3]) }
+
   enum work_type: { 
 		removal: 0,
 		trim: 1, 
@@ -27,6 +29,6 @@ class Tree < ActiveRecord::Base
 	end
 
 	def stump_removal_answer
-		self.stump_removal? ? 'Yes' : 'No'
+		(self.work_type == 'stump_removal' || self.stump_removal == true) ? 'Yes' : 'No'
 	end
 end

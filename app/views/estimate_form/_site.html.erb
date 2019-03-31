@@ -7,12 +7,13 @@
       return;
     }
 
-    let street = document.querySelector('input[name="street"]').value
-    let city = document.querySelector('input[name="city"]').value
+    let street = document.querySelector('input[name="street"]').value;
+    let city = document.querySelector('input[name="city"]').value;
 
-    let wood = document.querySelector('input[name="wood_removal"]:checked').value
-    let vehicle = document.querySelector('input[name="vehicle_access"]:checked').value
-    let breakables = document.querySelector('input[name="breakables"]:checked').value
+    let wood = document.querySelector('input[name="wood_removal"]:checked').value;
+    let vehicle = document.querySelector('input[name="vehicle_access"]:checked').value;
+    let breakables = document.querySelector('input[name="breakables"]:checked').value;
+    let access_width = document.querySelector('select[name="access_width"]').value;
 
     let params = {
       estimate:{
@@ -20,22 +21,37 @@
         city: city,
         wood_removal: wood,
         vehicle_access: vehicle,
-        breakables: breakables
+        breakables: breakables,
+
       }
     }
-    
-    postApi(
-      `/requests/${estimateId}`, 'PUT', params
-    )
-    .then(function(response){
-      console.log(response);
-      
-      $("#site-container").fadeOut(600, function(){
-        $("#tree-container").fadeIn(600);
-      });
 
-    });
+    if(displayAccess){
+      params.estimate.access_width = access_width;
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("PUT", `/requests/${estimateId}`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){  
+      nextForm();
+    }
   }
+
+  function setupQuestions(){
+    let accessField = document.getElementById("access-question");
+
+    if(displayAccess){
+      accessField.style.display = 'flex';
+    }
+    else{
+      accessField.style.display = 'none';
+    }
+  }
+
 </script>
 
 <%= form_tag('/#', method: :post, id: 'site-form') do %>
@@ -124,6 +140,15 @@
         value: true,
         checked: false
       %>
+    </div>
+  </div>
+
+  <div class='estimate-form__field-group' id ='access-question' style="display: none;">
+    <div class='estimate-form__label'>
+      How wide is the access to your trees(s)?
+    </div>
+    <div id='estimate-form__radio-question'>
+      <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>
     </div>
   </div>
 
