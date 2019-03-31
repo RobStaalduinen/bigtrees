@@ -12,10 +12,10 @@ class GenerateMasterTracker
     worksheet = workbook[0]
 
     estimates = estimates.includes(:trees).includes(:arborist)
-    contact = estimate.preferred_contact || ""
 
     estimates.each_with_index do |estimate, i|
       row = 2 + i
+      contact = estimate.preferred_contact || ""
 
       insert(worksheet, row, 0, estimate.invoice_number)
       insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%y"))
