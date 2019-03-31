@@ -23,7 +23,7 @@ class GenerateMasterTracker
       insert(worksheet, row, 4, estimate.city)
       insert(worksheet, row, 5, estimate.trees.count)
       insert(worksheet, row, 6, estimate.trees.first.work_name)
-      # Preferred Contact Method -- TO INSERT
+      insert(worksheet, row, 7, estimate.preferred_contact.capitalize rescue " ")
       insert(worksheet, row, 8, estimate.phone)
       insert(worksheet, row, 9, estimate.email)
       insert(worksheet, row, 10, estimate.total_cost)
