@@ -4,7 +4,7 @@ class Tree < ActiveRecord::Base
 	
 	accepts_nested_attributes_for :tree_images
 
-	scope :stumping_possible, -> { where(work_type: [1,3]) }
+	scope :stumping_possible, -> { where(work_type: [0,3]) }
 
   enum work_type: { 
 		removal: 0,
