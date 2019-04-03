@@ -8,26 +8,26 @@
     let phoneField = document.querySelector('input[name="phone"]')
     let phoneLabel = document.getElementById('phone-label')
 
-    if(contactMethod == 'phone'){
-      emailGroup.style.display = 'none';
-      emailField.required = false;
-      phoneGroup.style.display = 'flex';
-      phoneField.required = true;
-      phoneLabel.innerHTML = 'Phone Number'
-    }
-    else if(contactMethod == 'text'){
-      emailGroup.style.display = 'none';
-      emailField.required = false;
-      phoneGroup.style.display = 'flex';
-      phoneField.required = true;
-      phoneLabel.innerHTML = 'Mobile Number'
-    }
-    else{
-      emailGroup.style.display = 'flex';
-      emailField.required = true;
-      phoneGroup.style.display = 'none';
-      phoneField.required = false;
-    }
+    // if(contactMethod == 'phone'){
+    //   emailGroup.style.display = 'none';
+    //   emailField.required = false;
+    //   phoneGroup.style.display = 'flex';
+    //   phoneField.required = true;
+    //   phoneLabel.innerHTML = 'Phone Number'
+    // }
+    // else if(contactMethod == 'text'){
+    //   emailGroup.style.display = 'none';
+    //   emailField.required = false;
+    //   phoneGroup.style.display = 'flex';
+    //   phoneField.required = true;
+    //   phoneLabel.innerHTML = 'Mobile Number'
+    // }
+    // else{
+    //   emailGroup.style.display = 'flex';
+    //   emailField.required = true;
+    //   phoneGroup.style.display = 'none';
+    //   phoneField.required = false;
+    // }
   }
 
   function submitContact(){
@@ -68,7 +68,7 @@
 <%= form_tag('/#', method: :post, id: 'contact-form') do %>
 <div id='estimate-form__container'>
   <div id='estimate-form__question'>
-    How should we contact you?
+    How would you prefer we contact you?
   </div>
 
     <div id="estimate-form__radio-buttons">
@@ -78,8 +78,7 @@
         label: 'Email',
         value: 'email',
         smallLabel: true,
-        checked: 'checked',
-        onChange: 'changeContactQuestion();'
+        checked: 'checked'
       %>
 
       <%= 
@@ -87,8 +86,7 @@
         name: 'contact_method',
         label: 'Phone',
         value: 'phone',
-        smallLabel: true,
-        onChange: 'changeContactQuestion();'
+        smallLabel: true
       %>
 
       <%= 
@@ -96,8 +94,7 @@
         name: 'contact_method',
         label: 'Text',
         value: 'text',
-        smallLabel: true,
-        onChange: 'changeContactQuestion();'
+        smallLabel: true
       %>
     </div>
 
@@ -108,7 +105,7 @@
       <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
     </div>
 
-    <div class='estimate-form__field-group'  style="display: none;" id="phone-group">
+    <div class='estimate-form__field-group' id="phone-group">
       <div class='estimate-form__label' id='phone-label'>
         Phone Number
       </div>

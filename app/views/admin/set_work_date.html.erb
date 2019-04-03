@@ -32,5 +32,10 @@
   $('#work-date-picker').datepicker({
     format: "dd/mm/yyyy",
     autoclose: true
-});
+  });
+
+  $('#work-date-picker').on('click', function(e) {
+    e.preventDefault();
+    $(this).attr("autocomplete", "off");  
+  });
 </script>
