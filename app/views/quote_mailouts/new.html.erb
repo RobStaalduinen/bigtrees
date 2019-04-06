@@ -1,3 +1,13 @@
+<script>
+  function startSend(){
+    var submit = document.getElementById("submit-button");
+    var loader = document.getElementById("loader");
+
+    submit.style.display = "none";
+    loader.style.display = "block";
+  }
+</script>
+
 <div class='container'>
   <h3>Mailout new quote</h3>
   <% if @is_final %>
@@ -34,7 +44,10 @@
       </div>
 
       <div class='content__row-vertical'>
-        <%= submit_tag('Submit', class: "form__submit") %>
+        <%= submit_tag('Submit', class: "form__submit", id: 'submit-button', onclick: "startSend();") %>
+        <div id="loader" style="display: none; width: 100%; justify-content: center; margin-top: 16px;">
+          <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
+        </div>
       </div>
 
     <% end %>
