@@ -6,6 +6,8 @@ SitemapGenerator::Sitemap.create do
   add '/main/services'
   add '/main/commercial'
   add '/main/contact_us'
+  add '/main/stumping'
+  add '/main/careers'
 
   add '/requests/new'
   # Put links creation logic here.
