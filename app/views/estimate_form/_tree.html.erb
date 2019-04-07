@@ -56,26 +56,16 @@
       description = descriptionField.value; 
     }
 
-    let imageOne = document.querySelector('input[name="tree_images[0]"]').files[0];
-    let imageTwo = document.querySelector('input[name="tree_images[1]"]').files[0];
-    let imageThree = document.querySelector('input[name="tree_images[2]"]').files[0];
-
+    var treeImages = document.querySelectorAll('input[name^="tree_images"]');
+    var sendImage = false;
     const formData = new FormData();
-    let sendImage = false;
 
-    if(imageOne != null){
-      formData.append('imageOne', imageOne, imageOne.name);
-      sendImage = true
-    }
-
-    if(imageTwo != null){
-      formData.append('imageTwo', imageTwo, imageTwo.name);
-      sendImage = true
-    }
-
-    if(imageThree != null){
-      formData.append('imageThree', imageThree, imageThree.name);
-      sendImage = true
+    for(i=0; i<treeImages.length; i++){
+      sendImage = true;
+      var file = treeImages[i].files[0];
+      if(file != null){
+        formData.append('images[]', file, file.name);
+      }
     }
 
     if((workType == 'Tree Removal' || workType == 'Stump Removal') && backyardField == 'true'){

@@ -8,14 +8,16 @@
 
     let backyardField = document.querySelector('input[name="in_backyard"]:checked').value
 
-    let imageOne = document.querySelector('input[name="tree_images[0]"]').files[0];
-
+    var treeImages = document.querySelectorAll('input[name^="tree_images"]');
+    var sendImage = false;
     const formData = new FormData();
 
-    let sendImage = false;
-    if(imageOne != null){
+    for(i=0; i<treeImages.length; i++){
       sendImage = true;
-      formData.append('imageOne', imageOne, imageOne.name);
+      var file = treeImages[i].files[0];
+      if(file != null){
+        formData.append('images[]', file, file.name);
+      }
     }
 
     if(backyardField == 'true'){

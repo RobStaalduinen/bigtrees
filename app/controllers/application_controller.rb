@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     return unless Rails.env.production?
 
     url_list = ['thatsabigtree.ca', 'thatsabigtree.ca', 'bigtreeservices.com', 'bigtreecare.ca']
-    if url_list.map { |u| u == request.host }.any?
+    if url_list.map { |u| u.include?(request.host) }.any?
       redirect_to "#{request.protocol}bigtreeservices.ca#{request.fullpath}", status: :moved_permanently
     end
   end

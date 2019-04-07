@@ -1,6 +1,10 @@
 class EstimateController < ApplicationController
 	require 'date'
 
+	def new
+
+	end
+
 	def create
 
 	end

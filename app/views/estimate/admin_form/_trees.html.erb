@@ -1,0 +1,186 @@
+<script>
+  var treeNumber = 1;
+
+  function submitTree(){
+    toggleLoading();
+
+    let params = {
+      estimate_id: estimateId,
+      tree:{
+        work_type_string: document.querySelector('select[name="work_type"]').value,
+        stump_removal: document.querySelector('input[name="stump_removal"]:checked').value,
+        description: document.querySelector('textarea[name="description"]').value,
+        in_backyard: document.querySelector('input[name="in_backyard"]:checked').value
+      }
+    }
+
+    var treeImages = document.querySelectorAll('input[name^="tree_images"]');
+    var sendImage = false;
+    const formData = new FormData();
+
+    for(i=0; i<treeImages.length; i++){
+      sendImage = true;
+      var file = treeImages[i].files[0];
+      if(file != null){
+        formData.append('images[]', file, file.name);
+      }
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", `/trees`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){ 
+      if(sendImage){
+        let response = JSON.parse(xmlhttp.response);
+        var imageHttp = new XMLHttpRequest();
+
+        imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
+        imageHttp.send(formData);
+
+        imageHttp.onload = function(){ 
+          advanceTree();
+        }
+      }
+      else{
+        advanceTree();
+      }
+    }
+  }
+
+  function setTreePageTitle(){
+    var header = document.getElementById("tree-header");
+    header.innerHTML = `Tree #${treeNumber}`
+  }
+
+
+  function advanceTree(){
+    if(treeNumber < totalTrees){
+      treeNumber += 1;
+
+      $("#tree-container").fadeOut(600, function(){
+        document.getElementById("tree-form").reset();
+        toggleLoading();
+        setTreePageTitle();
+        $("#tree-container").fadeIn(600);
+      });
+    }
+    else{
+      nextForm();
+    }
+  }
+
+  var loading = false;
+
+  function toggleLoading(){
+    let submit = document.getElementById("tree-submit-button");
+    let loadingIcon = document.getElementById("loading");
+
+    if(!loading){
+      loading = true;
+      submit.style.display = "none";
+      loadingIcon.style.display = "block";
+    }
+    else{
+      loading = false;
+      submit.style.display = "flex";
+      loadingIcon.style.display = "none";
+    }
+  }
+
+</script>
+
+<%= form_tag('/', method: 'post', id: 'tree-form') do %>
+  <div class='form__box'>
+    <div class=form__header id="tree-header">
+      Tree #1
+    </div>
+
+    <div class='form__row-vertical'>
+      <b>What type of work is needed?</b>
+      <%= select_tag 'work_type',
+        options_for_select(Tree::WORK_TYPES),
+        id: 'tree-work-select',
+        class: 'estimate-form__select-field'
+      %>
+    </div>
+
+    <div class='form__row-vertical'>
+      <b>Work description(optional)</b>
+      <%= text_area_tag 'description', '', id: 'estimate-form__desc-field' %>
+    </div>
+
+    <div class='form__row-vertical'>
+      <b>Stump Removal?</b>
+      <div id='estimate-form__radio-question'>
+        <%= 
+          render 'form_components/radio_field',
+          label: 'No',
+          name: 'stump_removal',
+          value: false,
+          checked: true
+        %>
+
+        <%= 
+          render 'form_components/radio_field',
+          label: 'Yes',
+          name: 'stump_removal',
+          value: true,
+          checked: false
+        %>
+      </div>
+    </div>
+
+    <div class='form__row-vertical'>
+      <b>In backyard?</b>
+      <div id='estimate-form__radio-question'>
+        <%= 
+          render 'form_components/radio_field',
+          label: 'No',
+          name: 'in_backyard',
+          value: false,
+          checked: true
+        %>
+
+        <%= 
+          render 'form_components/radio_field',
+          label: 'Yes',
+          name: 'in_backyard',
+          value: true,
+          checked: false
+        %>
+      </div>
+    </div>
+
+    <div class='form__row-vertical form__contact-row'>
+      <b>Images</b>
+      <%= 
+        render 'form_components/image_uploader',
+        name: 'tree_images[0]',
+        number: 1
+      %>
+
+      <%= 
+        render 'form_components/image_uploader',
+        name: 'tree_images[1]',
+        number: 2
+      %>
+
+      <%= 
+        render 'form_components/image_uploader',
+        name: 'tree_images[2]',
+        number: 3
+      %>
+    </div>
+    
+    <div class='form__row-center'>
+      <div id="tree-submit-button" class="form__submit" onClick="submitTree();">
+        Next
+      </div>
+      <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'display: none; width: 50px; height: 50px;' %>
+    </div>
+
+  </div>
+
+<% end %>

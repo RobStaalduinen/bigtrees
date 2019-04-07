@@ -15,7 +15,7 @@ class RequestsController < ApplicationController
 
     estimate.update(request_params)
 
-    if params[:estimate][:submission_completed]
+    if params[:estimate][:submission_completed] && !params[:estimate][:supress_email]
       EstimateMailer.estimate_alert(estimate).deliver_later
     end
 

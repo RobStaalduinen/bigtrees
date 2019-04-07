@@ -37,6 +37,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+
+  cursor: pointer;
 }
 
 #form__box{
@@ -52,6 +54,16 @@
   border-color: var(--main-color);
   border-style: solid;
   padding: 8px;
+}
+
+.form__header{
+  font-weight: 600;
+  border-width: 0 0 1px 0;
+  border-color: var(--main-color);
+  border-style: solid;
+  padding: 8px;
+
+  font-size: 24px;
 }
 
 .form-text-field{
@@ -79,7 +91,7 @@
 
 .form__submit-link{
   color: inherit;
-  width: 40%;
+  width: 30%;
 }
 
 .form__row{
@@ -93,10 +105,21 @@
 }
 
 .form__row-vertical{
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 16px;
+}
+
+.form__row-center{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form__contact-row{
+  width: 100%;
 }
 
 .form__row-bottom{
@@ -160,4 +183,10 @@
 .form__image-upload-field{
   display: flex !important;
   cursor: pointer;
+}
+
+@media(min-width: 760px){
+  .form__contact-row{
+    width: 400px;
+  }
 }

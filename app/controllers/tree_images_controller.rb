@@ -1,12 +1,18 @@
 class TreeImagesController < ApplicationController
 
   def create
+    # [:imageOne, :imageTwo, :imageThree].each do |image|
+    #   next if params[image].blank? || params[image] == 'undefined'
+    #   TreeImage.create(
+    #     tree_id: params[:tree_id],
+    #     asset: params[image]
+    #   )
+    # end
 
-    [:imageOne, :imageTwo, :imageThree].each do |image|
-      next if params[image].blank? || params[image] == 'undefined'
+    params[:images].each do |image|
       TreeImage.create(
         tree_id: params[:tree_id],
-        asset: params[image]
+        asset: image
       )
     end
     

@@ -1,0 +1,177 @@
+<script>
+  function submitBasics(){
+    let params = {
+      estimate: {
+        person_name: document.querySelector('input[name="person_name"]').value,
+        street: document.querySelector('input[name="street"]').value,
+        city: document.querySelector('input[name="city"]').value,
+        email: document.querySelector('input[name="email"]').value,
+        phone: document.querySelector('input[name="phone"]').value,
+        preferred_contact: document.querySelector('input[name="contact_method"]:checked').value,
+        wood_removal: document.querySelector('input[name="wood_removal"]:checked').value,
+        vehicle_access: document.querySelector('input[name="vehicle_access"]:checked').value,
+        breakables: document.querySelector('input[name="breakables"]:checked').value,
+        access_width: document.querySelector('select[name="access_width"]').value
+      }
+    }
+
+    var quantity = document.querySelector('input[name="num_trees"]').value;
+    setQuantity(quantity);
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("POST", `/requests`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){ 
+      let response = JSON.parse(xmlhttp.response)
+      setId(response.estimate_id); 
+      console.log(estimateId);
+      nextForm();
+    }
+  }
+</script>
+ 
+ <div class='form__box'>
+  <div class='form__row-vertical'>
+    <b>Customer Name</b>
+    <%= text_field_tag("person_name", '', class: 'form-field form__field-full') %>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Preferred Contact Method</b>
+    <div id="estimate-form__radio-buttons" class="form__contact-row">
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
+        label: 'Email',
+        value: 'email',
+        smallLabel: true,
+        checked: 'checked'
+      %>
+
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
+        label: 'Phone',
+        value: 'phone',
+        smallLabel: true
+      %>
+
+      <%= 
+        render 'form_components/radio_box', 
+        name: 'contact_method',
+        label: 'Text',
+        value: 'text',
+        smallLabel: true
+      %>
+    </div>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Email</b>
+    <%= text_field_tag("email", '', class: 'form-field form__field-full') %>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Phone Number</b>
+    <%= text_field_tag("phone", '', class: 'form-field form__field-full') %>
+  </div>
+
+
+  <div class='form__row-vertical'>
+    <b>Street and Number</b>
+    <%= text_field_tag("street", '', class: 'form-field form__field-full') %>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>City</b>
+    <%= text_field_tag("city", '', class: 'form-field form__field-full') %>
+  </div>
+
+
+  <div class='form__row-vertical'>
+    <b>Number of Trees</b>
+    <%= number_field_tag("num_trees", '', class: 'form-field form__field') %>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Wood Removal?</b>
+    
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'wood_removal',
+        value: false,
+        checked: false
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'wood_removal',
+        value: true,
+        checked: true
+      %>
+    </div>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Breakables?</b>
+    
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'breakables',
+        value: false,
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'breakables',
+        value: true,
+        checked: false
+      %>
+    </div>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Vehicle access?</b>
+    
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'vehicle_access',
+        value: false,
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'vehicle_access',
+        value: true,
+        checked: false
+      %>
+    </div>
+  </div>
+
+  <div class='form__row-vertical'>
+    <b>Access width</b>
+    <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>
+  </div>
+
+
+
+  <div id="form__row">
+    <div id="form__submit" onClick="submitBasics();">
+      Next
+    </div>
+  </div>
+</div>
