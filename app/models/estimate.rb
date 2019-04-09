@@ -12,7 +12,7 @@ class Estimate < ActiveRecord::Base
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where.not(status: 8) }
 	scope :complete, -> { where(status: 8) }
-	scope :today, -> { where(work_date: Date.today) }
+	scope :today, -> { incomplete.where(work_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
 
