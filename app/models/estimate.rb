@@ -9,9 +9,12 @@ class Estimate < ActiveRecord::Base
 	has_many :trees
 	belongs_to :arborist
 
-	scope :submitted, -> { incomplete.where(submission_completed: true).where(cancelled_at: nil) }
-	scope :incomplete, -> { where.not(status: 8) }
+	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
+	scope :incomplete, -> { active.where.not(status: 8) }
 	scope :complete, -> { where(status: 8) }
+	scope :today, -> { where(work_date: Date.today) }
+	scope :active, -> { where(is_unknown: false) }
+	scope :unknown, -> { where(is_unknown: true) }
 
 	enum status: { 
 		needs_costs: 0,
@@ -98,6 +101,10 @@ class Estimate < ActiveRecord::Base
 
 	def completed?
 		self.final_invoice_sent_at.present?
+	end
+
+	def unknown?
+		self.is_unknown
 	end
 
 	def self.next_invoice_number

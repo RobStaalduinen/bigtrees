@@ -1,3 +1,37 @@
+<script>
+  function setUnknown(estimateId, isUnknown){
+    var message = ""
+    if(isUnknown){
+      message = "Move this estimate to unknown?";
+    }
+    else{
+      message = "Move this estimate to active?"
+    }
+
+    let shouldPerform = confirm(message);
+
+    if(!shouldPerform){
+      return;
+    }
+    
+    let params = {
+      estimate: {
+        is_unknown: isUnknown
+      }
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("PATCH", `/estimates/${estimateId}`);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(params));
+
+    xmlhttp.onload = function(){
+      window.location.reload(false);
+    }
+  }
+</script>
+
 
 <div id='single-estimate__box'>
   <div id='single-estimate__header'>
@@ -70,9 +104,24 @@
 
   </div>
 
-  <%= link_to "/admin/view_estimate?id=#{estimate.id}", id: "single-estimate__details-link" do %>
+  <div id="single-estimate__action-buttons">
+    <% if !estimate.completed? %>
+      <% if !estimate.unknown? %>
+        <div id="single-estimate__action-button" onClick="setUnknown(<%= estimate.id %>, true)">
+          Move to Unknown
+        </div> 
+      <% else %>
+        <div id="single-estimate__action-button" onClick="setUnknown(<%= estimate.id %>, false)">
+          Move to Active
+        </div> 
+      <% end %>
+    <% end %>
+
     <div id="single-estimate__action-button">
-      View Details
+      <%= link_to "/admin/view_estimate?id=#{estimate.id}", id: "single-estimate__details-link" do %>
+        View Details
+      <% end %>
     </div> 
-  <% end %>
+    
+  </div>
 </div>

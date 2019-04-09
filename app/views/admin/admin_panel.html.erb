@@ -2,51 +2,44 @@
 	<div id="admin-nav-bar">		
 		
 		<%= link_to '/receipts/new', class: "form__submit-link" do %>
-			<div id="admin-nav-element" class="form__submit">	
+			<div class="admin-nav-element">	
 				Create Receipt
 			</div>
 		<% end %>
 
 		<%= link_to '/receipts', class: "form__submit-link" do %>
-			<div id="admin-nav-element" class="form__submit">
+			<div class="admin-nav-element">
 				My Receipts
 			</div>
 		<% end %>
 
 		<%= link_to '/estimate/new', class: "form__submit-link" do %>
-			<div id="admin-nav-element" class="form__submit">
+			<div class="admin-nav-element">
 				Create Quote
 			</div>
 		<% end %>
-	</div>
 
-	<div id="admin-nav-bar">		
 		<%= link_to '/vehicles', class: "form__submit-link" do %>
-			<div id="admin-nav-element" class="form__submit">
+			<div class="admin-nav-element">
 				Vehicles
 			</div>
 		<% end %>
 
 		<%= link_to '/arborists', class: "form__submit-link" do %>
-			<div id="admin-nav-element" class="form__submit">
+			<div class="admin-nav-element">
 				Arborists
 			</div>
 		<% end %>
-
 	</div>
 
 
 	<div id="admin__estimate-header">
-	Running work
+	<b>Estimates</b>
 	<%= link_to(new_tracker_path) do %>
 		<span id="admin__trackers-link">Master Trackers</span>
 	<% end %>
 	</div>
 
-	<div id ="admin__estimate-table">
-		<% @estimates.each do |estimate| %>
-			<%= render "single_estimate_entry", estimate: estimate %>
-		<% end %>
-	</div>
+	<%= render "admin/partials/estimate_table", estimates: @estimates %>
 
 </section>

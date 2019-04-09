@@ -9,14 +9,28 @@
 
 #admin-nav-bar{
 	display: flex;
-	justify-content: space-around;
+	flex-direction: column;
 	width: 100%;
 	margin-bottom: 8px;
 }
 
-#admin-nav-element{
-	width: 100%;
+.admin-nav-element{
+	margin: 4px 0;
+
+	background-color: var(--main-color);
+  border-color: var(--main-color-dark);
+  border-style: solid;
+  border-width: 0 0 4px 0;
+  padding: 4px;
+
+  color: white;
+  font-weight: 600;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
+
 
 #admin__estimate-header{
 	display: flex;
@@ -30,10 +44,48 @@
 	font-size: 16px;
 }
 
+.admin__estimate-tabs{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.admin__single-estimate-tab{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+
+	padding: 8px;
+	margin: 4px 0;
+	width: 46%;
+	font-weight: 600;
+
+	cursor: pointer;
+}
+
+.admin_single-estimate-tab-active{
+	color: white;
+	background-color: var(--main-color);
+}
+
+#admin-estimate-table{
+	width: 100%;
+}
+
 @media(min-width: 760px){
 
 	#admin-container{
 		max-width: 960px;
 		margin: 0 auto;
+	}
+
+	.admin__single-estimate-tab{
+		width: 200px;
 	}
 }

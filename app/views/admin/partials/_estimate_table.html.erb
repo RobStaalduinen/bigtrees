@@ -1,0 +1,84 @@
+<script>
+  function changeTab(tabName){
+
+    let allLists = document.querySelectorAll("div[class='estimate-list']");
+    let allTabs = document.querySelectorAll("div[class*='admin__single-estimate-tab']");
+
+    for(i = 0; i < allLists.length; i++){
+      allLists[i].style.display = 'none'; 
+    }
+
+    for(i = 0; i < allTabs.length; i++){
+      allTabs[i].className = 'admin__single-estimate-tab';
+    }
+
+    let activeList = document.getElementById(`${tabName}-list`);
+    let activeTab = document.getElementById(`${tabName}-tab`);
+    activeList.style.display = 'block';
+    activeTab.className = 'admin__single-estimate-tab admin_single-estimate-tab-active';
+  }
+</script>
+
+<div class="admin__estimate-tabs">
+  <div 
+    class='admin__single-estimate-tab admin_single-estimate-tab-active'
+    id="active-tab"
+    onClick="changeTab('active')"
+  >
+    Active
+  </div>
+
+  <div 
+    class='admin__single-estimate-tab'
+    id="today-tab"
+    onClick="changeTab('today')"
+  >
+    Todays Work
+  </div>
+
+  <div 
+    class='admin__single-estimate-tab'
+    id="completed-tab"
+    onClick="changeTab('completed')"
+  >
+    Completed
+  </div>
+
+  <div 
+    class='admin__single-estimate-tab'
+    id="unknown-tab"
+    onClick="changeTab('unknown')"
+  >
+    Unknown
+  </div>
+</div>
+
+<div id ="admin__estimate-table">
+  <div id='active-list' class='estimate-list'>
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.incomplete
+    %>
+  </div>
+
+  <div id='completed-list' class='estimate-list' style="display: none;">
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.complete
+    %>
+  </div>
+
+  <div id='today-list' class='estimate-list' style="display: none;">
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.today
+    %>
+  </div>
+
+  <div id='unknown-list' class='estimate-list' style="display: none;">
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.unknown
+    %>
+  </div>
+</div>

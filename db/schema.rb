@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190330191337) do
+ActiveRecord::Schema.define(version: 20190409193641) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20190330191337) do
     t.boolean  "stumping_only",         default: false
     t.string   "access_width"
     t.string   "preferred_contact"
+    t.boolean  "is_unknown",            default: false
   end
 
   create_table "receipts", force: :cascade do |t|
