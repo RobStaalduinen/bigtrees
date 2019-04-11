@@ -11,7 +11,7 @@
         wood_removal: document.querySelector('input[name="wood_removal"]:checked').value,
         vehicle_access: document.querySelector('input[name="vehicle_access"]:checked').value,
         breakables: document.querySelector('input[name="breakables"]:checked').value,
-        access_width: document.querySelector('select[name="access_width"]').value
+        access_width: document.querySelector('input[name="access_width"]').value
       }
     }
 
@@ -163,8 +163,8 @@
   </div>
 
   <div class='form__row-vertical'>
-    <b>Access width</b>
-    <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>
+    <b>Access width to back yard</b>
+    <%= text_field_tag("access_width", '', class: 'form-field form__field-full') %>
   </div>
 
 

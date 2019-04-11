@@ -16,13 +16,6 @@
 <% end %>
 
 <% if estimate.status == "quote_sent" %>
-  <%= form_tag("/estimates/#{estimate.id}", method: "patch") do %>
-    <%= hidden_field_tag("estimate[quote_accepted_date]", Date.today) %>
-    <%= submit_tag("Accept Quote", id: 'single-estimate__action-button') %>
-  <% end %>
-<% end %>
-
-<% if estimate.status == "quote_accepted" %>
   <%= link_to "/admin/set_work_date?id=#{estimate.id}" do %>
     <div id="single-estimate__action-button">
       Schedule Work

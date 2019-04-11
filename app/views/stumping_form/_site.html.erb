@@ -10,7 +10,7 @@
     let street = document.querySelector('input[name="street"]').value
     let city = document.querySelector('input[name="city"]').value
 
-    let access_width = document.querySelector('select[name="access_width"]').value
+    let access_width = document.querySelector('input[name="access_width"]').value
 
     let params = {
       estimate:{
@@ -68,11 +68,9 @@
 
   <div class='estimate-form__field-group' id ='access-question' style="display: none;">
     <div class='estimate-form__label'>
-      How wide is the access to your backyard?
+      How wide is the access to your back yard? (i.e 36 inches)
     </div>
-    <div id='estimate-form__radio-question'>
-      <%= select_tag "access_width", options_for_select(['24 inches', '36 inches', '48 inches', '60 inches', 'No access restriction']) %>
-    </div>
+    <%= text_field_tag("access_width", '', id: 'estimate-form__field') %>
   </div>
 
   <div id="estimate-form__submit" onClick="submitSite();">

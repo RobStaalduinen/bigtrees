@@ -53,10 +53,6 @@ class Estimate < ActiveRecord::Base
 		self.arborist.present?
 	end
 
-	def quote_accepted?
-		self.quote_accepted_date.present?
-	end
-
 	def work_scheduled?
 		self.work_date.present?
 	end
@@ -107,8 +103,14 @@ class Estimate < ActiveRecord::Base
 		self.is_unknown
 	end
 
-	def self.next_invoice_number
-		(Estimate.select("invoice_number").order("estimates.invoice_number DESC").first.invoice_number || 19207) + 1
+	def potential_invoice_number
+		return nil if !self.work_scheduled?
+
+		already_completed_count = Estimate.where(work_date: self.work_date).where.not(invoice_number: nil).count
+
+		date_string = self.work_date.strftime("%y%m%d")
+
+		return "#{date_string}#{already_completed_count + 1}"
 	end
 
 	def should_display_access?
@@ -125,10 +127,8 @@ class Estimate < ActiveRecord::Base
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
-		elsif(self.quote_sent? && !self.quote_accepted?)
+		elsif(self.quote_sent? && !self.work_scheduled?)
 			:quote_sent
-		elsif(self.quote_accepted? && !self.work_scheduled?)
-			:quote_accepted
 		elsif(self.work_scheduled? && !self.payment_finalized?)
 			:work_scheduled
 		elsif(self.payment_finalized? && !self.completed?)

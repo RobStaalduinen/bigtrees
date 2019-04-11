@@ -23,18 +23,6 @@
     </div>
   <% end %>
 
-  <% if estimate.quote_accepted_date.present? %>
-    <div id="view-estimate__timeline-row">
-      <span id="view-estimate__timeline-header">
-        Quote accepted:
-      </span>
-      <span id="view-estimate__timeline-entry">
-        <%= estimate.quote_accepted_date.strftime("%B %d, %Y") %>
-      </span>
-    </div>
-  <% end %>
-
-
   <% if estimate.work_date.present? %>
     <div id="view-estimate__timeline-row">
       <div id="view-estimate__edit-row">

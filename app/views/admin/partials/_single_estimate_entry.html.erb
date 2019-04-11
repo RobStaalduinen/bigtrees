@@ -107,21 +107,29 @@
   <div id="single-estimate__action-buttons">
     <% if !estimate.completed? %>
       <% if !estimate.unknown? %>
-        <div id="single-estimate__action-button" onClick="setUnknown(<%= estimate.id %>, true)">
+        <div id="single-estimate-entry__action-button" onClick="setUnknown(<%= estimate.id %>, true)">
           Move to Unknown
         </div> 
       <% else %>
-        <div id="single-estimate__action-button" onClick="setUnknown(<%= estimate.id %>, false)">
+        <div id="single-estimate-entry__action-button" onClick="setUnknown(<%= estimate.id %>, false)">
           Move to Active
         </div> 
       <% end %>
     <% end %>
 
-    <div id="single-estimate__action-button">
+    <div id="single-estimate-entry__action-button">
       <%= link_to "/admin/view_estimate?id=#{estimate.id}", id: "single-estimate__details-link" do %>
         View Details
       <% end %>
     </div> 
+
+    <% if estimate.status == 'quote_sent' %>
+      <div id="single-estimate-entry__action-button">
+        <%= link_to "/admin/set_work_date?id=#{estimate.id}", id: "single-estimate__details-link" do %>
+          Schedule
+        <% end %>
+      </div>
+    <% end %>
     
   </div>
 </div>

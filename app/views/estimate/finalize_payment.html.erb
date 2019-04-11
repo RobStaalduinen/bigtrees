@@ -15,7 +15,7 @@
         <b>Payment Method</b>
           <%= 
             select_tag 'estimate[payment_method]',
-            options_for_select(['Cash', 'Credit', 'Cheque'], @estimate.payment_method),
+            options_for_select(['Cash', 'Credit', 'Debit', 'E-Transfer', 'Cheque'], @estimate.payment_method),
             class:"form-field form__field-full",
             required: true
           %>
@@ -24,7 +24,7 @@
       <div class='form__row-vertical'>
         <b>Invoice Number</b>
 
-        <%= text_field_tag("estimate[invoice_number]", (@estimate.invoice_number || Estimate.next_invoice_number), class: 'form-field form__field-full') %>
+        <%= text_field_tag("estimate[invoice_number]", (@estimate.invoice_number || @estimate.potential_invoice_number), class: 'form-field form__field-full') %>
       </div>
 
       <div id="form__row">
