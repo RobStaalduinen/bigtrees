@@ -4,11 +4,12 @@
 
     let params = {
       estimate:{
-        tree_quantity: quantity
+        tree_quantity: quantity,
+        stumping_only: true
       }
     }
     // Set quantity from form data
-   setQuantity(quantity);
+    setQuantity(quantity);
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -19,7 +20,6 @@
     xmlhttp.onload = function(){
       let response = JSON.parse(xmlhttp.response)
       setId(response.estimate_id);
-      
       nextForm();
     }
 
@@ -30,7 +30,7 @@
 
 <div id='estimate-form__container'>
   <div id='estimate-form__question'>
-    <%= question  %>
+    <%= question %>
   </div>
 
   <div id="estimate-form__radio-buttons">

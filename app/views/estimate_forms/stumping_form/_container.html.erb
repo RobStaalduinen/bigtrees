@@ -1,5 +1,5 @@
 <script>
-  var treeNumber = 1;
+  var stumpNumber = 1;
   var totalTrees = null;
   var estimateId = null;
   var currentStep = 'quantity';
@@ -45,39 +45,43 @@
 
 <div class='estimate-container'>
   <div id="estimate-form__info">
-    <%= render 'estimate_form/info' %>
+    <%= 
+      render 'estimate_forms/common/info',
+      content: "Getting an estimate for a stump removal job couldn't be simpler! All we need is a few details about the stumps and your site, and we'll have your estimate ready in minutes!" 
+    %>
   </div>
 
   <div id="estimate-form__inputs">
     <div id="quantity-container">
       <%= 
-        render 'estimate_form/quantity',
-        question: 'How many trees require work?'
+        render 'estimate_forms/stumping_form/quantity',
+        question: 'How many stumps need to be removed?'
       %>
     </div>
 
     <div id="tree-container" style="display: none;">
       <%=
-        render 'estimate_form/tree'
+        render 'estimate_forms/stumping_form/stump'
       %>
     </div>
 
     <div id="site-container" style="display: none;">
       <%=
-        render 'estimate_form/site'
+        render 'estimate_forms/stumping_form/site'
       %>
     </div>
 
     <div id="contact-method-container" style="display: none;">
       <%= 
-        render 'estimate_form/contact'
+        render 'estimate_forms/common/contact'
       %>
     </div>
 
     <div id="thank-you-container" style="display: none;">
       <%= 
-        render 'estimate_form/thank_you'
+        render 'estimate_forms/common/thank_you'
       %>
-    </div>    
+    </div>
   </div>
+
 </div>

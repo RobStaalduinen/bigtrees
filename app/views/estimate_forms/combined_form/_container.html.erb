@@ -1,0 +1,86 @@
+<script>
+  var treeNumber = 1;
+  var totalTrees = null;
+  var estimateId = null;
+  var currentStep = 'quantity';
+  var displayAccess = false;
+
+  function setId(id){
+    estimateId = id;
+  }
+
+  function setQuantity(quantity){
+    totalTrees = quantity;
+  }
+
+  function nextForm(){
+    if(currentStep == 'quantity'){
+      fadeOut = "#quantity-container";
+      fadeIn = "#tree-container";
+      currentStep = "trees";
+    }
+    else if(currentStep == 'trees'){
+      setupQuestions();
+      fadeOut = "#tree-container";
+      fadeIn = "#site-container";
+      currentStep = "site";
+    }
+    else if(currentStep == 'site'){
+      fadeOut = "#site-container";
+      fadeIn = "#contact-method-container";
+      currentStep = "contact";
+    }
+    else if(currentStep == 'contact'){
+      fadeOut = "#contact-method-container";
+      fadeIn = "#thank-you-container";
+      currentStep = "thank-you";
+    }
+
+    $(fadeOut).fadeOut(600, function(){
+      $(fadeIn).fadeIn(600);
+    });
+  }
+  
+</script>
+
+<div class='estimate-container'>
+  <div id="estimate-form__info">
+    <%= 
+      render 'estimate_forms/common/info',
+      content: "Getting an estimate from Big Tree Services couldn't be simpler! Just answer a few simple questions about your job, upload a couple pictures, and we'll contact you with your personalized estimate in minutes!"
+    %>
+  </div>
+
+  <div id="estimate-form__inputs">
+    <div id="quantity-container">
+      <%= 
+        render 'estimate_forms/common/quantity',
+        question: 'How many trees require work?'
+      %>
+    </div>
+
+    <div id="tree-container" style="display: none;">
+      <%=
+        render 'estimate_forms/combined_form/tree'
+      %>
+    </div>
+
+    <div id="site-container" style="display: none;">
+      <%=
+        render 'estimate_forms/common/site'
+      %>
+    </div>
+
+    <div id="contact-method-container" style="display: none;">
+      <%= 
+        render 'estimate_forms/common/contact'
+      %>
+    </div>
+
+    <div id="thank-you-container" style="display: none;">
+      <%= 
+        render 'estimate_forms/common/thank_you'
+      %>
+    </div>    
+  </div>
+</div>

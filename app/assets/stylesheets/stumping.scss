@@ -1,4 +1,4 @@
-#stumping-box{
+#services-box{
   width: 100%;
   box-shadow: 0 5px 3px -3px rgba(153, 153, 153, 0.2);
   border: 1px solid lightgrey;
@@ -10,27 +10,63 @@
   flex-direction: column;
 }
 
-#stumping-box-header{
-  font-size: 22px;
+#services-box-header{
+  font-size: 20px;
   font-weight: 600;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgrey;
 }
 
-#stumping-box-image-wrapper{
+#services-tab-container{
+  width: 100%;
+  display: flex;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgrey;
+
+}
+
+.services-tab{
+  width: 50%;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-width: 0 1px 0 1px;
+  border-style: solid;
+  border-color: lightgrey;
+
+  cursor: pointer;
+}
+
+.services-tab-active{
+  color: white;
+  background: var(--main-color);
+}
+
+#services-box-image-wrapper{
   width: 100%;
 }
 
-#stumping-box-image{
+#services-box-image{
   width: 100%;
   margin-top: 16px;
 }
 
-#stumping-box-content{
-  margin-top: 16px;
+#services-box-content{
+  margin: 16px 0 16px 0;
   font-size: 16px;
 }
 
-#stumping-button{
-	width: 120px;
+.services-link{
+  width: 46%;
+}
+
+.services-button{
+	width: 100%;
 	height: 50px;
 	margin: 0 auto;
 
@@ -50,24 +86,24 @@
   margin-top: 16px;
 }
 
-#stumping-button-wrapper{
+#services-button-wrapper{
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: lightgrey;
 }
 
 @media (min-width: 760px){
-  #stumping-box{
-    width: 50%;
+  #services-box{
+    width: 45%;
     margin: 0;
     margin-top: 16px;
   }
 
-  #stumping-button{
-    width: 160px;
-  }
-
-  #stumping-box-image{
+  #services-box-image{
     width: 100%;
   }
 }

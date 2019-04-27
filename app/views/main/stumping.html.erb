@@ -4,7 +4,7 @@
 
     if(hash.length > 0 && hash == 'estimate'){
         setTimeout(function(){ 
-          document.getElementById('stumping__estimate').scrollIntoView({ 
+          document.getElementById('services__estimate').scrollIntoView({ 
           behavior: 'smooth' 
         }); 
       }, 100);
@@ -14,7 +14,7 @@
   }
 </script>
 
-<% content_for :title, "Stump Grinding services Services" %>
+<% content_for :title, "Stump Grinding" %>
 <% content_for :description, "Stump griding services in Ontario, Toronto and the GTA" %>
 
 <div class = "row header-image sub-page-header">
@@ -27,8 +27,8 @@
 
 <div class="page-container">
 
-  <div id="stumping__content-box">
-    <div id="stumping__content-text">
+  <div id="services__content-box">
+    <div id="services__content-text">
       Grinding is the most common and effective way to remove unsightly stumps from your yard. Using this method, we can grind the stump up to 12" beneath the surface, fill the resulting hole, and leave your lawn clean. 
       <br /><br />
       The team at BigTrees uses a top of the line stump grinder to complete the job quickly, safely and effectively. We can handle stumps of all shapes and sizes, and
@@ -37,27 +37,23 @@
       The cost of an average stump removal is between $75 and $250 depending on the location, size and depth.
     </div>
 
-    <%= image_tag("StumpGrinder.jpg", id: "stumping__content-image") %>
+    <%= image_tag("StumpGrinder.jpg", id: "services__content-image") %>
   </div>
 
-  <div id="stumping__method-box">
-    <div id="stumping__method-box-header">
-      <div id="stumping__method-box-title">
+  <div id="services__method-box">
+    <div id="services__method-box-header">
+      <div id="services__method-box-title">
         Our Method
       </div>
     </div>
 
-    <div id="stumping__method-box-inner">
-      <div id="stumping__method-box-image">
-        <%= image_tag('StumpGrinder2-min.jpg', id: 'stumping__steps-image') %>
-      </div>
-
-      <div id="stumping__method-box-steps">
+    <div id="services__method-box-inner">
+      <div id="services__method-box-steps">
         <%= 
           render 'main/components/single_step',
           step_number: 1,
           title: 'Measure',
-          content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. If necessary, we will schedule for the telecommunications companies to do an inspection of the area for any underground utilty/gas lines free of charge.',
+          content: 'The stump is assessed, measured, and the appropriate grinding depth is determined. If necessary, we will schedule for the telecommunications companies to do an inspection of the area for any underground utility/gas lines free of charge.',
           is_final: false,
           is_long: true
         %>
@@ -83,8 +79,8 @@
     </div>
   </div>
 
-  <div id="stumping__estimate">
-    <%= render 'stumping_form/container' %>
+  <div id="services__estimate">
+    <%= render 'estimate_forms/stumping_form/container' %>
   </div>
   <script>
     $(window).bind("load", function() {

@@ -1,25 +1,15 @@
 <div id='step-entry'>
-  <div id='step-left'>
+  <div id='step-header'>
     <div id='step-number'>
       <%= step_number %>
-    </div>
+    </div> 
 
-    <% unless is_final || is_long %>
-      <div id='step-divider'>
-      </div>
-    <% end %>
-
-    <% if is_long && !is_final %>
-      <div id='step-divider-long'>
-      </div>
-    <% end %>
-    
-  </div>
-  <div id='step-text'>
-    <span id='step-text-header'>
+    <span id='step-header-content'>
       <%= title %>
-    </span>
+    </span>   
+  </div>
 
+  <div id='step-text'>
     <span id='step-text-subheader'>
       <%= content %>
     </span>

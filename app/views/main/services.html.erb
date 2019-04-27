@@ -4,47 +4,27 @@
 <div class = "row header-image sub-page-header">
 	<div class = "sub-page-header-title">
 		<div class = "sub-page-header-text">
-			Services
+			Residential Services
 		</div>
 	</div>
 </div>
 
-<div class = "row white-row">
-	<div id = 'services-page' class = "col-lg-6 col-lg-offset-3">
-    <div class = "static-page-content">
-      Big Tree care is commited to safety, expertise and professionalism. Our customers
-      are everything to us, and we understand the importance of building lasting relationships
-      for our continued success. Of course, if you have any questions, you can call us anytime.
-      <div class = "static-phone-number">
-        1-877-542-5551
-      </div>
-    </div>
+<div id='services-page' class='page-container'>
 
-    <div class = "static-page-title">
-      <div class = "static-page-title-text">
-        Full Service Tree Care
-      </div>
-    </div>
+  <div id='services-page-list'>
+    <%= render 'main/components/services_page_entry',
+      image_name: "TreeCutting.jpg",
+      title: 'Tree Removal',
+      lines: ["When a tree removal is required due to damage, disease or simply changing needs, always ensure you are placing your trust in a qualified arborist.", "Many removal jobs are complex, and mistakes can be costly. Leave it to Big Trees to get the job done safely and efficiently."],
+      page_url: '/main/removal'
+    %>
 
-    <div class = "static-page-content">
-      - Tree removal, tree trimming, tree cabling, tree bracing<br />
-      - Stump grinding and complete stump/root removal<br />
-      - Tree pruning, shrub and bush trimming <br />
-			- Tree and plant fertilization <br />
-      - Emerald Ash borer solutions as well as insect and disease management <br />
-      - Tree risk assessments and arborist reports <br />
-			- Lightning protection systems
-
-      <ul id = "service-list">
-        <li class = "service-entry">Bush and Cedar Maintenance</li>
-        <li>Storm Damage</li>
-        <li>Loat Clearing and Land Cleaning</li>
-        <li>Chipping</li>
-        <li>Crane and hiab services</li>
-        <li>Tree planting</li>
-      </ul>
-
-        <strong>Note:</strong> Firewood and dirty wood chip deliveries available.
-    </div>
+    <%= render 'main/components/services_page_entry',
+      image_name: "StumpGrinder.jpg",
+      title: 'Stump Removal',
+      lines: ["Removing a tree will leave an unsightly stump behind. Using our top of the line stump grinder, we can remove all traces of the unwanted tree from your yard.", "We can provide services from start to finish. From arranging the movement of utility lines, to filling the hole afterwards, Big Trees has you covered."],
+      page_url: '/main/stumping'
+    %>
   </div>
+
 </div>

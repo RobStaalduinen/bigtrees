@@ -1,35 +1,4 @@
 <script>
-  function changeContactQuestion(){
-    let contactMethod = document.querySelector('input[name="contact_method"]:checked').value
-
-    let emailGroup = document.getElementById('email-group')
-    let emailField = document.querySelector('input[name="email"]')
-    let phoneGroup = document.getElementById('phone-group')
-    let phoneField = document.querySelector('input[name="phone"]')
-    let phoneLabel = document.getElementById('phone-label')
-
-    // if(contactMethod == 'phone'){
-    //   emailGroup.style.display = 'none';
-    //   emailField.required = false;
-    //   phoneGroup.style.display = 'flex';
-    //   phoneField.required = true;
-    //   phoneLabel.innerHTML = 'Phone Number'
-    // }
-    // else if(contactMethod == 'text'){
-    //   emailGroup.style.display = 'none';
-    //   emailField.required = false;
-    //   phoneGroup.style.display = 'flex';
-    //   phoneField.required = true;
-    //   phoneLabel.innerHTML = 'Mobile Number'
-    // }
-    // else{
-    //   emailGroup.style.display = 'flex';
-    //   emailField.required = true;
-    //   phoneGroup.style.display = 'none';
-    //   phoneField.required = false;
-    // }
-  }
-
   function submitContact(){
     let form = document.getElementById("contact-form");
     let contactMethod = document.querySelector('input[name="contact_method"]:checked').value

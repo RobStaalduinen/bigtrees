@@ -1,22 +1,21 @@
 @import "common/_mixins.scss";
 
-#stumping__content-box{
+#services__content-box{
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 16px;
 }
 
-#stumping__content-text{
+#services__content-text{
   margin-bottom: 16px;
 }
 
-#stumping__content-image{
+#services__content-image{
   width: 100%;
 }
 
-#stumping__method-box{
-  @include shadow-box;
+#services__method-box{
 
   width: 100%;
 
@@ -24,50 +23,42 @@
   flex-direction: column;
 }
 
-#stumping__method-box-header{
+#services__method-box-header{
   width: 100%;
   background-color: var(--main-color);
   padding: 8px 16px;
 }
 
-#stumping__method-box-title{
+#services__method-box-title{
   font-size: 18px;
   color: white;
 }
 
-#stumping__method-box-steps{
+#services__method-box-steps{
   padding: 16px;
 }
 
-#stumping__method-box-inner{
+#services__method-box-inner{
   display: flex;
-}
-#stumping__method-box-image{
-  display: none;
-  padding: 16px;
+  @include shadow-box;
 }
 
-#stumping__steps-image{
+#services__steps-image{
   width: 100%;
 }
 
 @media (min-width: 760px){
-  #stumping__content-box{
+  #services__content-box{
     flex-direction: row;
   }
 
-  #stumping__content-text{
+  #services__content-text{
     width: 65%;
     margin-bottom: 0px;
     padding-right: 32px;
   }
 
-  #stumping__method-box-image{
-    display: block;
-    width: 400px;
-  }
-
-  #stumping__content-image{
+  #services__content-image{
     width: 35%;
     height: auto;
     align-self: center;

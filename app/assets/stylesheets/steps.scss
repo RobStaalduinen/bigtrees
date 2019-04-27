@@ -1,7 +1,8 @@
 #step-entry{
   width: 100%;
   display: flex;
-  margin-bottom: 8px;
+  flex-direction: column;
+  margin-bottom: 16px;
 }
 
 
@@ -21,13 +22,25 @@
   margin-top: 8px;
 }
 
-#step-left{
+#step-header{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-end;
 
-  margin-right: 16px;
+  width: 100%;
+
+  padding-bottom: 4px;
+
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: lightgrey; 
+}
+
+#step-header-content{
+  margin-left: 16px;
+  font-size: 22px;
+  font-weight: 600;
+
+
 }
 
 #step-number{
@@ -46,32 +59,11 @@
   color: white;
 }
 
-#step-divider{
-  width: 4px;
-  background-color: var(--main-color);
-  height: 100px;
-  margin-top: 8px;
-}
-
-#step-divider-long{
-  width: 4px;
-  background-color: var(--main-color);
-  height: 220px;
-  margin-top: 8px;
-}
 
 @media (min-width: 760px){
   #step-container{
     width: 50%;
     padding: 32px;
 
-  }
-
-  #step-divider{
-    height: 40px;
-  }
-
-  #step-divider-long{
-    height: 80px;
   }
 }

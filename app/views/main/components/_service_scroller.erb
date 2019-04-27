@@ -1,0 +1,81 @@
+<script>
+  var tabs = ['removal-tab', 'stump-tab']
+  var sections = ['removal-section', 'stumping-section']
+  var autoScroll = true;
+  var tabIndex = 0;
+
+
+  function changeTab(tabIndex, stopAuto=false){
+    if(stopAuto){
+      autoScroll = false;
+    }
+    var tabs = document.getElementsByClassName("services-tab");
+    var sections = document.getElementsByClassName("tabbed-section");
+
+    for(var i = 0; i < tabs.length; i++)
+    {
+      if(i==tabIndex){
+        tabs[i].className = 'services-tab services-tab-active';
+        sections[i].style.display = 'block';
+      }
+      else{
+        tabs[i].className = 'services-tab'
+        sections[i].style.display = 'none';
+      }
+    }
+  }
+
+  function autoScrollTab(){
+    if(autoScroll){
+      if(tabIndex ==  (tabs.length - 1)){
+        tabIndex = 0;
+      }
+      else{
+        tabIndex += 1;
+      }
+
+      changeTab(tabIndex);
+
+    }
+  }
+
+  setInterval(function() {
+    autoScrollTab();
+  }, 10000);
+
+</script>
+
+<div id="services-box">
+  <span id='services-box-header'>
+    Our Services
+  </span>
+
+  <span id='services-tab-container'>
+    <div class='services-tab services-tab-active' id='removal-tab' onClick="changeTab(0, true)">
+      Tree Removal
+    </div>
+
+    <div class='services-tab' id='stump-tab' onClick="changeTab(1, true)">
+      Stump Removal
+    </div>
+  </span>
+
+  <div class ='tabbed-section' id="removal-section">
+    <%=
+      render 'main/components/front_page_service',
+      image_name: "TreeCutting.jpg",
+      content: "At Big Tree Services, we specialize in tree removal. When a tree needs to be removed, trust our hightly qualified team to do it safely, efficiently and for a fair price.",
+      page_url: '/main/removal'
+    %>
+  </div>
+
+  <div class ='tabbed-section' id="stumping-section" style="display: none;">
+    <%=
+      render 'main/components/front_page_service',
+      image_name: "StumpGrinder.jpg",
+      content: "The Big Tree team is able to offer a full range of stump removal services, using our industrial stump grinder, to leave your yard clean and remove any trace of the undesired tree.",
+      page_url: '/main/stumping'
+    %>
+  </div>
+
+</div>

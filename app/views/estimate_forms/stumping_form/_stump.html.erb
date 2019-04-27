@@ -13,9 +13,9 @@
     const formData = new FormData();
 
     for(i=0; i<treeImages.length; i++){
-      sendImage = true;
       var file = treeImages[i].files[0];
       if(file != null){
+        sendImage = true;
         formData.append('images[]', file, file.name);
       }
     }

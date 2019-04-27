@@ -3,57 +3,16 @@
     return "Tree #" + treeNumber
   }
 
-  function setupForm(){
-    let type = document.getElementById('tree-work-select').value;
-
-    let stumpRemoval = document.getElementById('stump-removal');
-    let stumpRemovalField = document.querySelector('input[name="stump_removal"]:checked')
-    let stumpBackyard = document.getElementById('stump-backyard');
-
-    if(type == 'Tree Removal'){
-      stumpRemoval.style.display = 'block';
-    }
-    else{
-      stumpRemoval.style.display = 'none';
-    }
-
-    if(type == 'Tree Removal' || type == 'Stump Removal'){
-      if(stumpRemovalField.value == 'true' || type == 'Stump Removal'){
-        stumpBackyard.style.display = 'flex';
-      }
-      else{
-        stumpBackyard.style.display = 'none';
-      }
-    }
-
-    let description = document.getElementById('description')
-
-    if(type == 'Trim' || type == 'Broken Limbs'){
-      description.style.display = 'block';
-      stumpBackyard.style.display = 'none';
-    }
-    else{
-      description.style.display = 'none';
-    }
-  }
-
   function submitTree(){
     toggleLoading();
 
-    let workType = document.querySelector('select[name="work_type"]').value;
     let stumpRemovalField = document.querySelector('input[name="stump_removal"]:checked');
-    let descriptionField = document.querySelector('textarea[name="description"]');
     let backyardField = document.querySelector('input[name="in_backyard"]:checked').value;
 
     let stumpRemoval = null;
-    let description = null;
 
     if(stumpRemovalField != null){
       stumpRemoval = stumpRemovalField.value;
-    }
-
-    if(descriptionField != null){
-      description = descriptionField.value; 
     }
 
     var treeImages = document.querySelectorAll('input[name^="tree_images"]');
@@ -61,23 +20,22 @@
     const formData = new FormData();
 
     for(i=0; i<treeImages.length; i++){
-      sendImage = true;
       var file = treeImages[i].files[0];
       if(file != null){
+        sendImage = true;
         formData.append('images[]', file, file.name);
       }
     }
 
-    if((workType == 'Tree Removal' || workType == 'Stump Removal') && backyardField == 'true'){
+    if(backyardField == 'true'){
       displayAccess = true;
     }
   
     let params = {
       estimate_id: estimateId,
       tree:{
-        work_type_string: workType,
+        work_type_string: 'Tree Removal',
         stump_removal: stumpRemoval,
-        description: description,
         in_backyard: backyardField
       }
     }
@@ -113,7 +71,6 @@
   }
 
   function setLabels(){
-    document.getElementById('work-label').innerHTML = `What type of work do you need for ${getPageTitle()}?`;
     document.getElementById('image-label').innerHTML = `Upload a few images of ${getPageTitle()} (optional)`;
   }
 
@@ -162,23 +119,6 @@
       <span id="tree-page-title">Tree #1</span>
     </div>
 
-    <div class='estimate-form__field-group'>
-      <div class='estimate-form__label' id='work-label'>
-        What type of work do to need?
-      </div>
-
-      <script>
-        document.getElementById('work-label').innerHTML = `What type of work do you need for ${getPageTitle()}?`;
-      </script>
-
-      <%= select_tag 'work_type',
-        options_for_select(Tree::WORK_TYPES),
-        id: 'tree-work-select',
-        class: 'estimate-form__select-field',
-        onChange: "setupForm();"  
-      %>
-    </div>
-
     <div class='estimate-form__field-group' id='stump-removal'>
       <div class='estimate-form__label'>
         Do you need the stump removed?
@@ -189,8 +129,7 @@
           label: 'No',
           name: 'stump_removal',
           value: false,
-          checked: true,
-          onChange: "setupForm();"
+          checked: true
         %>
 
         <%= 
@@ -198,13 +137,12 @@
           label: 'Yes',
           name: 'stump_removal',
           value: true,
-          checked: false,
-          onChange: "setupForm();"
+          checked: false
         %>
       </div>
     </div>
 
-    <div class='estimate-form__field-group' id='stump-backyard' style="display: none;">
+    <div class='estimate-form__field-group' id='stump-backyard'>
       <div class='estimate-form__label'>
         Is the tree in your back yard?
       </div>
@@ -225,14 +163,6 @@
           checked: false
         %>
       </div>
-    </div>
-
-    <div class='estimate-form__field-group' id='description'>
-      <div class='estimate-form__label'>
-        Can you describe what needs to be done?
-      </div>
-
-      <%= text_area_tag 'description', '', id: 'estimate-form__desc-field' %>
     </div>
 
     <div class='estimate-form__uploader-group'>
@@ -272,8 +202,5 @@
       <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
     </div>
 
-    <script>
-      setupForm();
-    </script>
   </div>  
 <% end %>
