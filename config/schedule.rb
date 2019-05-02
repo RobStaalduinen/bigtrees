@@ -22,5 +22,5 @@
 job_type :bin, ':path/bin :task'
 
 every 3.hours do
-  bin 'bin/delayed_job restart'
+  bin 'delayed_job restart'
 end
