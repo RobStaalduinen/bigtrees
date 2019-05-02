@@ -22,5 +22,5 @@
 job_type :bin, 'cd :path/bin && :task'
 
 every 3.hours do
-  bin "RAILS_ENV=#{Rails.env} bundle exec delayed_job restart"
+  bin "RAILS_ENV=production bundle exec delayed_job restart"
 end
