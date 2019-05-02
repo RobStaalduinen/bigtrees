@@ -20,5 +20,5 @@
 # Learn more: http://github.com/javan/whenever
 
 every 3.hours do
-  bin 'delayed_job restart'
+  'bin/delayed_job restart'
 end
