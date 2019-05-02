@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+job_type :bin, ':path/bin :task'
+
 every 3.hours do
-  command 'bin/delayed_job restart'
+  bin 'bin/delayed_job restart'
 end
