@@ -11,17 +11,20 @@ class QuoteMailoutsController < ApplicationController
   def create
     @estimate = Estimate.find(params[:estimate_id])
 
-    if @estimate.email.blank?
-      @estimate.update(email: params[:dest_email])
+    unless params[:skip]
+      if @estimate.email.blank?
+        @estimate.update(email: params[:dest_email])
+      end
+
+      QuoteMailer.quote_email(@estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
     end
 
-    QuoteMailer.quote_email(@estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
-
-    if params[:is_final] == 'true'
+    if params[:is_final] == 'true' && @estimate.final_invoice_sent_at.blank?
       @estimate.update(final_invoice_sent_at: Date.today)
-    else
+    elsif @estimate.quote_sent_date.blank?
       @estimate.update(quote_sent_date: Date.today)
     end
+
 
     redirect_to admin_estimates_path(id: params[:estimate_id])
   end

@@ -116,6 +116,8 @@ end
 private
 
 	def estimate_params
-		params.require(:estimate).permit(:status, :work_date, :extra_cost, :extra_cost_notes)
+		params.require(:estimate).permit(
+			:status, :work_date, :extra_cost, :extra_cost_notes, :is_unknown
+		)
 	end
 end

@@ -6,6 +6,7 @@
     </div>
     <%= form_tag("/admin/update_estimate", method: "patch") do %>
       <%= hidden_field_tag("estimate_id", @estimate.id) %>
+      <%= hidden_field_tag("estimate[is_unknown]", false) %>
       <div id='estimate-forms__row'>
           <div id="view-estiamte__costs-label">
             Date:

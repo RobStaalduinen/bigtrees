@@ -116,6 +116,10 @@ class Estimate < ActiveRecord::Base
 	def should_display_access?
 		self.trees.stumping_possible.any? && self.trees.pluck(:in_backyard).any?
 	end
+
+	def can_resend_quote?
+		self.quote_sent? && !self.payment_finalized?
+	end
 	
 
 	def set_status

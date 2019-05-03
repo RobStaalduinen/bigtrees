@@ -1,5 +1,16 @@
   <div id="view-estimate__box">
-    <span class="text-large" id="view-estimate__box-header">Quotes</span>
+    <div class="text-large" id="view-estimate__main-header">
+      <span>Quotes</span>
+
+      <% if @estimate.can_resend_quote? %>
+        <span class='view-estimate__link'>
+          <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id) do %>
+            Resend Quote
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+
 
     <div id='view-estimate__row'>
       <div id='view-estimate__row-entry'>
