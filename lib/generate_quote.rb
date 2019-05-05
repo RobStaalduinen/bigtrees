@@ -50,22 +50,21 @@ class GenerateQuote
     end
 
     tree_count = estimate.trees.count
+    extra_cost_count = estimate.extra_costs.count
 
-    if estimate.extra_cost.present?
-      worksheet[10 + tree_count][0].change_contents(estimate.extra_cost_notes)
-      worksheet[10 + tree_count][7].change_contents(estimate.extra_cost.to_f)
+    estimate.extra_costs.each_with_index do |cost, i|
+      worksheet[10 + tree_count + i][0].change_contents(cost.description)
+      worksheet[10 + tree_count + i][7].change_contents(cost.amount.to_f)
     end
 
-    subtotal = estimate.trees.sum(:cost)
-    subtotal += estimate.extra_cost if estimate.extra_cost.present?
+    subtotal = estimate.total_cost
 
     if estimate.discount_applied
-      worksheet[10 + tree_count + 1][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
-      worksheet[10 + tree_count + 1][7].change_contents(Estimate::SIGN_DISCOUNT)
-      subtotal += Estimate::SIGN_DISCOUNT
+      worksheet[11 + tree_count + extra_cost_count][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
+      worksheet[11 + tree_count + extra_cost_count][7].change_contents(Estimate::SIGN_DISCOUNT)
+      
     end
 
-    
 
     hst = (subtotal * 0.13).round(2)
     worksheet[19][7].change_contents("$#{sprintf("%.2f", subtotal.to_f)}")

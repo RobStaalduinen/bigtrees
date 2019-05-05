@@ -1,24 +1,23 @@
 <div id='view-estimate__box'>
   <div id="view-estimate__costs-header">
-    <span class = "text-large">Costs</span>
+    <span class = "text-large">Extra Costs</span>
     
-    <%= link_to "/admin/update_costs?id=#{estimate.id}" do %>
+    <%= link_to "/admin/edit_extra_costs?id=#{estimate.id}" do %>
       <span id="view-estimate__edit">Edit</span>
     <% end %>
   </div>
 
-  <% estimate.trees.each_with_index do |tree, i| %>
+  <% estimate.extra_costs.each_with_index do |cost, i| %>
     <div id='view-estimate__costs-row'>
       <div id="view-estimate__costs-label">
-        <%= "Tree #{i + 1}" %>
+        <%= "Cost #{i + 1}" %>
       </div>
       <div id="view-estimate__costs-text">
-        <%= tree.work_name %>
+        <%= cost.description %>
       </div>
       <div id="view-estimate__cost-value">
-        $<%= tree.cost %>
+        $<%= cost.amount %>
       </div>
     </div>
   <% end %>
-
 </div>

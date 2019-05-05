@@ -7,6 +7,7 @@ class Estimate < ActiveRecord::Base
 	before_save :set_status
 
 	has_many :trees
+	has_many :extra_costs
 	belongs_to :arborist
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
@@ -70,7 +71,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def total_cost
-		extra = self.extra_cost || 0.0
+		extra = self.extra_costs.sum(:amount)
 		total_cost = self.trees.sum(:cost) + extra
 		total_cost += SIGN_DISCOUNT if self.discount_applied
 		total_cost

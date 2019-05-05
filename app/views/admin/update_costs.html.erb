@@ -44,32 +44,12 @@
         </div>
       <% end %>
 
-      <div class="form__box">
-        <div id="form__header">
-          Other Costs
-        </div>
-
-        <div id="form__row-vertial">
-          <div id="form__element">
-            Notes
-          </div>
-          <div id="form__element">
-            <%= text_field_tag("estimate[extra_cost_notes]", @estimate.extra_cost_notes, class: 'form-text-field') %>
-          </div>
-        </div>
-
-        <div id="form__row-vertial">
-          <div id="form__element">
-            Cost
-          </div>
-          <div id="form__element">
-            <%= number_field_tag("estimate[extra_cost]", @estimate.extra_cost, step: :any, class: 'form-text-field') %>
-          </div>
-        </div>
+      <div id="update-costs__submit-row">
+        <%= submit_tag("Update", id: 'form__submit') %>
       </div>
 
       <div id="update-costs__submit-row">
-        <%= submit_tag("Update", id: 'form__submit') %>
+        <%= submit_tag("Update and Add Extras", id: 'form__submit') %>
       </div>
     </div>
   <% end %>

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   resources :requests
   resources :trees
   resources :tree_images, only: [ :create ]
+  resources :extra_costs, only: [ :create, :destroy ]
 
   match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx
   match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx

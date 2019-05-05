@@ -14,7 +14,11 @@
   <% if @estimate.arborist.present? %>
     <%= render 'admin/view_estimate/view_estimate_arborist', estimate: @estimate %>
   <% end %>
+
   <%= render 'admin/view_estimate/view_estimate_costs', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_extra_costs', estimate: @estimate %>
+  <%= render 'admin/view_estimate/view_estimate_totals', estimate: @estimate %>
+
   <% if @estimate.payment_finalized? %>
     <%= render 'admin/view_estimate/view_estimate_payment', estimate: @estimate %>
   <% end %>
