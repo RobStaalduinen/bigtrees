@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190409193641) do
+ActiveRecord::Schema.define(version: 20190505184402) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -82,6 +82,14 @@ ActiveRecord::Schema.define(version: 20190409193641) do
     t.string   "preferred_contact"
     t.boolean  "is_unknown",            default: false
   end
+
+  create_table "extra_costs", force: :cascade do |t|
+    t.integer "estimate_id"
+    t.decimal "amount"
+    t.string  "description"
+  end
+
+  add_index "extra_costs", ["estimate_id"], name: "index_extra_costs_on_estimate_id"
 
   create_table "receipts", force: :cascade do |t|
     t.integer  "arborist_id"
