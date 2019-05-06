@@ -44,7 +44,6 @@ end
 def update_estimate
 	@estimate = Estimate.find(params[:estimate_id])
 	@estimate.update(estimate_params)
-	# @estimate.set_status
 
 	redirect_to admin_estimates_path(id: @estimate.id)
 end
@@ -57,7 +56,7 @@ def submit_updated_costs
 		db_tree.update(cost: tree[:cost], notes: tree[:notes])
 	end
 
-	@estimate.set_status
+	@estimate.save!
 
 	if(params[:commit] == 'Update and Add Extras')
 		redirect_to "/admin/edit_extra_costs?id=#{@estimate.id}"
