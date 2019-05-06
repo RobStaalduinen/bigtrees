@@ -57,7 +57,7 @@ def submit_updated_costs
 		db_tree.update(cost: tree[:cost], notes: tree[:notes])
 	end
 
-	# @estimate.set_status
+	@estimate.set_status
 
 	if(params[:commit] == 'Update and Add Extras')
 		redirect_to "/admin/edit_extra_costs?id=#{@estimate.id}"
