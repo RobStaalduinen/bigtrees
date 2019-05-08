@@ -11,6 +11,7 @@
     let city = document.querySelector('input[name="city"]').value
 
     let access_width = document.querySelector('input[name="access_width"]').value
+    let access_width_unit = document.querySelector('select[name="access_width_unit"]').value;
 
     let params = {
       estimate:{
@@ -20,7 +21,7 @@
     }
 
     if(displayAccess){
-      params.estimate.access_width = access_width;
+      params.estimate.access_width = `${access_width} ${access_width_unit}`;
     }
 
     var xmlhttp = new XMLHttpRequest();
@@ -70,7 +71,7 @@
     <div class='estimate-form__label'>
       How wide is the access to your back yard? (i.e 36 inches)
     </div>
-    <%= text_field_tag("access_width", '', id: 'estimate-form__field') %>
+    <%= render 'estimate_forms/components/access_field' %>
   </div>
 
   <div id="estimate-form__submit" onClick="submitSite();">
