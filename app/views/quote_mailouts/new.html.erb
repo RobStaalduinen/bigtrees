@@ -22,6 +22,11 @@
     <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
       <%= hidden_field_tag('estimate_id', @estimate.id) %>
       <%= hidden_field_tag('is_final', @is_final) %>
+
+      <% if @is_final %>
+        <%= render 'admin/partials/invoice_fields' %>
+      <% end %>
+
       <div class='content__row-vertical'>
         <div class='content__label'>
           Customer Email

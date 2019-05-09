@@ -11,6 +11,10 @@ class QuoteMailoutsController < ApplicationController
   def create
     @estimate = Estimate.find(params[:estimate_id])
 
+    unless estimate_params.blank?
+      @estimate.update(estimate_params)
+    end
+
     unless params[:skip]
       if @estimate.email.blank?
         @estimate.update(email: params[:dest_email])
@@ -27,6 +31,13 @@ class QuoteMailoutsController < ApplicationController
 
 
     redirect_to admin_estimates_path(id: params[:estimate_id])
+  end
+
+  private
+
+  def estimate_params
+    return {} unless params[:estimate].present?
+    params.require(:estimate).permit(:discount_applied, :invoice_number)
   end
 
 end

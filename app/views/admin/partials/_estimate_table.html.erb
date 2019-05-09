@@ -38,6 +38,14 @@
 
   <div 
     class='admin__single-estimate-tab'
+    id="pending-tab"
+    onClick="changeTab('pending')"
+  >
+    To Pay
+  </div>
+
+  <div 
+    class='admin__single-estimate-tab'
     id="completed-tab"
     onClick="changeTab('completed')"
   >
@@ -79,6 +87,13 @@
     <%= 
       render 'admin/partials/estimate_list', 
       estimates: estimates.unknown
+    %>
+  </div>
+
+  <div id='pending-list' class='estimate-list' style="display: none;">
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.pending_payment
     %>
   </div>
 </div>

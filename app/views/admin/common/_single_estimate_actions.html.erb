@@ -32,17 +32,17 @@
 <% end %>
 
 <% if estimate.status == "work_scheduled" %>
-  <%= link_to finalize_payment_estimate_path(id: estimate.id) do %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, is_final: true) do %>
     <div id="single-estimate__action-button">
-      Finalize Payment
+      Send Final Invoice
     </div>
   <% end %>
 <% end %>
 
-<% if estimate.status == "payment_finalized" %>
-  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, is_final: true) do %>
+<% if estimate.status == "final_invoice_sent" %>
+  <%= link_to finalize_payment_estimate_path(id: estimate.id) do %>
     <div id="single-estimate__action-button">
-      Send Final Invoice
+      Finalize Payment
     </div>
   <% end %>
 <% end %>

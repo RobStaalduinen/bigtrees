@@ -61,7 +61,7 @@
 	border-width: 1px;
 	border-color: grey;
 
-	padding: 8px;
+	padding: 4px;
 	margin: 4px 0;
 	width: 46%;
 	font-weight: 600;
@@ -86,6 +86,7 @@
 	}
 
 	.admin__single-estimate-tab{
-		width: 200px;
+		padding: 8px;
+		width: 160px;
 	}
 }

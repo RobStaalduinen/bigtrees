@@ -19,9 +19,10 @@
   <%= render 'admin/view_estimate/view_estimate_extra_costs', estimate: @estimate %>
   <%= render 'admin/view_estimate/view_estimate_totals', estimate: @estimate %>
 
-  <% if @estimate.payment_finalized? %>
+  <% if @estimate.final_invoice_sent? %>
     <%= render 'admin/view_estimate/view_estimate_payment', estimate: @estimate %>
   <% end %>
+
   <%= render 'admin/view_estimate/view_estimate_trees', estimate: @estimate %>
   <%= render 'admin/view_estimate/view_estimate_cancel', estimate: @estimate %>
   

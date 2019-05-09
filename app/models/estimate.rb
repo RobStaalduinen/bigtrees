@@ -11,7 +11,8 @@ class Estimate < ActiveRecord::Base
 	belongs_to :arborist
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
-	scope :incomplete, -> { active.where.not(status: 8) }
+	scope :incomplete, -> { active.where("status < 7") }
+	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
@@ -25,7 +26,7 @@ class Estimate < ActiveRecord::Base
 		quote_accepted: 4, 
 		work_scheduled: 5,
 		work_completed: 6,
-		payment_finalized: 7,
+		final_invoice_sent: 7,
 		completed: 8,
 		cancelled: 10
 	}
@@ -56,6 +57,10 @@ class Estimate < ActiveRecord::Base
 
 	def work_scheduled?
 		self.work_date.present?
+	end
+
+	def final_invoice_sent?
+		self.final_invoice_sent_at.present?
 	end
 
 	def full_address
@@ -93,11 +98,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def payment_finalized?
-		self.invoice_number.present?
-	end
-
-	def completed?
-		self.final_invoice_sent_at.present?
+		self.payment_method.present?
 	end
 
 	def unknown?
@@ -119,10 +120,9 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def can_resend_quote?
-		self.quote_sent? && !self.payment_finalized?
+		self.quote_sent? && !self.final_invoice_sent?
 	end
 	
-
 	def set_status
 		new_status = if(self.cancelled_at.present?)
 			:cancelled
@@ -134,11 +134,11 @@ class Estimate < ActiveRecord::Base
 			:pending_quote
 		elsif(self.quote_sent? && !self.work_scheduled?)
 			:quote_sent
-		elsif(self.work_scheduled? && !self.payment_finalized?)
+		elsif(self.work_scheduled? && !self.final_invoice_sent?)
 			:work_scheduled
-		elsif(self.payment_finalized? && !self.completed?)
-			:payment_finalized
-		elsif(self.completed?)
+		elsif(self.final_invoice_sent? && !self.payment_finalized?)
+			:final_invoice_sent
+		elsif(self.payment_finalized?)
 			:completed
 		end
 

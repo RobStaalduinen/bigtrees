@@ -5,13 +5,6 @@
     
     <div class='form__box'>
       <div class='form__row-vertical'>
-        <b>Sign Discount Applied:</b>
-        <%= hidden_field_tag 'estimate[discount_applied]', false %>
-        <br />
-        <%= check_box_tag('estimate[discount_applied]', 1, @estimate.discount_applied, class:'form__checkbox')%>
-      </div>
-
-      <div class='form__row-vertical'>
         <b>Payment Method</b>
           <%= 
             select_tag 'estimate[payment_method]',
@@ -19,12 +12,6 @@
             class:"form-field form__field-full",
             required: true
           %>
-      </div>
-
-      <div class='form__row-vertical'>
-        <b>Invoice Number</b>
-
-        <%= text_field_tag("estimate[invoice_number]", (@estimate.invoice_number || @estimate.potential_invoice_number), class: 'form-field form__field-full') %>
       </div>
 
       <div id="form__row">
