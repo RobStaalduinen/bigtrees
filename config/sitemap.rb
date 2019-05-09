@@ -6,6 +6,7 @@ SitemapGenerator::Sitemap.create do
   add '/main/services'
   add '/main/commercial'
   add '/main/contact_us'
+  add '/main/removal'
   add '/main/stumping'
   add '/main/careers'
 
