@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= ["Big Tree Services", yield(:title)].join(" | ") %></title>
+  <title><%= yield(:title) %></title>
   <meta name="description" content='<%= yield(:description) %>'>
+  <% if content_for?(:robots) %>
+    <meta name="robots" content="<%= yield(:robots) %>" />
+  <% else %>
+    <meta name="robots" content="index" />
+  <% end %>
 
   <link rel="canonical" href="http://bigtreeservices.ca/" />
 
