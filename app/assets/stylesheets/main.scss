@@ -36,6 +36,11 @@ body{
 
 }
 
+h1 {
+	font-size: 24px;
+	font-weight: 600;
+}
+
 .text-large{
 	font-size: 24px;
 }
@@ -99,12 +104,12 @@ body{
 
 .sub-page-header-text{
 	color: white;
-	font-size: 24px;
 	padding: 20px 25px;
+	font-size: 24px;
+	font-weight: 600;
 	border-color: white;
 	border-style: solid;
 	border-width: 2px;
-	font-weight: 600;
 }
 
 #services-list > li{

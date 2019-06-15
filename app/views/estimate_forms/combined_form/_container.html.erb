@@ -31,9 +31,10 @@
       currentStep = "contact";
     }
     else if(currentStep == 'contact'){
-      fadeOut = "#contact-method-container";
-      fadeIn = "#thank-you-container";
-      currentStep = "thank-you";
+      window.location.href = "/main/thank-you-estimate"
+      // fadeOut = "#contact-method-container";
+      // fadeIn = "#thank-you-container";
+      // currentStep = "thank-you";
     }
 
     $(fadeOut).fadeOut(600, function(){

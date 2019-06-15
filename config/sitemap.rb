@@ -1,5 +1,6 @@
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = "https://bigtreeservices.ca"
+SitemapGenerator::Sitemap.sitemaps_path = 'shared/public/'
 
 SitemapGenerator::Sitemap.create do
   add '/main/home'
