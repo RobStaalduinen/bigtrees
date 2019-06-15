@@ -3,6 +3,7 @@
   var sections = ['removal-section', 'stumping-section']
   var autoScroll = true;
   var tabIndex = 0;
+  var scrollStarted = false;
 
 
   function changeTab(tabIndex, stopAuto=false){
@@ -38,10 +39,12 @@
 
     }
   }
-
-  setInterval(function() {
-    autoScrollTab();
-  }, 10000);
+  if(!scrollStarted){
+    scrollStarted = true;
+    setInterval(function() {
+      autoScrollTab();
+    }, 10000);
+  }
 
 </script>
 
