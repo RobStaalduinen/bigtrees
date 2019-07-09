@@ -11,11 +11,12 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees).includes(:arborist)
+    estimates = estimates.includes(:trees).includes(:arborist).order("work_date ASC")
 
     estimates.each_with_index do |estimate, i|
       row = 2 + i
       contact = estimate.preferred_contact || ""
+      discount = estimate.discount_applied ? "YES" : "NO"
 
       insert(worksheet, row, 0, estimate.invoice_number)
       insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%y"))
@@ -27,15 +28,16 @@ class GenerateMasterTracker
       insert(worksheet, row, 7, contact.capitalize)
       insert(worksheet, row, 8, estimate.phone)
       insert(worksheet, row, 9, estimate.email)
-      insert(worksheet, row, 10, estimate.total_cost)
-      insert(worksheet, row, 11, estimate.total_cost * 1.13)
-      # 12 is outstanding owed
-      insert(worksheet, row, 12, estimate.trees.count)
+      insert(worksheet, row, 10, discount)
+
+      insert(worksheet, row, 11, estimate.total_cost)
+      insert(worksheet, row, 12, estimate.total_cost * 1.13)
+      insert(worksheet, row, 13, estimate.trees.count)
 
       raw_link = Rails.application.routes.url_helpers.admin_estimates_url(id: 1)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
-      worksheet.add_cell(row, 25, '', link)
-      worksheet[row][25].change_font_color('0000ff')
+      worksheet.add_cell(row, 26, '', link)
+      worksheet[row][26].change_font_color('0000ff')
 
     end
 

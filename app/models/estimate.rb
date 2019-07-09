@@ -115,6 +115,11 @@ class Estimate < ActiveRecord::Base
 		return "#{date_string}#{already_completed_count + 1}"
 	end
 
+	def assign_invoice_number
+		return if self.invoice_number.present?
+		self.update(invoice_number: self.potential_invoice_number)
+	end
+
 	def should_display_access?
 		self.trees.stumping_possible.any? && self.trees.pluck(:in_backyard).any?
 	end

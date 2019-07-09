@@ -25,6 +25,7 @@ class QuoteMailoutsController < ApplicationController
 
     if params[:is_final] == 'true' && @estimate.final_invoice_sent_at.blank?
       @estimate.update(final_invoice_sent_at: Date.today)
+      @estimate.assign_invoice_number
     elsif @estimate.quote_sent_date.blank?
       @estimate.update(quote_sent_date: Date.today)
     end
