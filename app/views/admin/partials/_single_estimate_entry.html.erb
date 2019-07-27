@@ -107,9 +107,9 @@
   <div id="single-estimate__action-buttons">
     <% if !estimate.completed? %>
       <% if !estimate.unknown? %>
-        <div id="single-estimate-entry__action-button" onClick="setUnknown(<%= estimate.id %>, true)">
-          Move to Unknown
-        </div> 
+        <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:followup]), id: 'single-estimate-entry__action-button' do %>
+            Move to Unknown
+        <% end %>
       <% else %>
         <div id="single-estimate-entry__action-button" onClick="setUnknown(<%= estimate.id %>, false)">
           Move to Active

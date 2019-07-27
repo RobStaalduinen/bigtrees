@@ -24,7 +24,7 @@
 <% end %>
 
 <% if estimate.status == "pending_quote" %>
-  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id) do %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:quote]) do %>
     <div id="single-estimate__action-button">
       Send Quote
     </div>
@@ -32,7 +32,7 @@
 <% end %>
 
 <% if estimate.status == "work_scheduled" %>
-  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, is_final: true) do %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:final]) do %>
     <div id="single-estimate__action-button">
       Send Final Invoice
     </div>

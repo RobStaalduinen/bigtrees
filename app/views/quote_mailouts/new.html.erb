@@ -10,20 +10,24 @@
 
 <div class='container'>
   <h3>Mailout new quote</h3>
-  <% if @is_final %>
+
+  <% if @mail_type == QuoteMailout::MAIL_TYPES[:quote] %>
+    <% subject = 'Big Tree Services Quote '%>
+    <% content = I18n.t('quote_mailout.new.content', name: @estimate.first_name) %>
+  <% elsif @mail_type == QuoteMailout::MAIL_TYPES[:final] %>
     <% subject = 'Big Tree Services Final Invoice '%>
     <% content = I18n.t('quote_mailout.final.content', name: @estimate.first_name)%>
-  <% else %>
-    <% subject = 'Big Tree Services Quote '%>
-    <% content = I18n.t('quote_mailout.new.content', name: @estimate.first_name)%>
+  <% elsif @mail_type ==QuoteMailout::MAIL_TYPES[:followup] %>
+    <% subject = 'Your Big Tree Services Quote '%>
+    <% content = I18n.t('quote_mailout.followup.content', name: @estimate.first_name) %>
   <% end %>
 
   <div class='content__box'>
     <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
       <%= hidden_field_tag('estimate_id', @estimate.id) %>
-      <%= hidden_field_tag('is_final', @is_final) %>
+      <%= hidden_field_tag('mail_type', @mail_type) %>
 
-      <% if @is_final %>
+      <% if @mail_type == QuoteMailout::MAIL_TYPES[:final] %>
         <%= render 'admin/partials/invoice_fields' %>
       <% end %>
 
@@ -58,7 +62,7 @@
 
     <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
       <%= hidden_field_tag('skip', true) %>
-      <%= hidden_field_tag('is_final', @is_final) %>
+      <%= hidden_field_tag('mail_type', @mail_type) %>
       <div class='content__row-vertical'>
         <%= submit_tag('Skip', class: "form__submit", id: 'submit-button') %>
       </div>

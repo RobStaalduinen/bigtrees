@@ -6,6 +6,8 @@ class QuoteMailoutsController < ApplicationController
   def new
     @estimate = Estimate.find(params[:estimate_id])
     @is_final = params[:is_final] == 'true'
+
+    @mail_type = params[:mail_type]
   end
 
   def create
@@ -15,6 +17,8 @@ class QuoteMailoutsController < ApplicationController
       @estimate.update(estimate_params)
     end
 
+    QuoteMailout.post_process_for_type(params[:mail_type], @estimate)
+
     unless params[:skip]
       if @estimate.email.blank?
         @estimate.update(email: params[:dest_email])
@@ -23,15 +27,11 @@ class QuoteMailoutsController < ApplicationController
       QuoteMailer.quote_email(@estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
     end
 
-    if params[:is_final] == 'true' && @estimate.final_invoice_sent_at.blank?
-      @estimate.update(final_invoice_sent_at: Date.today)
-      @estimate.assign_invoice_number
-    elsif @estimate.quote_sent_date.blank?
-      @estimate.update(quote_sent_date: Date.today)
+    if params[:mail_type] == QuoteMailout::MAIL_TYPES[:followup]
+      redirect_to '/admin/admin_panel'
+    else
+      redirect_to admin_estimates_path(id: params[:estimate_id])
     end
-
-
-    redirect_to admin_estimates_path(id: params[:estimate_id])
   end
 
   private

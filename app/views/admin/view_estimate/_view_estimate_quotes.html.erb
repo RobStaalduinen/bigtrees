@@ -4,7 +4,7 @@
 
       <% if @estimate.can_resend_quote? %>
         <span class='view-estimate__link'>
-          <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id) do %>
+          <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:quote]) do %>
             Resend Quote
           <% end %>
         </span>
