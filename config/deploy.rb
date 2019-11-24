@@ -7,6 +7,7 @@ set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
 set :deploy_to, '/var/www/bigtrees'
+set :rvm_map_bins, %w{gem rake ruby rails bundle}
 
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies

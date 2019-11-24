@@ -24,7 +24,7 @@ class GenerateMasterTracker
       insert(worksheet, row, 3, estimate.street)
       insert(worksheet, row, 4, estimate.city)
       insert(worksheet, row, 5, estimate.trees.count)
-      insert(worksheet, row, 6, estimate.trees.first.work_name)
+      insert(worksheet, row, 6, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 7, contact.capitalize)
       insert(worksheet, row, 8, estimate.phone)
       insert(worksheet, row, 9, estimate.email)
