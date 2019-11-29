@@ -19,7 +19,7 @@ class GenerateMasterTracker
       discount = estimate.discount_applied ? "YES" : "NO"
 
       insert(worksheet, row, 0, estimate.invoice_number)
-      insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%Y"))
+      insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
       insert(worksheet, row, 2, estimate.person_name)
       insert(worksheet, row, 3, estimate.street)
       insert(worksheet, row, 4, estimate.city)
