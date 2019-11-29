@@ -31,8 +31,9 @@ class GenerateMasterTracker
       insert(worksheet, row, 10, discount)
 
       insert(worksheet, row, 11, estimate.total_cost)
+      insert(worksheet, row, 12, estimate.total_cost * 0.13)
       insert(worksheet, row, 12, estimate.total_cost * 1.13)
-      insert(worksheet, row, 13, estimate.trees.count)
+      insert(worksheet, row, 13, estimate.outstanding_amount * 1.13)
 
       raw_link = Rails.application.routes.url_helpers.admin_estimates_url(id: 1)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}

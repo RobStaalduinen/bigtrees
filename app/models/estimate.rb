@@ -17,7 +17,8 @@ class Estimate < ActiveRecord::Base
 	scope :today, -> { incomplete.where(work_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
-
+	scope :paid, -> { where.not(payment_method: nil) }
+	
 	enum status: { 
 		needs_costs: 0,
 		needs_arborist: 1,
@@ -126,6 +127,14 @@ class Estimate < ActiveRecord::Base
 
 	def can_resend_quote?
 		self.quote_sent? && !self.final_invoice_sent?
+	end
+
+	def paid?
+		self.payment_method.present?
+	end
+
+	def outstanding_amount
+		self.paid? ? 0.0 : self.total_cost
 	end
 	
 	def set_status
