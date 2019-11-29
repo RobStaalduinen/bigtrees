@@ -11,7 +11,7 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees).includes(:arborist).order("work_date ASC")
+    estimates = estimates.includes(:trees).includes(:arborist).order("is_unknown, status DESC, work_date ASC")
 
     estimates.each_with_index do |estimate, i|
       row = 2 + i
@@ -30,11 +30,15 @@ class GenerateMasterTracker
       insert(worksheet, row, 9, estimate.email)
       insert(worksheet, row, 10, discount)
 
-      insert(worksheet, row, 11, estimate.total_cost)
-      insert(worksheet, row, 12, estimate.total_cost * 0.13)
-      insert(worksheet, row, 13, estimate.total_cost * 1.13)
-      insert(worksheet, row, 14, estimate.outstanding_amount * 1.13)
+      if estimate.quote_sent_date.present?
+        insert(worksheet, row, 11, estimate.total_cost)
+        insert(worksheet, row, 12, estimate.total_cost * 0.13)
+        insert(worksheet, row, 13, estimate.total_cost * 1.13)
 
+        if estimate.work_date.present?
+          insert(worksheet, row, 14, estimate.outstanding_amount * 1.13)
+        end
+      end
       raw_link = Rails.application.routes.url_helpers.admin_estimates_url(id: 1)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
       worksheet.add_cell(row, 26, '', link)

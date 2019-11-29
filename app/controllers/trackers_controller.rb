@@ -5,7 +5,7 @@ class TrackersController < ApplicationController
   end
 
   def index
-    master_tracker = GenerateMasterTracker.call(Estimate.complete)
+    master_tracker = GenerateMasterTracker.call(Estimate.submitted)
 
     respond_to do |format| 
       format.xlsx {
