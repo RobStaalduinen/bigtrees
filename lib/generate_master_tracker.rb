@@ -18,7 +18,7 @@ class GenerateMasterTracker
       contact = estimate.preferred_contact || ""
       discount = estimate.discount_applied ? "YES" : "NO"
 
-      insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice_number : nil)
+      insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice_number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
       insert(worksheet, row, 2, estimate.person_name)
       insert(worksheet, row, 3, estimate.street)
