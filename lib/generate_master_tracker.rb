@@ -19,24 +19,25 @@ class GenerateMasterTracker
       discount = estimate.discount_applied ? "YES" : "NO"
 
       insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice_number : 'UNKNOWN')
-      insert(worksheet, row, 1, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
-      insert(worksheet, row, 2, estimate.person_name)
-      insert(worksheet, row, 3, estimate.street)
-      insert(worksheet, row, 4, estimate.city)
-      insert(worksheet, row, 5, estimate.trees.count)
-      insert(worksheet, row, 6, estimate.trees.first.work_name) rescue ""
-      insert(worksheet, row, 7, contact.capitalize)
-      insert(worksheet, row, 8, estimate.phone)
-      insert(worksheet, row, 9, estimate.email)
-      insert(worksheet, row, 10, discount)
+      insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
+      insert(worksheet, row, 2, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
+      insert(worksheet, row, 3, estimate.person_name)
+      insert(worksheet, row, 4, estimate.street)
+      insert(worksheet, row, 5, estimate.city)
+      insert(worksheet, row, 6, estimate.trees.count)
+      insert(worksheet, row, 7, estimate.trees.first.work_name) rescue ""
+      insert(worksheet, row, 8, contact.capitalize)
+      insert(worksheet, row, 9, estimate.phone)
+      insert(worksheet, row, 10, estimate.email)
+      insert(worksheet, row, 11, discount)
 
-      if estimate.quote_sent_date.present? && !estimate.is_unknown
-        insert(worksheet, row, 11, estimate.total_cost)
-        insert(worksheet, row, 12, estimate.total_cost * 0.13)
-        insert(worksheet, row, 13, estimate.total_cost * 1.13)
+      if estimate.quote_sent_date.present?
+        insert(worksheet, row, 12, estimate.total_cost)
+        insert(worksheet, row, 13, estimate.total_cost * 0.13)
+        insert(worksheet, row, 14, estimate.total_cost * 1.13)
 
-        if estimate.work_date.present?
-          insert(worksheet, row, 14, estimate.outstanding_amount * 1.13)
+        if estimate.work_date.present? && !estimate.is_unknown
+          insert(worksheet, row, 15, estimate.outstanding_amount * 1.13)
         end
       end
       raw_link = Rails.application.routes.url_helpers.admin_estimates_url(id: 1)
