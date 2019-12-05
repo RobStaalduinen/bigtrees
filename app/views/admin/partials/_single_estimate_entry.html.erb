@@ -32,6 +32,8 @@
   }
 </script>
 
+<% customer = estimate.customer %>
+
 
 <div id='single-estimate__box'>
   <div id='single-estimate__header'>
@@ -68,7 +70,7 @@
       </div>
 
       <div id='single-estimate__content'>
-        <%= estimate.person_name %>
+        <%= customer.name %>
       </div>
     </div>
 
@@ -78,7 +80,7 @@
       </div>
 
       <div id='single-estimate__content'>
-        <%= estimate.phone %>
+        <%= customer.phone %>
       </div>
     </div>
 
@@ -88,7 +90,7 @@
       </div>
 
       <div id='single-estimate__content'>
-        <%= estimate.email %>
+        <%= customer.email %>
       </div>
     </div>
 

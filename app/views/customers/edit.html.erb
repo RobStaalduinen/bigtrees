@@ -1,0 +1,32 @@
+<section id="admin-container">
+  <h3>Update Customer</h3>
+  <%= form_for(@customer, method: 'patch') do |f| %>
+    
+    <div class='form__box'>
+      <%= f.hidden_field(:redirect_location, value: @redirect_location) %>
+
+      <div class='form__row-vertical'>
+        <b><%= f.label(:name, 'Name') %></b>
+        <%= f.text_field(:name, class: 'form-field form__field-full') %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b><%= f.label(:email, 'Email') %></b>
+        <%= f.text_field(:email, class: 'form-field form__field-full') %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b><%= f.label(:phone, 'Phone') %></b>
+        <%= f.text_field(:phone, class: 'form-field form__field-full') %>
+      </div>
+
+      <div id="form__row">
+        <%= submit_tag("Update", id: 'form__submit') %>
+      </div>
+    </div>
+
+
+    
+
+  <% end %>
+</section>

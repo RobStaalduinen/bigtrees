@@ -1,6 +1,5 @@
 class SiteStat < ActiveRecord::Base
-	attr_accessible *column_names
-	
+
 	$record_stats = true
 
 	class << self # Class methods

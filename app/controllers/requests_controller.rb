@@ -7,6 +7,12 @@ class RequestsController < ApplicationController
   def create
     estimate = Estimate.create(request_params)
 
+    if params[:customer].present?
+      customer = Customer.find_by(id: customer_params[:id]) || Customer.new
+      customer.update(customer_params)
+      estimate.update(customer: customer)
+    end
+
     render json: { estimate_id: estimate.id }
   end
 
@@ -14,6 +20,11 @@ class RequestsController < ApplicationController
     estimate = Estimate.find(params[:id])
 
     estimate.update(request_params)
+
+    if params[:customer].present?
+      customer = Customer.find_or_create_by_params(customer_params)
+      estimate.update(customer: customer)
+    end
 
     if params[:estimate][:submission_completed] && !params[:estimate][:supress_email]
       EstimateMailer.estimate_alert(estimate).deliver_later
@@ -27,8 +38,13 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :street, :city, :wood_removal, :breakables, :vehicle_access,
-        :person_name, :email, :phone, :submission_completed, :stumping_only, :access_width,
-        :preferred_contact
+        :submission_completed, :stumping_only, :access_width, :street, :city
+      )
+    end
+
+    def customer_params
+      params.require(:customer).permit(
+        :id, :name, :phone, :email, :preferred_contact
       )
     end
 

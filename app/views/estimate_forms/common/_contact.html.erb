@@ -12,12 +12,14 @@
     let phone = document.querySelector('input[name="phone"]').value
     let name = document.querySelector('input[name="person_name"]').value
 
-    let params = { 
-      estimate: { 
-        person_name: name,
+    let params = {
+      estimate: {
+        submission_completed: true
+      },
+      customer: { 
+        name: name,
         email: email,
         phone: phone,
-        submission_completed: true,
         preferred_contact: contactMethod
       } 
     }

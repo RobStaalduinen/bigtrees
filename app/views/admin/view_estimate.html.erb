@@ -9,7 +9,7 @@
   <% end%>
   
   <%= render 'admin/view_estimate/view_estimate_next', estimate: @estimate %>
-
+  <%= render 'admin/view_estimate/view_estimate_customer', customer: @estimate.customer, location: "/admin/view_estimate?id=#{@estimate.id}" %>
   <%= render 'admin/view_estimate/view_estimate_basics', estimate: @estimate %>
   <% if @estimate.arborist.present? %>
     <%= render 'admin/view_estimate/view_estimate_arborist', estimate: @estimate %>

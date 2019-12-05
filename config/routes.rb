@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   resources :trackers, only: [ :new, :index ]
   resources :arborists
+  resources :customers
   resources :requests
   resources :trees
   resources :tree_images, only: [ :create ]

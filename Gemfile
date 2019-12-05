@@ -22,6 +22,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'rake', '12.3.1'
 
 gem "font-awesome-rails"
 
@@ -42,7 +43,6 @@ gem 'whenever', require: false
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'mysql2', '~> 0.4.0'
-gem 'protected_attributes'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
 gem 'bootstrap-datepicker-rails'

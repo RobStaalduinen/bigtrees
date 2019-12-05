@@ -1,19 +1,24 @@
 <script>
   function submitBasics(){
     let params = {
-      estimate: {
-        person_name: document.querySelector('input[name="person_name"]').value,
-        street: document.querySelector('input[name="street"]').value,
-        city: document.querySelector('input[name="city"]').value,
+      customer: {
+        id: document.querySelector('input[name="customer_id"]').value,
+        name: document.querySelector('input[name="name"]').value,
         email: document.querySelector('input[name="email"]').value,
         phone: document.querySelector('input[name="phone"]').value,
-        preferred_contact: document.querySelector('input[name="contact_method"]:checked').value,
+        preferred_contact: document.querySelector('input[name="contact_method"]:checked').value
+      },
+      estimate: {
+        street: document.querySelector('input[name="street"]').value,
+        city: document.querySelector('input[name="city"]').value,
         wood_removal: document.querySelector('input[name="wood_removal"]:checked').value,
         vehicle_access: document.querySelector('input[name="vehicle_access"]:checked').value,
         breakables: document.querySelector('input[name="breakables"]:checked').value,
         access_width: document.querySelector('input[name="access_width"]').value
       }
     }
+
+  
 
     var quantity = document.querySelector('input[name="num_trees"]').value;
     setQuantity(quantity);
@@ -34,9 +39,10 @@
 </script>
  
  <div class='form__box'>
+  <%= hidden_field_tag('customer_id', @customer.id) %>
   <div class='form__row-vertical'>
     <b>Customer Name</b>
-    <%= text_field_tag("person_name", '', class: 'form-field form__field-full') %>
+    <%= text_field_tag("name", @customer.name, class: 'form-field form__field-full') %>
   </div>
 
   <div class='form__row-vertical'>
@@ -48,7 +54,7 @@
         label: 'Email',
         value: 'email',
         smallLabel: true,
-        checked: 'checked'
+        checked: (@customer.preferred_contact == 'email' || @customer.preferred_contact.blank?) ? 'checked' : nil
       %>
 
       <%= 
@@ -56,7 +62,8 @@
         name: 'contact_method',
         label: 'Phone',
         value: 'phone',
-        smallLabel: true
+        smallLabel: true,
+        checked: (@customer.preferred_contact == 'phone') ? 'checked' : nil
       %>
 
       <%= 
@@ -64,30 +71,31 @@
         name: 'contact_method',
         label: 'Text',
         value: 'text',
-        smallLabel: true
+        smallLabel: true,
+        checked: (@customer.preferred_contact == 'text') ? 'checked' : nil
       %>
     </div>
   </div>
 
   <div class='form__row-vertical'>
     <b>Email</b>
-    <%= text_field_tag("email", '', class: 'form-field form__field-full') %>
+    <%= text_field_tag("email", @customer.email, class: 'form-field form__field-full') %>
   </div>
 
   <div class='form__row-vertical'>
     <b>Phone Number</b>
-    <%= text_field_tag("phone", '', class: 'form-field form__field-full') %>
+    <%= text_field_tag("phone", @customer.phone, class: 'form-field form__field-full') %>
   </div>
 
 
   <div class='form__row-vertical'>
     <b>Street and Number</b>
-    <%= text_field_tag("street", '', class: 'form-field form__field-full') %>
+    <%= text_field_tag("street", @last_estimate.street, class: 'form-field form__field-full') %>
   </div>
 
   <div class='form__row-vertical'>
     <b>City</b>
-    <%= text_field_tag("city", '', class: 'form-field form__field-full') %>
+    <%= text_field_tag("city", @last_estimate.city, class: 'form-field form__field-full') %>
   </div>
 
 

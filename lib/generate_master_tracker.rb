@@ -17,18 +17,19 @@ class GenerateMasterTracker
       row = 2 + i
       contact = estimate.preferred_contact || ""
       discount = estimate.discount_applied ? "YES" : "NO"
+      customer = estimate.customer
 
       insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice_number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
       insert(worksheet, row, 2, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
-      insert(worksheet, row, 3, estimate.person_name)
+      insert(worksheet, row, 3, customer.name)
       insert(worksheet, row, 4, estimate.street)
       insert(worksheet, row, 5, estimate.city)
       insert(worksheet, row, 6, estimate.trees.count)
       insert(worksheet, row, 7, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 8, contact.capitalize)
-      insert(worksheet, row, 9, estimate.phone)
-      insert(worksheet, row, 10, estimate.email)
+      insert(worksheet, row, 9, customer.phone)
+      insert(worksheet, row, 10, customer.email)
       insert(worksheet, row, 11, discount)
 
       if estimate.quote_sent_date.present?

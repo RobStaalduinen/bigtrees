@@ -1,13 +1,13 @@
 class Estimate < ActiveRecord::Base
-	attr_accessible *column_names
 
 	SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
 	SIGN_DISCOUNT = -25.0
-
+	
 	before_save :set_status
 
 	has_many :trees
 	has_many :extra_costs
+	belongs_to :customer
 	belongs_to :arborist
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
@@ -18,6 +18,7 @@ class Estimate < ActiveRecord::Base
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { where.not(payment_method: nil) }
+	scope :with_customer, -> { where.not(customer: nil) }
 	
 	enum status: { 
 		needs_costs: 0,

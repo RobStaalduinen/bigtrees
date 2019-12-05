@@ -2,11 +2,15 @@ class EstimateController < ApplicationController
 	require 'date'
 
 	def new
+		@customer = Customer.find_by(id: params[:customer_id]) || Customer.new
+		@last_estimate = @customer.estimates.last || Estimate.new
 
 	end
 
 	def create
+		estimate = Estimate.create(request_params)
 
+    render json: { estimate_id: estimate.id }
 	end
 
 	def update
@@ -48,8 +52,7 @@ class EstimateController < ApplicationController
 
 		def estimate_params
 			params.require(:estimate).permit(
-				:status, :arborist_id, :invoice_number, :discount_applied, :payment_method,
-				:person_name, :phone, :email, :street, :city, :is_unknown
+				:status, :arborist_id, :invoice_number, :discount_applied, :payment_method, :is_unknown
 			)
 		end
 end

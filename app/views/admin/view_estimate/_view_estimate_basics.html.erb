@@ -1,84 +1,14 @@
   <div id="view-estimate__box">
-    <div id="view-estimate__main-header">
-      <span class = "text-large">Contact</span>
-      
-      <%= link_to update_contact_details_estimate_path(estimate.id) do %>
-        <span id="view-estimate__edit">Edit</span>
-      <% end %>
-    </div>
+    <span class="text-large" id="view-estimate__box-header">Site Info</span>
 
     <div id='view-estimate__row-vertical'>
       <div id="view_estimate__entry-header">
-        Name
+        Address
       </div>
-      <div>
-        <%= estimate.person_name %>
-      </div>
-    </div>
-
-    <div id='view-estimate__row-vertical'>
-      <div id="view_estimate__entry-header">
-        Preferred Contact
-      </div>
-      <div>
-        <%= estimate.preferred_contact_method %>
-      </div>
-    </div>
-
-
-    <div id='view-estimate__row-vertical'>
-      <div id="view_estimate__entry-header">
-        Email
-      </div>
-      <div>
-        <% if estimate.email.present? %>
-          <a href="mailto:<%= estimate.email %>">
-            <%= estimate.email %>
-          </a>
-        <% else %>
-          -
-        <% end %>
-      </div>
-    </div>
-
-    <div id='view-estimate__row-vertical'>
-      <div id="view_estimate__entry-header">
-        Phone
-      </div>
-      <div>
-        <% if estimate.phone.present? %>
-          <a href="tel:<%= estimate.phone %>">
-            <%= estimate.phone %>
-          </a>
-        <% else %>
-          -
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-
-  
-
-  <div id="view-estimate__box">
-    <div id="view-estimate__main-header">
-      <span class = "text-large">Address</span>
-      
-      <%= link_to update_address_estimate_path(estimate.id) do %>
-        <span id="view-estimate__edit">Edit</span>
-      <% end %>
-    </div>
-    <div id='view-estimate__row-vertical'>
       <div>
         <%= estimate.full_address %>
       </div>
     </div>
-  </div>
-
-
-  
-  <div id="view-estimate__box">
-    <span class="text-large" id="view-estimate__box-header">Site Info</span>
 
     <% unless estimate.stumping_only %>
       <div id='view-estimate__row'>

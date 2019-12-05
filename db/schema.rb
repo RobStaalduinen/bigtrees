@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190505184402) do
+ActiveRecord::Schema.define(version: 20191201112535) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -26,84 +26,94 @@ ActiveRecord::Schema.define(version: 20190505184402) do
   end
 
   create_table "arborists", force: :cascade do |t|
-    t.string  "name",                          null: false
-    t.string  "certification",                 null: false
-    t.string  "phone_number"
-    t.string  "email"
-    t.string  "password"
-    t.boolean "is_admin",      default: false
-    t.string  "session_token"
+    t.string  "name",          limit: 255,                 null: false
+    t.string  "certification", limit: 255,                 null: false
+    t.string  "phone_number",  limit: 255
+    t.string  "email",         limit: 255
+    t.string  "password",      limit: 255
+    t.boolean "is_admin",                  default: false
+    t.string  "session_token", limit: 255
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string "name",              limit: 255
+    t.string "street",            limit: 255
+    t.string "city",              limit: 255
+    t.string "email",             limit: 255
+    t.string "phone",             limit: 255
+    t.string "preferred_contact", limit: 255
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
+    t.integer  "priority",   limit: 4,     default: 0, null: false
+    t.integer  "attempts",   limit: 4,     default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "estimates", force: :cascade do |t|
-    t.integer  "tree_quantity",         default: 1
-    t.string   "person_name"
-    t.string   "street"
-    t.string   "city"
-    t.string   "phone"
-    t.string   "email"
-    t.boolean  "stump_removal",         default: false
-    t.boolean  "vehicle_access",        default: false
-    t.boolean  "breakables",            default: false
-    t.boolean  "wood_removal",          default: false
-    t.integer  "status",                default: 0,     null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.boolean  "submission_completed",  default: false
+    t.integer  "tree_quantity",         limit: 4,                  default: 1
+    t.string   "person_name",           limit: 255
+    t.string   "street",                limit: 255
+    t.string   "city",                  limit: 255
+    t.string   "phone",                 limit: 255
+    t.string   "email",                 limit: 255
+    t.boolean  "stump_removal",                                    default: false
+    t.boolean  "vehicle_access",                                   default: false
+    t.boolean  "breakables",                                       default: false
+    t.boolean  "wood_removal",                                     default: false
+    t.integer  "status",                limit: 4,                  default: 0,     null: false
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.boolean  "submission_completed",                             default: false
     t.date     "quote_sent_date"
     t.date     "quote_accepted_date"
     t.date     "work_date"
-    t.decimal  "extra_cost"
-    t.string   "extra_cost_notes"
-    t.integer  "arborist_id"
-    t.integer  "invoice_number"
-    t.boolean  "discount_applied",      default: false
-    t.string   "payment_method"
+    t.decimal  "extra_cost",                        precision: 10
+    t.string   "extra_cost_notes",      limit: 255
+    t.integer  "arborist_id",           limit: 4
+    t.integer  "invoice_number",        limit: 4
+    t.boolean  "discount_applied",                                 default: false
+    t.string   "payment_method",        limit: 255
     t.date     "final_invoice_sent_at"
     t.date     "cancelled_at"
-    t.boolean  "stumping_only",         default: false
-    t.string   "access_width"
-    t.string   "preferred_contact"
-    t.boolean  "is_unknown",            default: false
+    t.boolean  "stumping_only",                                    default: false
+    t.string   "access_width",          limit: 255
+    t.string   "preferred_contact",     limit: 255
+    t.boolean  "is_unknown",                                       default: false
+    t.integer  "customer_id",           limit: 4
   end
 
   create_table "extra_costs", force: :cascade do |t|
-    t.integer "estimate_id"
-    t.decimal "amount"
-    t.string  "description"
+    t.integer "estimate_id", limit: 4
+    t.decimal "amount",                  precision: 10
+    t.string  "description", limit: 255
   end
 
-  add_index "extra_costs", ["estimate_id"], name: "index_extra_costs_on_estimate_id"
+  add_index "extra_costs", ["estimate_id"], name: "index_extra_costs_on_estimate_id", using: :btree
 
   create_table "receipts", force: :cascade do |t|
-    t.integer  "arborist_id"
+    t.integer  "arborist_id",        limit: 4
     t.date     "date"
-    t.string   "category"
-    t.string   "job"
-    t.string   "payment_method"
-    t.string   "description"
-    t.decimal  "cost"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.integer  "photo_file_size"
+    t.string   "category",           limit: 255
+    t.string   "job",                limit: 255
+    t.string   "payment_method",     limit: 255
+    t.string   "description",        limit: 255
+    t.decimal  "cost",                           precision: 10
+    t.string   "photo_file_name",    limit: 255
+    t.string   "photo_content_type", limit: 255
+    t.integer  "photo_file_size",    limit: 4
     t.datetime "photo_updated_at"
-    t.integer  "vehicle_id"
+    t.integer  "vehicle_id",         limit: 4
   end
 
   create_table "site_config", force: :cascade do |t|
@@ -119,25 +129,25 @@ ActiveRecord::Schema.define(version: 20190505184402) do
   end
 
   create_table "tree_images", force: :cascade do |t|
-    t.string   "asset_file_name"
-    t.string   "asset_content_type"
-    t.integer  "asset_file_size"
+    t.string   "asset_file_name",    limit: 255
+    t.string   "asset_content_type", limit: 255
+    t.integer  "asset_file_size",    limit: 4
     t.datetime "asset_updated_at"
-    t.integer  "tree_id"
+    t.integer  "tree_id",            limit: 4
   end
 
   create_table "trees", force: :cascade do |t|
-    t.integer "estimate_id"
-    t.integer "work_type",     default: 0
-    t.integer "sequence",      default: 0
-    t.decimal "cost"
-    t.string  "notes"
-    t.string  "description"
+    t.integer "estimate_id",   limit: 4
+    t.integer "work_type",     limit: 4,                  default: 0
+    t.integer "sequence",      limit: 4,                  default: 0
+    t.decimal "cost",                      precision: 10
+    t.string  "notes",         limit: 255
+    t.string  "description",   limit: 255
     t.boolean "stump_removal"
-    t.boolean "in_backyard",   default: false
+    t.boolean "in_backyard",                              default: false
   end
 
-  add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id"
+  add_index "trees", ["estimate_id"], name: "index_trees_on_estimate_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string "username",      limit: 50,  null: false
@@ -146,10 +156,10 @@ ActiveRecord::Schema.define(version: 20190505184402) do
   end
 
   create_table "vehicles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
   end
 
-  add_index "vehicles", ["name"], name: "index_vehicles_on_name"
+  add_index "vehicles", ["name"], name: "index_vehicles_on_name", using: :btree
 
   create_table "work_actions", force: :cascade do |t|
     t.integer "estimate_id",  limit: 4,     null: false

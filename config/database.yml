@@ -1,4 +1,4 @@
 development:
-  adapter: sqlite3
-  database: bigtrees
+  adapter: mysql2
+  database: bigtrees_dev
   pool: 5
