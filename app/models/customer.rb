@@ -10,6 +10,10 @@ class Customer < ActiveRecord::Base
     customer
   end
 
+  def first_name
+		self.name.split(" ")[0]
+	end
+
   def address
     [self.street, self.city].compact.join(", ")
   end

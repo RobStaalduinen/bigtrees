@@ -11,7 +11,8 @@ class Estimate < ActiveRecord::Base
 	belongs_to :arborist
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
-	scope :incomplete, -> { active.where("status < 7") }
+	scope :incomplete, -> { active.where("status < 3") }
+	scope :quote_sent, -> { active.where("status < 7") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }
@@ -35,10 +36,6 @@ class Estimate < ActiveRecord::Base
 
 	def formatted_status
 		self.status.gsub('_', ' ').capitalize
-	end
-
-	def phone_or_email
-		self.email.present? ? self.email : self.phone
 	end
 
 	def answer_for(attribute)
@@ -70,7 +67,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def contact_methods
-		[self.phone, self.email].compact.join(" | ")
+		[self.customer.phone, self.customer.email].compact.join(" | ")
 	end
 
 	def preferred_contact_method
@@ -84,10 +81,6 @@ class Estimate < ActiveRecord::Base
 		total_cost
 	end
 
-	def first_name
-		self.person_name.split(" ")[0]
-	end
-
 	def pdf_quote
 		estimate_file = GenerateQuote.call(self)
 		destination = Rails.root.join("tmp", "Quote__Estimate_#{self.id}__PDF.pdf")
@@ -96,7 +89,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_file_name
-		"#{self.first_name}-#{self.street}-#{self.city}.pdf"
+		"#{self.customer.first_name}-#{self.street}-#{self.city}.pdf"
 	end
 
 	def payment_finalized?

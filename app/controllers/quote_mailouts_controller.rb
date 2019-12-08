@@ -20,8 +20,8 @@ class QuoteMailoutsController < ApplicationController
     QuoteMailout.post_process_for_type(params[:mail_type], @estimate)
 
     unless params[:skip]
-      if @estimate.email.blank?
-        @estimate.update(email: params[:dest_email])
+      if @estimate.customer.email.blank?
+        @estimate.customer.update(email: params[:dest_email])
       end
 
       QuoteMailer.quote_email(@estimate, params[:dest_email], params[:subject], params[:content]).deliver_now

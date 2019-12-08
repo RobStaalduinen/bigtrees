@@ -10,9 +10,9 @@ class EstimateMailer < ApplicationMailer
 		@estimate = Estimate.find_by_id(estimate_id)
 
 		if Rails.env.production?
-			mail(to: 'Tbrewer@bigislandgroup.ca', bcc: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
+			mail(to: 'Tbrewer@bigislandgroup.ca', bcc: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.customer.name)
 		else
-			mail(to: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.person_name)
+			mail(to: 'rob.staalduinen@gmail.com', subject: "BigTree Estimate Request from " + @estimate.customer.name)
 		end
 	end
 

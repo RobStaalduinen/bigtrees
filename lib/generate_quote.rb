@@ -21,11 +21,11 @@ class GenerateQuote
     # Date
     worksheet[4][2].change_contents(Date.today.strftime("%d/%m/%Y"))
     # Customer Name
-    worksheet[5][2].change_contents(estimate.person_name)
+    worksheet[5][2].change_contents(estimate.customer.name)
     # Phone Number
-    worksheet[6][2].change_contents(estimate.phone)
+    worksheet[6][2].change_contents(estimate.customer.phone)
     # Email Address
-    worksheet[7][2].change_contents(estimate.email)
+    worksheet[7][2].change_contents(estimate.customer.email)
     # Address
     worksheet[8][2].change_contents(estimate.full_address)
 

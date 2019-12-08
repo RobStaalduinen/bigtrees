@@ -13,7 +13,7 @@ class QuotesController < ApplicationController
       }
       format.pdf{
         pdf_quote_path = @estimate.pdf_quote
-        send_file pdf_quote_path, filename: "#{@estimate.first_name}-#{@estimate.street}-#{@estimate.city}.pdf"
+        send_file pdf_quote_path, filename: "#{@estimate.customer.first_name}-#{@estimate.street}-#{@estimate.city}.pdf"
       }
     end
   end

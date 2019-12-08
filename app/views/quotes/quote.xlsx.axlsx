@@ -30,11 +30,11 @@ wb.add_worksheet(name: "Quote") do |sheet|
     sheet.add_row [nil] + ["Date Tendered:"] + ([nil] * 4) + ["Completion Date:"],
     style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3),
     height: 12
-    sheet.add_row [nil] + ["Customer Name:", @estimate.person_name] + ([nil] * 3) + ["Arborist's Name:", "Tyler Brewer"],
+    sheet.add_row [nil] + ["Customer Name:", @estimate.customer.name] + ([nil] * 3) + ["Arborist's Name:", "Tyler Brewer"],
     style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
-    sheet.add_row [nil] + ["Phone Number:", @estimate.phone] + ([nil] * 3) + ["Arborist Cert:", "400184807"],
+    sheet.add_row [nil] + ["Phone Number:", @estimate.customer.phone] + ([nil] * 3) + ["Arborist Cert:", "400184807"],
     style: ([nil, right, top_border_center])+ ([center] * 3) + ([right]) + ([top_border_center] * 3)
-    sheet.add_row [nil] + ["Email Address:", @estimate.email] + ([nil] * 3) + ["Cell Phone:", "705 943 7374"],
+    sheet.add_row [nil] + ["Email Address:", @estimate.customer.email] + ([nil] * 3) + ["Cell Phone:", "705 943 7374"],
     style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
     sheet.add_row [nil] + ["Address:", @estimate.full_address] + ([nil] * 3) + ["Email:", "tbrewer@bigislandgroup.ca"],
     style: ([nil, right, top_border_center]) + ([center] * 3) + ([right]) + ([top_border_center] * 3)
