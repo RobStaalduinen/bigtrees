@@ -1,5 +1,6 @@
 class ExtraCostsController < ApplicationController
-
+  layout 'admin'
+  
   def create
     @estimate = Estimate.find(params[:estimate_id])
     @estimate.extra_costs.create(extra_cost_params)

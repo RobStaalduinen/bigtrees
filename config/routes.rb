@@ -7,22 +7,17 @@ Rails.application.routes.draw do
   get "/main/:page" => "main#show", as: :pages
   get 'health' => 'main#health'
 
-	match '/estimate/submit_new_estimate' => 'estimate#submit_new_estimate', :as => :submit_estimate, via: :all
-	match '/estimate/submit_job_questions' => 'estimate#submit_job_questions', :as => :submit_questions, via: :all
-	match '/estimate/submit_tree_images' => 'estimate#submit_tree_images', :as => :submit_images, via: :all
-	match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display_estimate, via: :all
-  match '/estimate/estimate_tooltips' => 'estimate#estimate_tooltips', :as => :estimate_tooltips, via: :all
-  
+
+  get '/admin/admin_panel', to: redirect('/estimates')
+
   match '/admin/view_estimate', :as => :admin_estimates, via: :get
-  match '/estimates/:id', to: 'estimate#update', via: :patch
   resources :estimates do
     resources :quotes, only: [ :index ]
     resources :quote_mailouts, only: [ :new, :create ]
-    get '/assign_arborist', to: 'estimate#assign_arborist', on: :member
-    get '/finalize_payment', to: 'estimate#finalize_payment', on: :member
-    get '/update_contact_details', to: 'estimate#update_contact_details', on: :member
-    get '/update_address', to: 'estimate#update_address', on: :member
-    post '/cancel', to: 'estimate#cancel', on: :member
+    get '/assign_arborist', to: 'estimates#assign_arborist', on: :member
+    get '/finalize_payment', to: 'estimates#finalize_payment', on: :member
+    get '/update_address', to: 'estimates#update_address', on: :member
+    post '/cancel', to: 'estimates#cancel', on: :member
   end
 
   resources :trackers, only: [ :new, :index ]
@@ -37,8 +32,6 @@ Rails.application.routes.draw do
   match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx
   resources :receipts
   resources :vehicles
-
-  match '/estimate/display_estimate' => 'estimate#display_estimate', :as => :display, via: :all
 
   get ':controller/:action'
 

@@ -1,0 +1,16 @@
+<section id='header-container'>
+  <section id='header-container-inner'>
+    <section id='header-inner'>
+      <%= link_to "/" do %>
+        <%= image_tag "BigTreeServicesLogo.png", :id => 'header-logo', :alt => 'Big Tree Services Logo' %>
+      <% end %>
+
+      <span class = "menu-icon" onclick="toggleMenu()"><i class="fa fa-bars"></i></li>
+    </section>
+    <div id="header__subtitle"> Admin Panel </div>
+
+    <div id="header__nav-container">
+      <%= render 'layouts/admin/nav' %>
+    </div>
+  </section>
+</section>

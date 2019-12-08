@@ -1,5 +1,5 @@
 class VehiclesController < ApplicationController
-	include UserHelper
+  layout 'admin'
 
   before_action :signed_in_user
 
@@ -14,7 +14,7 @@ class VehiclesController < ApplicationController
   def create
     Vehicle.create(vehicle_params)
 
-    redirect_to "/admin/admin_panel"
+    redirect_to estimates_path
   end
 
   private

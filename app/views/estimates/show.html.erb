@@ -1,0 +1,30 @@
+<div class='page-container'>
+  <%= render 'admin/common/back_button', back_link: estimates_path %>
+
+  <h2>Estimate #<%= @estimate.id %><%= " - Stumping Only" if @estimate.stumping_only %></h2>
+  <%= render 'estimates/show/timeline', estimate: @estimate %>
+
+  <% if @estimate.arborist.present? %>
+    <%= render 'estimates/show/quotes', estimate: @estimate %>
+  <% end%>
+  
+  <%= render 'estimates/show/next', estimate: @estimate %>
+  <%= render 'estimates/show/customer', customer: @estimate.customer, location: estimate_path(@estimate) %>
+  <%= render 'estimates/show/basics', estimate: @estimate %>
+  <% if @estimate.arborist.present? %>
+    <%= render 'estimates/show/arborist', estimate: @estimate %>
+  <% end %>
+
+  <%= render 'estimates/show/costs', estimate: @estimate %>
+  <%= render 'estimates/show/extra_costs', estimate: @estimate %>
+  <%= render 'estimates/show/totals', estimate: @estimate %>
+
+  <% if @estimate.final_invoice_sent? %>
+    <%= render 'estimates/show/payment', estimate: @estimate %>
+  <% end %>
+
+  <%= render 'estimates/show/trees', estimate: @estimate %>
+  <%= render 'estimates/show/cancel', estimate: @estimate %>
+  
+
+</div>

@@ -1,5 +1,6 @@
 class TrackersController < ApplicationController
-
+  layout 'admin'
+  
   def new
 
   end

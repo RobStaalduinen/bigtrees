@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Big Trees - Admin</title>
+
+  <link rel="canonical" href="http://bigtreeservices.ca/" />
+
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+
+  <%= csrf_meta_tags %>
+
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script>
+    function toggleMenu() {
+      var x = document.getElementById("navbar");
+      var items = x.getElementsByTagName("li");
+      
+      for(var i = 0; i < items.length; ++i){
+        if (items[i].className === "menu-item") {
+            items[i].className = "menu-item-responsive";
+        } else {
+            items[i].className = "menu-item";
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700" media="none" onload="this.media='all';">
+</head>
+<body>
+  
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBWVZF5"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+	<script>
+		$('body').on('hidden.bs.modal', '.modal', function () {
+			$(this).removeData('bs.modal');
+		});
+	</script>
+
+      <%= render 'layouts/admin/header' %>
+
+      <div id = "main-box">
+        <%= yield %>
+      </div>
+
+      <%= render 'layouts/common/footer' %>
+
+
+
+		<div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+				</div>
+			</div>
+		</div>
+
+</body>
+</html>

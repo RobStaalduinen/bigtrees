@@ -1,4 +1,5 @@
 class ArboristsController < ApplicationController
+  layout 'admin'
   
   def index
     @arborists = Arborist.all
@@ -15,19 +16,19 @@ class ArboristsController < ApplicationController
   def create
     @arborist = Arborist.create(arborist_params)
 
-    redirect_to "/admin/admin_panel"
+    redirect_to estimates_path
   end
 
   def update
     @arborist = Arborist.find(params[:id])
     @arborist.update(arborist_params)
-    redirect_to "/admin/admin_panel"
+    redirect_to estimates_path
   end
 
   def destroy
     @arborist = Arborist.find(params[:id])
     @arborist.destroy
-    redirect_to "/admin/admin_panel"
+    redirect_to estimates_path
   end
 
   private

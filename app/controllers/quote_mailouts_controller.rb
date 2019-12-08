@@ -1,5 +1,5 @@
 class QuoteMailoutsController < ApplicationController
-	include UserHelper
+  layout 'admin'
 
   before_action :signed_in_user
 
@@ -28,9 +28,9 @@ class QuoteMailoutsController < ApplicationController
     end
 
     if params[:mail_type] == QuoteMailout::MAIL_TYPES[:followup]
-      redirect_to '/admin/admin_panel'
+      redirect_to estimates_path
     else
-      redirect_to admin_estimates_path(id: params[:estimate_id])
+      redirect_to estimate_path(@estimate)
     end
   end
 

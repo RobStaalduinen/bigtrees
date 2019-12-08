@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  include UserHelper
+  layout 'admin'
 
   before_action :signed_in_user
   

@@ -1,6 +1,6 @@
 <div class="container">
   <div id="submit-receipt">
-    <%= render 'admin/common/back_button', back_link: "/admin/admin_panel" %>
+    <%= render 'admin/common/back_button', back_link: estimates_path %>
     <h3>Submit a Receipt</h3>
 
     <%= form_tag("/receipts", method: 'post', multipart: true) do %>

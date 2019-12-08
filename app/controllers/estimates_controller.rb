@@ -1,10 +1,20 @@
-class EstimateController < ApplicationController
+class EstimatesController < ApplicationController
 	require 'date'
+	layout 'admin'
+
+	before_action :signed_in_user
+
+	def index
+		@estimates = Estimate.submitted.order('id DESC').joins(:customer).with_customer
+	end
 
 	def new
 		@customer = Customer.find_by(id: params[:customer_id]) || Customer.new
 		@last_estimate = @customer.estimates.last || Estimate.new
+	end
 
+	def show
+		@estimate = Estimate.find(params[:id])
 	end
 
 	def create
@@ -18,7 +28,7 @@ class EstimateController < ApplicationController
 		@estimate.update(estimate_params)
 		@estimate.set_status
 		
-		redirect_to admin_estimates_path(id: @estimate.id)
+		redirect_to estimate_path(@estimate)
 	end
 
 	def assign_arborist
@@ -30,10 +40,6 @@ class EstimateController < ApplicationController
 		@estimate = Estimate.find(params[:id])
 	end
 
-	def update_contact_details
-		@estimate = Estimate.find(params[:id])
-	end
-
 	def update_address
 		@estimate = Estimate.find(params[:id])
 	end
@@ -41,7 +47,7 @@ class EstimateController < ApplicationController
 	def cancel
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(cancelled_at: Date.today)
-		redirect_to admin_estimates_path(id: @estimate.id)
+		redirect_to estimate_path(@estimate)
 	end
 
 	def change_trees

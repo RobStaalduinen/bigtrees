@@ -1,5 +1,5 @@
 class ReceiptsController < ApplicationController
-	include UserHelper
+  layout 'admin'
 
   before_action :signed_in_user
 
@@ -17,7 +17,7 @@ class ReceiptsController < ApplicationController
   def create
     Receipt.create(receipt_params)
 
-    redirect_to "/admin/admin_panel"
+    redirect_to estimates_path
   end
 
   def show

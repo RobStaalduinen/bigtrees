@@ -41,7 +41,7 @@ class GenerateMasterTracker
           insert(worksheet, row, 15, estimate.outstanding_amount * 1.13)
         end
       end
-      raw_link = Rails.application.routes.url_helpers.admin_estimates_url(id: 1)
+      raw_link = Rails.application.routes.url_helpers.estimate_path(estimate)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
       worksheet.add_cell(row, 26, '', link)
       worksheet[row][26].change_font_color('0000ff')
