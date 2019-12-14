@@ -71,7 +71,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def preferred_contact_method
-		self.preferred_contact.present? ? self.preferred_contact.capitalize : "None given"
+		self.customer.preferred_contact.present? ? self.customer.preferred_contact.capitalize : "None given"
 	end
 
 	def total_cost
