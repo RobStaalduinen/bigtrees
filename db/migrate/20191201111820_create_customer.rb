@@ -7,8 +7,6 @@ class CreateCustomer < ActiveRecord::Migration
       t.string :preferred_contact
     end
 
-    drop_table :contacts
-
     add_column :estimates, :customer_id, :integer, index: true
   end
 end
