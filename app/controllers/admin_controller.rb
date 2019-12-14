@@ -20,18 +20,6 @@ class AdminController < ApplicationController
 		end
 	end
 
-	def update_costs
-		@estimate = Estimate.find(params[:id])
-	end
-
-	def edit_extra_costs
-		@estimate = Estimate.find(params[:id])
-	end
-
-	def set_work_date
-		@estimate = Estimate.find(params[:id])
-	end
-
 	def update_estimate
 		@estimate = Estimate.find(params[:estimate_id])
 		@estimate.update(estimate_params)
@@ -50,7 +38,7 @@ class AdminController < ApplicationController
 		@estimate.save!
 
 		if(params[:commit] == 'Update and Add Extras')
-			redirect_to "/admin/edit_extra_costs?id=#{@estimate.id}"
+			redirect_to edit_estimate_path(@estimate, form_option: 'edit_extra_costs')
 		else
 			redirect_to estimate_path(@estimate)
 		end

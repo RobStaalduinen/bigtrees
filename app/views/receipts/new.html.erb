@@ -1,6 +1,5 @@
 <div class="container">
   <div id="submit-receipt">
-    <%= render 'admin/common/back_button', back_link: estimates_path %>
     <h3>Submit a Receipt</h3>
 
     <%= form_tag("/receipts", method: 'post', multipart: true) do %>
@@ -32,7 +31,7 @@
           <%= 
             select_tag 'receipt[arborist_id]',
             options_from_collection_for_select(@all_arborists, 'id', 'name', @arborist.id),
-            class:"form-field form__field-full",
+            class:"form-field",
             required: true
           %>
       </div>
@@ -45,20 +44,20 @@
         <%= 
           select_tag 'receipt[category]',
           options_for_select(Receipt::CATEGORIES, Receipt::DEFAULT_CATEGORY),
-          class:"form-field form__field-full",
+          class:"form-field",
           required: true
         %>
       </div>
 
       <div class="form__row form__row-vertical">
-        <div class=" form__label">
+        <div class="form__label">
           Job*
         </div>  
 
         <%= 
           select_tag 'receipt[job]',
           options_for_select(Receipt::JOBS, Receipt::DEFAULT_JOB),
-          class:"form-field form__field-full",
+          class:"form-field",
           required: true
         %>
       </div>
@@ -71,7 +70,7 @@
         <%= 
           select_tag 'receipt[payment_method]',
           options_for_select(Receipt::PAYMENT_METHODS, Receipt::DEFAULT_PAYMENT_METHOD),
-          class:"form-field form__field-full",
+          class:"form-field",
           required: true
         %>
       </div>
@@ -85,7 +84,7 @@
             select_tag 'receipt[vehicle_id]',
             options_from_collection_for_select(@vehicles, 'id', 'name'),
             include_blank: "None",
-            class:"form-field form__field-full"
+            class:"form-field"
           %>
       </div>
 

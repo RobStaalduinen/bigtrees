@@ -35,7 +35,7 @@
         <div class='content__label'>
           Customer Email
         </div>
-        <%= text_field_tag("dest_email", @estimate.email, class: "form-field form__field-full", required: true) %>
+        <%= text_field_tag("dest_email", @estimate.customer.email, class: "form-field form__field-full", required: true) %>
       </div>
 
       <div class='content__row-vertical'>

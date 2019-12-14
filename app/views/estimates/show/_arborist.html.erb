@@ -2,7 +2,7 @@
   <div id="view-estimate__costs-header">
     <span class = "text-large">Arborist</span>
     
-    <%= link_to assign_arborist_estimate_path(estimate.id) do %>
+    <%= link_to edit_estimate_path(estimate, form_option: 'assign_arborist') do %>
       <span id="view-estimate__edit">Edit</span>
     <% end %>
   </div>

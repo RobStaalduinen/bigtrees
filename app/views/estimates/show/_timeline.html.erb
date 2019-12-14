@@ -29,7 +29,7 @@
         <span id="view-estimate__timeline-header">
           Work Scheduled For:
         </span>
-        <%= link_to "/admin/set_work_date?id=#{estimate.id}" do %>
+        <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date') do %>
           Edit
         <% end %>
       </div>

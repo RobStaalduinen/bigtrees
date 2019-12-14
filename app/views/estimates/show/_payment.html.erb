@@ -2,7 +2,7 @@
   <div id="view-estimate__main-header">
     <span class = "text-large">Payment Details</span>
     
-    <%= link_to finalize_payment_estimate_path(estimate.id) do %>
+    <%= link_to edit_estimate_path(estimate, form_option: 'finalize_payment') do %>
       <span id="view-estimate__edit">Edit</span>
     <% end %>
   </div>

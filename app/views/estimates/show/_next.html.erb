@@ -1,15 +1,9 @@
-  <div id='view-estimate__next-row'>
-
-    <div id='view-estimate__row-entry'>
-      <div id="view_estimate__entry-header-large">
-        Next Action:
-      </div>
-    </div>
-
-    <div id='view-estimate__row-entry'>
-      <div id="view-estimate__next-action">
-        <%= render 'admin/common/single_estimate_actions', estimate: estimate %>
-      </div>
-    </div>
-
+<div id='view-estimate__box'>
+  <div id="view-estimate__costs-header">
+    <span class = "text-large">Next Action</span>
   </div>
+
+  <div id='view-estimate__row'>
+    <%= render 'admin/common/single_estimate_actions', estimate: estimate %>
+  </div>
+</div>

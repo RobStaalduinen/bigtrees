@@ -5,7 +5,7 @@ class ExtraCostsController < ApplicationController
     @estimate = Estimate.find(params[:estimate_id])
     @estimate.extra_costs.create(extra_cost_params)
 
-    redirect_to "/admin/edit_extra_costs?id=#{@estimate.id}"
+    redirect_to edit_estimate_path(@estimate, form_option: 'edit_extra_costs')
   end
 
   def destroy
@@ -13,7 +13,7 @@ class ExtraCostsController < ApplicationController
     @extra_cost = ExtraCost.find(params[:id])
 
     @extra_cost.destroy
-    redirect_to "/admin/edit_extra_costs?id=#{@estimate.id}"
+    redirect_to edit_estimate_path(@estimate, form_option: 'edit_extra_costs')
   end
 
   private

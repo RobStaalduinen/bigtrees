@@ -31,17 +31,9 @@ class EstimatesController < ApplicationController
 		redirect_to estimate_path(@estimate)
 	end
 
-	def assign_arborist
+	def edit
 		@estimate = Estimate.find(params[:id])
-		@arborists = Arborist.real
-	end
-	
-	def finalize_payment
-		@estimate = Estimate.find(params[:id])
-	end
-
-	def update_address
-		@estimate = Estimate.find(params[:id])
+		render template: "estimates/edit/#{params[:form_option]}"
 	end
 
 	def cancel

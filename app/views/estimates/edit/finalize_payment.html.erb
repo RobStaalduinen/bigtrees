@@ -9,8 +9,9 @@
           <%= 
             select_tag 'estimate[payment_method]',
             options_for_select(['Cash', 'Credit', 'Debit', 'E-Transfer', 'Cheque'], @estimate.payment_method),
-            class:"form-field form__field-full",
-            required: true
+            class:"form-field",
+            required: true,
+            style: "width: 100%;"
           %>
       </div>
 

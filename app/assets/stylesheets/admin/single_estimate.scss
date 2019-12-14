@@ -60,6 +60,10 @@
   text-decoration: none;
 }
 
+.single-estimate__action-link{
+  width: 100%;
+}
+
 #single-estimate__action-buttons{
   display: flex;
   justify-content: space-around;
@@ -78,7 +82,7 @@
   border-style: solid;
   border-width: 0 0 4px 0;
 
-  width: 60%;
+  width: 100%;
 
   display: flex;
   justify-content: center;

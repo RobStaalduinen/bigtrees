@@ -7,16 +7,11 @@ Rails.application.routes.draw do
   get "/main/:page" => "main#show", as: :pages
   get 'health' => 'main#health'
 
-
   get '/admin/admin_panel', to: redirect('/estimates')
 
-  match '/admin/view_estimate', :as => :admin_estimates, via: :get
   resources :estimates do
     resources :quotes, only: [ :index ]
     resources :quote_mailouts, only: [ :new, :create ]
-    get '/assign_arborist', to: 'estimates#assign_arborist', on: :member
-    get '/finalize_payment', to: 'estimates#finalize_payment', on: :member
-    get '/update_address', to: 'estimates#update_address', on: :member
     post '/cancel', to: 'estimates#cancel', on: :member
   end
 
@@ -40,8 +35,6 @@ Rails.application.routes.draw do
   post ':controller/:action'
 
   patch ':controller/:action'
-  
-
 
   match '*path' => 'main#not_found', via: :all
 

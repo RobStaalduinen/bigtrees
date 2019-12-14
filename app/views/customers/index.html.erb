@@ -20,11 +20,21 @@
 
         <div id='single-estimate__row'>
           <div id='single-estimate__label'>
-            Contact Info
+            Email
           </div>
 
           <div id='single-estimate__content'>
-            <%= customer.contact_list %>
+            <%= customer.email %>
+          </div>
+        </div>
+
+        <div id='single-estimate__row'>
+          <div id='single-estimate__label'>
+            Phone
+          </div>
+
+          <div id='single-estimate__content'>
+            <%= customer.phone %>
           </div>
         </div>
       
@@ -49,12 +59,12 @@
         </div> 
 
         <div id="single-estimate-entry__action-button">
-          <%= link_to "/estimate/new?customer_id=#{customer.id}", id: "single-estimate__details-link" do %>
+          <%= link_to new_estimate_path(customer_id: customer.id), id: "single-estimate__details-link" do %>
             New Estimate
           <% end %>
         </div> 
       </div>
-    </div>
+  </div>
 
   <% end %>
 </section>

@@ -34,7 +34,13 @@
 </script>
 
 <div class="admin__estimate-tabs">
-  <%= select_tag "estimate-selection", options_for_select(["Active", "To Pay", "Quote Sent", "All"]), onchange: "selectTab();", class:"form-field" %>
+  <%= 
+    select_tag "estimate-selection",
+    options_for_select(["Active", "To Pay", "Quote Sent", "All"]),
+    onchange: "selectTab();",
+    class:"form-field",
+    style: 'width: 100%;'
+  %>
 </div>
 
 <div id ="admin__estimate-table">
@@ -55,7 +61,7 @@
   <div id='sent-list' class='estimate-list' style="display: none;">
     <%= 
       render 'admin/partials/estimate_list', 
-      estimates: estimates.quote_sent
+      estimates: estimates.sent
     %>
   </div>
 

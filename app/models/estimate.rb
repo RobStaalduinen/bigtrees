@@ -12,7 +12,7 @@ class Estimate < ActiveRecord::Base
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where("status < 3") }
-	scope :quote_sent, -> { active.where("status < 7") }
+	scope :sent, -> { active.where("status >= 3 AND status < 7") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }

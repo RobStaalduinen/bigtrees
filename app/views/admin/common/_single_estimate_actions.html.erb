@@ -1,6 +1,6 @@
   
 <% if estimate.status == "needs_costs" %>
-  <%= link_to "/admin/update_costs?id=#{estimate.id}" do %>
+  <%= link_to edit_estimate_path(estimate, form_option: 'update_costs'), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Add Costs
     </div> 
@@ -8,7 +8,7 @@
 <% end %>
 
 <% if estimate.status == "needs_arborist" %>
-  <%= link_to assign_arborist_estimate_path(id: estimate.id) do %>
+  <%= link_to edit_estimate_path(estimate, form_option: 'assign_arborist'), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Assign Arborist
     </div> 
@@ -16,7 +16,7 @@
 <% end %>
 
 <% if estimate.status == "quote_sent" %>
-  <%= link_to "/admin/set_work_date?id=#{estimate.id}" do %>
+  <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Schedule Work
     </div>
@@ -24,7 +24,7 @@
 <% end %>
 
 <% if estimate.status == "pending_quote" %>
-  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:quote]) do %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:quote]), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Send Quote
     </div>
@@ -32,7 +32,7 @@
 <% end %>
 
 <% if estimate.status == "work_scheduled" %>
-  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:final]) do %>
+  <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:final]), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Send Final Invoice
     </div>
@@ -40,7 +40,7 @@
 <% end %>
 
 <% if estimate.status == "final_invoice_sent" %>
-  <%= link_to finalize_payment_estimate_path(id: estimate.id) do %>
+  <%= link_to edit_estimate_path(estimate, form_option: 'finalize_payment'), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Finalize Payment
     </div>

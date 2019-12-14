@@ -41,7 +41,7 @@
 		
 
     xmlhttp.onload = function(){ 
-			window.location.href = `${window.location.protocol}//${window.location.hostname}/admin/update_costs?id=${estimateId}`;
+			window.location.href = `${window.location.protocol}//${window.location.hostname}/estimates/${estimateId}/edit?form_option=update_costs`;
 		}
 	}
 
@@ -51,11 +51,11 @@
   <h3>Create a new Quote</h3>
     
    <div id='basics-container' style="display: block;">
-		<%= render 'estimate/admin_form/basics', customer: @customer %>
+		<%= render 'estimates/admin_form/basics', customer: @customer %>
 	 </div>
 
 	 <div id='tree-container' style="display: none;">
-		<%= render 'estimate/admin_form/trees' %>
+		<%= render 'estimates/admin_form/trees' %>
 	 </div>
 
 

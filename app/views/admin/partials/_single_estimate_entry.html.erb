@@ -127,7 +127,7 @@
 
     <% if estimate.status == 'quote_sent' %>
       <div id="single-estimate-entry__action-button">
-        <%= link_to "/admin/set_work_date?id=#{estimate.id}", id: "single-estimate__details-link" do %>
+        <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), id: "single-estimate__details-link" do %>
           Schedule
         <% end %>
       </div>
@@ -135,7 +135,7 @@
 
     <% if estimate.status == 'final_invoice_sent' %>
       <div id="single-estimate-entry__action-button">
-        <%= link_to finalize_payment_estimate_path(id: estimate.id), id: "single-estimate__details-link" do %>
+        <%= link_to edit_estimate_path(estimate, form_option: 'finalize_payment'), id: "single-estimate__details-link" do %>
           Set Payment
         <% end %>
       </div>
