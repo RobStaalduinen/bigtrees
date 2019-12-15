@@ -23,6 +23,9 @@
       case 'Quote Sent':
         changeTab('sent-list');
         break;
+      case 'Scheduled':
+        changeTab('scheduled-list');
+        break;
       case 'All':
         changeTab('all-list');
         break;
@@ -36,7 +39,7 @@
 <div class="admin__estimate-tabs">
   <%= 
     select_tag "estimate-selection",
-    options_for_select(["Active", "To Pay", "Quote Sent", "All"]),
+    options_for_select(["Active", "To Pay", "Quote Sent", "Scheduled", "All"]),
     onchange: "selectTab();",
     class:"form-field",
     style: 'width: 100%;'
@@ -62,6 +65,13 @@
     <%= 
       render 'admin/partials/estimate_list', 
       estimates: estimates.sent
+    %>
+  </div>
+
+    <div id='scheduled-list' class='estimate-list' style="display: none;">
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates.scheduled
     %>
   </div>
 
