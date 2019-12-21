@@ -2,7 +2,7 @@ en:
   quote_mailout:
     new:
       content: |
-        Hi %{name},
+        Hi,
 
         Your quote is attached with a firm price and all of our company information including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.
 
@@ -27,7 +27,7 @@ en:
         Certified Utility Arborist
     final:
       content: |
-        Hi %{name},
+        Hi,
 
         The tree work is complete. Thank you very much for your business.
 
@@ -51,7 +51,7 @@ en:
         Thank you so much for the business. Give us a call anytime!
     followup:
       content: |
-        Hi %{name},
+        Hi,
 
         I didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. My cell is 705 943 7374 or you can reach me tolll free at 1 877 542 5551. 
 

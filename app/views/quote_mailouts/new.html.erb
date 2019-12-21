@@ -13,13 +13,10 @@
 
   <% if @mail_type == QuoteMailout::MAIL_TYPES[:quote] %>
     <% subject = 'Big Tree Services Quote '%>
-    <% content = I18n.t('quote_mailout.new.content', name: @estimate.customer.first_name) %>
-  <% elsif @mail_type == QuoteMailout::MAIL_TYPES[:final] %>
-    <% subject = 'Big Tree Services Final Invoice '%>
-    <% content = I18n.t('quote_mailout.final.content', name: @estimate.customer.first_name)%>
+    <% content = I18n.t('quote_mailout.new.content') %>
   <% elsif @mail_type ==QuoteMailout::MAIL_TYPES[:followup] %>
     <% subject = 'Your Big Tree Services Quote '%>
-    <% content = I18n.t('quote_mailout.followup.content', name: @estimate.customer.first_name) %>
+    <% content = I18n.t('quote_mailout.followup.content') %>
   <% end %>
 
   <div class='content__box'>

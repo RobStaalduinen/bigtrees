@@ -21,7 +21,7 @@
       render 'quote_mailouts/email_form',
       email: @invoice.estimate.customer.email,
       subject: 'Big Tree Services Receipt',
-      content: I18n.t('quote_mailout.receipt.content', name: @invoice.estimate.customer.first_name)
+      content: I18n.t('quote_mailout.receipt.content')
     %>
 
     <div class='form__row-vertical'>
