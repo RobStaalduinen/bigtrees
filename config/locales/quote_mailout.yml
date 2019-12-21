@@ -44,13 +44,11 @@ en:
         Certified Utility Arborist
     receipt:
       content: |
-        Hi %{name},
+        Hi,
 
-        Here is your receipt.
+        Your payment has been received. Here is your receipt.
 
-        Thanks,
-        Tyler
-        Certified Utility Arborist
+        Thank you so much for the business. Give us a call anytime!
     followup:
       content: |
         Hi %{name},

@@ -31,7 +31,7 @@ class Invoice < ActiveRecord::Base
   end
 
   def pdf_receipt_fle_name
-		"#{self.estimate.customer.first_name}-Receipt.pdf"
+		"Receipt-#{self.estimate.invoice.number}.pdf"
   end
   
 end
