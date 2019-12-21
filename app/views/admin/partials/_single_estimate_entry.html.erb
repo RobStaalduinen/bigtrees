@@ -135,7 +135,7 @@
 
     <% if estimate.status == 'final_invoice_sent' %>
       <div id="single-estimate-entry__action-button">
-        <%= link_to edit_estimate_path(estimate, form_option: 'finalize_payment'), id: "single-estimate__details-link" do %>
+        <%= link_to edit_invoice_path(estimate.invoice, form_option: 'finalize_payment'), id: "single-estimate__details-link" do %>
           Set Payment
         <% end %>
       </div>

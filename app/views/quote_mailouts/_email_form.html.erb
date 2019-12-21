@@ -1,0 +1,20 @@
+<div class='content__row-vertical'>
+  <div class='content__label'>
+    Customer Email
+  </div>
+  <%= text_field_tag("dest_email", email, class: "form-field form__field-full", required: true) %>
+</div>
+
+<div class='content__row-vertical'>
+  <div class='content__label'>
+    Subject
+  </div>
+  <%= text_field_tag("subject", subject, class: "form-field form__field-full") %>
+</div>
+
+<div class='content__row-vertical'>
+  <div class='content__label'>
+    Content
+  </div>
+  <%= text_area_tag("content", content, class: "form-field form__field-full", id: 'mailouts__text-area') %>
+</div>

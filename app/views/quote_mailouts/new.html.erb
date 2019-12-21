@@ -27,10 +27,6 @@
       <%= hidden_field_tag('estimate_id', @estimate.id) %>
       <%= hidden_field_tag('mail_type', @mail_type) %>
 
-      <% if @mail_type == QuoteMailout::MAIL_TYPES[:final] %>
-        <%= render 'admin/partials/invoice_fields' %>
-      <% end %>
-
       <div class='content__row-vertical'>
         <div class='content__label'>
           Customer Email

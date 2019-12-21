@@ -17,8 +17,8 @@
   <%= render 'estimates/show/extra_costs', estimate: @estimate %>
   <%= render 'estimates/show/totals', estimate: @estimate %>
 
-  <% if @estimate.final_invoice_sent? %>
-    <%= render 'estimates/show/payment', estimate: @estimate %>
+  <% if @estimate.invoice && @estimate.invoice.sent_at? %>
+    <%= render 'estimates/show/invoice', invoice: @estimate.invoice %>
   <% end %>
 
   <%= render 'estimates/show/trees', estimate: @estimate %>

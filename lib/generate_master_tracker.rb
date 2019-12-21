@@ -16,10 +16,10 @@ class GenerateMasterTracker
     estimates.each_with_index do |estimate, i|
       row = 2 + i
       contact = estimate.preferred_contact || ""
-      discount = estimate.discount_applied ? "YES" : "NO"
+      discount = estimate.invoice.discount ? "YES" : "NO"
       customer = estimate.customer
 
-      insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice_number : 'UNKNOWN')
+      insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice.number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
       insert(worksheet, row, 2, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
       insert(worksheet, row, 3, customer.name)

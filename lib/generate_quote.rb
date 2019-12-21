@@ -13,9 +13,9 @@ class GenerateQuote
 
     # binding.pry
 
-    if estimate.invoice_number.present?
+    if estimate.invoice.present?
       # Invoice Number
-      worksheet[3][4].change_contents("Invoice ##{estimate.invoice_number}")
+      worksheet[3][4].change_contents("Invoice ##{estimate.invoice.number}")
     end
 
     # Date
@@ -59,7 +59,7 @@ class GenerateQuote
 
     subtotal = estimate.total_cost
 
-    if estimate.discount_applied
+    if estimate.invoice && estimate.invoice.discount
       worksheet[11 + tree_count + extra_cost_count][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
       worksheet[11 + tree_count + extra_cost_count][7].change_contents(Estimate::SIGN_DISCOUNT)
       

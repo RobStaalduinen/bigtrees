@@ -13,10 +13,6 @@ class QuoteMailoutsController < ApplicationController
   def create
     @estimate = Estimate.find(params[:estimate_id])
 
-    unless estimate_params.blank?
-      @estimate.update(estimate_params)
-    end
-
     QuoteMailout.post_process_for_type(params[:mail_type], @estimate)
 
     unless params[:skip]
@@ -33,12 +29,4 @@ class QuoteMailoutsController < ApplicationController
       redirect_to estimate_path(@estimate)
     end
   end
-
-  private
-
-  def estimate_params
-    return {} unless params[:estimate].present?
-    params.require(:estimate).permit(:discount_applied, :invoice_number)
-  end
-
 end

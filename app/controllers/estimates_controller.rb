@@ -50,7 +50,7 @@ class EstimatesController < ApplicationController
 
 		def estimate_params
 			params.require(:estimate).permit(
-				:status, :arborist_id, :invoice_number, :discount_applied, :payment_method, :is_unknown
+				:status, :arborist_id, :is_unknown
 			)
 		end
 end

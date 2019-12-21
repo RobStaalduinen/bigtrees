@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191201112535) do
+ActiveRecord::Schema.define(version: 20191220143959) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -62,11 +62,8 @@ ActiveRecord::Schema.define(version: 20191201112535) do
 
   create_table "estimates", force: :cascade do |t|
     t.integer  "tree_quantity",         limit: 4,                  default: 1
-    t.string   "person_name",           limit: 255
     t.string   "street",                limit: 255
     t.string   "city",                  limit: 255
-    t.string   "phone",                 limit: 255
-    t.string   "email",                 limit: 255
     t.boolean  "stump_removal",                                    default: false
     t.boolean  "vehicle_access",                                   default: false
     t.boolean  "breakables",                                       default: false
@@ -88,7 +85,6 @@ ActiveRecord::Schema.define(version: 20191201112535) do
     t.date     "cancelled_at"
     t.boolean  "stumping_only",                                    default: false
     t.string   "access_width",          limit: 255
-    t.string   "preferred_contact",     limit: 255
     t.boolean  "is_unknown",                                       default: false
     t.integer  "customer_id",           limit: 4
   end
@@ -100,6 +96,19 @@ ActiveRecord::Schema.define(version: 20191201112535) do
   end
 
   add_index "extra_costs", ["estimate_id"], name: "index_extra_costs_on_estimate_id", using: :btree
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer "estimate_id",    limit: 4
+    t.string  "number",         limit: 255
+    t.string  "payment_method", limit: 255
+    t.boolean "paid",                       default: false
+    t.boolean "discount",                   default: false
+    t.date    "sent_at"
+    t.date    "paid_at"
+  end
+
+  add_index "invoices", ["estimate_id"], name: "index_invoices_on_estimate_id", using: :btree
+  add_index "invoices", ["number"], name: "index_invoices_on_number", using: :btree
 
   create_table "receipts", force: :cascade do |t|
     t.integer  "arborist_id",        limit: 4

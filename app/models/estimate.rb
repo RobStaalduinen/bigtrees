@@ -7,6 +7,7 @@ class Estimate < ActiveRecord::Base
 
 	has_many :trees
 	has_many :extra_costs
+	has_one :invoice
 	belongs_to :customer
 	belongs_to :arborist
 
@@ -19,7 +20,7 @@ class Estimate < ActiveRecord::Base
 	scope :today, -> { incomplete.where(work_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
-	scope :paid, -> { where.not(payment_method: nil) }
+	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
 	scope :with_customer, -> { where.not(customer: nil) }
 	
 	enum status: { 
@@ -44,7 +45,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def costs?
-		self.trees.pluck(:cost).select{ |c| c == nil}.all?
+		self.trees.pluck(:cost).select{ |c| c == nil }.all?
 	end
 
 	def quote_sent?
@@ -57,10 +58,6 @@ class Estimate < ActiveRecord::Base
 
 	def work_scheduled?
 		self.work_date.present?
-	end
-
-	def final_invoice_sent?
-		self.final_invoice_sent_at.present?
 	end
 
 	def full_address
@@ -78,7 +75,7 @@ class Estimate < ActiveRecord::Base
 	def total_cost
 		extra = self.extra_costs.sum(:amount)
 		total_cost = self.trees.sum(:cost) + extra
-		total_cost += SIGN_DISCOUNT if self.discount_applied
+		total_cost += SIGN_DISCOUNT if self.invoice && self.invoice.discount
 		total_cost
 	end
 
@@ -93,27 +90,8 @@ class Estimate < ActiveRecord::Base
 		"#{self.customer.first_name}-#{self.street}-#{self.city}.pdf"
 	end
 
-	def payment_finalized?
-		self.payment_method.present?
-	end
-
 	def unknown?
 		self.is_unknown
-	end
-
-	def potential_invoice_number
-		return nil if !self.work_scheduled?
-
-		already_completed_count = Estimate.where(work_date: self.work_date).where.not(invoice_number: nil).count
-
-		date_string = self.work_date.strftime("%y%m%d")
-
-		return "#{date_string}#{already_completed_count + 1}"
-	end
-
-	def assign_invoice_number
-		return if self.invoice_number.present?
-		self.update(invoice_number: self.potential_invoice_number)
 	end
 
 	def should_display_access?
@@ -121,18 +99,18 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def can_resend_quote?
-		self.quote_sent? && !self.final_invoice_sent?
+		self.quote_sent? && !self.invoice.sent?
 	end
 
 	def paid?
-		self.payment_method.present?
+		self.invoice && self.invoice.paid?
 	end
 
 	def outstanding_amount
 		self.paid? ? 0.0 : self.total_cost
 	end
 	
-	def set_status
+	def set_status(save = false)
 		new_status = if(self.cancelled_at.present?)
 			:cancelled
 		elsif(self.trees.any? && !self.costs?)
@@ -143,14 +121,16 @@ class Estimate < ActiveRecord::Base
 			:pending_quote
 		elsif(self.quote_sent? && !self.work_scheduled?)
 			:quote_sent
-		elsif(self.work_scheduled? && !self.final_invoice_sent?)
+		elsif(self.work_scheduled? && !self.invoice.present?)
 			:work_scheduled
-		elsif(self.final_invoice_sent? && !self.payment_finalized?)
+		elsif(self.invoice.present? && !self.invoice.paid?)
 			:final_invoice_sent
-		elsif(self.payment_finalized?)
+		elsif(self.invoice.paid?)
 			:completed
 		end
 
-		self.status =  new_status
+		self.status = new_status
+
+		self.save! if save
 	end
 end

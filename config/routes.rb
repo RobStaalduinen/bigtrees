@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   get '/admin/admin_panel', to: redirect('/estimates')
 
   resources :estimates do
-    resources :quotes, only: [ :index ]
+    resources :quotes, only: [ :index ] do
+      get '/receipt', to: 'quotes#receipt'
+    end
     resources :quote_mailouts, only: [ :new, :create ]
     post '/cancel', to: 'estimates#cancel', on: :member
   end
@@ -22,6 +24,9 @@ Rails.application.routes.draw do
   resources :trees
   resources :tree_images, only: [ :create ]
   resources :extra_costs, only: [ :create, :destroy ]
+  resources :invoices do
+    post '/pay', to: 'invoices#pay', as: :pay
+  end
 
   match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx
   match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx
