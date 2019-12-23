@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191220143959) do
+ActiveRecord::Schema.define(version: 20191222125322) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -61,32 +61,33 @@ ActiveRecord::Schema.define(version: 20191220143959) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "estimates", force: :cascade do |t|
-    t.integer  "tree_quantity",         limit: 4,                  default: 1
-    t.string   "street",                limit: 255
-    t.string   "city",                  limit: 255
-    t.boolean  "stump_removal",                                    default: false
-    t.boolean  "vehicle_access",                                   default: false
-    t.boolean  "breakables",                                       default: false
-    t.boolean  "wood_removal",                                     default: false
-    t.integer  "status",                limit: 4,                  default: 0,     null: false
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
-    t.boolean  "submission_completed",                             default: false
+    t.integer  "tree_quantity",           limit: 4,                  default: 1
+    t.string   "street",                  limit: 255
+    t.string   "city",                    limit: 255
+    t.boolean  "stump_removal",                                      default: false
+    t.boolean  "vehicle_access",                                     default: false
+    t.boolean  "breakables",                                         default: false
+    t.boolean  "wood_removal",                                       default: false
+    t.integer  "status",                  limit: 4,                  default: 0,     null: false
+    t.datetime "created_at",                                                         null: false
+    t.datetime "updated_at",                                                         null: false
+    t.boolean  "submission_completed",                               default: false
     t.date     "quote_sent_date"
     t.date     "quote_accepted_date"
     t.date     "work_date"
-    t.decimal  "extra_cost",                        precision: 10
-    t.string   "extra_cost_notes",      limit: 255
-    t.integer  "arborist_id",           limit: 4
-    t.integer  "invoice_number",        limit: 4
-    t.boolean  "discount_applied",                                 default: false
-    t.string   "payment_method",        limit: 255
+    t.decimal  "extra_cost",                          precision: 10
+    t.string   "extra_cost_notes",        limit: 255
+    t.integer  "arborist_id",             limit: 4
+    t.integer  "invoice_number",          limit: 4
+    t.boolean  "discount_applied",                                   default: false
+    t.string   "payment_method",          limit: 255
     t.date     "final_invoice_sent_at"
     t.date     "cancelled_at"
-    t.boolean  "stumping_only",                                    default: false
-    t.string   "access_width",          limit: 255
-    t.boolean  "is_unknown",                                       default: false
-    t.integer  "customer_id",           limit: 4
+    t.boolean  "stumping_only",                                      default: false
+    t.string   "access_width",            limit: 255
+    t.boolean  "is_unknown",                                         default: false
+    t.integer  "customer_id",             limit: 4
+    t.date     "picture_request_sent_at"
   end
 
   create_table "extra_costs", force: :cascade do |t|

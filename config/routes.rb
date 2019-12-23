@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :quotes, only: [ :index ] do
       get '/receipt', to: 'quotes#receipt'
     end
+    resources :image_requests, only: [ :new, :create ]
     resources :quote_mailouts, only: [ :new, :create ]
     post '/cancel', to: 'estimates#cancel', on: :member
   end

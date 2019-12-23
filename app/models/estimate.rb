@@ -6,6 +6,7 @@ class Estimate < ActiveRecord::Base
 	before_save :set_status
 
 	has_many :trees
+	has_many :tree_images, through: :trees
 	has_many :extra_costs
 	has_one :invoice
 	belongs_to :customer
@@ -38,6 +39,14 @@ class Estimate < ActiveRecord::Base
 
 	def formatted_status
 		self.status.gsub('_', ' ').capitalize
+	end
+
+	def additional_message
+		if self.status == 'needs_costs' && self.picture_request_sent_at.present?
+			return "Followup Sent"
+		end
+
+		nil
 	end
 
 	def answer_for(attribute)
@@ -99,7 +108,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def can_resend_quote?
-		self.quote_sent? && !self.invoice.sent?
+		self.quote_sent? && !self.invoice.present?
 	end
 
 	def paid?

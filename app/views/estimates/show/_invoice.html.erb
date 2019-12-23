@@ -45,7 +45,7 @@
 
   <% if invoice.paid %>
     <div id ="view-estimate__row">
-      <div id="single-estimate-entry__action-button" style="width: 50%;">
+      <div id="single-estimate-entry__action-button" style="width: 100%;">
         <%= link_to "/quotes/receipt?estimate_id=#{invoice.estimate.id}", id: "single-estimate__details-link" do %>
             Receipt
         <% end %>

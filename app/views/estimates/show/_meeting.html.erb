@@ -1,0 +1,14 @@
+<div id="view-estimate__box">
+  <div id="view-estimate__main-header">
+    <span class = "text-large">Request Meeting/Images</span>
+  </div>
+
+  <div id ="view-estimate__row">
+    <div id="single-estimate-entry__action-button" style="width: 100%;">
+      <%= link_to new_estimate_image_request_path(estimate_id: estimate.id), id: "single-estimate__details-link" do %>
+          Request
+      <% end %>
+    </div>
+  </div>
+
+</div>

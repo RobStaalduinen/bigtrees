@@ -24,32 +24,15 @@
       <%= hidden_field_tag('estimate_id', @estimate.id) %>
       <%= hidden_field_tag('mail_type', @mail_type) %>
 
-      <div class='content__row-vertical'>
-        <div class='content__label'>
-          Customer Email
-        </div>
-        <%= text_field_tag("dest_email", @estimate.customer.email, class: "form-field form__field-full", required: true) %>
-      </div>
+       <%= 
+        render 'quote_mailouts/email_form',
+        email: @estimate.customer.email,
+        subject: subject,
+        content: content
+      %>
 
       <div class='content__row-vertical'>
-        <div class='content__label'>
-          Subject
-        </div>
-        <%= text_field_tag("subject", subject, class: "form-field form__field-full") %>
-      </div>
-
-      <div class='content__row-vertical'>
-        <div class='content__label'>
-          Content
-        </div>
-        <%= text_area_tag("content", content, class: "form-field form__field-full", id: 'mailouts__text-area') %>
-      </div>
-
-      <div class='content__row-vertical'>
-        <%= submit_tag('Submit', class: "form__submit", id: 'submit-button', onclick: "startSend();") %>
-        <div id="loader" style="display: none; width: 100%; justify-content: center; margin-top: 16px;">
-          <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
-        </div>
+        <%= render 'quote_mailouts/spinner_send' %>
       </div>
     <% end %>
 

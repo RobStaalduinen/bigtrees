@@ -1,0 +1,16 @@
+en:
+  quote_mailer: 
+    picture_request:
+      subject: Your Big Tree Services Job
+      content_html: |
+        Hi,
+        
+        I can definitely take care of that for you.
+        
+        Either you send me a picture of the work by text/email, or we can meet in the following days. What's your schedule like?
+
+        Feel free to call/text me on my cell at 705 943 7374 or call me toll free at 1 877 542 5551.
+
+        Thanks,
+        Tyler
+        Certified Arborist and Utility Arborist

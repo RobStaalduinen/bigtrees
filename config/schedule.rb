@@ -24,3 +24,7 @@ job_type :bin, 'cd :path/bin && :task'
 every 3.hours do
   bin "RAILS_ENV=production bundle exec delayed_job restart"
 end
+
+every 3.hours do
+  command "RAILS_ENV=production $HOME/.rbenv/bin/rbenv exec bundle exec bin/delayed_job -n 1 restart"
+end

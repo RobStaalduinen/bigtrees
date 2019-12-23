@@ -37,7 +37,7 @@
 
 <div id='single-estimate__box'>
   <div id='single-estimate__header'>
-    <%= estimate.formatted_status %>
+    <%= [estimate.formatted_status, estimate.additional_message].compact.join(' - ') %>
   </div>
 
   <div id='single-estimate__inner-box'>

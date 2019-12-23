@@ -1,0 +1,17 @@
+<div class='container'>
+  <h3>Request Images</h3>
+    
+  <%= form_tag estimate_image_requests_path(@estimate.id), method: 'post' do %>
+    <%= 
+      render 'quote_mailouts/email_form',
+      email: @estimate.customer.email,
+      subject: I18n.t('quote_mailer.picture_request.subject'),
+      content: I18n.t('quote_mailer.picture_request.content_html')
+    %>
+
+    <div class='content__row-vertical'>
+      <%= render 'quote_mailouts/spinner_send' %>
+    </div>
+  <% end %>
+
+</div>
