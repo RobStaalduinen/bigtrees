@@ -1,6 +1,6 @@
   
 <% if estimate.status == "needs_costs" %>
-  <%= link_to edit_estimate_path(estimate, form_option: 'update_costs'), class: 'single-estimate__action-link' do %>
+  <%= link_to new_estimate_cost_path(estimate), class: 'single-estimate__action-link' do %>
     <div id="single-estimate__action-button">
       Add Costs
     </div> 

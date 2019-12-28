@@ -1,0 +1,75 @@
+<script>
+  var numCosts = 0;
+
+  function newCost(description, amount, index){
+    return `
+      <div id='cost_${index}'>
+        <div id='view-estimate__box'>
+          <div id="view-estimate__costs-header">
+            <span>New Cost</span>
+            <span id="update-costs__remove" onClick="removeCost('cost_${index}');">Remove</span>
+          </div>
+
+          <div class="form__row-vertical">
+            <div class="form__element">
+              Description
+            </div>
+            <div class="form__element">
+              <input type="text" name="costs[][description]" id="costs_${index}" value="${description}" class="form-text-field">
+            </div>
+          </div>
+
+          <div class="form__row-vertical">
+            <div class="form__element">
+              Cost
+            </div>
+            <div class="form__element">
+              <input type="number" name="costs[][amount]" id="costs_${index}" value=${!isNaN(amount) ? amount : ''} step="any" class="form-text-field">
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  function populateInitial() {
+    if(!initialCosts) {
+      return;
+    }
+
+    let costList = document.getElementById("cost-list");
+
+    let newHtml = initialCosts.map((cost, index) => {
+      numCosts += 1;
+      return newCost(cost.description, cost.amount, index+1);
+    }).join('')
+
+    console.log(newHtml);
+    costList.innerHTML = newHtml;
+  }
+
+  function addCost(){
+    let costList = document.getElementById("cost-list");
+    numCosts += 1
+
+    var costToAdd = document.createElement('div');
+    costToAdd.innerHTML = newCost('', null, numCosts);
+
+    costList.appendChild(costToAdd);
+    //costList.innerHTML += newCost('', 0.0, numCosts)
+  }
+
+  function removeCost(element_id){
+    let element = document.getElementById(element_id);
+    element.parentNode.removeChild(element);
+  }
+</script>
+
+<div>
+  <div id='cost-list'>
+    
+  </div>
+  <script>populateInitial()</script>
+
+  <div id = "update-costs__add" onClick="addCost();"> + Add Cost +</div>
+</div>

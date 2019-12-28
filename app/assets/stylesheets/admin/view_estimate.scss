@@ -9,6 +9,10 @@
 } 
 
 #view-estimate__box-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
   border-width: 0 0 2px 0;
   border-color: var(--main-color);
   border-style: solid;
@@ -105,13 +109,27 @@
 }
 
 #view-estimate__costs-text{
-  width: 35%;
+  width: 75%;
+}
+
+#view-estimate__costs-text-right{
+  width: 75%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #view-estimate__cost-value{
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: flex-end;
+}
+
+#view-estimate__costs-totals{
+  width: 100%;
+  margin-top: 16px;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: grey;
 }
 
 .view-estimate__label{

@@ -3,12 +3,16 @@ class Estimate < ActiveRecord::Base
 	SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
 	SIGN_DISCOUNT = -25.0
 	
+	TAX_RATE = 0.13
+	
 	before_save :set_status
 
 	has_many :trees
 	has_many :tree_images, through: :trees
 	has_many :extra_costs
+	has_many :costs
 	has_one :invoice
+	has_one :site
 	belongs_to :customer
 	belongs_to :arborist
 
@@ -37,6 +41,12 @@ class Estimate < ActiveRecord::Base
 		cancelled: 10
 	}
 
+	# Associations
+	alias :get_invoice :invoice
+	def invoice
+		get_invoice || Invoice.new(estimate: self)
+	end
+
 	def formatted_status
 		self.status.gsub('_', ' ').capitalize
 	end
@@ -47,14 +57,6 @@ class Estimate < ActiveRecord::Base
 		end
 
 		nil
-	end
-
-	def answer_for(attribute)
-		self[attribute] ? "Yes" : "No"
-	end
-
-	def costs?
-		self.trees.pluck(:cost).select{ |c| c == nil }.all?
 	end
 
 	def quote_sent?
@@ -69,10 +71,6 @@ class Estimate < ActiveRecord::Base
 		self.work_date.present?
 	end
 
-	def full_address
-		[self.street, self.city].join(", ")
-	end
-
 	def contact_methods
 		[self.customer.phone, self.customer.email].compact.join(" | ")
 	end
@@ -82,10 +80,15 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def total_cost
-		extra = self.extra_costs.sum(:amount)
-		total_cost = self.trees.sum(:cost) + extra
-		total_cost += SIGN_DISCOUNT if self.invoice && self.invoice.discount
-		total_cost
+		self.costs.sum(:amount)
+	end
+
+	def hst
+		(self.total_cost * TAX_RATE).round(2)
+	end
+
+	def total_cost_with_tax
+		self.total_cost + self.hst
 	end
 
 	def pdf_quote
@@ -96,15 +99,11 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_file_name
-		"#{self.customer.first_name}-#{self.street}-#{self.city}.pdf"
+		"#{self.customer.first_name}-#{self.site.street}-#{self.site.city}.pdf"
 	end
 
 	def unknown?
 		self.is_unknown
-	end
-
-	def should_display_access?
-		self.trees.stumping_possible.any? && self.trees.pluck(:in_backyard).any?
 	end
 
 	def can_resend_quote?
@@ -122,17 +121,17 @@ class Estimate < ActiveRecord::Base
 	def set_status(save = false)
 		new_status = if(self.cancelled_at.present?)
 			:cancelled
-		elsif(self.trees.any? && !self.costs?)
+		elsif(!self.costs.any?)
 			:needs_costs
-		elsif(self.costs? && !self.arborist?)
+		elsif(self.costs.any? && !self.arborist?)
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
 		elsif(self.quote_sent? && !self.work_scheduled?)
 			:quote_sent
-		elsif(self.work_scheduled? && !self.invoice.present?)
+		elsif(self.work_scheduled? && !self.invoice.sent?)
 			:work_scheduled
-		elsif(self.invoice.present? && !self.invoice.paid?)
+		elsif(self.invoice.sent? && !self.invoice.paid?)
 			:final_invoice_sent
 		elsif(self.invoice.paid?)
 			:completed

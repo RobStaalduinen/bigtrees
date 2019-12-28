@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191222125322) do
+ActiveRecord::Schema.define(version: 20191227123846) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20191222125322) do
     t.string  "password",      limit: 255
     t.boolean "is_admin",                  default: false
     t.string  "session_token", limit: 255
+  end
+
+  create_table "costs", force: :cascade do |t|
+    t.integer "estimate_id", limit: 4
+    t.decimal "amount",                  precision: 10
+    t.string  "description", limit: 255
+    t.boolean "discount",                               default: false
   end
 
   create_table "customers", force: :cascade do |t|
@@ -78,10 +85,6 @@ ActiveRecord::Schema.define(version: 20191222125322) do
     t.decimal  "extra_cost",                          precision: 10
     t.string   "extra_cost_notes",        limit: 255
     t.integer  "arborist_id",             limit: 4
-    t.integer  "invoice_number",          limit: 4
-    t.boolean  "discount_applied",                                   default: false
-    t.string   "payment_method",          limit: 255
-    t.date     "final_invoice_sent_at"
     t.date     "cancelled_at"
     t.boolean  "stumping_only",                                      default: false
     t.string   "access_width",            limit: 255
@@ -137,6 +140,18 @@ ActiveRecord::Schema.define(version: 20191222125322) do
     t.string  "month",                limit: 20,             null: false
     t.string  "year",                 limit: 10
   end
+
+  create_table "sites", force: :cascade do |t|
+    t.integer "estimate_id",    limit: 4
+    t.string  "street",         limit: 255
+    t.string  "city",           limit: 255
+    t.boolean "wood_removal",               default: true
+    t.boolean "vehicle_access",             default: false
+    t.boolean "breakables",                 default: false
+    t.string  "access_width",   limit: 255
+  end
+
+  add_index "sites", ["estimate_id"], name: "index_sites_on_estimate_id", using: :btree
 
   create_table "tree_images", force: :cascade do |t|
     t.string   "asset_file_name",    limit: 255

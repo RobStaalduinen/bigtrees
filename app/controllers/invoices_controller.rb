@@ -14,8 +14,11 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = Invoice.create(invoice_params)
+    @estimate = Estimate.find(invoice_params[:estimate_id])
+    @invoice = @estimate.invoice
+    @invoice.update(invoice_params)
     @invoice.update(sent_at: Date.today)
+    Cost.create_sign_discount(@invoice.estimate) if invoice_params[:discount] == '1'
     send_final_invoice unless params[:commit] == 'Skip'
     redirect_to estimate_path(@invoice.estimate)
   end
@@ -23,6 +26,7 @@ class InvoicesController < ApplicationController
   def update
     @invoice = Invoice.find(params[:id])
     @invoice.update(invoice_params)
+    Cost.create_sign_discount(@invoice.estimate) if invoice_params[:discount] == '1'
     send_final_invoice unless params[:commit] == 'Skip'
     redirect_to estimate_path(@invoice.estimate)
   end

@@ -20,31 +20,14 @@ class GenerateReceipt
     # Invoice Number
     worksheet[6][2].change_contents("##{estimate.invoice.number}")
 
-    estimate.trees.each_with_index do |tree, i|
-      worksheet[9 + i][0].change_contents(tree.notes)
-      worksheet[9 + i][7].change_contents(tree.cost.to_f)
+    estimate.costs.summary_order.each_with_index do |cost, i|
+      worksheet[9 + i][0].change_contents(cost.description)
+      worksheet[9 + i][7].change_contents(cost.amount.to_f)
     end
 
-    tree_count = estimate.trees.count
-    extra_cost_count = estimate.extra_costs.count
-
-    estimate.extra_costs.each_with_index do |cost, i|
-      worksheet[9 + tree_count + i][0].change_contents(cost.description)
-      worksheet[9 + tree_count + i][7].change_contents(cost.amount.to_f)
-    end
-
-    subtotal = estimate.total_cost
-
-    if estimate.invoice && estimate.invoice.discount
-      worksheet[10 + tree_count + extra_cost_count][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
-      worksheet[10 + tree_count + extra_cost_count][7].change_contents(Estimate::SIGN_DISCOUNT)
-      
-    end
-
-    hst = (subtotal * 0.13).round(2)
-    worksheet[18][7].change_contents("$#{sprintf("%.2f", subtotal.to_f)}")
-    worksheet[19][7].change_contents("$#{sprintf("%.2f", hst.to_f)}")
-    worksheet[21][7].change_contents("$#{sprintf("%.2f", (subtotal + hst))}")
+    worksheet[18][7].change_contents("$#{sprintf("%.2f", estimate.total_cost.to_f)}")
+    worksheet[19][7].change_contents("$#{sprintf("%.2f", estimate.hst.to_f)}")
+    worksheet[21][7].change_contents("$#{sprintf("%.2f", estimate.total_cost_with_tax)}")
 
     worksheet[23][7].change_contents(invoice.payment_method)
 

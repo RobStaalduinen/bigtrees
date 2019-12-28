@@ -1,14 +1,23 @@
 <script>
   function submitBasics(){
+    var quantity = document.querySelector('input[name="num_trees"]').value;
+    setQuantity(quantity);
+
     let params = {
+      estimate: {
+        tree_quantity: quantity
+      },
       customer: {
         id: document.querySelector('input[name="customer_id"]').value,
         name: document.querySelector('input[name="name"]').value,
         email: document.querySelector('input[name="email"]').value,
         phone: document.querySelector('input[name="phone"]').value,
         preferred_contact: document.querySelector('input[name="contact_method"]:checked').value
-      },
-      estimate: {
+      }
+    }
+
+    let siteParams = {
+      site: {
         street: document.querySelector('input[name="street"]').value,
         city: document.querySelector('input[name="city"]').value,
         wood_removal: document.querySelector('input[name="wood_removal"]:checked').value,
@@ -17,11 +26,6 @@
         access_width: document.querySelector('input[name="access_width"]').value
       }
     }
-
-  
-
-    var quantity = document.querySelector('input[name="num_trees"]').value;
-    setQuantity(quantity);
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -32,8 +36,16 @@
     xmlhttp.onload = function(){ 
       let response = JSON.parse(xmlhttp.response)
       setId(response.estimate_id); 
-      console.log(estimateId);
-      nextForm();
+      
+      var xmlHttpTwo = new XMLHttpRequest();
+
+      xmlHttpTwo.open("POST", `/estimates/${estimateId}/sites`);
+      xmlHttpTwo.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xmlHttpTwo.send(JSON.stringify(siteParams));
+
+      xmlHttpTwo.onload = function(){
+        nextForm();
+      }
     }
   }
 </script>

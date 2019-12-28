@@ -31,4 +31,10 @@ class Tree < ActiveRecord::Base
 	def stump_removal_answer
 		(self.work_type == 'stump_removal' || self.stump_removal == true) ? 'Yes' : 'No'
 	end
+
+	def initial_costs
+		costs = [Cost.json_cost(self.work_name, nil)]
+		costs += [Cost.json_cost("Stump Removal", nil)] if self.stump_removal
+		costs
+	end
 end

@@ -11,8 +11,6 @@ class GenerateQuote
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    # binding.pry
-
     if estimate.invoice.present?
       # Invoice Number
       worksheet[3][4].change_contents("Invoice ##{estimate.invoice.number}")
@@ -27,7 +25,7 @@ class GenerateQuote
     # Email Address
     worksheet[7][2].change_contents(estimate.customer.email)
     # Address
-    worksheet[8][2].change_contents(estimate.full_address)
+    worksheet[8][2].change_contents(estimate.site.full_address)
 
     arborist = estimate.arborist
 
@@ -44,32 +42,14 @@ class GenerateQuote
     # Arborist Email
     worksheet[8][7].change_contents(arborist.email)
 
-    estimate.trees.each_with_index do |tree, i|
-      worksheet[10 + i][0].change_contents(tree.notes)
-      worksheet[10 + i][7].change_contents(tree.cost.to_f)
+    estimate.costs.summary_order.each_with_index do |cost, i|
+      worksheet[10 + i][0].change_contents(cost.description)
+      worksheet[10 + i][7].change_contents(cost.amount.to_f)
     end
 
-    tree_count = estimate.trees.count
-    extra_cost_count = estimate.extra_costs.count
-
-    estimate.extra_costs.each_with_index do |cost, i|
-      worksheet[10 + tree_count + i][0].change_contents(cost.description)
-      worksheet[10 + tree_count + i][7].change_contents(cost.amount.to_f)
-    end
-
-    subtotal = estimate.total_cost
-
-    if estimate.invoice && estimate.invoice.discount
-      worksheet[11 + tree_count + extra_cost_count][0].change_contents(Estimate::SIGN_DISCOUNT_MESSAGE)
-      worksheet[11 + tree_count + extra_cost_count][7].change_contents(Estimate::SIGN_DISCOUNT)
-      
-    end
-
-
-    hst = (subtotal * 0.13).round(2)
-    worksheet[19][7].change_contents("$#{sprintf("%.2f", subtotal.to_f)}")
-    worksheet[20][7].change_contents("$#{sprintf("%.2f", hst.to_f)}")
-    worksheet[22][7].change_contents("$#{sprintf("%.2f", (subtotal + hst))}")
+    worksheet[19][7].change_contents("$#{sprintf("%.2f", estimate.total_cost.to_f)}")
+    worksheet[20][7].change_contents("$#{sprintf("%.2f", estimate.hst.to_f)}")
+    worksheet[22][7].change_contents("$#{sprintf("%.2f", estimate.total_cost_with_tax)}")
 
     workbook.write(destination)
     

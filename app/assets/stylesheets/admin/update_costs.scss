@@ -11,3 +11,17 @@
 #update-costs__submit-row{
   margin-top: 8px;
 }
+
+#update-costs__add {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--main-color);
+
+  margin: 16px 0;
+}
+
+#update-costs__remove {
+  color: var(--main-color);
+}

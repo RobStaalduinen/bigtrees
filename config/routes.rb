@@ -15,6 +15,12 @@ Rails.application.routes.draw do
     end
     resources :image_requests, only: [ :new, :create ]
     resources :quote_mailouts, only: [ :new, :create ]
+    resources :sites, only: [ :create ]
+    resources :costs, only: [ :new, :create ] do
+      get '/edit', to: 'costs#edit', on: :collection, as: :edit
+      patch '', to: 'costs#update', on: :collection, as: :update
+    end
+
     post '/cancel', to: 'estimates#cancel', on: :member
   end
 

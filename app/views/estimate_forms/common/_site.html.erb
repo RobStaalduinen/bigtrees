@@ -17,23 +17,22 @@
     let access_width_unit = document.querySelector('select[name="access_width_unit"]').value;
 
     let params = {
-      estimate:{
+      site:{
         street: street,
         city: city,
         wood_removal: wood,
         vehicle_access: vehicle,
         breakables: breakables,
-
       }
     }
 
     if(displayAccess){
-      params.estimate.access_width = `${access_width} ${access_width_unit}`;
+      params.site.access_width = `${access_width} ${access_width_unit}`;
     }
 
     var xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.open("PUT", `/requests/${estimateId}`);
+    xmlhttp.open("POST", `/estimates/${estimateId}/sites`);
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(params));
 

@@ -8,14 +8,14 @@
   
   <%= render 'estimates/show/next', estimate: @estimate %>
   <%= render 'estimates/show/customer', customer: @estimate.customer, location: estimate_path(@estimate) %>
-  <%= render 'estimates/show/basics', estimate: @estimate %>
+  <%= render 'estimates/show/site', estimate: @estimate %>
   <% if @estimate.arborist.present? %>
     <%= render 'estimates/show/arborist', estimate: @estimate %>
   <% end %>
 
-  <%= render 'estimates/show/costs', estimate: @estimate %>
-  <%= render 'estimates/show/extra_costs', estimate: @estimate %>
-  <%= render 'estimates/show/totals', estimate: @estimate %>
+  <% if @estimate.costs.any? %>
+    <%= render 'estimates/show/costs', estimate: @estimate %>
+  <% end %>
 
   <% if @estimate.invoice && @estimate.invoice.sent_at? %>
     <%= render 'estimates/show/invoice', invoice: @estimate.invoice %>

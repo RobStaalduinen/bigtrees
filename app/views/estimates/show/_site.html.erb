@@ -1,0 +1,61 @@
+<% site = estimate.site %>
+
+<div id="view-estimate__box">
+  <span class="text-large" id="view-estimate__box-header">Site Info</span>
+
+  <div id='view-estimate__row-vertical'>
+    <div id="view_estimate__entry-header">
+      Address
+    </div>
+    <div>
+      <%= site.full_address %>
+    </div>
+  </div>
+
+  <% unless estimate.stumping_only %>
+    <div id='view-estimate__row'>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Vehicle Access
+        </div>
+        <div>
+          <%= site.answer_for(:vehicle_access) %>
+        </div>
+      </div>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Breakables
+        </div>
+        <div>
+          <%= site.answer_for(:breakables) %>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id='view-estimate__row'>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Wood Removal
+        </div>
+        <div>
+          <%= site.answer_for(:wood_removal) %>
+        </div>
+      </div>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Gate Width
+        </div>
+        <div>
+          <%= site.should_display_access? ? site.access_width : 'N/A' %>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
+
+</div>
