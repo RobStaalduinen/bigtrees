@@ -6,6 +6,7 @@ class RequestsController < ApplicationController
 
   def create
     estimate = Estimate.create(request_params)
+    estimate.site.update(site_params)
 
     if params[:customer].present?
       customer = Customer.find_by(id: customer_params[:id]) || Customer.new
@@ -18,8 +19,8 @@ class RequestsController < ApplicationController
 
   def update
     estimate = Estimate.find(params[:id])
-
     estimate.update(request_params)
+    estimate.site.update(site_params)
 
     if params[:customer].present?
       customer = Customer.find_or_create_by_params(customer_params)
@@ -37,7 +38,13 @@ class RequestsController < ApplicationController
 
     def request_params
       params.require(:estimate).permit(
-        :tree_quantity, :submission_completed, :stumping_only
+        :tree_quantity, :submission_completed, :stumping_only,
+      )
+    end
+
+    def site_params
+      params.require(:estimate).permit(
+        :street, :city, :wood_removal, :breakables, :vehicle_access, :cleanup, :access_width
       )
     end
 

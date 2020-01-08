@@ -1,7 +1,3 @@
-<script>
-  var initialCosts = <%== @initial_costs.to_json %>;
-</script>
-
 <div class="page-container">
   <h3>Edit costs</h3>
 
@@ -9,7 +5,9 @@
   <%= form_tag(update_estimate_costs_path(@estimate), method: "patch") do %>
     <div id="update-costs">
 
-      <%= render 'costs/partials/cost_list' %>
+      <%= render 'costs/partials/cost_list',
+        initial_costs: @initial_costs 
+      %>
 
       <div id="update-costs__submit-row">
         <%= submit_tag("Update Costs", id: 'form__submit') %>
