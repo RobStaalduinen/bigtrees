@@ -107,7 +107,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def can_resend_quote?
-		self.quote_sent? && !self.invoice.present?
+		true
 	end
 
 	def paid?
