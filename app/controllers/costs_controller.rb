@@ -1,4 +1,4 @@
-class CostsController < AdminBaseController
+class CostsController < ApplicationController
 
   def new
     @estimate = Estimate.find(params[:estimate_id])
@@ -20,7 +20,7 @@ class CostsController < AdminBaseController
     @estimate.set_status(true)
 
     respond_to do |format|
-      format.json { }
+      format.json { render json: { status: :ok } }
       format.html { redirect_to estimate_path(@estimate) }
     end
   end
@@ -43,7 +43,8 @@ class CostsController < AdminBaseController
       params[:costs].each do |cost_params|
         @estimate.costs.create({
           amount: cost_params[:amount].to_f,
-          description: cost_params[:description]
+          description: cost_params[:description],
+          discount: cost_params[:amount].to_f < 0.0
         })
       end
     end

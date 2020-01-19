@@ -1,7 +1,13 @@
 <% site = estimate.site %>
 
 <div id="view-estimate__box">
-  <span class="text-large" id="view-estimate__box-header">Site Info</span>
+  <div id="view-estimate__main-header">
+    <span class = "text-large">Site Info</span>
+    
+    <%= link_to edit_estimate_site_path(estimate_id: site.estimate.id, id: site.id) do %>
+      <span id="view-estimate__edit">Edit</span>
+    <% end %>
+  </div>
 
   <div id='view-estimate__row-vertical'>
     <div id="view_estimate__entry-header">
@@ -45,6 +51,21 @@
           <%= site.answer_for(:wood_removal) %>
         </div>
       </div>
+
+      <div id='view-estimate__row-entry'>
+        <div id="view_estimate__entry-header">
+          Complete Cleanup
+        </div>
+        <div>
+          <%= site.answer_for(:cleanup) %>
+        </div>
+      </div>
+
+    </div>
+
+    
+
+    <div id='view-estimate__row'>
 
       <div id='view-estimate__row-entry'>
         <div id="view_estimate__entry-header">

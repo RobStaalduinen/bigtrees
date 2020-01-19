@@ -1,0 +1,25 @@
+<section id="admin-container">
+  <h3>Update Site</h3>
+  <%= form_for([@estimate, @site], method: 'patch') do |f| %>
+    
+    <div class='form__box'>
+      <div class='form__row-vertical'>
+        <b><%= f.label(:street, 'Street') %></b>
+        <%= f.text_field(:street, class: 'form-field form__field-full') %>
+      </div>
+
+      <div class='form__row-vertical'>
+        <b><%= f.label(:city, 'City') %></b>
+        <%= f.text_field(:city, class: 'form-field form__field-full') %>
+      </div>
+
+      <div id="form__row">
+        <%= submit_tag("Update", id: 'form__submit') %>
+      </div>
+    </div>
+
+
+    
+
+  <% end %>
+</section>

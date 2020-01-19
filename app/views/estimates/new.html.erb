@@ -1,14 +1,14 @@
 <script>
 	var estimateId = null;
 	var currentStep = 'basics';
-	var totalTrees = 0;
+	var needAccess = false;
 
 	function setId(id){
 		estimateId = id;
 	}
 
-	function setQuantity(quantity){
-		totalTrees = quantity;
+	function askAccess(){
+		needAccess = true
 	}
 
  function nextForm(){
@@ -18,8 +18,13 @@
       currentStep = "trees";
     }
     else if(currentStep == 'trees'){
-			completeSubmission();
+			fadeOut = "#tree-container";
+      fadeIn = "#site-container";
+      currentStep = "site";
     }
+		else if(currentStep == 'site'){
+			completeSubmission();
+		}
 
     $(fadeOut).fadeOut(600, function(){
       $(fadeIn).fadeIn(600);
@@ -39,9 +44,10 @@
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(params));
 		
+		var parsedHost = window.location.hostname.includes("localhost") ? "localhost:3000" : window.location.hostname
 
     xmlhttp.onload = function(){ 
-			window.location.href = `${window.location.protocol}//${window.location.hostname}/estimates/${estimateId}/costs/new`;
+			window.location.href = `${window.location.protocol}//${parsedHost}/estimates/${estimateId}`;
 		}
 	}
 
@@ -58,7 +64,7 @@
 		<%= render 'estimates/admin_form/trees' %>
 	 </div>
 
-
-    
-
+	 <div id='site-container' style="display: none;">
+		<%= render 'estimates/admin_form/site' %>
+	 </div>
 </div>

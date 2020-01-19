@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191227123846) do
+ActiveRecord::Schema.define(version: 20200104144346) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20191227123846) do
     t.boolean "vehicle_access",             default: false
     t.boolean "breakables",                 default: false
     t.string  "access_width",   limit: 255
+    t.boolean "cleanup",                    default: false
   end
 
   add_index "sites", ["estimate_id"], name: "index_sites_on_estimate_id", using: :btree

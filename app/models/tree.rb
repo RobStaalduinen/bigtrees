@@ -10,11 +10,12 @@ class Tree < ActiveRecord::Base
 		removal: 0,
 		trim: 1, 
 		broken_limbs: 2,
-		stump_removal: 3
+		stump_removal: 3,
+		other: 4
 	}
 
 	#WORK_NAMES={'removal' => "Removal", 'trim' => "Trim", 'broken_limbs' => "Broken Limbs"}
-	WORK_TYPES = ['Tree Removal', 'Trim', 'Broken Limbs', 'Stump Removal'].freeze
+	WORK_TYPES = ['Tree Removal', 'Trim', 'Broken Limbs', 'Stump Removal', 'Other'].freeze
 
 	def self.work_type_for_name(name)
 		Tree::WORK_TYPES.index(name)

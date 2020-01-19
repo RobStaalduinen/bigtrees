@@ -16,6 +16,8 @@ class Estimate < ActiveRecord::Base
 	belongs_to :customer
 	belongs_to :arborist
 
+	accepts_nested_attributes_for :site
+
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where("status < 3") }
 	scope :sent, -> { active.where("status = 3") }
@@ -45,6 +47,11 @@ class Estimate < ActiveRecord::Base
 	alias :get_invoice :invoice
 	def invoice
 		get_invoice || Invoice.new(estimate: self)
+	end
+
+	alias :get_site :site
+	def site
+		get_site || Site.new(estimate: self)
 	end
 
 	def formatted_status
