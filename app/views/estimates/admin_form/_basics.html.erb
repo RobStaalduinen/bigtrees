@@ -57,12 +57,12 @@
 
   <div class='form__row-vertical'>
     <b>Street and Number</b>
-    <%= text_field_tag("street", @last_estimate.street, class: 'form-field form__field-full') %>
+    <%= text_field_tag("street", @last_estimate.site.street, class: 'form-field form__field-full') %>
   </div>
 
   <div class='form__row-vertical'>
     <b>City</b>
-    <%= text_field_tag("city", @last_estimate.city, class: 'form-field form__field-full') %>
+    <%= text_field_tag("city", @last_estimate.site.city, class: 'form-field form__field-full') %>
   </div>
 
   <div id="form__row">
