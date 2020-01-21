@@ -28,7 +28,7 @@
 
       submitCosts(function() {
         submitImages(response.tree_id, function(){ 
-          advanceTree(addAnother)
+          advanceTree(addAnother);
         })
       })
     }
@@ -105,6 +105,7 @@
         toggleLoading();
         setTreePageTitle();
         resetCostList();
+        settingsForWorkType();
         $("#tree-container").fadeIn(600);
       });
       }
@@ -143,6 +144,9 @@
         initialCosts.push({description: "Stump Removal", amount: null})
       }
     }
+    else if(workType == "Trim"){
+      initialCosts.push({description: "Tree Trim", amount: null})
+    }
     else if(workType == "Stump Removal") {
       initialCosts.push({description: "Stump Removal", amount: null})
     }
@@ -178,11 +182,10 @@
     <div class='form__row-vertical'>
       <b>What type of work is needed?</b>
       <%= select_tag 'work_type',
-        options_for_select(['Tree Removal', 'Stump Removal', 'Other']),
+        options_for_select(['Tree Removal', 'Trim', 'Stump Removal', 'Other']),
         id: 'tree-work-select',
         class: "form-field",
-        onchange: "settingsForWorkType()",
-        include_blank: 'Select the work type...'
+        onchange: "settingsForWorkType()"
       %>
     </div>
 
@@ -242,3 +245,7 @@
   </div>
 
 <% end %>
+
+<script>
+  settingsForWorkType();
+</script>
