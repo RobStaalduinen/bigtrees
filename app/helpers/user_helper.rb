@@ -21,16 +21,13 @@ module UserHelper
 	
 	def signed_in?
 		if current_user.blank?
-			logger.debug "NO USER"
 			return false
 		else
-			logger.debug "CURRENT_USER"
 			return true
 		end
 	end
 
 	def signed_in_user
-		logger.debug "SIGNED IN USER"
 		if !signed_in?
 			redirect_to controller: 'admin', action: 'log_in'
 		end

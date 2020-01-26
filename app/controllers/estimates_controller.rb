@@ -10,6 +10,7 @@ class EstimatesController < ApplicationController
 
 	def new
 		@customer = Customer.find_by(id: params[:customer_id]) || Customer.new
+		@arborist = current_user
 		@last_estimate = @customer.estimates.last || Estimate.new
 	end
 
