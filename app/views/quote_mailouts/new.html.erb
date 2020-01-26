@@ -17,6 +17,9 @@
   <% elsif @mail_type ==QuoteMailout::MAIL_TYPES[:followup] %>
     <% subject = 'Your Big Tree Services Quote '%>
     <% content = I18n.t('quote_mailout.followup.content') %>
+  <% elsif @mail_type == QuoteMailout::MAIL_TYPES[:team] %>
+    <% subject = 'Big Tree Services Quote'%>
+    <% content = I18n.t('quote_mailout.team.content') %>
   <% end %>
 
   <div class='content__box'>
@@ -26,7 +29,8 @@
 
        <%= 
         render 'quote_mailouts/email_form',
-        email: @estimate.customer.email,
+        email_type: QuoteMailout::MAIL_TYPES[:team],
+        email: QuoteMailout::MAIL_TYPES[:team] ? '' : @estimate.customer.email,
         subject: subject,
         content: content
       %>

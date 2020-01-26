@@ -17,6 +17,7 @@ class CostsController < ApplicationController
 
     create_costs
 
+    @estimate.arborist = current_user unless @estimate.arborist.present?
     @estimate.set_status(true)
 
     respond_to do |format|

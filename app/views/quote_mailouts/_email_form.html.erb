@@ -1,6 +1,8 @@
+<% type = email_type || 'None' %>
+
 <div class='content__row-vertical'>
   <div class='content__label'>
-    Customer Email
+    <%= type == QuoteMailout::MAIL_TYPES[:team] ? 'Email' : 'Customer Email' %>
   </div>
   <%= text_field_tag("dest_email", email, class: "form-field form__field-full", required: true) %>
 </div>

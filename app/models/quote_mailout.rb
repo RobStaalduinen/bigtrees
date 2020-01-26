@@ -2,7 +2,8 @@ class QuoteMailout
   MAIL_TYPES = {
     quote: 'quote',
     final: 'final',
-    followup: 'followup'
+    followup: 'followup',
+    team: 'team'
   }
 
   def self.post_process_for_type(mail_type, estimate)
