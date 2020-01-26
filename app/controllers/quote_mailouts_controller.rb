@@ -16,7 +16,7 @@ class QuoteMailoutsController < ApplicationController
     QuoteMailout.post_process_for_type(params[:mail_type], @estimate)
 
     unless params[:skip]
-      if @estimate.customer.email.blank?
+      if @estimate.customer.email.blank? && params[:mail_type] != QuoteMailout::MAIL_TYPES[:team]
         @estimate.customer.update(email: params[:dest_email])
       end
 
