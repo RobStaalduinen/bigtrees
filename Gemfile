@@ -87,7 +87,7 @@ group :development do
   gem 'capistrano-figaro-yml'
   gem 'capistrano3-delayed-job'
   gem 'capistrano-rails-console'
-  gem 'capistrano-db-tasks', require: false, git: 'https://github.com/sgruhier/capistrano-db-tasks.git'
+  gem 'capistrano-db-tasks', '0.4', require: false
   gem 'capistrano-nc', '~> 0.1'
   gem 'capistrano-maintenance', require: false
   gem 'capistrano-upload-config'

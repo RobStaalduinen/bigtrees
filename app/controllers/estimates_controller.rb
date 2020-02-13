@@ -2,10 +2,15 @@ class EstimatesController < ApplicationController
 	require 'date'
 	layout 'admin'
 
-	before_action :signed_in_user
+	before_action :signed_in_user, except: [ :create, :update ]
 
 	def index
-		@estimates = Estimate.submitted.order('id DESC').joins(:customer).with_customer
+		@estimates = Estimate.submitted.
+			order('estimates.id DESC').
+			joins(:customer).
+			includes(:customer).
+			includes(:site).
+			with_customer
 	end
 
 	def new

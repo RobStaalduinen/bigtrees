@@ -33,14 +33,17 @@ class GenerateQuote
       # Completion Date
       worksheet[4][7].change_contents(estimate.work_date.strftime("%d/%m/%Y"))
     end
-    # Arborist Name
-    worksheet[5][7].change_contents(arborist.name)
-    # Arborist Cert
-    worksheet[6][7].change_contents(arborist.certification)
-    # Arborist Phone
-    worksheet[7][7].change_contents(arborist.phone_number)
-    # Arborist Email
-    worksheet[8][7].change_contents(arborist.email)
+
+    if arborist.present?
+      # Arborist Name
+      worksheet[5][7].change_contents(arborist.name)
+      # Arborist Cert
+      worksheet[6][7].change_contents(arborist.certification)
+      # Arborist Phone
+      worksheet[7][7].change_contents(arborist.phone_number)
+      # Arborist Email
+      worksheet[8][7].change_contents(arborist.email)
+    end
 
     estimate.costs.summary_order.each_with_index do |cost, i|
       worksheet[10 + i][0].change_contents(cost.description)
