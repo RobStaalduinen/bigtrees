@@ -1,0 +1,33 @@
+<div class='container'>
+  <h3>Mailout new quote</h3>
+
+  <% subject = 'Your Big Tree Services Quote '%>
+  <% content = I18n.t('quote_mailout.followup.content') %>
+
+  <div class='content__box'>
+  <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
+    <%= hidden_field_tag "is_unknown", true %>
+    <%= hidden_field_tag "update_email", true %>
+    <%= hidden_field_tag 'redirect', estimates_path %>
+
+    <%= 
+      render 'quote_mailouts/email_form',
+      header: 'Customer Email',
+      email: @estimate.customer.email,
+      subject: subject,
+      content: content
+    %>
+
+    <div class='content__row-vertical'>
+      <%= render 'quote_mailouts/spinner_send' %>
+    </div>
+
+  <% end %>
+
+  <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
+    <%= hidden_field_tag('skip', true) %>
+    <div class='content__row-vertical'>
+      <%= submit_tag('Skip', class: "form__submit", id: 'submit-button') %>
+    </div>
+  <% end %>
+</div>

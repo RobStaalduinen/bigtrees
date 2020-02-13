@@ -19,6 +19,7 @@
 
     <%= 
       render 'quote_mailouts/email_form',
+      header: 'Customer Email',
       email: @invoice.estimate.customer.email,
       subject: 'Big Tree Services Receipt',
       content: I18n.t('quote_mailout.receipt.content')

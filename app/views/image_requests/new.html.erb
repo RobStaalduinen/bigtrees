@@ -4,6 +4,7 @@
   <%= form_tag estimate_image_requests_path(@estimate.id), method: 'post' do %>
     <%= 
       render 'quote_mailouts/email_form',
+      header: 'Customer Email',
       email: @estimate.customer.email,
       subject: I18n.t('quote_mailer.picture_request.subject'),
       content: I18n.t('quote_mailer.picture_request.content_html')
