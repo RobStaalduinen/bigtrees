@@ -19,11 +19,6 @@
       <%= f.text_field(:number, class: 'form-field form__field-full') %>
     </div>
 
-    <div class='form__row-vertical'>
-      <b><%= f.label(:discount, 'Sign discount applied') %></b>
-      <%= f.check_box(:discount, class:'form__checkbox')%>
-    </div>
-
     <%= 
       render 'quote_mailouts/email_form',
       header: 'Customer Email',

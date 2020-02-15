@@ -1,8 +1,10 @@
 <div class="page-container">
-  <h3>Edit costs</h3>
+  <h3><%= @discount ? 'Edit Discounts' : 'Edit Costs' %></h3>
 
 
   <%= form_tag(update_estimate_costs_path(@estimate), method: "patch") do %>
+  <%= hidden_field_tag("discount", @discount) %>
+
     <div id="update-costs">
 
       <%= render 'costs/partials/cost_list',
@@ -10,7 +12,7 @@
       %>
 
       <div id="update-costs__submit-row">
-        <%= submit_tag("Update Costs", id: 'form__submit') %>
+        <%= submit_tag(@discount ? 'Update Discounts' : 'Update Costs', id: 'form__submit') %>
       </div>
     </div>
   <% end %>

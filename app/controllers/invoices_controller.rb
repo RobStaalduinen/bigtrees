@@ -18,7 +18,7 @@ class InvoicesController < ApplicationController
     @invoice = @estimate.invoice
     @invoice.update(invoice_params)
     @invoice.update(sent_at: Date.today)
-    Cost.create_sign_discount(@invoice.estimate) if invoice_params[:discount] == '1'
+    
     send_final_invoice unless params[:commit] == 'Skip'
     redirect_to estimate_path(@invoice.estimate)
   end

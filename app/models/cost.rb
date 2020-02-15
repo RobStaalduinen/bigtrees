@@ -5,6 +5,8 @@ class Cost < ActiveRecord::Base
   SIGN_DISCOUNT = -25.0
   
   scope :summary_order, -> { order("discount, id") }
+  scope :discount, -> { where(discount: true) }
+  scope :charge, -> { where(discount: false) }
 
   def self.json_cost(description, amount)
     {

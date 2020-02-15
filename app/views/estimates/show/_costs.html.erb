@@ -1,11 +1,22 @@
 <div id='view-estimate__box'>
   <div id="view-estimate__costs-header">
     <span class = "text-large">Costs</span>
-    
-    <%= link_to edit_estimate_costs_path(estimate) do %>
-      <span id="view-estimate__edit">Edit</span>
-    <% end %>
-  </div>
+
+    <div>
+      <% unless estimate.costs.discount.any? %>
+        <%= link_to new_estimate_cost_path(estimate, discount: true) do %>
+          <span id="view-estimate__edit">Add Discounts</span>
+        <% end %>
+      <% else %>
+        <%= link_to edit_estimate_costs_path(estimate, discount: true) do %>
+          <span id="view-estimate__edit">Edit Discounts</span>
+        <% end %>
+      <% end %> | 
+      <%= link_to edit_estimate_costs_path(estimate) do %>
+        <span id="view-estimate__edit">Edit</span>
+      <% end %>
+    </div>
+    </div>
 
   <% estimate.costs.summary_order.each do |cost| %>
     <div id='view-estimate__costs-row'>
@@ -28,6 +39,7 @@
       <div id="view-estimate__costs-text-right"><b>Total</b></div>
       <div id="view-estimate__cost-value">$<%= estimate.total_cost_with_tax %></div>
     </div>
+
   </div>
 
 </div>

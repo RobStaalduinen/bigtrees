@@ -70,6 +70,13 @@ group :development, :test do
   gem 'byebug'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.10'
+
+  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-mocks'
+  gem 'rspec-retry'
+  gem 'rails-controller-testing'
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do
