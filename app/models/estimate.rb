@@ -113,6 +113,10 @@ class Estimate < ActiveRecord::Base
 		self.is_unknown
 	end
 
+	def final?
+		self.invoice.present? && self.invoice.paid?
+	end
+
 	def can_resend_quote?
 		true
 	end

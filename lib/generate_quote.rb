@@ -3,7 +3,9 @@ require 'rubyXL'
 class GenerateQuote
 
   def self.call(estimate)
-    template = Rails.root.join("lib", "quote_template.xlsx")
+    tempalate_file = estimate.final? ? "final_template.xlsx" : "quote_template.xlsx"
+    template = Rails.root.join("lib", tempalate_file)
+
     destination = Rails.root.join("tmp", "Quote-Estimate_#{estimate.id}.xlsx")
 
     FileUtils.cp(template, destination)
@@ -11,7 +13,7 @@ class GenerateQuote
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    if estimate.invoice.present?
+    if estimate.final?
       # Invoice Number
       worksheet[3][4].change_contents("Invoice ##{estimate.invoice.number}")
     end
