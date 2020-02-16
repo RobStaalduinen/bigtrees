@@ -67,6 +67,8 @@ gem 'exception_handler'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'pry'
+  gem 'pry-byebug'
   gem 'byebug'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.10'
@@ -101,7 +103,4 @@ group :development do
   gem 'capistrano-rake', require: false
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'cap-ec2'
-
-  gem 'pry'
-  gem 'pry-byebug'
 end
