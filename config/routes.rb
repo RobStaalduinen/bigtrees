@@ -24,6 +24,10 @@ Rails.application.routes.draw do
     post '/cancel', to: 'estimates#cancel', on: :member
   end
 
+  resources :sessions, only: [ :new, :create, :destroy ]
+  get '/login', to: 'sessions#new', as: :login
+  
+
   resources :trackers, only: [ :new, :index ]
   resources :arborists
   resources :customers

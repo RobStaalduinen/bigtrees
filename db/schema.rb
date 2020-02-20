@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200104144346) do
+ActiveRecord::Schema.define(version: 20200220085201) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -26,13 +26,14 @@ ActiveRecord::Schema.define(version: 20200104144346) do
   end
 
   create_table "arborists", force: :cascade do |t|
-    t.string  "name",          limit: 255,                 null: false
-    t.string  "certification", limit: 255,                 null: false
-    t.string  "phone_number",  limit: 255
-    t.string  "email",         limit: 255
-    t.string  "password",      limit: 255
-    t.boolean "is_admin",                  default: false
-    t.string  "session_token", limit: 255
+    t.string  "name",            limit: 255,                 null: false
+    t.string  "certification",   limit: 255,                 null: false
+    t.string  "phone_number",    limit: 255
+    t.string  "email",           limit: 255
+    t.string  "password",        limit: 255
+    t.boolean "is_admin",                    default: false
+    t.string  "session_token",   limit: 255
+    t.string  "password_digest", limit: 255
   end
 
   create_table "costs", force: :cascade do |t|

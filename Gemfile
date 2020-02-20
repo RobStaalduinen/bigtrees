@@ -54,6 +54,8 @@ gem 'less-rails', '~> 2.7.1'
 gem 'spreadsheet'
 
 gem 'exception_handler'
+gem 'bcrypt'
+gem 'sprockets', '3.6.3'
 
 
 # Use ActiveModel has_secure_password
