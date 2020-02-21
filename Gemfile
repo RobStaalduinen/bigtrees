@@ -41,7 +41,9 @@ gem 'axlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-gem 'therubyracer', platforms: :ruby
+# gem 'execjs' 
+# gem 'therubyracer'
+gem 'mini_racer'
 gem 'mysql2', '~> 0.4.0'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
@@ -49,7 +51,8 @@ gem 'bootstrap-datepicker-rails'
 gem 'rubyXL'
 gem 'libreconv'
 gem 'letter_opener'
-gem 'less-rails', '~> 2.7.1'
+# gem 'less-rails', '~> 2.7.1'
+gem 'materialize-sass', '~> 1.0.0'
 
 gem 'spreadsheet'
 

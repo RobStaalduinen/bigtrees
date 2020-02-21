@@ -12,7 +12,7 @@
 
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <script>
     function toggleMenu() {
@@ -43,13 +43,15 @@
 		});
 	</script>
 
-      <%= render 'layouts/admin/header' %>
+      
 
       <div id = "main-box">
+        <%= render 'layouts/admin/header' %>
         <%= yield %>
+        <%= render 'layouts/common/footer' %>
       </div>
 
-      <%= render 'layouts/common/footer' %>
+      
 
 
 

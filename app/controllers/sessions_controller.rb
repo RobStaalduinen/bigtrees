@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
   layout 'admin_material'
 
-  def new
-
+  def new 
+    redirect_to estimates_path if signed_in?
   end
 
   def create
@@ -14,6 +14,11 @@ class SessionsController < ApplicationController
     else
       redirect_to login_path
     end
+  end
+
+  def destroy
+    sign_out
+    redirect_to login_path
   end
 
 end

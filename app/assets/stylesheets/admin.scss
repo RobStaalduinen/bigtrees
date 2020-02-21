@@ -95,3 +95,16 @@
 		width: 160px;
 	}
 }
+
+
+/* NEW MATERIAL */
+
+	#admin-content{
+		padding: 8px;
+	}
+
+	@media(min-width: 760px){
+		#admin-content{
+			padding: 16px;
+		}
+	}

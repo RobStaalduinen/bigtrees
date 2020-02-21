@@ -1,12 +1,17 @@
 class ArboristsController < ApplicationController
-  layout 'admin'
+  before_action :signed_in_admin, except: [ :show ]
+  layout 'admin_material'
   
   def index
     @arborists = Arborist.all
   end
 
-  def new 
+  def show
+    @arborist = Arborist.find(params[:id])
+  end
 
+  def new 
+    @arborist = Arborist.new
   end
   
   def edit
@@ -14,9 +19,13 @@ class ArboristsController < ApplicationController
   end
 
   def create
-    @arborist = Arborist.create(arborist_params)
+    @arborist = Arborist.new(arborist_params)
 
-    redirect_to estimates_path
+    if @arborist.save
+      redirect_to arborist_path(@arborist)
+    else
+      render :new
+    end
   end
 
   def update
@@ -34,7 +43,7 @@ class ArboristsController < ApplicationController
   private
 
     def arborist_params
-      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :password)
+      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :password, :password_confirmation)
     end
     
 

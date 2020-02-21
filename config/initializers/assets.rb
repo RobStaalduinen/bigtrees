@@ -17,3 +17,5 @@ Rails.application.config.assets.version = '1.0'
 Dir.glob("#{Rails.root}/app/assets/images/**/").each do |path|
   Rails.application.config.assets.paths << path
 end
+
+Rails.application.config.assets.precompile += %w( application_material.css )

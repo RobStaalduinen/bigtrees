@@ -1,62 +1,42 @@
-<% if @arborist.present? %>
-  <%= hidden_field_tag :id, @arborist.id %>
-<% else %>
-  <% @arborist = Arborist.new %>
-<% end %>
-<div class="form__box">
 
-  <div class="form__row-vertical">
-    <div class="form__element">
-      <b>Name: </b>
-    </div>
-
-    <div class="form__element">
-      <%= text_field_tag("arborist[name]", @arborist.name, class: 'form-text-field') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('name') %>
+      <%= form.label(:name, 'Name') %>
     </div>
   </div>
 
-  <div class="form__row-vertical">
-    <div class="form__element">
-      <b>Cert: </b>
-    </div>
-
-    <div class="form__element">
-      <%= text_field_tag("arborist[certification]", @arborist.certification, class: 'form-text-field') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('certification') %>
+      <%= form.label(:certification, 'Certification') %>
     </div>
   </div>
 
-  <div class="form__row-vertical">
-    <div class="form__element">
-      <b>Phone: </b>
-    </div>
-
-    <div class="form__element">
-      <%= text_field_tag("arborist[phone_number]", @arborist.phone_number, class: 'form-text-field') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('email') %>
+      <%= form.label(:email, 'Email') %>
     </div>
   </div>
 
-  <div class="form__row-vertical">
-    <div class="form__element">
-      <b>Email: </b>
-    </div>
-
-    <div class="form__element">
-      <%= text_field_tag("arborist[email]", @arborist.email, class: 'form-text-field') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('phone_number') %>
+      <%= form.label(:phone_number, 'Phone') %>
     </div>
   </div>
 
-  <div class="form__row-vertical">
-    <div class="form__element">
-      <b>Password: </b>
-    </div>
-
-    <div class="form__element">
-      <%= text_field_tag("arborist[password]", @arborist.password, class: 'form-text-field') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('password') %>
+      <%= form.label(:password, 'Password') %>
     </div>
   </div>
 
-  <div class="form__row-vertical">
-    <%= submit_tag("Update", id: 'form__submit') %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= form.text_field('password_confirmation') %>
+      <%= form.label(:password_confirmation, 'Password Confirmation') %>
+    </div>
   </div>
-
-</div>

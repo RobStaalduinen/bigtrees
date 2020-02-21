@@ -29,7 +29,15 @@ module UserHelper
 
 	def signed_in_user
 		if !signed_in?
-			redirect_to controller: 'admin', action: 'log_in'
+			redirect_to login_path
+		end
+	end
+
+	def signed_in_admin
+		if !signed_in? 
+			redirect_to login_path
+		elsif !current_user.admin?
+			redirect_to arborist_path(current_user)
 		end
 	end
 end
