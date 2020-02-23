@@ -8,6 +8,8 @@ class ArboristsController < ApplicationController
 
   def show
     @arborist = Arborist.find(params[:id])
+    authorize! :read, @arborist
+    @recent_work = @arborist.recent_work
   end
 
   def new 

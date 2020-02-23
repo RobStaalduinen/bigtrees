@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200220120415) do
+ActiveRecord::Schema.define(version: 20200221100213) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -197,5 +197,13 @@ ActiveRecord::Schema.define(version: 20200220120415) do
     t.float   "cost",         limit: 24
     t.string  "status",       limit: 255,   null: false
   end
+
+  create_table "work_records", force: :cascade do |t|
+    t.integer "arborist_id", limit: 4
+    t.date    "date"
+    t.float   "hours",       limit: 24
+  end
+
+  add_index "work_records", ["arborist_id"], name: "index_work_records_on_arborist_id", using: :btree
 
 end

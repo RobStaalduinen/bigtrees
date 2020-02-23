@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include UserHelper
   
   protect_from_forgery with: :null_session
+  rescue_from CanCan::AccessDenied, with: :redirect_unauthorized
 
   before_filter :redirect_if_old
 
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
     if url_list.map { |u| u.include?(request.host) }.any?
       redirect_to "#{request.protocol}bigtreeservices.ca#{request.fullpath}", status: :moved_permanently
     end
+  end
+
+  def redirect_unauthorized
+    redirect_to arborists_path(current_user)
   end
   
 

@@ -1,0 +1,16 @@
+<li>
+  <div class="collapsible-header">
+    <i class="material-icons">
+      expand_less
+    </i>
+    <b><%= metric %></b>
+  </div>
+
+  <div class="collapsible-body collapsible-unpadded">
+    <%= 
+      render 'work_records/components/table',
+      metric: metric,
+      grouped_records: grouped_records
+    %>
+  </div>
+</li>

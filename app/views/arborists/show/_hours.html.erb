@@ -7,6 +7,19 @@
   </div>
 
   <div class="collapsible-body">
-    Here there be hours
+    <div class='row'>
+      <%= link_to new_work_record_path do %>
+        <div class='btn col s12'>Record Hours</div>
+      <% end %>
+    </div>
+
+    <div class='row'>
+      <b>This Month</b>
+      <%= render 'arborists/show/hours_table', work_records: @recent_work[:this_month] %>
+    </div>
+    <div class='row'>
+      <b>Last Month</b>
+      <%= render 'arborists/show/hours_table', work_records: @recent_work[:last_month] %>
+    </div>
   </div>
 </li>

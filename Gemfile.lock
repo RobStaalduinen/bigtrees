@@ -591,6 +591,7 @@ GEM
       railties (>= 3.0)
     builder (3.2.3)
     byebug (8.2.1)
+    cancancan (2.0.0)
     cap-ec2 (1.1.2)
       aws-sdk (>= 2.0)
       capistrano (>= 3.0)
@@ -902,6 +903,7 @@ DEPENDENCIES
   bcrypt
   bootstrap-datepicker-rails
   byebug
+  cancancan
   cap-ec2
   capistrano (~> 3.0)
   capistrano-bundler

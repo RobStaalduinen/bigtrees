@@ -25,6 +25,8 @@ describe ArboristsController do
 
   describe "show" do
     let!(:arborist) { create(:employee) }
+    let!(:work_record) { create(:work_record, arborist: arborist, date: Date.today) }
+    let!(:early_work_record) { create(:work_record, arborist: arborist, date: Date.today - 1.month) }
 
     it "renders show template" do
       get :show, { id: arborist.id }
@@ -34,6 +36,18 @@ describe ArboristsController do
     it "sets the arborist variable" do
       get :show, { id: arborist.id }
       expect(assigns(:arborist)).not_to be_nil
+    end
+
+    it "sets recent_work" do
+      get :show, { id: arborist.id }
+      expect(assigns(:recent_work)).not_to be_nil
+    end
+
+    it "includes this and last months work" do
+      get :show, { id: arborist.id }  
+      work = assigns(:recent_work)
+      expect(work[:this_month]).not_to be_nil
+      expect(work[:last_month]).not_to be_nil
     end
   end
 
