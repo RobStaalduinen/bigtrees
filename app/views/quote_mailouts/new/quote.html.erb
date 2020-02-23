@@ -25,6 +25,8 @@
 
   <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
     <%= hidden_field_tag('skip', true) %>
+    <%= hidden_field_tag "quote_sent_date", @estimate.quote_sent_date || Date.today %>
+    
     <div class='content__row-vertical'>
       <%= submit_tag('Skip', class: "form__submit", id: 'submit-button') %>
     </div>
