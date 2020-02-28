@@ -23,6 +23,7 @@ class Arborist < ActiveRecord::Base
   end
 
   scope :real, -> { } # where.not(email: "rob.staalduinen@gmail.com") }
+  scope :active, -> { where(active: true) }
 
   validates :name, presence: true
   validates :certification, presence: true

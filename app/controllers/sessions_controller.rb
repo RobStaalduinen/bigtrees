@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     @arborist = Arborist.find_by(email: params[:email])
 
-    if @arborist && @arborist.authenticate(params[:password])
+    if @arborist && @arborist.authenticate(params[:password]) && @arborist.active
       sign_in(@arborist)
       redirect_to estimates_path
     else

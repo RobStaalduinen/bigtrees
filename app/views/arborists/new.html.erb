@@ -1,12 +1,11 @@
-<div>
-  <h4>Create new arborist</h4>
+<h5>Create new arborist</h5>
 
-  <%= form_for(@arborist, method: :post, class: "col s12 m6 offset-m3") do |f| %>
-    <%= render 'arborists/arborist_form', form: f %>
+<%= form_for(@arborist, method: :post, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'arborists/partials/arborist_details_form', form: f %>
+  <%= render 'arborists/partials/arborist_password_form', form: f %>
 
-    <div class="row">
-      <%= submit_tag "Create", class: 'btn col s12 m6 offset-m3' %>
-    </div>
+  <div class="row">
+    <%= submit_tag "Create", class: 'btn col s12 m6 offset-m3' %>
+  </div>
 
-  <% end %>
-</div>
+<% end %>

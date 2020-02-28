@@ -15,11 +15,11 @@
 
     <div class='row'>
       <b>This Month</b>
-      <%= render 'arborists/show/hours_table', work_records: @recent_work[:this_month] %>
+      <%= render 'arborists/partials/hours_table', work_records: @recent_work[:this_month] %>
     </div>
     <div class='row'>
       <b>Last Month</b>
-      <%= render 'arborists/show/hours_table', work_records: @recent_work[:last_month] %>
+      <%= render 'arborists/partials/hours_table', work_records: @recent_work[:last_month] %>
     </div>
   </div>
 </li>

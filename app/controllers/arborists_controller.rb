@@ -3,6 +3,7 @@ class ArboristsController < ApplicationController
   layout 'admin_material'
   
   def index
+    authorize! :manage, Arborist
     @arborists = Arborist.all
   end
 
@@ -12,15 +13,18 @@ class ArboristsController < ApplicationController
     @recent_work = @arborist.recent_work
   end
 
-  def new 
+  def new
+    authorize! :manage, Arborist
     @arborist = Arborist.new
   end
   
   def edit
+    authorize! :manage, Arborist
     @arborist = Arborist.find(params[:id])
   end
 
   def create
+    authorize! :manage, Arborist
     @arborist = Arborist.new(arborist_params)
 
     if @arborist.save
@@ -31,15 +35,16 @@ class ArboristsController < ApplicationController
   end
 
   def update
+    authorize! :manage, Arborist
     @arborist = Arborist.find(params[:id])
     @arborist.update(arborist_params)
-    redirect_to estimates_path
+    redirect_to arborist_path(@arborist)
   end
 
   def destroy
     @arborist = Arborist.find(params[:id])
     @arborist.destroy
-    redirect_to estimates_path
+    redirect_to arborists_path
   end
 
   private

@@ -1,18 +1,23 @@
-<div id="create-arborist">
-  <div id = "form__row">
-    <div id='form__element-75'>
-      <h3>Edit arborist</h3>
-    </div>
-
-    <div id='form__element-25'>
-      <%= form_tag("/arborists/#{@arborist.id}", method: "delete" ) do%>
-        <%= submit_tag('DELETE', id: 'form__submit') %>
-      <% end %>
-    </div>
-  </div>
-
-  <%= form_tag("/arborists/#{@arborist.id}", method: "put") do %>
-    <%= render 'arborists/arborist_form', arborist: @arborist %>
-  <% end %>
-  
+<div class="admin-page-header">
+  <h5>Details</h5>
 </div>
+
+<%= form_for(@arborist, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'arborists/partials/arborist_details_form', form: f, active: true %>
+
+  <div class="row">
+    <%= submit_tag "Update", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+<% end %>
+
+<div class="admin-page-header">
+  <h5>Change Password</h5>
+</div>
+
+<%= form_for(@arborist, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'arborists/partials/arborist_password_form', form: f %>
+
+  <div class="row">
+    <%= submit_tag "Change", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+<% end %>

@@ -5,7 +5,7 @@
 
   <link rel="canonical" href="http://bigtreeservices.ca/" />
 
-  <%= stylesheet_link_tag    'application_material', media: 'all' %>
+  <%= stylesheet_link_tag    'application_material', media: 'all', 'data-turbolinks-track' => 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
 
   <%= csrf_meta_tags %>
@@ -47,6 +47,7 @@
       <%= render 'layouts/admin/header' %>
 
       <div id = "admin-content">
+
         <%= yield %>
       </div>
 

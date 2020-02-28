@@ -7,7 +7,4 @@
   <li class = "menu-item"><%= link_to "Vehicles", vehicles_path, :class => "nav-link" %></li>
   <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
   <li class = "menu-item"><%= link_to "Customers", customers_path, :class => "nav-link" %></li>  
-  <% if signed_in? %>
-    <li class = "menu-item"><%= link_to "Log out", logout_path, :class => "nav-link" %></li>
-  <% end %>
 </ul>

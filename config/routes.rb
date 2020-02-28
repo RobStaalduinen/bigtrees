@@ -35,7 +35,9 @@ Rails.application.routes.draw do
   resources :trees
   resources :tree_images, only: [ :create ]
   resources :extra_costs, only: [ :create, :destroy ]
-  resources :work_records
+  resources :work_records do
+    get 'report', to: 'work_records#report', on: :collection, as: :report
+  end
   resources :invoices do
     post '/pay', to: 'invoices#pay', as: :pay
   end

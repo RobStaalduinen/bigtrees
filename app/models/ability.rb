@@ -29,7 +29,7 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    if arborist.present?
+    if arborist.present? && arborist.active?
       can :read, Arborist, id: arborist.id
 
       if arborist.admin?

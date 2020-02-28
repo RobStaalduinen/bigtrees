@@ -1,36 +1,16 @@
 <div class="row">
   <div class="col s12 m5">
-    <div class="card blue-grey lighten-5">
-      <div class="card-content black-text">
-        <span class="card-title"> <%= @arborist.name %> </span>
-        
-        <div id="arborist-card-inner">
-          <table>
-            <tr>
-              <td>Cert</td>
-              <td><%= @arborist.certification %></td>
-            </tr>
-
-            <tr>
-              <td>Phone</td>
-              <td><%= @arborist.phone_number %></td>
-            </tr>
-
-            <tr>
-              <td>Email</td>
-              <td><%= @arborist.email %></td>
-            </tr>
-          </table>
-
-        </div>
-      </div>
-    </div>
+    <%= 
+      render 'arborists/partials/contact_card',
+      arborist: @arborist,
+      show_actions: false 
+    %>
   </div>
 
   <div class="col s12 m6 offset-m1">
     <ul class="collapsible" id="arborist-list">
-      <%= render 'arborists/show/documents' %>
-      <%= render 'arborists/show/hours' %>
+      <%= render 'arborists/partials/documents' %>
+      <%= render 'arborists/partials/hours' %>
     </ul>
   </div>
 

@@ -22,6 +22,16 @@ class WorkRecordsController < AdminBaseController
       render :new
     end
   end
+  
+  def report
+    authorize! :manage, Arborist
+    
+    report = Reports::Hours.new(
+      spreadsheet_writer: Excel::Writer.new('hours_template.xlsx', 'big_tree_hours.xlsx')
+    ).create_spreadsheet
+
+    send_file report, filename: "BigTree__Hours.xlsx"
+  end
 
   private
 
