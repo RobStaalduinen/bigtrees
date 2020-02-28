@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200228102614) do
+ActiveRecord::Schema.define(version: 20200228122714) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -68,6 +68,19 @@ ActiveRecord::Schema.define(version: 20200228102614) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.integer  "arborist_id",       limit: 4
+    t.string   "name",              limit: 255
+    t.string   "file_file_name",    limit: 255
+    t.string   "file_content_type", limit: 255
+    t.integer  "file_file_size",    limit: 4
+    t.datetime "file_updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "documents", ["arborist_id"], name: "index_documents_on_arborist_id", using: :btree
 
   create_table "estimates", force: :cascade do |t|
     t.integer  "tree_quantity",           limit: 4,                  default: 1
