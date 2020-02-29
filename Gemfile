@@ -41,7 +41,9 @@ gem 'axlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-gem 'therubyracer', platforms: :ruby
+# gem 'execjs' 
+# gem 'therubyracer'
+gem 'mini_racer'
 gem 'mysql2', '~> 0.4.0'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
@@ -49,11 +51,15 @@ gem 'bootstrap-datepicker-rails'
 gem 'rubyXL'
 gem 'libreconv'
 gem 'letter_opener'
-gem 'less-rails', '~> 2.7.1'
+# gem 'less-rails', '~> 2.7.1'
+gem 'materialize-sass', '~> 1.0.0'
+gem 'cancancan'
 
 gem 'spreadsheet'
 
 gem 'exception_handler'
+gem 'bcrypt'
+gem 'sprockets', '3.6.3'
 
 
 # Use ActiveModel has_secure_password
@@ -84,9 +90,6 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
 
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-bundler'

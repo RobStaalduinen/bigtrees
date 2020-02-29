@@ -1,6 +1,10 @@
 class Arborist < ActiveRecord::Base
+  has_secure_password
+
   has_many :estimates
   has_many :receipts
+  has_many :work_records
+  has_many :documents
 
   before_create :set_session_token
 
@@ -12,5 +16,16 @@ class Arborist < ActiveRecord::Base
     self.is_admin ? Receipt.all : self.receipts
   end
 
-  scope :real, -> { } # where.not(email: "rob.staalduinen@gmail.com") }
+  def recent_work
+    {
+      this_month: self.work_records.for_month(Date.today),
+      last_month: self.work_records.for_month(Date.today - 1.month)
+    }
+  end
+
+  scope :real, -> { where.not(hidden: true) }
+  scope :active, -> { where(active: true) }
+
+  validates :name, presence: true
+  validates :certification, presence: true
 end

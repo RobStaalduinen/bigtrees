@@ -22,3 +22,5 @@ config/database.*.yml
 config/database.yml
 config/sitemap.xml
 config/sitemap.xml.gz
+
+public/system

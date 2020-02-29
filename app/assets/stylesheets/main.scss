@@ -18,6 +18,11 @@
 	--light-grey: #969494;
 }
 
+.col {
+	padding: 0 !important;
+}
+
+
 html{
 	height: 100%;
     overflow-y: scroll;
@@ -40,6 +45,10 @@ h1 {
 	font-size: 24px;
 	font-weight: 600;
 	margin: 0;
+}
+
+input { 
+	font-size: 16px;
 }
 
 .text-large{

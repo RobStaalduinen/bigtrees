@@ -5,6 +5,11 @@
     </div>
 
     <div id='footer-right'>
+      
+    <% if signed_in? %>
+      <%= link_to "Log out", logout_path, :id => 'footer-log-in' %>
+    <% else %>
       <%= link_to "Log in", '/admin/log_in', :id => 'footer-log-in' %>
+    <% end %>
     </div>
   </div>

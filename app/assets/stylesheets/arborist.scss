@@ -1,0 +1,21 @@
+#arborist-card-inner{
+  border-width: 2px 0 0 0;
+  border-color: var(--main-color);
+  border-style: solid;
+  padding-top: 8px;
+  font-size: 18px;
+}
+
+#arborist-list li.active i {
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+#arborist-hours {
+  margin-top: 16px;
+}
+
+#hours-table td {
+  padding: 2px 5px;
+}

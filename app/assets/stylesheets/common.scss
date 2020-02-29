@@ -1,5 +1,12 @@
 .page-container{
-  padding: 8px;
+  padding: 0 8px 8px 8px;
+}
+
+.admin-page-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
 }
 
 .form-field{

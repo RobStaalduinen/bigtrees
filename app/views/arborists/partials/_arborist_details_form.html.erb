@@ -1,0 +1,29 @@
+<% active = false unless active.present? %>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= form.text_field('name') %>
+    <%= form.label(:name, 'Name', class: active ? 'active' : '') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= form.text_field('certification') %>
+    <%= form.label(:certification, 'Certification', class: active ? 'active' : '') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= form.text_field('email') %>
+    <%= form.label(:email, 'Email', class: active ? 'active' : '') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= form.text_field('phone_number') %>
+    <%= form.label(:phone_number, 'Phone', class: active ? 'active' : '') %>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<table class="striped table-narrow">
+  <tr>
+    <th><%= metric %></th>
+    <th>Hours</th>
+  </tr>
+  <% grouped_records.each do |metric, records| %>
+    <tr>
+      <td><%= metric %></td>
+      <td><%= records.map { |r| r.hours }.sum %></td>
+    </tr>
+  <% end %>
+</table>

@@ -27,37 +27,6 @@ class AdminController < ApplicationController
 		redirect_to estimate_path(@estimate)
 	end
 
-	def submit_updated_costs
-		@estimate = Estimate.find(params[:estimate_id])
-
-		params[:trees].each do |tree|
-			db_tree = Tree.find(tree[:id])
-			db_tree.update(cost: tree[:cost], notes: tree[:notes])
-		end
-
-		@estimate.save!
-
-		if(params[:commit] == 'Update and Add Extras')
-			redirect_to edit_estimate_path(@estimate, form_option: 'edit_extra_costs')
-		else
-			redirect_to estimate_path(@estimate)
-		end
-	end
-
-	def update_start_date
-		@date_field = SiteConfig.where(attribute_name: "start_date").first
-		if !params[:start_date].nil?
-			@date_field.attribute_value = params[:start_date]
-			@date_field.save
-			@change_status = "Successfully Changed"
-		else
-			@change_status = "Could Not Change"
-		end
-		@current_start_date = SiteConfig.where(attribute_name: "start_date").first.attribute_value
-
-		redirect_to controller: 'admin', action: 'admin_panel'
-	end
-
 private
 
 	def estimate_params

@@ -3,8 +3,8 @@ require 'rubyXL'
 class GenerateQuote
 
   def self.call(estimate)
-    tempalate_file = estimate.final? ? "final_template.xlsx" : "quote_template.xlsx"
-    template = Rails.root.join("lib", tempalate_file)
+    template_file = estimate.final? ? "final_template.xlsx" : "quote_template.xlsx"
+    template = Rails.root.join("lib", template_file)
 
     destination = Rails.root.join("tmp", "Quote-Estimate_#{estimate.id}.xlsx")
 

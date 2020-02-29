@@ -17,6 +17,8 @@
 //= require turbolinks
 //= require bootstrap-datepicker
 
+//= require materialize
+
 //= require_tree .
 
 

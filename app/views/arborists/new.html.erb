@@ -1,8 +1,11 @@
-<div id="create-arborist">
-  <h3>Create new arborist</h3>
+<h5>Create new arborist</h5>
 
-  <%= form_tag("/arborists", method: "post") do %>
-    <%= render 'arborists/arborist_form', arborist: Arborist.new %>
-  <% end %>
+<%= form_for(@arborist, method: :post, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'arborists/partials/arborist_details_form', form: f %>
+  <%= render 'arborists/partials/arborist_password_form', form: f %>
 
-</div>
+  <div class="row">
+    <%= submit_tag "Create", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+
+<% end %>

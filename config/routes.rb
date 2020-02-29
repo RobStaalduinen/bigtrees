@@ -24,13 +24,22 @@ Rails.application.routes.draw do
     post '/cancel', to: 'estimates#cancel', on: :member
   end
 
+  resources :sessions, only: [ :new, :create, :destroy ]
+  get '/login', to: 'sessions#new', as: :login
+  get '/logout', to: 'sessions#destroy', as: :logout
+
   resources :trackers, only: [ :new, :index ]
-  resources :arborists
+  resources :arborists do
+    resources :documents, only: [ :new, :create, :destroy ]
+  end
   resources :customers
   resources :requests
   resources :trees
   resources :tree_images, only: [ :create ]
   resources :extra_costs, only: [ :create, :destroy ]
+  resources :work_records do
+    get 'report', to: 'work_records#report', on: :collection, as: :report
+  end
   resources :invoices do
     post '/pay', to: 'invoices#pay', as: :pay
   end

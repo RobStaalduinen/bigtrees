@@ -99,4 +99,14 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  def log_in_user(user)
+    allow_any_instance_of(ApplicationController).to receive(:current_user) { user }
+    allow_any_instance_of(ApplicationController).to receive(:signed_in?) { true }
+  end
+
+  def log_out_users
+    allow_any_instance_of(ApplicationController).to receive(:current_user) { nil }
+    allow_any_instance_of(ApplicationController).to receive(:signed_in?) { false }
+  end
 end

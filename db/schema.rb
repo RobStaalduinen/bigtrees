@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200104144346) do
+ActiveRecord::Schema.define(version: 20200228122714) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -26,13 +26,17 @@ ActiveRecord::Schema.define(version: 20200104144346) do
   end
 
   create_table "arborists", force: :cascade do |t|
-    t.string  "name",          limit: 255,                 null: false
-    t.string  "certification", limit: 255,                 null: false
-    t.string  "phone_number",  limit: 255
-    t.string  "email",         limit: 255
-    t.string  "password",      limit: 255
-    t.boolean "is_admin",                  default: false
-    t.string  "session_token", limit: 255
+    t.string  "name",            limit: 255,                 null: false
+    t.string  "certification",   limit: 255,                 null: false
+    t.string  "phone_number",    limit: 255
+    t.string  "email",           limit: 255
+    t.string  "password",        limit: 255
+    t.boolean "is_admin",                    default: false
+    t.string  "session_token",   limit: 255
+    t.string  "password_digest", limit: 255
+    t.boolean "admin",                       default: false
+    t.boolean "hidden",                      default: false
+    t.boolean "active",                      default: true
   end
 
   create_table "costs", force: :cascade do |t|
@@ -64,6 +68,19 @@ ActiveRecord::Schema.define(version: 20200104144346) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.integer  "arborist_id",       limit: 4
+    t.string   "name",              limit: 255
+    t.string   "file_file_name",    limit: 255
+    t.string   "file_content_type", limit: 255
+    t.integer  "file_file_size",    limit: 4
+    t.datetime "file_updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "documents", ["arborist_id"], name: "index_documents_on_arborist_id", using: :btree
 
   create_table "estimates", force: :cascade do |t|
     t.integer  "tree_quantity",           limit: 4,                  default: 1
@@ -194,5 +211,13 @@ ActiveRecord::Schema.define(version: 20200104144346) do
     t.float   "cost",         limit: 24
     t.string  "status",       limit: 255,   null: false
   end
+
+  create_table "work_records", force: :cascade do |t|
+    t.integer "arborist_id", limit: 4
+    t.date    "date"
+    t.float   "hours",       limit: 24
+  end
+
+  add_index "work_records", ["arborist_id"], name: "index_work_records_on_arborist_id", using: :btree
 
 end
