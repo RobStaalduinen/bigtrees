@@ -4,13 +4,14 @@ class ArboristsController < ApplicationController
   
   def index
     authorize! :manage, Arborist
-    @arborists = Arborist.all
+    @arborists = Arborist.real
   end
 
   def show
     @arborist = Arborist.find(params[:id])
     authorize! :read, @arborist
     @recent_work = @arborist.recent_work
+    @documents = @arborist.documents
   end
 
   def new
@@ -30,7 +31,7 @@ class ArboristsController < ApplicationController
     if @arborist.save
       redirect_to arborist_path(@arborist)
     else
-      render :new
+      redirect_to new_arborist_path
     end
   end
 

@@ -55,6 +55,16 @@ describe ArboristsController do
       expect(assigns(:arborists)).not_to be_nil
       expect(assigns(:arborists).count).to eq(1)
     end
+
+    context 'with hidden arborist' do
+      let!(:hidden_arborist) { create(:employee, hidden: true) }
+
+      it "does not include hidden arborist" do
+        get :index
+        expect(assigns(:arborists).count).to eq(1)
+        expect(assigns(:arborists)).not_to include(hidden_arborist)
+      end
+    end
   end
 
   describe "show" do
@@ -77,6 +87,11 @@ describe ArboristsController do
       expect(assigns(:recent_work)).not_to be_nil
     end
 
+    it "sets the documents list" do
+      get :show, { id: arborist.id }
+      expect(assigns(:documents)).not_to be_nil
+    end
+
     it "includes this and last months work" do
       get :show, { id: arborist.id }  
       work = assigns(:recent_work)
@@ -97,7 +112,7 @@ describe ArboristsController do
 
       it "re-renders new template" do
         post :create, arborist: attributes
-        should render_template(:new)
+        should redirect_to(new_arborist_path)
       end
     end
 

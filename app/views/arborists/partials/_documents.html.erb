@@ -3,10 +3,21 @@
     <i class="material-icons">
       expand_less
     </i>
-    <b>Documents</b>
+    <b>My Documents</b>
   </div>
 
   <div class="collapsible-body">
-    Here there be documents
+    <div class='row'>
+      <%= link_to new_arborist_document_path(arborist) do %>
+        <div class='btn col s12'>Manage Documents</div>
+      <% end %>
+
+      <%= render 'documents/partials/documents_table',
+        documents: arborist.documents.order('id ASC'),
+        allow_delete: false
+      %>
+    </div>
+
+
   </div>
 </li>

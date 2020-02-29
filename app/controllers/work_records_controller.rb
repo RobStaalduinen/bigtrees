@@ -19,7 +19,7 @@ class WorkRecordsController < AdminBaseController
     if @work_record.save
       redirect_to arborist_path(current_user)
     else
-      render :new
+      render new_work_record_path
     end
   end
   

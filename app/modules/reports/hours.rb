@@ -53,7 +53,7 @@ module Reports
       end
 
       def write_arborist_rows
-        Arborist.all.order('id ASC').each_with_index do |arborist, row|
+        Arborist.real.order('id ASC').each_with_index do |arborist, row|
           @spreadsheet_writer[row+1, 0] = arborist.name
           yield(arborist, row)
         end 

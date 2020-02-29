@@ -1,0 +1,42 @@
+<%= render 'admin/common/back_button', back_link: arborist_path(@arborist) %>
+
+<%= render 'documents/partials/documents_table',
+  documents: @arborist.documents.order('id ASC'),
+  allow_delete: true
+%>
+
+
+<div class="row" id="upload-document">
+<span id="upload-document__header">Upload new document</span>
+  <%= 
+    form_tag(arborist_documents_path(arborist_id: @arborist.id),
+      method: :post,
+      class: "col s12 m6 offset-m3",
+      multipart: true
+    ) do  
+  %>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= text_field_tag('document[name]') %>
+        <%= label_tag('document[name]', 'Name') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" name="document[file]">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <%= submit_tag "Upload", class: 'btn col s12 m6 offset-m3' %>
+    </div>
+  <% end %>
+</div>

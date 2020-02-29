@@ -4,6 +4,7 @@ class Arborist < ActiveRecord::Base
   has_many :estimates
   has_many :receipts
   has_many :work_records
+  has_many :documents
 
   before_create :set_session_token
 
@@ -22,7 +23,7 @@ class Arborist < ActiveRecord::Base
     }
   end
 
-  scope :real, -> { } # where.not(email: "rob.staalduinen@gmail.com") }
+  scope :real, -> { where.not(hidden: true) }
   scope :active, -> { where(active: true) }
 
   validates :name, presence: true

@@ -29,7 +29,9 @@ Rails.application.routes.draw do
   get '/logout', to: 'sessions#destroy', as: :logout
 
   resources :trackers, only: [ :new, :index ]
-  resources :arborists
+  resources :arborists do
+    resources :documents, only: [ :new, :create, :destroy ]
+  end
   resources :customers
   resources :requests
   resources :trees
