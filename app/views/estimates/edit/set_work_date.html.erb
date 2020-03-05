@@ -1,43 +1,19 @@
-<div class='page-container'>
-
-  <div id='view-estimate__box'>
-    <div id="view-estimate__costs-header">
-      <span class="text-large">Set Work Date</span>
-    </div>
-    <%= form_tag("/admin/update_estimate", method: "patch") do %>
-      <%= hidden_field_tag("estimate_id", @estimate.id) %>
-      <%= hidden_field_tag("estimate[is_unknown]", false) %>
-      <div id='estimate-forms__row'>
-          <div id="view-estiamte__costs-label">
-            Date:
-          </div>
-        <input 
-          type="text"
-          name="estimate[work_date]"
-          data-provide='datepicker'
-          class="form-field"
-          id="work-date-picker"
-          autocomplete="off"
-          placeholder="Enter the date..."  
-        >
-        
-      </div>
-      <div id='estimate-forms__row'>
-        <%= submit_tag("Update", id: 'form__submit') %>
-      </div>
-    </div>
-  <% end %>
-
-</div>
-
 <script>
-  $('#work-date-picker').datepicker({
-    format: "dd/mm/yyyy",
-    autoclose: true
-  });
-
-  $('#work-date-picker').on('click', function(e) {
-    e.preventDefault();
-    $(this).attr("autocomplete", "off");  
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
   });
 </script>
+
+<%= form_for(@estimate, method: :patch) do |f| %>
+  <%= f.hidden_field(:is_unknown, value: false) %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= f.text_field('work_date', class: 'datepicker') %>
+      <%= f.label(:date, 'Date') %>
+    </div>
+  </div>
+
+  <div class="row">
+    <%= submit_tag "Set Work Date", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+<% end %>

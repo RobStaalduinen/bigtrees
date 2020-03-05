@@ -34,12 +34,20 @@ class EstimatesController < ApplicationController
 		@estimate.update(estimate_params)
 		@estimate.set_status
 		
-		redirect_to estimate_path(@estimate)
+		respond_to do |format|
+			format.json { render json: { success: true } }
+			format.html { redirect_to estimate_path(@estimate) }
+		end
 	end
 
 	def edit
 		@estimate = Estimate.find(params[:id])
-		render template: "estimates/edit/#{params[:form_option]}"
+
+		if params[:form_option] == 'set_work_date'
+			render template: "estimates/edit/#{params[:form_option]}", layout: 'admin_material'
+		else
+			render template: "estimates/edit/#{params[:form_option]}"
+		end
 	end
 
 	def cancel
@@ -56,7 +64,7 @@ class EstimatesController < ApplicationController
 
 		def estimate_params
 			params.require(:estimate).permit(
-				:status, :arborist_id, :is_unknown
+				:status, :arborist_id, :is_unknown, :work_date
 			)
 		end
 end
