@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200228122714) do
+ActiveRecord::Schema.define(version: 20200305095421) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -192,7 +192,6 @@ ActiveRecord::Schema.define(version: 20200228122714) do
 
   create_table "users", force: :cascade do |t|
     t.string "username",      limit: 50,  null: false
-    t.string "password",      limit: 50,  null: false
     t.string "session_token", limit: 100, null: false
   end
 
