@@ -16,6 +16,7 @@ class SessionsController < ApplicationController
         redirect_to arborists_path(@arborist)
       end
     else
+      flash[:error] = "Invalid email/password"
       redirect_to login_path
     end
   end

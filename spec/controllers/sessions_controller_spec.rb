@@ -37,6 +37,11 @@ describe SessionsController do
         post :create, { email: 'notauser@email.com' }
         expect(cookies[:session_token]).to eq(nil)
       end
+
+      it "sets an error" do
+        post :create, { email: 'notauser@email.com' }
+        expect(flash[:error]).not_to be_nil
+      end
     end
 
     context "with invalid password" do
@@ -50,6 +55,11 @@ describe SessionsController do
       it "does not set a session token" do
         post :create, { email: arborist.email, password: 'wrong_password' }
         expect(cookies[:session_token]).to eq(nil)
+      end
+
+      it "sets an error" do
+        post :create, { email: arborist.email, password: 'wrong_password' }
+        expect(flash[:error]).not_to be_nil
       end
     end
 
@@ -66,6 +76,11 @@ describe SessionsController do
           post :create, { email: arborist.email, password: arborist.password }
           expect(cookies[:session_token]).not_to eq(nil)
           expect(cookies[:session_token]).to eq(arborist.session_token)
+        end
+
+        it "does not set an error" do
+          post :create, { email: arborist.email, password: arborist.password }
+          expect(flash[:error]).to be_nil
         end
       end
     

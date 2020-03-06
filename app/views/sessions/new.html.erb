@@ -4,8 +4,13 @@
   </span>
 </div>
 
-<div class="row">
+<% if flash[:error] %>
+  <div class='row'>
+    <span class='error-message'><%= flash[:error] %></span>
+  </div>
+<% end %>
 
+<div class="row">
 <%= form_tag sessions_path, method: 'post', class: "col s12 m6 offset-m3" do %>
   <div class="row">
     <div class="input-field col s12">

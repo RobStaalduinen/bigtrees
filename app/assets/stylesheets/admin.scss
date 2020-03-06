@@ -105,6 +105,16 @@
 		margin: 0 auto;
 	}
 
+	.error-message{
+		background-color: var(--error-inner);
+		color: var(--error);
+		border-color: var(--error);
+		border-width: 1px;
+		border-style: solid;
+		padding: 12px;
+		width: 100%;
+	}
+
 	@media(min-width: 760px){
 		#admin-content{
 			padding: 16px;
