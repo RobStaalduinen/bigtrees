@@ -105,6 +105,17 @@
 		margin: 0 auto;
 	}
 
+	.admin__header{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 16px;
+	}
+
+	.admin__header a {
+		font-size: 20px;
+	}
+
 	.error-message{
 		background-color: var(--error-inner);
 		color: var(--error);

@@ -1,0 +1,10 @@
+<h5>Create new vehicle</h5>
+
+<%= form_for(@vehicle, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'vehicles/partials/vehicle_form', f: f %>
+
+  <div class="row">
+    <%= submit_tag "Update", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+
+<% end %>

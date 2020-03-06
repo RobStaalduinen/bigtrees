@@ -1,14 +1,20 @@
-<div class='container'>
-  <div class="full-spread-row">
-    <h3>Vehicles</h3>
-    <%= link_to "+ Add new", '/vehicles/new' %>
-  </div>
+<div class="admin__header">
+  <h5>Vehicles</h5>
 
-  <table class='full-table alternate-table'>
-    <% @vehicles.each do |vehicle| %>
-      <tr>
-        <td><%= vehicle.name %></td>
-      </tr>
-    <% end %>
-  </table>
+  <%= link_to new_vehicle_path do %>
+    + Add New
+  <% end %>
 </div>
+
+<table class='striped'>
+  <% @vehicles.each do |vehicle| %>
+    <tr>
+      <td><%= vehicle.name %></td>
+      <td>
+        <%= link_to vehicle_path(vehicle) do %>
+          Details
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

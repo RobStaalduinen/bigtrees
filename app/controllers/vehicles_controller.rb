@@ -1,5 +1,5 @@
 class VehiclesController < ApplicationController
-  layout 'admin'
+  layout 'admin_material'
 
   before_action :signed_in_user
 
@@ -8,13 +8,28 @@ class VehiclesController < ApplicationController
   end
 
   def new
-    
+    @vehicle = Vehicle.new
+  end
+
+  def show
+    @vehicle = Vehicle.find(params[:id])
   end
 
   def create
-    Vehicle.create(vehicle_params)
+    vehicle = Vehicle.create(vehicle_params)
 
-    redirect_to estimates_path
+    redirect_to vehicle_path(vehicle)
+  end
+
+  def edit
+    @vehicle = Vehicle.find(params[:id])
+    @is_edit = true
+  end
+
+  def update
+    vehicle = Vehicle.find(params[:id])
+    vehicle.update(vehicle_params)
+    redirect_to vehicle_path(vehicle)
   end
 
   private
