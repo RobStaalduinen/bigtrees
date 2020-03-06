@@ -4,19 +4,23 @@ class CustomersController < ApplicationController
   before_action :signed_in_user
   
   def index
+    authorize! :manage, Customer
     @customers = Customer.with_name.order('name ASC')
   end
 
   def show
+    authorize! :manage, Customer
     @customer = Customer.includes(:estimates).find(params[:id])
   end
 
   def edit
+    authorize! :manage, Customer
     @customer = Customer.includes(:estimates).find(params[:id])
     @redirect_location = params[:redirect_location]
   end
 
   def update
+    authorize! :manage, Customer
     @customer = Customer.includes(:estimates).find(params[:id])
     @customer.update(customer_params)
 

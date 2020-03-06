@@ -10,7 +10,11 @@ class SessionsController < ApplicationController
 
     if @arborist && @arborist.authenticate(params[:password]) && @arborist.active
       sign_in(@arborist)
-      redirect_to estimates_path
+      if @arborist.admin?
+        redirect_to estimates_path
+      else
+        redirect_to arborists_path(@arborist)
+      end
     else
       redirect_to login_path
     end

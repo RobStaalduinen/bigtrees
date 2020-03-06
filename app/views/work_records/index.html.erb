@@ -1,6 +1,12 @@
 <h5>Hours</h5>
 <% if current_user.admin? %>
   <%= link_to('Download Tracker', report_work_records_path) %>
+<% else %>
+  <div class='row'>
+    <%= link_to new_work_record_path do %>
+      <div class='btn col s12'>Record Hours</div>
+    <% end %>
+  </div>
 <% end %>
 
 <div class="row">

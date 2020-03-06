@@ -2,6 +2,8 @@ class CostsController < ApplicationController
   layout 'admin'
 
   def new
+    authorize! :manage, Estimate
+
     @estimate = Estimate.find(params[:estimate_id])
     @discount = params[:discount] || false
 
@@ -9,6 +11,8 @@ class CostsController < ApplicationController
   end
 
   def edit
+    authorize! :manage, Estimate
+
     @estimate = Estimate.find(params[:estimate_id])
     @discount = params[:discount] || false
 

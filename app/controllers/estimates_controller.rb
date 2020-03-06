@@ -5,6 +5,8 @@ class EstimatesController < ApplicationController
 	before_action :signed_in_user, except: [ :create, :update ]
 
 	def index
+		authorize! :manage, Estimate
+
 		@estimates = Estimate.submitted.
 			order('estimates.id DESC').
 			joins(:customer).
@@ -14,12 +16,16 @@ class EstimatesController < ApplicationController
 	end
 
 	def new
+		authorize! :manage, Estimate
+
 		@customer = Customer.find_by(id: params[:customer_id]) || Customer.new
 		@arborist = current_user
 		@last_estimate = @customer.estimates.last || Estimate.new
 	end
 
 	def show
+		authorize! :manage, Estimate
+
 		@estimate = Estimate.find(params[:id])
 	end
 
@@ -41,6 +47,8 @@ class EstimatesController < ApplicationController
 	end
 
 	def edit
+		authorize! :manage, Estimate
+
 		@estimate = Estimate.find(params[:id])
 
 		if params[:form_option] == 'set_work_date'
@@ -51,20 +59,20 @@ class EstimatesController < ApplicationController
 	end
 
 	def cancel
+		authorize! :manage, Estimate
+		
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(cancelled_at: Date.today)
 		redirect_to estimate_path(@estimate)
 	end
 
-	def change_trees
-		logger.debug "Change Trees Called"
-	end
-
 	private
 
 		def estimate_params
-			params.require(:estimate).permit(
+			e_params = params.require(:estimate).permit(
 				:status, :arborist_id, :is_unknown, :work_date
 			)
+			e_params[:is_unknown] ||= false
+			e_params
 		end
 end

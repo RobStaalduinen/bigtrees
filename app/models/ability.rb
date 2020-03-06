@@ -33,8 +33,10 @@ class Ability
       can :read, Arborist, id: arborist.id
 
       if arborist.admin?
-        can :read, Arborist
         can :manage, Arborist
+        can :manage, Estimate
+        can :manage, Customer
+        can :manage, Receipt
       end
     end
   end
