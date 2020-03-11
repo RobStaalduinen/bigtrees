@@ -1,7 +1,16 @@
+<%= render 'admin/common/back_button', back_link: vehicles_path %>
+
 <div class="admin__header">
   <h5><%= @vehicle.name %></h5>
 
   <%= link_to edit_vehicle_path(@vehicle) do %>
     Edit
   <% end %>
+</div>
+
+<div class="row">
+  <h5>Repair Requests</h5>
+  <%= render 'equipment_requests/partials/request_list',
+    requests: @equipment_requests  
+  %>
 </div>

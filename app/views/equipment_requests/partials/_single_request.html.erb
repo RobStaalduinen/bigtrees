@@ -1,0 +1,34 @@
+<div class="card blue-grey lighten-5">
+  <div class="card-content black-text">
+    <span class="card-title"> <%= equipment_request.category.capitalize %> </span>
+    
+    <div id="arborist-card-inner">
+      <table class='table-narrow'>
+        <tr>
+          <td><b>Date</b></td>
+          <td><%= equipment_request.submitted_at.strftime("%B %d, %Y") %></td>
+        </tr>
+
+        <tr>
+          <td><b>Vehicle</b></td>
+          <td><%= equipment_request.vehicle ? equipment_request.vehicle.name : 'None' %></td>
+        </tr>
+
+        <tr>
+          <td><b>User</b></td>
+          <td><%= equipment_request.arborist ? equipment_request.arborist.name : '-' %></td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+
+  <% if show_actions == true %>
+    <div class="card-action">
+      <%= link_to('Details', equipment_request_path(equipment_request)) %>
+      <% if equipment_request.may_resolve? %>
+        <%= link_to('Resolve', equipment_request_resolve_path(equipment_request), :method => :post) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

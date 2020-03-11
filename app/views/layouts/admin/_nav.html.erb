@@ -9,7 +9,11 @@
       <li class = "menu-item"><%= link_to "Vehicles", vehicles_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Customers", customers_path, :class => "nav-link" %></li>
-    <% end %>  
+      <li class = "menu-item"><%= link_to "Repair Requests", equipment_requests_path, :class => "nav-link" %></li>
+    <% end %>
+    <% if !current_user.admin? %>
+      <li class = "menu-item"><%= link_to "Repair Request", new_equipment_request_path, :class => "nav-link" %></li>   
+    <% end %>
     <li class = "menu-item"><%= link_to "Hours", work_records_path, :class => "nav-link" %></li>  
     <li class = "menu-item"><%= link_to "My Profile", arborist_path(current_user), :class => "nav-link" %></li>
   <% else %>

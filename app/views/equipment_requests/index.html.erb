@@ -1,0 +1,9 @@
+<div class="admin__header">
+  <h5>Repair and Tool Requests</h5>
+
+  <%= link_to new_equipment_request_path do %>
+    New
+  <% end %>
+</div>
+
+<%= render 'equipment_requests/partials/request_list', requests: @equipment_requests %>

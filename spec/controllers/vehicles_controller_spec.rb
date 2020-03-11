@@ -51,6 +51,7 @@ describe VehiclesController do
 
   describe "show" do
     let!(:vehicle) { create(:vehicle) }
+    let!(:equipment_request) { create(:equipment_request, vehicle: vehicle) }
 
     it "renders show template" do
       get :show, { id: vehicle.id }
@@ -61,6 +62,12 @@ describe VehiclesController do
       get :show, { id: vehicle.id }
       expect(assigns(:vehicle)).not_to be_nil
       expect(assigns(:vehicle)).to eq(vehicle)
+    end
+
+    it "sets equipment requests" do
+      get :show, { id: vehicle.id }
+      expect(assigns(:equipment_requests)).not_to be_nil
+      expect(assigns(:equipment_requests)).to include(equipment_request)
     end
 
   end

@@ -110,6 +110,7 @@
 		justify-content: space-between;
 		align-items: center;
 		font-size: 16px;
+		margin-bottom: 16px;
 	}
 
 	.admin__header a {
@@ -120,6 +121,16 @@
 		background-color: var(--error-inner);
 		color: var(--error);
 		border-color: var(--error);
+		border-width: 1px;
+		border-style: solid;
+		padding: 12px;
+		width: 100%;
+	}
+
+	.success-message{
+		background-color: var(--success-inner);
+		color: var(--success);
+		border-color: var(--success);
 		border-width: 1px;
 		border-style: solid;
 		padding: 12px;

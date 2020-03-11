@@ -13,6 +13,7 @@ class VehiclesController < ApplicationController
 
   def show
     @vehicle = Vehicle.find(params[:id])
+    @equipment_requests = @vehicle.equipment_requests
   end
 
   def create
