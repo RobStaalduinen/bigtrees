@@ -1,0 +1,40 @@
+
+#single-request:nth-child(odd){
+  background-color: #f2f2f2;
+}
+#single-request{
+  display: flex;
+  width: 100%;
+}
+
+#single-request__row{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  line-height: 140%;
+  margin-bottom: 8px;
+}
+
+#single-request__body{
+  width: 100%;
+  padding: 8px;
+}
+
+#single-request__check {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 0 0 0 1px;
+  border-color: lightgray;
+  border-style: solid;
+  color: green;
+  font-size: 30px;
+}
+
+#image-selector {
+  display: flex;
+}
+#image-link {
+  color: blue;
+}

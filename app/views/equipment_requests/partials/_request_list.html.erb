@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<div id="active" class="col s12">
+<div id="active" class="col s12 request_list">
   <% requests.submitted.each do |e_request| %>
     <%= render 'equipment_requests/partials/single_request', 
       equipment_request: e_request,
@@ -16,7 +16,7 @@
   <% end %>
 </div>
 
-<div id="pending" class="col s12">
+<div id="pending" class="col s12 request_list">
   <% requests.resolved.each do |e_request| %>
     <%= render 'equipment_requests/partials/single_request', 
       equipment_request: e_request,
@@ -29,4 +29,12 @@
   $(document).ready(function(){
     $('.tabs').tabs();
   });
+</script>
+
+<script>
+  function openModal(modalName){
+    var elem = document.getElementById(modalName);
+    var instance = M.Materialbox.getInstance(elem);
+    instance.open();
+  }
 </script>

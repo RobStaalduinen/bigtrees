@@ -1,34 +1,44 @@
-<div class="card blue-grey lighten-5">
-  <div class="card-content black-text">
-    <span class="card-title"> <%= equipment_request.category.capitalize %> </span>
-    
-    <div id="arborist-card-inner">
-      <table class='table-narrow'>
-        <tr>
-          <td><b>Date</b></td>
-          <td><%= equipment_request.submitted_at.strftime("%B %d, %Y") %></td>
-        </tr>
+<% image_id = "image-#{equipment_request.id}" %>
 
-        <tr>
-          <td><b>Vehicle</b></td>
-          <td><%= equipment_request.vehicle ? equipment_request.vehicle.name : 'None' %></td>
-        </tr>
-
-        <tr>
-          <td><b>User</b></td>
-          <td><%= equipment_request.arborist ? equipment_request.arborist.name : '-' %></td>
-        </tr>
-
-      </table>
+<div id="single-request">
+  <div id="single-request__body">
+    <div id="single-request__row">
+      <span>
+        <b><%= equipment_request.category.capitalize %></b>
+        <% if equipment_request.vehicle %>
+          <%= " - #{equipment_request.vehicle.name}" %>
+        <% end %>  
+      </span>
+      <span style="font-size: 12px;"><i><%= equipment_request.submitted_at.strftime("%B %d, %Y") %></i></span>
     </div>
-  </div>
+  
 
-  <% if show_actions == true %>
-    <div class="card-action">
-      <%= link_to('Details', equipment_request_path(equipment_request)) %>
-      <% if equipment_request.may_resolve? %>
-        <%= link_to('Resolve', equipment_request_resolve_path(equipment_request), :method => :post) %>
+    <div id="single-request__row">
+      <%= equipment_request.description %>
+    </div>
+
+    <div id="single-request__row">
+      <% if equipment_request.image.present? %>
+        <div id="image-selector">
+          <img id="<%= image_id %>" style="max-width: 1px;" src=<%= equipment_request.image.url %> />
+          <span id="image-link" onClick='openModal("<%= image_id.to_s %>")'>Image</span>
+        </div>
+      <script>
+        $(document).ready(function(){
+          $("#<%= image_id %>").materialbox();
+        });
+      </script>
+      <% else %>
+        <span>-</span>
       <% end %>
+
+      <span><%= equipment_request.arborist ? equipment_request.arborist.name : '-' %></span>
     </div>
+
+  </div>
+  <% if equipment_request.may_resolve? %>
+    <%= link_to(equipment_request_resolve_path(equipment_request), :method => :post, id: "single-request__check") do %>
+        <i class="material-icons" style="font-size: 30px;">check_circle_outline</i>
+    <% end %>
   <% end %>
 </div>
