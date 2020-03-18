@@ -1,5 +1,7 @@
 
 <div class='page-container'>
+  <%= render 'admin/common/back_button', back_link: estimates_path(autoscroll: true) %>
+
   <h3>Finalize Payment</h3>
 
   <%= form_for(@invoice, url: invoice_pay_url(@invoice), method: 'post') do |f| %>

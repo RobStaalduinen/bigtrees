@@ -1,5 +1,7 @@
 <script>
   function setUnknown(estimateId, isUnknown){
+    setScroll();
+    
     var message = ""
     if(isUnknown){
       message = "Move this estimate to unknown?";
@@ -29,6 +31,10 @@
     xmlhttp.onload = function(){
       window.location.reload(true);
     }
+  }
+
+  function setScroll(){
+    localStorage.setItem("scrollPosition", window.scrollY);
   }
 </script>
 
@@ -120,14 +126,14 @@
     <% end %>
 
     <div id="single-estimate-entry__action-button">
-      <%= link_to estimate_path(estimate), id: "single-estimate__details-link" do %>
+      <%= link_to estimate_path(estimate), id: 'single-estimate__details-link', onclick: 'setScroll();' do %>
         Details
       <% end %>
     </div> 
 
     <% if estimate.status == 'quote_sent' %>
       <div id="single-estimate-entry__action-button">
-        <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), id: "single-estimate__details-link" do %>
+        <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), id: "single-estimate__details-link", onclick: 'setScroll();' do %>
           Schedule
         <% end %>
       </div>
@@ -135,7 +141,7 @@
 
     <% if estimate.status == 'final_invoice_sent' %>
       <div id="single-estimate-entry__action-button">
-        <%= link_to edit_invoice_path(estimate.invoice, form_option: 'finalize_payment'), id: "single-estimate__details-link" do %>
+        <%= link_to edit_invoice_path(estimate.invoice, form_option: 'finalize_payment'), id: "single-estimate__details-link", onclick: 'setScroll();' do %>
           Set Payment
         <% end %>
       </div>

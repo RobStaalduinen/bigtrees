@@ -1,4 +1,6 @@
 <div class='container'>
+  <%= render 'admin/common/back_button', back_link: estimates_path(autoscroll: true) %>
+
   <h3>Mailout new quote</h3>
 
   <% subject = 'Your Big Tree Services Quote '%>
@@ -8,7 +10,7 @@
   <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
     <%= hidden_field_tag "is_unknown", true %>
     <%= hidden_field_tag "update_email", true %>
-    <%= hidden_field_tag 'redirect', estimates_path %>
+    <%= hidden_field_tag 'redirect', estimates_path(autoscroll: true) %>
 
     <%= 
       render 'quote_mailouts/email_form',
@@ -27,7 +29,7 @@
   <%= form_tag estimate_quote_mailouts_path(@estimate.id), method: 'post' do %>
     <%= hidden_field_tag('skip', true) %>
     <%= hidden_field_tag "is_unknown", true %>
-    <%= hidden_field_tag 'redirect', estimates_path %>
+    <%= hidden_field_tag 'redirect', estimates_path(autoscroll: true) %>
     
     <div class='content__row-vertical'>
       <%= submit_tag('Skip', class: "form__submit", id: 'submit-button') %>

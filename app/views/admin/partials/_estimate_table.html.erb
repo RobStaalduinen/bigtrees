@@ -11,10 +11,10 @@
   }
 
   function selectTab() {
-
     var tabSelect = document.getElementById('estimate-selection').value;
+    localStorage.setItem("lastCategory", tabSelect);
     switch(tabSelect) {
-      case "Active": 
+      case "Awaiting Customer Respons": 
         changeTab('active-list');
         break;
       case 'To Pay':
@@ -23,7 +23,7 @@
       case 'Quote Sent':
         changeTab('sent-list');
         break;
-      case 'Scheduled':
+      case 'Approved and Scheduled':
         changeTab('scheduled-list');
         break;
       case 'All':
@@ -34,20 +34,43 @@
 
     }
   }
+
+  function autoscroll(){
+    var lastCategory = localStorage.getItem("lastCategory");
+    
+    if(lastCategory != null){
+      $('#estimate-selection').val(lastCategory);
+      selectTab();
+      setTimeout(() => {
+        var scrollPosition = localStorage.getItem("scrollPosition");
+        console.log(scrollPosition);
+        window.scrollTo(0, scrollPosition);
+      }, 250)
+    }
+  }
 </script>
 
 <div class="admin__estimate-tabs">
   <%= 
     select_tag "estimate-selection",
-    options_for_select(["Active", "To Pay", "Quote Sent", "Scheduled", "All"]),
+    options_for_select([ "All", "Awaiting Customer Response", "To Pay", "Quote Sent", "Approved and Scheduled"]),
     onchange: "selectTab();",
     class:"form-field",
     style: 'width: 100%;'
   %>
 </div>
 
+
+
 <div id ="admin__estimate-table">
-  <div id='active-list' class='estimate-list'>
+  <div id='all-list' class='estimate-list'>
+    <%= 
+      render 'admin/partials/estimate_list', 
+      estimates: estimates
+    %>
+  </div>
+
+  <div id='active-list' class='estimate-list' style="display: none;">
     <%= 
       render 'admin/partials/estimate_list', 
       estimates: estimates.incomplete
@@ -68,17 +91,16 @@
     %>
   </div>
 
-    <div id='scheduled-list' class='estimate-list' style="display: none;">
+  <div id='scheduled-list' class='estimate-list' style="display: none;">
     <%= 
       render 'admin/partials/estimate_list', 
       estimates: estimates.scheduled
     %>
   </div>
-
-  <div id='all-list' class='estimate-list' style="display: none;">
-    <%= 
-      render 'admin/partials/estimate_list', 
-      estimates: estimates
-    %>
-  </div>
 </div>
+
+<% if @autoscroll == 'true' %>
+  <script>
+    autoscroll();
+  </script>
+<% end %>

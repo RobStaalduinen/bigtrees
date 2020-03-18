@@ -19,9 +19,9 @@ class Estimate < ActiveRecord::Base
 	accepts_nested_attributes_for :site
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
-	scope :incomplete, -> { active.where("status < 3") }
+	scope :incomplete, -> { active.where("status < 4") }
 	scope :sent, -> { active.where("status = 3") }
-	scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
+	scope :scheduled, -> { active.where("status >= 4 AND status <= 8") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }
@@ -59,7 +59,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def additional_message
-		if self.status == 'needs_costs' && self.picture_request_sent_at.present?
+		if self.read_attribute(:status) < 4 && self.picture_request_sent_at.present?
 			return "Followup Sent"
 		end
 

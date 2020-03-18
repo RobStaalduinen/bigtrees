@@ -1,7 +1,5 @@
 <% if estimates.any? %>
-  <% estimates.each do |estimate| %>
-    <%= render "admin/partials/single_estimate_entry", estimate: estimate %>
-  <% end %>
+  <%= render partial: "admin/partials/single_estimate_entry", collection: estimates, as: :estimate %>
 <% else %>
   <h3>None</h3>
 <% end %>

@@ -13,6 +13,8 @@ class EstimatesController < ApplicationController
 			includes(:customer).
 			includes(:site).
 			with_customer
+
+		@autoscroll = params[:autoscroll] || false
 	end
 
 	def new
