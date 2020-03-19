@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200306150401) do
+ActiveRecord::Schema.define(version: 20200319140442) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -121,6 +121,14 @@ ActiveRecord::Schema.define(version: 20200306150401) do
     t.boolean  "is_unknown",                                         default: false
     t.integer  "customer_id",             limit: 4
     t.date     "picture_request_sent_at"
+  end
+
+  create_table "expirations", force: :cascade do |t|
+    t.integer  "vehicle_id", limit: 4
+    t.string   "name",       limit: 255
+    t.date     "date"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "extra_costs", force: :cascade do |t|
