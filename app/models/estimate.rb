@@ -20,8 +20,9 @@ class Estimate < ActiveRecord::Base
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where("status < 4") }
-	scope :sent, -> { active.where("status = 3") }
-	scope :scheduled, -> { active.where("status >= 4 AND status <= 8") }
+	scope :price_required, -> { active.where("status = 0").where(picture_request_sent_at: nil) }
+	scope :sent, -> { active.where("status = 3 OR (status < 4 AND picture_request_sent_at IS NOT NULL)") }
+	scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }

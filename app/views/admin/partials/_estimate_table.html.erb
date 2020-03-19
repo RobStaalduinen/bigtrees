@@ -14,14 +14,14 @@
     var tabSelect = document.getElementById('estimate-selection').value;
     localStorage.setItem("lastCategory", tabSelect);
     switch(tabSelect) {
-      case "Awaiting Customer Respons": 
+      case "Needs Pricing":
+        changeTab('pricing-list');
+        break;
+      case "Awaiting Customer Response": 
         changeTab('active-list');
         break;
       case 'To Pay':
         changeTab('pending-list');
-        break;
-      case 'Quote Sent':
-        changeTab('sent-list');
         break;
       case 'Approved and Scheduled':
         changeTab('scheduled-list');
@@ -53,7 +53,7 @@
 <div class="admin__estimate-tabs">
   <%= 
     select_tag "estimate-selection",
-    options_for_select([ "All", "Awaiting Customer Response", "To Pay", "Quote Sent", "Approved and Scheduled"]),
+    options_for_select([ "All", "Needs Pricing", "Awaiting Customer Response", "To Pay", "Approved and Scheduled"]),
     onchange: "selectTab();",
     class:"form-field",
     style: 'width: 100%;'
@@ -70,10 +70,17 @@
     %>
   </div>
 
+  <div id="pricing-list" class='estimate-list'>
+    <%= 
+      render 'admin/partials/estimate_list',
+      estimates: estimates.price_required
+    %>
+  </div>
+
   <div id='active-list' class='estimate-list' style="display: none;">
     <%= 
       render 'admin/partials/estimate_list', 
-      estimates: estimates.incomplete
+      estimates: estimates.sent
     %>
   </div>
 
@@ -81,13 +88,6 @@
     <%= 
       render 'admin/partials/estimate_list', 
       estimates: estimates.pending_payment
-    %>
-  </div>
-
-  <div id='sent-list' class='estimate-list' style="display: none;">
-    <%= 
-      render 'admin/partials/estimate_list', 
-      estimates: estimates.sent
     %>
   </div>
 
