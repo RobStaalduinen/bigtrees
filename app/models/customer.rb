@@ -1,6 +1,8 @@
 class Customer < ActiveRecord::Base
   has_many :estimates
 
+  before_save :downcase_fields
+
   scope :with_name, -> { where.not(name: [nil, ""]) }
 
   def self.find_or_create_by_params(params)
@@ -25,5 +27,9 @@ class Customer < ActiveRecord::Base
 
   def preferred_method
     (self.preferred_contact || "").capitalize
+  end
+
+  def downcase_fields
+    self.email.downcase!
   end
 end
