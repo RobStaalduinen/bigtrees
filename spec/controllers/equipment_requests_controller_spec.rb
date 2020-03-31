@@ -14,7 +14,7 @@ describe EquipmentRequestsController do
       let!(:user) { create(:employee) }
 
       it "is restricted" do
-        should redirect_to arborists_path(user)
+        should redirect_to arborist_path(user)
       end
     end
 
@@ -47,7 +47,7 @@ describe EquipmentRequestsController do
 
       it "is restricted" do
         get :show, { id: equipment_request.id }
-        should redirect_to arborists_path(user)
+        should redirect_to arborist_path(user)
       end
     end
 
@@ -135,7 +135,7 @@ describe EquipmentRequestsController do
 
       it "is restricted" do
         post :resolve, { equipment_request_id: 1 }
-        should redirect_to arborists_path(user)
+        should redirect_to arborist_path(user)
       end
     end
 
