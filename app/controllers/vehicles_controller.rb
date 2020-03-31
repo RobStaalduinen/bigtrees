@@ -4,7 +4,7 @@ class VehiclesController < ApplicationController
   before_action :signed_in_user
 
   def index
-    @vehicles = Vehicle.all
+    @vehicles = Vehicle.all.includes(:expirations)
   end
 
   def new

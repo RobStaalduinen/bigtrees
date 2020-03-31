@@ -39,6 +39,7 @@ class Ability
         can :manage, Customer
         can :manage, Receipt
         can :manage, EquipmentRequest
+        can :manage, Vehicle
       end
     end
   end

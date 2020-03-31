@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_unauthorized
-    redirect_to arborists_path(current_user)
+    redirect_to arborist_path(current_user)
   end
   
 

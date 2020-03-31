@@ -1,0 +1,12 @@
+<%= render 'admin/common/back_button', back_link: vehicles_path %>
+
+<h5>Create Expiration</h5>
+
+<%= form_for(@expiration, method: :post, class: "col s12 m6 offset-m3") do |f| %>
+  <%= render 'expirations/partials/expiration_form', f: f %>
+
+  <div class="row">
+    <%= submit_tag "Create", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+
+<% end %>
