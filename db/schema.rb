@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200319140442) do
+ActiveRecord::Schema.define(version: 20200331193125) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20200319140442) do
     t.boolean "admin",                       default: false
     t.boolean "hidden",                      default: false
     t.boolean "active",                      default: true
+    t.float   "hourly_rate",     limit: 24
   end
 
   create_table "costs", force: :cascade do |t|
@@ -235,9 +236,13 @@ ActiveRecord::Schema.define(version: 20200319140442) do
   end
 
   create_table "work_records", force: :cascade do |t|
-    t.integer "arborist_id", limit: 4
+    t.integer "arborist_id",  limit: 4
     t.date    "date"
-    t.float   "hours",       limit: 24
+    t.float   "hours",        limit: 24
+    t.time    "start_at"
+    t.time    "end_at"
+    t.float   "unpaid_hours", limit: 24
+    t.float   "hourly_rate",  limit: 24
   end
 
   add_index "work_records", ["arborist_id"], name: "index_work_records_on_arborist_id", using: :btree

@@ -5,6 +5,7 @@ FactoryBot.define do
     password                  { 'abc123' }
     password_confirmation     { 'abc123'}
     certification             { '12345' }
+    hourly_rate               { 20.0 }
     admin                     { true }
 
     factory :invalid_arborist do

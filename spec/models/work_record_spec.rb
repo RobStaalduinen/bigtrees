@@ -1,5 +1,17 @@
 describe WorkRecord do
-  
+  describe "Callbacks" do
+    describe "set_hourly_rate" do
+      let!(:arborist) { create(:arborist, hourly_rate: 50.0) }
+      
+      it "takes hourly rate from arborist" do
+        record = arborist.work_records.new({hours: 5.0, date: Date.today})
+        expect(record.hourly_rate).to eq(nil)
+        record.save!
+        expect(record.hourly_rate).to eq(50.0)
+      end
+    end
+  end
+
   describe "Scopes" do
     describe "for_month" do
       let!(:first) { create(:work_record, date: Date.today.last_month) }

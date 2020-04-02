@@ -14,9 +14,9 @@ class WorkRecordsController < AdminBaseController
 
   def create
     @work_record = current_user.work_records.find_or_initialize_by(date: work_record_params[:date])
-    @work_record.hours = work_record_params[:hours]
+    @work_record.update(work_record_params)
 
-    if @work_record.save
+    if @work_record.persisted?
       redirect_to arborist_path(current_user)
     else
       render new_work_record_path
@@ -36,6 +36,6 @@ class WorkRecordsController < AdminBaseController
   private
 
     def work_record_params
-      params.require(:work_record).permit(:date, :hours)
+      params.require(:work_record).permit(:date, :hours, :unpaid_hours, :start_at, :end_at)
     end
 end
