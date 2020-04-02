@@ -1,132 +1,106 @@
-<div class="container">
-  <div id="submit-receipt">
-    <h3>Submit a Receipt</h3>
+<h5>Submit a Receipt</h5>
 
-    <%= form_tag("/receipts", method: 'post', multipart: true) do %>
-    <div class="form__box">
-
-      
-      <div class="form__row form__row-vertical">
-        <div class=" form__label">
-          Date*
-        </div>  
-
-          <input 
-            type="text"
-            name="receipt[date]"
-            data-provide='datepicker'
-            class="form-field"
-            id="receipt-date-picker"
-            placeholder="Enter the date..." ,
-            required=true 
-          >
-      </div>
-
-
-      <div class="form__row form__row-vertical">
-        <div class=" form__label">
-          Arborist*
-        </div>  
-
-          <%= 
-            select_tag 'receipt[arborist_id]',
-            options_from_collection_for_select(@all_arborists, 'id', 'name', @arborist.id),
-            class:"form-field",
-            required: true
-          %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class=" form__label">
-          Category*
-        </div>  
-
-        <%= 
-          select_tag 'receipt[category]',
-          options_for_select(Receipt::CATEGORIES, Receipt::DEFAULT_CATEGORY),
-          class:"form-field",
-          required: true
-        %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class="form__label">
-          Job*
-        </div>  
-
-        <%= 
-          select_tag 'receipt[job]',
-          options_for_select(Receipt::JOBS, Receipt::DEFAULT_JOB),
-          class:"form-field",
-          required: true
-        %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class="form__label">
-          Payment Method*
-        </div>  
-
-        <%= 
-          select_tag 'receipt[payment_method]',
-          options_for_select(Receipt::PAYMENT_METHODS, Receipt::DEFAULT_PAYMENT_METHOD),
-          class:"form-field",
-          required: true
-        %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class=" form__label">
-          Vehicle (if applicable)
-        </div>  
-
-          <%= 
-            select_tag 'receipt[vehicle_id]',
-            options_from_collection_for_select(@vehicles, 'id', 'name'),
-            include_blank: "None",
-            class:"form-field"
-          %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class="form__label">
-          Amount*
-        </div>  
-
-          <%= number_field_tag('receipt[cost]', '', class: "form-field form__field-full", required: true, :step => 0.01) %>
-      </div>
-
-
-      <div class="form__row form__row-vertical">
-        <div class="form__label">
-          What did you buy?
-        </div>  
-
-          <%= text_field_tag('receipt[description]', '', class: "form-field form__field-full") %>
-      </div>
-
-      <div class="form__row form__row-vertical">
-        <div class="form__label">
-          Receipt Picture*
-        </div>  
-
-          <%= file_field_tag('receipt[photo]', required: true) %>
-      </div>
-
-      <div class="form__row">
-        <%= submit_tag('Submit', class: "form__submit") %>
-      </div>
-
+<%= form_for(@receipt, method: :post, html: { multipart: true } ) do |f| %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= f.text_field('date', class: 'datepicker') %>
+      <%= f.label(:date, 'Date') %>
     </div>
-  <% end %>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= 
+          f.select(
+            :category,
+            options_for_select(Receipt::CATEGORIES, Receipt::DEFAULT_CATEGORY),
+            required: true
+          ) 
+        %>
+        <%= f.label(:category, 'Category') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= 
+          f.select(
+            :job,
+            options_for_select(Receipt::JOBS, Receipt::DEFAULT_JOB),
+            required: true
+          ) 
+        %>
+        <%= f.label(:job, 'Job') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= 
+          f.select(
+            :payment_method,
+            options_for_select(Receipt::PAYMENT_METHODS, Receipt::DEFAULT_PAYMENT_METHOD),
+            required: true
+          ) 
+        %>
+        <%= f.label(:payment_method, 'Payment Method') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= 
+          f.select(
+            :vehicle_id,
+            options_for_select([['Other', nil], *Vehicle.all.map { |v| [v.name, v.id] }], ['Other', nil])
+          ) 
+        %>
+        <%= f.label(:vehicle_id, 'Vehicle (if applicable)') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.number_field(:cost, {required: true, step: 0.01}) %>
+        <%= f.label(:cost, 'Amount') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.text_field(:description) %>
+        <%= f.label(:description, 'What did you buy?') %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>Receipt Picture</span>
+          <input type="file" name="receipt[photo]">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
+
+  <div class="row">
+    <%= submit_tag "Create", class: 'btn col s12 m6 offset-m3' %>
+  </div>
+<% end %>
+
 
 <script>
-  $('#receipt-date-picker').datepicker({
-    format: "dd/mm/yyyy",
-    autoclose: true
-  });
+  $(document).ready(function(){
+    var options = {
+      defaultDate: new Date(),
+      setDefaultDate: true
+    };
 
-  $('#receipt-date-picker').datepicker('setDate', new Date());
+    $('.datepicker').datepicker(options);
+
+    $('select').formSelect();
+  });
 </script>

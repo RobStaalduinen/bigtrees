@@ -14,16 +14,19 @@ class ReceiptsController < ApplicationController
     authorize! :manage, Receipt
 
     @arborist = current_user
-    @all_arborists = Arborist.real
     @vehicles = Vehicle.all
+
+    @receipt = Receipt.new
+
+    render 'new', layout: 'admin_material'
   end
 
   def create
     authorize! :manage, Receipt
 
-    Receipt.create(receipt_params)
+    current_user.receipts.create(receipt_params)
 
-    redirect_to estimates_path
+    redirect_to receipts_path
   end
 
   def show
