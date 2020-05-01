@@ -1,0 +1,9 @@
+<div id="payout-index__entry">
+  <div id="payout-index__content">
+    <span style="font-size: 18px"><b><%= payout.date %></b></span>
+    <span><b>Hours: </b><%= payout.work_records.sum(:hours) %></span>
+  </div>
+  <%= link_to payout_path(payout), id: 'payout-index__link' do %>
+    Details
+  <% end %>
+</div>

@@ -3,10 +3,21 @@
     <th><%= metric %></th>
     <th>Hours</th>
   </tr>
-  <% grouped_records.each do |metric, records| %>
+  <% grouped_records.each do |date, records| %>
     <tr>
-      <td><%= metric %></td>
-      <td><%= records.map { |r| r.hours }.sum %></td>
+      <td>
+        <%= date %>
+          <% include_arborist && iterate_through_arborist_hours(records) do |name, arborist_records| %>
+            <br><i style="font-size: 14px"><%= name  %></i>
+          <% end %>
+      </td>
+
+      <td>
+        <%= records.map { |r| r.hours }.sum %>
+          <% include_arborist && iterate_through_arborist_hours(records) do |name, arborist_records| %>
+            <br><i style="font-size: 14px"><%= arborist_records.sum(&:hours)  %></i>
+          <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

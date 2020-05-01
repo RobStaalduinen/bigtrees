@@ -34,5 +34,36 @@ describe WorkRecord do
       end
     end
 
+    describe "unpaid" do
+      let!(:payout) { create(:payout) }
+      let!(:first_work_record) { create(:work_record, payout: payout) }
+      let!(:second_work_record) { create(:work_record) }
+      
+      it "only includes work records with no payout" do
+        records = WorkRecord.unpaid
+        expect(records).to include(second_work_record)
+        expect(records).not_to include(first_work_record)
+      end
+    end
+  end
+
+  describe "Instance Methods" do
+    describe "earnings" do
+      context "without an hourly rate" do
+        let!(:work_record) { create(:work_record) }
+        it "returns zero" do
+          work_record.hourly_rate = nil
+          expect(work_record.earnings).to eq(0.0)
+        end
+      end
+
+      context "with an hourly rate" do
+        let!(:work_record) { create(:work_record, hours: 2) }
+        it "returns hours times hourly rate" do
+          work_record.hourly_rate = 10.0
+          expect(work_record.earnings).to eq(20.0)
+        end
+      end
+    end
   end
 end

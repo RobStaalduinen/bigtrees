@@ -1,0 +1,61 @@
+#payout__hours-table{
+  
+}
+
+#payout__arborist-box{
+  margin-top: 16px;
+}
+
+#payout__hours-table-totals{
+  border-width: 2px 0 0 0;
+  border-color: gray;
+  border-style: solid
+}
+
+#payout__date-select{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+#payout__date-select-input{
+  width: 60%;
+}
+
+#payout__submission{
+  margin-top: 16px;
+}
+
+#payout__delete{
+  margin-top: 64px;
+}
+
+/* INDEX */
+
+#payout-index__entry:nth-child(odd){
+  background-color: #f2f2f2;
+}
+
+#payout-index__entry{
+  display: flex;
+  width: 100%;
+  padding: 12px;
+}
+
+#payout-index__content{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#payout-index__link{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#payout__arborist-box-header{
+  color: white;
+  background-color: var(--main-color);
+  padding: 8px;
+}

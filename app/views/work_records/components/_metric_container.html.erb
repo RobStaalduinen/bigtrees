@@ -1,3 +1,5 @@
+<% include_arborist ||= false %>
+
 <li>
   <div class="collapsible-header">
     <i class="material-icons">
@@ -10,7 +12,8 @@
     <%= 
       render 'work_records/components/table',
       metric: metric,
-      grouped_records: grouped_records
+      grouped_records: grouped_records,
+      include_arborist: include_arborist
     %>
   </div>
 </li>

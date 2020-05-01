@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   resources :receipts
   resources :vehicles
   resources :expirations
+  resources :payouts
 
   resources :equipment_requests do
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve

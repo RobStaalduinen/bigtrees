@@ -1,0 +1,41 @@
+<% work_records.group_by { |w| w.arborist }.each do |arborist, records| %>
+  <div id="payout__arborist-box">
+    <div id="payout__arborist-box-header">
+      <%= arborist.name %>
+    </div>
+    <table class='striped table-narrow' id="payout__hours-table">
+      <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Hrs</th>
+        <th>Pay</th>
+      </tr>
+      <% records.sort_by { |r| r.date }.each do |work_record| %>
+        <tr>
+          <td>
+            <%= work_record.date %>
+          </td>
+
+          <td>
+            <%= work_record.range_string %>
+          </td>
+
+          <td>
+            <%= work_record.hours %>
+          </td>
+
+          <td>
+            <%= "$#{work_record.earnings}" %>
+          </td>
+        </tr>
+      <% end %>
+
+      <tr id="payout__hours-table-totals">
+        <td></td>
+        <td></td>
+        <td> <%= records.sum(&:hours) %></td>
+        <td> <%= "$#{records.sum(&:earnings)}" %></td>
+      </tr>
+    </table>
+  </div>
+<% end %>

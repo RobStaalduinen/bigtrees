@@ -1,0 +1,15 @@
+<%= render 'admin/common/back_button', back_link: payouts_path %>
+
+<h5><%= @payout.date %></h5> 
+
+<%= render partial: 'payouts/partials/payout_tables', locals: { work_records: @payout.work_records } %>
+
+<div class="row" id="payout__delete">
+  <%= form_tag(payout_path(@payout), method: :delete) do %>
+    <%= hidden_field_tag 'payout[date]', @date %>
+    <%= 
+      submit_tag "Delete Payout",
+      class: 'btn col s12 m6 offset-m3', 
+      data: { confirm: "Are you sure? This will delete the payout, and return all listed hours to unpaid"} %>  
+  <% end %>
+</div>

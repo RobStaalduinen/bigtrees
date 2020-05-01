@@ -1,0 +1,9 @@
+<div class="admin__header">
+  <h5>Payouts</h5>
+
+  <%= link_to new_payout_path do %>
+    New
+  <% end %>
+</div>
+
+<%= render partial: 'payouts/partials/payout_entry', collection: @payouts, as: :payout %>
