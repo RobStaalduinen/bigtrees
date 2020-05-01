@@ -27,7 +27,8 @@
       <%=
         render 'work_records/components/metric_container',
         metric: 'Month',
-        grouped_records: @work_records.group_by { |w| w.date.strftime("%m - %B") }.sort_by{ |month, _| month }
+        grouped_records: @work_records.group_by { |w| w.date.strftime("%m - %B") }.sort_by{ |month, _| month },
+        include_arborist: true
       %>
 
       <%=

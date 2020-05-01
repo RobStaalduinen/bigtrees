@@ -1,0 +1,8 @@
+<%= render partial: 'payouts/partials/payout_tables', locals: { work_records: work_records } %>
+
+<div class="row" id="payout__submission">
+  <%= form_tag(payouts_path) do %>
+    <%= hidden_field_tag 'payout[date]', @date %>
+    <%= submit_tag "Approve and Create Payout", class: 'btn col s12 m6 offset-m3' %>  
+  <% end %>
+</div>

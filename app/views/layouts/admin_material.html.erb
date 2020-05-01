@@ -32,27 +32,29 @@
 
 </head>
 <body>
+  <div id='main-container'>
   
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBWVZF5"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBWVZF5"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-	<script>
-		$('body').on('hidden.bs.modal', '.modal', function () {
-			$(this).removeData('bs.modal');
-		});
-	</script>
+    <script>
+      $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+      });
+    </script>
 
-      <%= render 'layouts/admin/header' %>
+        <%= render 'layouts/admin/header' %>
 
-      <div id = "admin-content">
+        <div id = "admin-content">
 
-        <%= yield %>
-      </div>
-
-      <%= render 'layouts/common/footer' %>
-
+          <%= yield %>
+        </div>
+        <div id="admin-footer">
+          <%= render 'layouts/common/footer' %>
+        </div>
+    </div>
 
 </body>
 </html>
