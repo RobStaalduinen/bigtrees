@@ -23,5 +23,5 @@ job_type :bin, 'cd :path/bin && :task'
 
 
 every 3.hours do
-  bin "$HOME/.rbenv/bin/rbenv exec delayed_job -n 2 restart"
+  command "cd :path && $HOME/.rbenv/bin/rbenv exec delayed_job -n 2 restart"
 end
