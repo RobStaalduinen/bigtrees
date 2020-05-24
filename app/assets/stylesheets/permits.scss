@@ -1,0 +1,60 @@
+@import "common/_mixins.scss";
+
+#permits__select-container{
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 16px;
+}
+
+#permits__select{
+  font-weight: 400;
+  width: 100%;
+}
+
+.permits__info{
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.permits__info-header{
+  @include red-header;
+}
+
+.permits__info-content{
+  @include shadow-box;
+  padding: 16px;
+}
+
+.permits__content-section{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.permits__content-header{
+  font-weight: 600;
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--main-color);
+  margin-bottom: 8px;
+}
+
+.permits__content-fee{
+  font-weight: 600;
+}
+
+@media(min-width: 760px){
+  #permits__select-container{
+    flex-direction: row;
+    align-items: center;
+  }
+
+  #permits__select{
+    margin-left: 16px;
+    width: 300px;
+  }
+
+}

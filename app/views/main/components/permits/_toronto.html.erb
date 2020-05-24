@@ -1,0 +1,14 @@
+<%= render :layout => '/main/components/permits/info', :locals => {:city => 'Toronto and the GTA', parent_id: 'toronto'} do %>
+  <section class="permits__content-section">
+    <span class="permits__content-header">Bylaws</span>
+    <div>A permit is required to remove or injure any tree on private property which is over 30cm diameter measured from 1.4 metres above ground level.</div>
+  </section>
+
+  <section class="permits__content-section">
+    <span class="permits__content-header">Fees</span>
+    <div><span class="permits__content-fee">$114.04</span> per tree.</div>
+    <div><span class="permits__content-fee">$238.04</span> if the tree to be removed is a boundary or shared neighbour tree.</div>
+  </section>
+
+  <%= render '/main/components/permits/instructions', form_name: 'Toronto_Application+to+Injure+or+Destroy+Trees+Jan+2020+-1.pdf' %>
+<% end %>

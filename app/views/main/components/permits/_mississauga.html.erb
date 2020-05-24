@@ -1,0 +1,15 @@
+<%= render :layout => '/main/components/permits/info', :locals => {:city => 'Mississauga', parent_id: 'mississauga'} do %>
+  <section class="permits__content-section">
+    <span class="permits__content-header">Bylaws</span>
+    <div>You only need a permit to remove trees on private property if you are removing three (3) or more trees which measure 15cm diameter or greater – including dead and/or dying trees per calendar year.</div>
+  </section>
+
+  <section class="permits__content-section">
+    <span class="permits__content-header">Fees</span>
+    <div><span class="permits__content-fee">$403.00</span> for removing 3 trees that are 15cm or over.</div>
+    <div><span class="permits__content-fee">$91.00</span> for each additional tree over 3.</div>
+  </section>
+
+  <%= render '/main/components/permits/instructions', form_name: 'Mississauga_Form_2205_Permit_Destruct_Trees.pdf' %>
+
+<% end %>

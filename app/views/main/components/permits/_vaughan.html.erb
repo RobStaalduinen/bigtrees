@@ -1,0 +1,14 @@
+<%= render :layout => '/main/components/permits/info', :locals => {:city => 'Vaughan', parent_id: 'vaughan'} do %>
+  <section class="permits__content-section">
+    <span class="permits__content-header">Bylaws</span>
+    <div>A permit is required to remove any tree on private property which is over 20cm diameter measured from the base of the tree.</div>
+  </section>
+
+  <section class="permits__content-section">
+    <span class="permits__content-header">Fees</span>
+    <div><span class="permits__content-fee">$60.00</span> for processing.</div>
+    <div><span class="permits__content-fee">$100.00</span> per tree over 20cm.</div>
+  </section>
+
+  <%= render '/main/components/permits/instructions', form_name: 'Vaughan_Residential_Private_Tree_Permit_Application Form-2020.pdf' %>
+<% end %>

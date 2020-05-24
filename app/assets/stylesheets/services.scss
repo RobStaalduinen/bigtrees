@@ -13,18 +13,8 @@
   flex-direction: column;
 }
 
-#services-page-entry__header{
-  font-size: 18px;
-  color: white;
-  font-weight: 600;
-
-  padding: 16px 16px 12px 16px;
-
-  background-color: var(--main-color);
-
-  border-width: 0 0 4px 0;
-  border-color: var(--main-color-dark);
-  border-style: solid;
+#services-page-entry__header{ 
+  @include red-header;
 }
 
 #services-page-entry__image-wrapper{
