@@ -32,8 +32,8 @@ class GenerateMasterTracker
       insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%Y")) rescue ""
       
       insert(worksheet, row, 8, customer.name)
-      insert(worksheet, row, 9, estimate.street)
-      insert(worksheet, row, 10, estimate.city)
+      insert(worksheet, row, 9, estimate.street || estimate.site.street)
+      insert(worksheet, row, 10, estimate.city || estimate.site.street)
       insert(worksheet, row, 11, estimate.trees.count)
       insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 13, contact.capitalize)
