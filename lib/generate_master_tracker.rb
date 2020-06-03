@@ -11,40 +11,49 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees).includes(:arborist).order("is_unknown, status DESC, work_date ASC")
+    estimates = estimates.includes(:trees).includes(:arborist).order("created_at ASC, status DESC")
 
     estimates.each_with_index do |estimate, i|
-      row = 2 + i
+      row = 1 + i
       discount = estimate.invoice && estimate.invoice.discount ? "YES" : "NO"
       customer = estimate.customer
       contact = customer.preferred_contact || ""
 
       insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice.number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
-      insert(worksheet, row, 2, estimate.work_date.strftime("%d-%b-%Y")) rescue ""
-      insert(worksheet, row, 3, customer.name)
-      insert(worksheet, row, 4, estimate.street)
-      insert(worksheet, row, 5, estimate.city)
-      insert(worksheet, row, 6, estimate.trees.count)
-      insert(worksheet, row, 7, estimate.trees.first.work_name) rescue ""
-      insert(worksheet, row, 8, contact.capitalize)
-      insert(worksheet, row, 9, customer.phone)
-      insert(worksheet, row, 10, customer.email)
-      insert(worksheet, row, 11, discount)
+
+      insert(worksheet, row, 2, estimate.created_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 3, estimate.created_at.strftime("%B")) rescue ""
+      insert(worksheet, row, 4, estimate.created_at.strftime("%Y")) rescue ""
+
+      
+      insert(worksheet, row, 5, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 6, estimate.invoice.paid_at.strftime("%B")) rescue ""
+      insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%Y")) rescue ""
+      
+      insert(worksheet, row, 8, customer.name)
+      insert(worksheet, row, 9, estimate.street)
+      insert(worksheet, row, 10, estimate.city)
+      insert(worksheet, row, 11, estimate.trees.count)
+      insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
+      insert(worksheet, row, 13, contact.capitalize)
+      insert(worksheet, row, 14, customer.phone)
+      insert(worksheet, row, 15, customer.email)
+      insert(worksheet, row, 16, discount)
 
       if estimate.quote_sent_date.present?
-        insert(worksheet, row, 12, estimate.total_cost)
-        insert(worksheet, row, 13, estimate.total_cost * 0.13)
-        insert(worksheet, row, 14, estimate.total_cost * 1.13)
+        insert(worksheet, row, 17, estimate.total_cost)
+        insert(worksheet, row, 18, estimate.total_cost * 0.13)
+        insert(worksheet, row, 19, estimate.total_cost * 1.13)
 
         if estimate.work_date.present? && !estimate.is_unknown
-          insert(worksheet, row, 15, estimate.outstanding_amount * 1.13)
+          insert(worksheet, row, 20, estimate.outstanding_amount * 1.13)
         end
       end
       raw_link = Rails.application.routes.url_helpers.estimate_path(estimate)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
-      worksheet.add_cell(row, 26, '', link)
-      worksheet[row][26].change_font_color('0000ff')
+      worksheet.add_cell(row, 33, '', link)
+      worksheet[row][33].change_font_color('0000ff')
 
     end
 
