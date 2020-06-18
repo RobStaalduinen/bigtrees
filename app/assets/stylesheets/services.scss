@@ -25,6 +25,18 @@
   width: 100%;
 }
 
+#services-page-entry__area-image{
+  width: 70%;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+#services-page-entry__area-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #services-page-entry__links{
   width: 100%;
 }
@@ -71,6 +83,16 @@
 
   #services-page-entry__header{  
     padding: 8px 16px 4px 16px;
+  }
+
+  #services-page-entry__area-image{
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  #services-page-entry__area-content{
+    width: 70%;
+    margin-left: 16px;
   }
 }
 
