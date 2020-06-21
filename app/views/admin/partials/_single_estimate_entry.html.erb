@@ -40,112 +40,53 @@
 
 <% customer = estimate.customer %>
 
-
-<div id='single-estimate__box'>
-  <div id='single-estimate__header'>
-    <%= [estimate.formatted_status, estimate.additional_message].compact.join(' - ') %>
-  </div>
-
-  <div id='single-estimate__inner-box'>
-
-    <div id='single-estimate__row'>
-      <div id='single-estimate__label'>
-        Date Sent
-      </div>
-
-      <div id='single-estimate__content'>
-        <%= estimate.created_at.strftime("%B %d, %Y") %>
-      </div>
-    </div>
-
-    <% if estimate.work_date.present? %>
-      <div id='single-estimate__row'>
-        <div id='single-estimate__label'>
-          Work
+<div class="row" style="margin-bottom: 8px;">
+  <div class="col s12"> 
+    <div class="estimate-list-entry">
+      <div style="display: flex;">
+        <div class='estimate-list-entry__left'>
+          <b><%= customer.name %></b> <br>
+          <div class='estimate-list-entry__icon-row'>
+            <i class="material-icons estimate-list-entry__icon">room</i> 
+            <%= estimate.site.full_address %>
+          </div>
+          <div class='estimate-list-entry__icon-row'>
+            <i class="material-icons estimate-list-entry__icon">call</i> 
+            <%= customer.phone %>
+          </div>
+          <div class='estimate-list-entry__icon-row'>
+            <i class="material-icons estimate-list-entry__icon">email</i>
+            <%= customer.email %>
+          </div>
         </div>
 
-        <div id='single-estimate__content'>
-          <%= estimate.work_date.strftime("%B %d, %Y") %>
+        <div class='estimate-list-entry__right'>
+          <div class='estimate-list-entry__vertical-section'>
+            <span class="badge-notification"><%= estimate.formatted_status %></span>
+            <% if estimate.status < 'quote_accepted' && estimate.additional_message %>
+              <i><%= estimate.additional_message %></i>
+            <% end %>
+          </div>
+          <div class='estimate-list-entry__vertical_section'>
+            <div class='estimate-list-entry__icon-row'>
+              <i class="material-icons estimate-list-entry__icon">call_received</i>
+              <%= estimate.created_at.strftime("%b %d, %Y") %>
+            </div>
+            <% if estimate.work_date.present? %>
+              <div class='estimate-list-entry__icon-row'>
+                <i class="material-icons estimate-list-entry__icon">work</i>
+                <%= estimate.work_date.strftime("%b %d, %Y") %>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
-    <% end %>
 
-    <div id='single-estimate__row'>
-      <div id='single-estimate__label'>
-        Name
-      </div>
-
-      <div id='single-estimate__content'>
-        <%= customer.name %>
-      </div>
-    </div>
-
-    <div id='single-estimate__row'>
-      <div id='single-estimate__label'>
-        Phone
-      </div>
-
-      <div id='single-estimate__content'>
-        <%= customer.phone %>
-      </div>
-    </div>
-
-    <div id='single-estimate__row'>
-      <div id='single-estimate__label'>
-        Email
-      </div>
-
-      <div id='single-estimate__content'>
-        <%= customer.email %>
-      </div>
-    </div>
-
-    <div id='single-estimate__row'>
-      <div id='single-estimate__label'>
-        Address
-      </div>
-
-      <div id='single-estimate__content'>
-        <%= estimate.site.full_address %>
-      </div>
-    </div>
-
-  </div>
-
-  <div id="single-estimate__action-buttons">
-    <% if !estimate.completed? %>
-      <% if !estimate.unknown? %>
-        <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:followup]), id: 'single-estimate-entry__action-button' do %>
-            Unknown
-        <% end %>
-      <% else %>
-        <div id="single-estimate-entry__action-button" onClick="setUnknown(<%= estimate.id %>, false)">
-          Reactivate
-        </div> 
-      <% end %>
-    <% end %>
-
-    <div id="single-estimate-entry__action-button">
-      <%= link_to estimate_path(estimate), id: 'single-estimate__details-link', onclick: 'setScroll();' do %>
-        Details
-      <% end %>
-    </div> 
-
-    <% if estimate.status == 'quote_sent' %>
-      <div id="single-estimate-entry__action-button">
-        <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), id: "single-estimate__details-link", onclick: 'setScroll();' do %>
-          Schedule
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if estimate.status == 'final_invoice_sent' %>
-      <div id="single-estimate-entry__action-button">
-        <%= link_to edit_invoice_path(estimate.invoice, form_option: 'finalize_payment'), id: "single-estimate__details-link", onclick: 'setScroll();' do %>
-          Set Payment
-        <% end %>
-      </div>
-    <% end %>
     
+      <div class='estimate-list-entry__link-container'>
+        <%= render 'admin/partials/single_estimate_entry_links', estimate: estimate %>
+      </div>
+
+    </div>
   </div>
 </div>

@@ -15,6 +15,8 @@ class EstimatesController < ApplicationController
 			with_customer
 
 		@autoscroll = params[:autoscroll] || false
+
+		render 'index', layout: 'admin_material'
 	end
 
 	def new
