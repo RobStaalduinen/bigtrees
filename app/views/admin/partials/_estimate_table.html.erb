@@ -43,14 +43,14 @@
       selectTab();
       setTimeout(() => {
         var scrollPosition = localStorage.getItem("scrollPosition");
-        console.log(scrollPosition);
         window.scrollTo(0, scrollPosition);
+        $('select').formSelect();
       }, 400)
     }
   }
 </script>
 
-<div class="admin__estimate-tabs">
+<div class="input-field col s12">
   <%= 
     select_tag "estimate-selection",
     options_for_select([ "All", "Needs Pricing", "Awaiting Customer Response", "To Pay", "Approved and Scheduled"]),
@@ -59,6 +59,10 @@
     style: 'width: 100%;'
   %>
 </div>
+
+<script>
+  $('select').formSelect();
+</script>
 
 
 

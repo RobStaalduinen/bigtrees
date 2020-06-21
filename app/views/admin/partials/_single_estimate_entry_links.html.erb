@@ -1,0 +1,33 @@
+<% if estimate.status == 'quote_sent' %>
+  <div class="estimate-list-entry__link">
+    <%= link_to edit_estimate_path(estimate, form_option: 'set_work_date'), onclick: 'setScroll();' do %>
+      Schedule
+    <% end %>
+  </div>
+<% end %>
+
+<% if estimate.status == 'final_invoice_sent' %>
+  <div class="estimate-list-entry__link">
+    <%= link_to edit_invoice_path(estimate.invoice, form_option: 'finalize_payment'), onclick: 'setScroll();' do %>
+      Set Payment
+    <% end %>
+  </div>
+<% end %>
+
+<% if !estimate.completed? %>
+  <% if !estimate.unknown? %>
+    <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:followup]), class: 'estimate-list-entry__link' do %>
+      Unknown
+    <% end %>
+  <% else %>
+    <div class="estimate-list-entry__link" onClick="setUnknown(<%= estimate.id %>, false)">
+      Reactivate
+    </div> 
+  <% end %>
+<% end %>
+
+<div class="estimate-list-entry__link">
+  <%= link_to estimate_path(estimate), onclick: 'setScroll();' do %>
+    Details
+  <% end %>
+</div> 

@@ -1,4 +1,4 @@
-<div id="view-estimate__box">
+<%= render layout: 'estimates/show/collapsable_entry', locals: { title: "Customer - #{customer.name}" } do %>
   <div id="view-estimate__main-header">
     <span class = "text-large">Customer</span>
     
@@ -63,4 +63,4 @@
       <% end %>
     </div>
   </div>
-</div>
+<% end %>

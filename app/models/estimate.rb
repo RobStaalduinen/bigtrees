@@ -56,6 +56,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def formatted_status
+		return "Invoice Sent" if status == 'final_invoice_sent'
 		self.status.gsub('_', ' ').capitalize
 	end
 

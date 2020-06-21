@@ -15,6 +15,8 @@ class EstimatesController < ApplicationController
 			with_customer
 
 		@autoscroll = params[:autoscroll] || false
+
+		render 'index', layout: 'admin_material'
 	end
 
 	def new
@@ -29,6 +31,8 @@ class EstimatesController < ApplicationController
 		authorize! :manage, Estimate
 
 		@estimate = Estimate.find(params[:id])
+
+		render 'show', layout: 'admin_material'
 	end
 
 	def create

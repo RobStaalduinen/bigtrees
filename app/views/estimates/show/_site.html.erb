@@ -1,8 +1,8 @@
 <% site = estimate.site %>
 
-<div id="view-estimate__box">
+<%= render layout: 'estimates/show/collapsable_entry', locals: { title: "Site Info - #{site.full_address}" } do %>     
   <div id="view-estimate__main-header">
-    <span class = "text-large">Site Info</span>
+    <span class = "text-large">Site</span>
     
     <%= link_to edit_estimate_site_path(estimate_id: site.estimate.id, id: site.id) do %>
       <span id="view-estimate__edit">Edit</span>
@@ -78,5 +78,4 @@
 
     </div>
   <% end %>
-
-</div>
+<% end %>

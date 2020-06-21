@@ -23,11 +23,6 @@
           <img id="<%= image_id %>" style="max-width: 1px;" src=<%= equipment_request.image.url %> />
           <span id="image-link" onClick='openModal("<%= image_id.to_s %>")'>Image</span>
         </div>
-      <script>
-        $(document).ready(function(){
-          $("#<%= image_id %>").materialbox();
-        });
-      </script>
       <% else %>
         <span>-</span>
       <% end %>
