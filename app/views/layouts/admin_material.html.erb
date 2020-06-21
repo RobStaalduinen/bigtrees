@@ -43,6 +43,15 @@
       });
     </script>
 
+    <script>
+      function openModal(modalName){
+        $("#" + modalName).materialbox();
+        var elem = document.getElementById(modalName);
+        var instance = M.Materialbox.getInstance(elem);
+        instance.open();
+      }
+    </script>
+
         <%= render 'layouts/admin/header' %>
 
         <div id = "admin-content">

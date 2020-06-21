@@ -43,7 +43,6 @@
       selectTab();
       setTimeout(() => {
         var scrollPosition = localStorage.getItem("scrollPosition");
-        console.log(scrollPosition);
         window.scrollTo(0, scrollPosition);
         $('select').formSelect();
       }, 400)

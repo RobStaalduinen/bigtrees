@@ -32,6 +32,11 @@
   border-style: solid;
 }
 
+#view-estimate__edit-header{
+  display: flex;
+  justify-content: flex-end;
+}
+
 #view-estimate__row{
   display: flex;
   justify-content: space-between;
@@ -187,7 +192,7 @@
   width: 30%;
 }
 
-#trees__image{
+.trees__image{
   width: 100%;
   margin: 0 10px;
   object-fit: contain;
