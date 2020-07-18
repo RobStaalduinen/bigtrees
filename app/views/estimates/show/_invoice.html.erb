@@ -1,10 +1,16 @@
 <%= render layout: 'estimates/show/collapsable_entry', locals: { title: "Invoice - ##{invoice.number}" } do %>
   <div id="view-estimate__main-header">
     <span class = "text-large">Invoice</span>
-    
-    <%= link_to edit_invoice_path(invoice, form_option: 'edit_details') do %>
-      <span id="view-estimate__edit">Edit</span>
-    <% end %>
+
+    <div>
+      <%= link_to new_invoice_path(estimate_id: invoice.estimate.id) do %>
+        Resend Invoice
+      <% end %>
+      |
+      <%= link_to edit_invoice_path(invoice, form_option: 'edit_details') do %>
+        <span id="view-estimate__edit">Edit</span>
+      <% end %>
+    </div>
   </div>
 
   <div id='view-estimate__row-vertical'>
