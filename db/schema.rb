@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200603193320) do
+ActiveRecord::Schema.define(version: 20200718191623) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -172,6 +172,7 @@ ActiveRecord::Schema.define(version: 20200603193320) do
     t.integer  "photo_file_size",    limit: 4
     t.datetime "photo_updated_at"
     t.integer  "vehicle_id",         limit: 4
+    t.boolean  "approved",                                      default: false
   end
 
   create_table "site_config", force: :cascade do |t|

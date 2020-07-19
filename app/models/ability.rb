@@ -32,14 +32,16 @@ class Ability
     if arborist.present? && arborist.active?
       can :read, Arborist, id: arborist.id
       can :create, EquipmentRequest
+      can :read, Receipt
+      can :create, Receipt
 
       if arborist.admin?
         can :manage, Arborist
         can :manage, Estimate
         can :manage, Customer
-        can :manage, Receipt
         can :manage, EquipmentRequest
         can :manage, Vehicle
+        can :manage, Receipt
       end
     end
   end

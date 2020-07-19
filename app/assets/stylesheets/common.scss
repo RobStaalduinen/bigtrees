@@ -72,6 +72,18 @@
   align-items: center;
 }
 
+.approveable__check {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 0 0 0 1px;
+  border-color: lightgray;
+  border-style: solid;
+  color: green;
+  font-size: 30px;
+}
+
 
 @media(min-width: 760px){
   .page-container{

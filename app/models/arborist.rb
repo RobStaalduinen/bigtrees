@@ -13,7 +13,7 @@ class Arborist < ActiveRecord::Base
   end
 
   def get_receipts
-    self.is_admin ? Receipt.all : self.receipts
+    self.admin ? Receipt.all : self.receipts
   end
 
   def recent_work

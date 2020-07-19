@@ -7,6 +7,9 @@ class Receipt < ActiveRecord::Base
   scope :cheque, -> { where(category: 'Cheque' )}
   scope :regular, -> { where.not(category: 'Cheque' )}
 
+  scope :approved, -> { where(approved: true) }
+  scope :unapproved, -> { where(approved: false) }
+
   CATEGORIES = ['Fuel', 'Tools', 'Repairs', 'Travel', 'Cheque', 'Other'].freeze
   DEFAULT_CATEGORY = 'Fuel'
   JOBS = ['Big Trees', 'Big Properties', 'Big Stumps'].freeze

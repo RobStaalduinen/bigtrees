@@ -32,7 +32,7 @@
 
   </div>
   <% if equipment_request.may_resolve? %>
-    <%= link_to(equipment_request_resolve_path(equipment_request), :method => :post, id: "single-request__check") do %>
+    <%= link_to(equipment_request_resolve_path(equipment_request), :method => :post, class: "approveable__check") do %>
         <i class="material-icons" style="font-size: 30px;">check_circle_outline</i>
     <% end %>
   <% end %>

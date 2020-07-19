@@ -1,17 +1,22 @@
 class ReceiptsController < ApplicationController
-  layout 'admin'
+  layout 'admin_material'
 
   before_action :signed_in_user
+  before_action :set_receipt, only: [ :show, :approve ]
 
   def index
-    authorize! :manage, Receipt
-    
+    authorize! :read, Receipt
     @receipts = current_user.get_receipts.regular.order("date DESC")
-    @cheques = current_user.get_receipts.cheque.order("date DESC")
+    @unapproved_per_person = @receipts.
+      unapproved.
+      group(:arborist).
+      sum(:cost).map { |arborist, cost| 
+        [arborist.name, cost.to_f] 
+      }.to_h
   end
 
   def new
-    authorize! :manage, Receipt
+    authorize! :create, Receipt
 
     @arborist = current_user
     @vehicles = Vehicle.all
@@ -22,17 +27,25 @@ class ReceiptsController < ApplicationController
   end
 
   def create
-    authorize! :manage, Receipt
+    authorize! :create, Receipt
 
-    current_user.receipts.create(receipt_params)
+    receipt = current_user.receipts.create(receipt_params)
+    receipt.update(approved: true) if current_user.admin?
 
     redirect_to receipts_path
   end
 
   def show
+    authorize! :read, Receipt
+  end
+
+
+  def approve
     authorize! :manage, Receipt
-    
-    @receipt = Receipt.find(params[:id])
+
+    @receipt.update(approved: true)
+
+    redirect_to receipts_path
   end
 
   def xlsx
@@ -60,5 +73,10 @@ class ReceiptsController < ApplicationController
                :payment_method, :cost, :category,
                :description, :photo
              )
+
+    end
+
+    def set_receipt
+      @receipt = Receipt.find(params[:id] || params[:receipt_id])
     end
 end

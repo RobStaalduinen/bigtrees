@@ -1,54 +1,54 @@
-<div class="container">
-  <%= link_to('Download Receipts', receipts_xlsx_path(format: :xlsx )) %> |
-  <%= link_to('Download Cheques', cheques_xlsx_path(format: :xlsx )) %> 
-
-  <h3>My Receipts</h3>
-
-  <table id="receipt-table">
-    <% @receipts.each do |receipt| %>
-      <tr>
-        <td style='width: 70%;'>
-          <b><%= receipt.date.strftime("%d/%m/%Y") %></b>
-          <br />
-          <%= receipt.arborist.name %>
-          <br />
-          <%= "$#{receipt.cost} (#{receipt.category})" %>
-        </td>
-
-        <td style='width: 30%;'>
-          <%= link_to(receipt_path(id: receipt.id)) do %>
-            <div class='form__submit'>
-              Details
-            </div>
-          <% end %>
-        </td>
-      </tr>
+<% if current_user.admin? %>
+  <div>
+    <%= link_to('Download Receipts', receipts_xlsx_path(format: :xlsx )) %> |
+    <%= link_to('Download Cheques', cheques_xlsx_path(format: :xlsx )) %>
+    <br >
+    <b>Pending Per Arborist</b> <br />
+    <% @unapproved_per_person.each do |name, amount| %>
+      <%= "#{name}: $#{amount}" %> <br>
     <% end %>
-  </table>
+  </div> 
+<% end %>
 
+<div class="admin__header">
+  <h4>Receipts</h4>
 
-  <h3>My Cheques</h3>
-
-  <table id="receipt-table">
-    <% @cheques.each do |receipt| %>
-      <tr>
-        <td style='width: 70%;'>
-          <b><%= receipt.date.strftime("%d/%m/%Y") %></b>
-          <br />
-          <%= receipt.arborist.name %>
-          <br />
-          <%= "$#{receipt.cost} (#{receipt.category})" %>
-        </td>
-
-        <td style='width: 30%;'>
-          <%= link_to(receipt_path(id: receipt.id)) do %>
-            <div class='form__submit'>
-              Details
-            </div>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-
+  <%= link_to new_receipt_path do %>
+    Upload New
+  <% end %>
 </div>
+
+
+
+<div class="row">
+<div class="col s12">
+  <ul class="tabs">
+    <li class="tab col s3"><a class="active" href="#active">Pending</a></li>
+    <li class="tab col s3"><a href="#pending">Repaid</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="active" class="col s12 request_list">
+<% @receipts.unapproved.each do |receipt| %>
+  <%= render 'receipts/partials/single_receipt', 
+    receipt: receipt,
+    show_actions: true 
+  %>
+<% end %>
+</div>
+
+<div id="pending" class="col s12 request_list">
+<% @receipts.approved.each do |receipt| %>
+  <%= render 'receipts/partials/single_receipt', 
+    receipt: receipt,
+    show_actions: true 
+  %>
+<% end %>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('.tabs').tabs();
+});
+</script>

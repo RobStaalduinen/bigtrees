@@ -1,0 +1,40 @@
+<% image_id = "image-#{receipt.id}" %>
+
+<div id="single-request">
+  <div id="single-request__body">
+    <div id="single-request__row">
+      <span>
+        <b><%= "$#{receipt.cost}" %></b> - 
+        <b><%= receipt.category.capitalize %></b>
+        <% if receipt.vehicle %>
+          <%= " - #{receipt.vehicle.name}" %>
+        <% end %>  
+      </span>
+      <span style="font-size: 12px;"><i><%= receipt.date.strftime("%B %d, %Y") %></i></span>
+    </div>
+  
+
+    <div id="single-request__row">
+      <%= receipt.description %>
+    </div>
+
+    <div id="single-request__row">
+      <% if receipt.photo.present? %>
+        <div id="image-selector">
+          <img id="<%= image_id %>" style="max-width: 1px; max-height: 1px;" src=<%= receipt.photo.url %> />
+          <span id="image-link" onClick='openModal("<%= image_id.to_s %>")'>Image</span>
+        </div>
+      <% else %>
+        <span>-</span>
+      <% end %>
+
+      <span><%= receipt.arborist ? receipt.arborist.name : '-' %></span>
+    </div>
+
+  </div>
+    <% if !receipt.approved && current_user.admin? %>
+      <%= link_to(receipt_approve_path(receipt), :method => :post, class: "approveable__check") do %>
+        <i class="material-icons" style="font-size: 30px;">check_circle_outline</i>
+      <% end %>
+  <% end %>
+</div>

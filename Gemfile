@@ -62,7 +62,6 @@ gem 'bcrypt'
 gem 'sprockets', '3.6.3'
 gem 'aasm'
 
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
