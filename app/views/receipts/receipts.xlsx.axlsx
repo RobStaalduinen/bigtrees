@@ -14,9 +14,9 @@ wb.add_worksheet(name: "Quote") do |sheet|
   sheet.add_row ["Date", "Arborist", "Cost", "Payment Method", "Category", "Description", "Job", "Vehicle", "Photo"],
   style: ( [bold] * 8)
 
-  vehicle_name = receipt.vehicle.present? ? receipt.vehicle.name : "None"
-
   @receipts.each do |receipt|
+    vehicle_name = receipt.vehicle.present? ? receipt.vehicle.name : "None"
+
     sheet.add_row [
       receipt.date,
       receipt.arborist.name,
