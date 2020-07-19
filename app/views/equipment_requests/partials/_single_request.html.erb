@@ -20,7 +20,7 @@
     <div id="single-request__row">
       <% if equipment_request.image.present? %>
         <div id="image-selector">
-          <img id="<%= image_id %>" style="max-width: 1px;" src=<%= equipment_request.image.url %> />
+          <img id="<%= image_id %>" class="modal-image" src=<%= equipment_request.image.url %> />
           <span id="image-link" onClick='openModal("<%= image_id.to_s %>")'>Image</span>
         </div>
       <% else %>

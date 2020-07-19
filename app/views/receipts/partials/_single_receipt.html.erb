@@ -21,7 +21,7 @@
     <div id="single-request__row">
       <% if receipt.photo.present? %>
         <div id="image-selector">
-          <img id="<%= image_id %>" style="max-width: 1px; max-height: 1px;" src=<%= receipt.photo.url %> />
+          <img id="<%= image_id %>" class='modal-image' src=<%= receipt.photo.url %> />
           <span id="image-link" onClick='openModal("<%= image_id.to_s %>")'>Image</span>
         </div>
       <% else %>
