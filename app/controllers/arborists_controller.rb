@@ -51,7 +51,7 @@ class ArboristsController < ApplicationController
   private
 
     def arborist_params
-      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :password, :password_confirmation)
+      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :hourly_rate, :password, :password_confirmation)
     end
     
 

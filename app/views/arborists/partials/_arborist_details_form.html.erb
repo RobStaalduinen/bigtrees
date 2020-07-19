@@ -27,3 +27,10 @@
     <%= form.label(:phone_number, 'Phone', class: active ? 'active' : '') %>
   </div>
 </div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= form.number_field('hourly_rate') %>
+    <%= form.label(:hourly_rate, 'Hourly Rate', class: active ? 'active' : '') %>
+  </div>
+</div>
