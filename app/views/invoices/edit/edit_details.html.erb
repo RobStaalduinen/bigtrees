@@ -1,7 +1,8 @@
 <div class='page-container'>
   <h3>Edit Invoice</h3>
 
-  <%= form_for(@invoice, method: :patch) do |f| %>
+  <%= form_for(@invoice) do |f| %>
+    <input type="hidden" name="_method" value="patch">
     <div class='form__row-vertical'>
       <b><%= f.label(:number, 'Number') %></b>
       <%= f.text_field(:number, class: 'form-field form__element-100') %>

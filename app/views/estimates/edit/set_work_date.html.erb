@@ -4,7 +4,8 @@
   });
 </script>
 
-<%= form_for(@estimate, method: :patch) do |f| %>
+<%= form_for(@estimate) do |f| %>
+  <input type="hidden" name="_method" value="patch">
   <%= f.hidden_field(:is_unknown, value: false) %>
   <div class="row">
     <div class="input-field col s12">

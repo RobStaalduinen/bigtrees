@@ -2,7 +2,7 @@
   <h3><%= @discount ? 'Edit Discounts' : 'Edit Costs' %></h3>
 
 
-  <%= form_tag(update_estimate_costs_path(@estimate), method: :patch) do %>
+  <%= form_tag(update_estimate_costs_path(@estimate)) do %>
   <%= hidden_field_tag("discount", @discount) %>
 
     <div id="update-costs">

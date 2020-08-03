@@ -14,7 +14,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @estimate = Estimate.find(invoice_params[:estimate_id])
+    @estimate = Estimate.find(params[:estimate_id])
     @invoice = @estimate.invoice
     @invoice.update(invoice_params)
     @invoice.update(sent_at: Date.today)

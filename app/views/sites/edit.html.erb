@@ -1,6 +1,7 @@
 <section id="admin-container">
   <h3>Update Site</h3>
-  <%= form_for([@estimate, @site], method: :patch) do |f| %>
+  <%= form_for([@estimate, @site]) do |f| %>
+    <input type="hidden" name="_method" value="patch">
     
     <div class='form__box'>
       <div class='form__row-vertical'>

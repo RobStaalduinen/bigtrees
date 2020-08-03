@@ -2,7 +2,8 @@
   <h5>Details</h5>
 </div>
 
-<%= form_for(@arborist, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+<%= form_for(@arborist, class: "col s12 m6 offset-m3") do |f| %>
+  <input type="hidden" name="_method" value="patch">
   <%= render 'arborists/partials/arborist_details_form', form: f, active: true %>
 
   <div class="row">
@@ -14,7 +15,8 @@
   <h5>Change Password</h5>
 </div>
 
-<%= form_for(@arborist, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+<%= form_for(@arborist, class: "col s12 m6 offset-m3") do |f| %>
+  <input type="hidden" name="_method" value="patch">
   <%= render 'arborists/partials/arborist_password_form', form: f %>
 
   <div class="row">

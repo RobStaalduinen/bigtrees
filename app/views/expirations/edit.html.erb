@@ -2,7 +2,8 @@
 
 <h5>Update Expiration</h5>
 
-<%= form_for(@expiration, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+<%= form_for(@expiration, class: "col s12 m6 offset-m3") do |f| %>
+  <input type="hidden" name="_method" value="patch">
   <%= render 'expirations/partials/expiration_form', f: f %>
 
   <div class="row">

@@ -1,6 +1,7 @@
 <h5>Create new vehicle</h5>
 
-<%= form_for(@vehicle, method: :patch, class: "col s12 m6 offset-m3") do |f| %>
+<%= form_for(@vehicle, class: "col s12 m6 offset-m3") do |f| %>
+  <input type="hidden" name="_method" value="patch">
   <%= render 'vehicles/partials/vehicle_form', f: f %>
 
   <div class="row">

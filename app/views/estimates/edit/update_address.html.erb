@@ -1,6 +1,7 @@
 <div class='container'>
   <h3>Update Address</h3>
-  <%= form_tag("/estimates/#{@estimate.id}", method: :patch) do %>
+  <%= form_tag("/estimates/#{@estimate.id}") do %>
+    <input type="hidden" name="_method" value="patch">
     
     <div class='form__box'>
       <div class='form__row-vertical'>
