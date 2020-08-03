@@ -11,7 +11,7 @@
 <div class='container'>
   <h3>Send Final Invoice</h3>
 
-    <%= form_for(@invoice, method: 'post') do |f| %>
+    <%= form_for(@invoice, method: :post) do |f| %>
       <%= f.hidden_field(:estimate_id) %>
 
     <div class='form__row-vertical'>

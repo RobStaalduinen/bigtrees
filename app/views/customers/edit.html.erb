@@ -1,6 +1,6 @@
 <section id="admin-container">
   <h3>Update Customer</h3>
-  <%= form_for(@customer, method: 'patch') do |f| %>
+  <%= form_for(@customer, method: :patch) do |f| %>
     
     <div class='form__box'>
       <%= f.hidden_field(:redirect_location, value: @redirect_location) %>
