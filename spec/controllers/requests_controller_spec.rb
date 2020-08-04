@@ -15,6 +15,11 @@ describe RequestsController do
           post :create, attributes
         }.to change(Customer, :count).by(1)
       end
+
+      it 'sets the default arborist' do
+        post :create, attributes
+        expect(Estimate.last.arborist_id).to eq(Arborist::DEFAULT_ID)
+      end
     end
     
     context "with existing customer" do

@@ -1,4 +1,6 @@
 class Arborist < ActiveRecord::Base
+  DEFAULT_ID = 2
+  
   has_secure_password
 
   has_many :estimates

@@ -1,4 +1,6 @@
 <script>
+  Turbolinks.clearCache();
+
   function changeTab(listName){
     let allLists = document.querySelectorAll("div[class='estimate-list']");
 
@@ -12,6 +14,7 @@
 
   function selectTab() {
     var tabSelect = document.getElementById('estimate-selection').value;
+    console.log(tabSelect)
     localStorage.setItem("lastCategory", tabSelect);
     switch(tabSelect) {
       case "Needs Pricing":
@@ -50,20 +53,22 @@
   }
 </script>
 
-<div class="input-field col s12">
-  <%= 
-    select_tag "estimate-selection",
-    options_for_select([ "All", "Needs Pricing", "Awaiting Customer Response", "To Pay", "Approved and Scheduled"]),
-    onchange: "selectTab();",
-    class:"form-field",
-    style: 'width: 100%;'
-  %>
-</div>
+<%= 
+  select_tag "estimate-selection",
+  options_for_select([ "All", "Needs Pricing", "Awaiting Customer Response", "To Pay", "Approved and Scheduled"]),
+  onchange: "selectTab();",
+  class:"form-field",
+  style: 'width: 100%;'
+%>
 
 <script>
-  $(document).ready(function () {
-    $('select').formSelect();
-  })
+  var instances = null;
+  var elems = null
+  elems = document.querySelectorAll('select');
+  instances = M.FormSelect.init(elems, {});
+
+  var children = document.getElementsByClassName('select-wrapper')[0].childNodes;
+  for(var i = 0; i < children.length; i++){ if(children[i].className == 'select-wrapper'){ children[i].remove() } }
 </script>
 
 

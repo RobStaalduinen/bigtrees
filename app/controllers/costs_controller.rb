@@ -40,6 +40,8 @@ class CostsController < ApplicationController
 
     create_costs
 
+    @estimate.set_status(true)
+
     respond_to do |format|
       format.json { }
       format.html { redirect_to estimate_path(@estimate) }
