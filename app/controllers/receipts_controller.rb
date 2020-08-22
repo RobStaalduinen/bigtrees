@@ -1,5 +1,5 @@
 class ReceiptsController < ApplicationController
-  layout 'admin_material'
+  layout 'admin_boot'
 
   before_action :signed_in_user
   before_action :set_receipt, only: [ :show, :approve ]
@@ -23,7 +23,7 @@ class ReceiptsController < ApplicationController
 
     @receipt = Receipt.new
 
-    render 'new', layout: 'admin_material'
+    render 'new'
   end
 
   def create
@@ -38,7 +38,6 @@ class ReceiptsController < ApplicationController
   def show
     authorize! :read, Receipt
   end
-
 
   def approve
     authorize! :manage, Receipt

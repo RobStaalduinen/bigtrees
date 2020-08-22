@@ -7,6 +7,10 @@
 	padding: 16px;
 }
 
+#bootstrap-admin-container{
+	
+}
+
 #admin-nav-bar{
 	display: flex;
 	flex-direction: column;
@@ -90,6 +94,11 @@
 		margin: 0 auto;
 	}
 
+	#bootstrap-admin-container{
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
 	.admin__single-estimate-tab{
 		padding: 8px;
 		width: 160px;
@@ -115,9 +124,11 @@
 	}
 
 	#admin-footer{
-		position:absolute;
+		position:fixed;
     width:100%;
-    bottom:0; /* stick to bottom */
+		bottom:0; /* stick to bottom */
+		left:0; 
+		z-index: 10;
 	}
 
 	.admin__header{

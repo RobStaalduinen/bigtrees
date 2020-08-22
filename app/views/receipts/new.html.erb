@@ -1,108 +1,97 @@
 <%= render 'admin/tools/inspectlet' %>
 
+<%= render 'admin/common/back_button', back_link: receipts_path %>
+
 <h5>Submit a Receipt</h5>
 
-<%= form_for(@receipt, method: :post, html: { multipart: true } ) do |f| %>
-  <div class="row">
-    <div class="input-field col s12">
-      <%= f.text_field('date', class: 'datepicker') %>
-      <%= f.label(:date, 'Date') %>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= 
-          f.select(
-            :category,
-            options_for_select(Receipt::CATEGORIES, Receipt::DEFAULT_CATEGORY),
-            required: true
-          ) 
-        %>
-        <%= f.label(:category, 'Category') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= 
-          f.select(
-            :job,
-            options_for_select(Receipt::JOBS, Receipt::DEFAULT_JOB),
-            required: true
-          ) 
-        %>
-        <%= f.label(:job, 'Job') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= 
-          f.select(
-            :payment_method,
-            options_for_select(Receipt::PAYMENT_METHODS, Receipt::DEFAULT_PAYMENT_METHOD),
-            required: true
-          ) 
-        %>
-        <%= f.label(:payment_method, 'Payment Method') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= 
-          f.select(
-            :vehicle_id,
-            options_for_select([['Other', nil], *Vehicle.all.map { |v| [v.name, v.id] }], ['Other', nil])
-          ) 
-        %>
-        <%= f.label(:vehicle_id, 'Vehicle (if applicable)') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= f.number_field(:cost, {required: true, step: 0.01}) %>
-        <%= f.label(:cost, 'Amount') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s12">
-        <%= f.text_field(:description) %>
-        <%= f.label(:description, 'What did you buy?') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>Receipt Picture</span>
-          <input type="file" name="receipt[photo]">
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-      </div>
-    </div>
-
+<%= form_for(@receipt, method: :post, html: { multipart: true, autocomplete: false } ) do |f| %>
+  <div class="form-group">
+    <%= f.label(:date, 'Date') %>
+    <%= f.text_field :date, { class: 'datepicker form-control', data: { provide:'datepicker' } } %>
   </div>
 
-  <div class="row">
-    <%= render 'form_components/submit_toggle', button_label: 'Submit' %>
+    <div class="form-group">
+      <%= f.label(:category, 'Category') %>
+      <%= 
+        f.select(
+          :category,
+          options_for_select(Receipt::CATEGORIES, Receipt::DEFAULT_CATEGORY),
+          { required: true },
+          { class: 'custom-select' }
+        ) 
+      %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label(:job, 'Job') %>
+      <%= 
+        f.select(
+          :job,
+          options_for_select(Receipt::JOBS, Receipt::DEFAULT_JOB),
+          { required: true },
+          { class: 'custom-select' }
+        ) 
+      %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label(:payment_method, 'Payment Method') %>
+      <%= 
+        f.select(
+          :payment_method,
+          options_for_select(Receipt::PAYMENT_METHODS, Receipt::DEFAULT_PAYMENT_METHOD),
+          { required: true },
+          { class: 'custom-select' }
+        ) 
+      %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label(:vehicle_id, 'Vehicle (if applicable)') %>
+      <%= 
+        f.select(
+          :vehicle_id,
+          options_for_select([['Other', nil], *Vehicle.all.map { |v| [v.name, v.id] }], ['Other', nil]),
+          {},
+          { class: 'custom-select' }
+        ) 
+      %> 
+    </div>
+
+    <div class="form-group">
+      <%= f.label(:cost, 'Amount') %>
+      <%= f.number_field(:cost, {required: true, step: 0.01, class: 'form-control'}) %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label(:description, 'What did you buy?') %>
+      <%= f.text_field(:description, class: 'form-control') %>
+    </div>
+
+    <label>Receipt Picture</label>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="receiptPhoto" name="receipt[photo]">
+      <label class="custom-file-label" for="receiptPhoto">Photo</label>
+    </div>
+    
+
+  <div class="form-group">
+    <%= render 'form_components/bootstrap_submit_toggle', button_label: 'Submit' %>
   </div>
 <% end %>
 
+<script>
+  $(document).ready(function () {
+    $('.datepicker').datepicker({dateFormat: "dd/mm/yy"});
+    $('.datepicker').datepicker('setDate', new Date());
+  })
+</script>
 
 <script>
-  $(document).ready(function(){
-    var options = {
-      defaultDate: new Date(),
-      setDefaultDate: true
-    };
-
-    $('.datepicker').datepicker(options);
-
-    $('select').formSelect();
-  });
+  $('#receiptPhoto').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(fileName);
+  })
 </script>

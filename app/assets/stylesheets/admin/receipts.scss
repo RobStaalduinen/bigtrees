@@ -1,37 +1,27 @@
-#submit-receipt{
-  padding: 16px;
+#single-receipt:nth-child(odd){
+  background-color: #f2f2f2;
 }
-
-#receipt-date-picker{
+#single-receipt{
+  display: flex;
   width: 100%;
 }
 
-#receipt-table{
+#single-receipt__row{
   width: 100%;
-
-  border-style: solid;
-  border-color: gray;
-  border-width: 1px;
-
-  max-height: 300px;
-  overflow: auto;
+  display: flex;
+  justify-content: space-between;
+  line-height: 140%;
+  margin-bottom: 8px;
 }
 
-#receipt-table td{
-  padding: 8px;
-  border-width: 1px 0 0 0;
-  border-style: solid;
-  border-color: gray;
-}
-
-#receipt-table th{
+#single-receipt__body{
+  width: 100%;
   padding: 8px;
 }
 
-#receipt-table tr:nth-child(even) {
-  background: #F5F5F5;
+#image-selector {
+  display: flex;
 }
-
-.receipt__image{
-  max-width: 400px;
+#image-link {
+  color: blue;
 }
