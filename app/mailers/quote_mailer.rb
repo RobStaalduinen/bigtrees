@@ -7,8 +7,12 @@ class QuoteMailer < ApplicationMailer
 
 	def quote_email(estimate, email, subject, content)
 		@content = content
-		file = estimate.pdf_quote
-		attachments[estimate.pdf_file_name] = File.read(file)
+
+		cost = estimate.total_cost rescue 0
+		if cost > 0
+			file = estimate.pdf_quote
+			attachments[estimate.pdf_file_name] = File.read(file)
+		end
 		# mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
 		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
 	end
