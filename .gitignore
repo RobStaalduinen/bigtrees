@@ -25,3 +25,4 @@ config/sitemap.xml.gz
 
 public/system
 .byebug_history
+.ruby-gemset
