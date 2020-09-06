@@ -5,7 +5,6 @@ class QuoteMailoutsController < ApplicationController
 
   def new
     @estimate = Estimate.find(params[:estimate_id])
-
     render template: "quote_mailouts/new/#{params[:mail_type]}"
   end
 

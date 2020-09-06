@@ -22,7 +22,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'rake', '12.3.1'
+gem 'rake'
 
 gem "font-awesome-rails"
 
@@ -36,7 +36,7 @@ gem 'figaro'
 gem 'daemons'
 gem 'delayed_job_active_record'
 
-gem 'axlsx', '~> 2.0' # excel files generation
+gem 'axlsx'
 gem 'axlsx_rails'
 gem 'whenever', require: false
 
@@ -44,7 +44,7 @@ gem 'twitter-bootstrap-rails'
 # gem 'execjs' 
 # gem 'therubyracer'
 gem 'mini_racer'
-gem 'mysql2', '~> 0.4.0'
+gem 'mysql2'
 gem 'jquery-ui-rails'
 gem 'jquery-modal-rails'
 gem 'rubyXL'
@@ -60,6 +60,7 @@ gem 'exception_handler'
 gem 'bcrypt'
 gem 'sprockets', '3.6.3'
 gem 'aasm'
+gem 'nokogiri'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

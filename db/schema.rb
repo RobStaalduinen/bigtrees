@@ -47,13 +47,6 @@ ActiveRecord::Schema.define(version: 20200718191623) do
     t.boolean "discount",                               default: false
   end
 
-  create_table "customers", force: :cascade do |t|
-    t.string "name",              limit: 255
-    t.string "email",             limit: 255
-    t.string "phone",             limit: 255
-    t.string "preferred_contact", limit: 255
-  end
-
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
     t.integer  "attempts",   limit: 4,     default: 0, null: false

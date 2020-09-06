@@ -24,3 +24,4 @@ config/sitemap.xml
 config/sitemap.xml.gz
 
 public/system
+.byebug_history

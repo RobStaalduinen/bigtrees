@@ -62,9 +62,10 @@ class Estimate < ActiveRecord::Base
 
 	def additional_message
 		if self.read_attribute(:status) < 4 && self.picture_request_sent_at.present?
-			return "Followup Sent"
+			return "Picture Request Sent"
+		elsif self.is_unknown
+			return 'No Response - Followup sent'
 		end
-
 		nil
 	end
 
@@ -108,7 +109,8 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_file_name
-		"#{self.customer.first_name}-#{self.site.street}-#{self.site.city}.pdf"
+		base_name = "#{self.customer.first_name}-#{self.site.street}-#{self.site.city}".gsub('.', '').gsub('\/', '')
+		"#{base_name}.pdf"
 	end
 
 	def unknown?

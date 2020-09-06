@@ -16,7 +16,7 @@
               Description
             </div>
             <div class="form__element">
-              <input type="text" name="costs[][description]" id="costs_${index}" value="${description}" class="form-text-field">
+              <input type="text" name="costs[][description]" id="costs_${index}" value="${description}" class="form-text-field" maxlength=65>
             </div>
           </div>
 
@@ -89,3 +89,11 @@
 
   <div id = "update-costs__add" onClick="addCost();"> + Add +</div>
 </div>
+
+<script>
+  // disable mousewheel on a input number field when in focus
+  // (to prevent Cromium browsers change the value when scrolling)
+  $(document).on("wheel", "input[type=number]", function (e) {
+    $(this).blur();
+  });
+</script>

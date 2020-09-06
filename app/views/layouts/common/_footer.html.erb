@@ -1,15 +1,17 @@
-  <div id = "footer-container">
-    <div id='footer-left'>
+<div id = "footer-container">
+  <div id='footer-left'>
+    <% if !signed_in? %>
       <span>Certified by the Ontario Colleges of Trade&nbsp;|&nbsp;</span>
       <span>Fully Insured by State Farm</span>
-    </div>
-
-    <div id='footer-right'>
-      
-    <% if signed_in? %>
-      <%= link_to "Log out", logout_path, :id => 'footer-log-in' %>
-    <% else %>
-      <%= link_to "Log in", '/login', :id => 'footer-log-in' %>
     <% end %>
-    </div>
   </div>
+
+  <div id='footer-right'>
+    
+  <% if signed_in? %>
+    <%= link_to "Log out", logout_path, :id => 'footer-log-in' %>
+  <% else %>
+    <%= link_to "Log in", '/login', :id => 'footer-log-in' %>
+  <% end %>
+  </div>
+</div>

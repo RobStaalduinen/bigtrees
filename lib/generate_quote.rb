@@ -1,4 +1,5 @@
 require 'rubyXL'
+require 'rubyXL/convenience_methods'
 
 class GenerateQuote
 
