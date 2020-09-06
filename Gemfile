@@ -105,5 +105,6 @@ group :development do
   gem 'capistrano-upload-config'
   gem 'capistrano-rake', require: false
   gem 'capistrano-rbenv', '~> 2.1'
+  gem 'capistrano-rvm'
   gem 'cap-ec2'
 end
