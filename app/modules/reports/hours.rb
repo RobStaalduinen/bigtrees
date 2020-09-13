@@ -30,7 +30,7 @@ module Reports
       def export_weeks
         @spreadsheet_writer.set_worksheet(1)
         weeks = @work_records.by_week.map {|week, _| week }
-        write_header(weeks)
+        write_header(weeks.map { |d| d.strftime('%Y-%m-%d')})
         write_arborist_weekly_hours(weeks)
       end
 
