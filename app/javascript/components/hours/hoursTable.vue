@@ -54,9 +54,13 @@
           </div>
         </section>
 
-        <section v-if="hours == null || Object.keys(hours).length === 0" id='no-hours'>
-          No hours for timeframe.
-        </section>
+        <app-loader v-if="loadingHours"></app-loader>
+
+        <template v-if="!loadingHours">
+          <section v-if="hours == null || Object.keys(hours).length === 0" id='no-hours'>
+            No hours for timeframe.
+          </section>
+        </template>
 
       </template>
     </app-shadow-box>
@@ -87,7 +91,8 @@ export default {
       hours: null,
       start_at: moment().add(-7, 'days').format('YYYY-MM-DD'),
       end_at: moment().format('YYYY-MM-DD'),
-      editSelectedRecord: null
+      editSelectedRecord: null,
+      loadingHours: true
     }
   },
   mounted() {
@@ -95,8 +100,12 @@ export default {
   },
   methods: {
     retrieveHours() {
+      this.loadingHours = true;
       this.axiosGet(`/work_records.json?start_at=${this.start_at}&end_at=${this.end_at}`)
-          .then(response => (this.hours = response.data))
+          .then(response => {
+            this.hours = response.data;
+            this.loadingHours = false;
+          })
     },
     openEdit(record) {
       this.editSelectedRecord = record;

@@ -13,6 +13,8 @@
       </template>
 
     </table>
+
+    <app-loader v-if='loadingSummary'></app-loader>
   </div>  
 </template>
 
@@ -21,7 +23,8 @@ export default {
   props: ['summaryType'],
   data() {
     return {
-      hours: null
+      hours: null,
+      loadingSummary: true
     }
   },
   mounted(){
@@ -29,7 +32,7 @@ export default {
         .then(response => {
           if(response.status == 200){
             this.hours = response.data;
-            console.log(this.hours);
+            this.loadingSummary = false;
           }
         })
   }

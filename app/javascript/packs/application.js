@@ -24,6 +24,7 @@ Vue.use(require('vue-moment'));
 import App from '../app.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '../stylesheets/variables'
 import '../stylesheets/bootstrap_overrides.css'
 
 import moment from 'moment'
@@ -31,9 +32,11 @@ import moment from 'moment'
 // Global components
 import Header from '../components/ui/header.vue'
 import ShadowBox from '../components/ui/shadowBox.vue'
+import Loader from '../components/ui/loader.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
+Vue.component('app-loader', Loader)
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';

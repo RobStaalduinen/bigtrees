@@ -21,4 +21,8 @@
     border-style: solid;
     margin-bottom: 8px;
   }
+
+  .box-header > h4, h5 {
+    margin-bottom: 0;
+  }
 </style>
