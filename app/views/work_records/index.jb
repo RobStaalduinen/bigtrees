@@ -1,0 +1,16 @@
+response = {}
+
+@work_records.order('date DESC').group_by { |w| w.date }.each do |date, work_records|
+  response[date] = work_records.sort_by {|w| w.date }.reverse.map do |w| 
+    {
+      id: w.id,
+      arborist: w.arborist.name,
+      start_at: w.start_at.strftime('%H:%M:%S'),
+      end_at: w.end_at.strftime('%H:%M:%S'),
+      hours: w.hours,
+      unpaid_hours: w.unpaid_hours
+    }
+  end
+end
+
+response

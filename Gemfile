@@ -62,6 +62,14 @@ gem 'sprockets', '3.6.3'
 gem 'aasm'
 gem 'nokogiri'
 
+# VUE SETUP
+gem 'webpacker'
+# gem 'foreman'
+
+gem 'jb'
+gem 'rack-cors'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

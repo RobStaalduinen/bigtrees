@@ -1,0 +1,16 @@
+@work_records.map do |date, records|
+  response = { 
+    date: date,
+    total: records.map { |r| r.hours }.sum,
+    hours: {}
+  }
+
+  response[:hours] = records.group_by{ |r| r.arborist.name }.map do |arborist_name, records|
+    {
+      name: arborist_name,
+      hours: records.map { |r| r.hours }.sum
+    }
+  end
+  response
+end
+

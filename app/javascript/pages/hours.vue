@@ -1,0 +1,71 @@
+<template>
+  <div>
+    <app-header title='Hours'>
+      <template v-slot:header-right>
+        <a href='/work_records/report'>
+          <b-icon icon='download'></b-icon> 
+          Tracker
+        </a>
+      </template>
+    </app-header>
+
+    <div id='hours-body'>
+      <div id='hours-container'>
+        <hours-table></hours-table>
+      </div>
+      <div id='summaries-container'>
+        <summaries></summaries>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+import HoursTable from '../components/hours/hoursTable.vue';
+import Summaries from '../components/hours/summaries.vue';
+
+export default {
+  components: {
+    'hours-table': HoursTable,
+    'summaries': Summaries
+  },
+  data() {
+    return {
+
+    }
+  }
+}
+</script>
+
+<style scoped>
+  #hours-body{
+    display: flex;
+    flex-direction: column;
+  }
+  #hours-container{
+    width: 100%;
+  }
+
+  #summaries-container{
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  @media (min-width: 760px){
+    #hours-body{
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+  #hours-container{
+    width: 45%;
+  }
+
+  #summaries-container{
+    width: 45%;
+    margin-top: 0px;
+    
+  }
+  }
+</style>
