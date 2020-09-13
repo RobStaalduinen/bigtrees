@@ -864,7 +864,7 @@ GEM
       ffi
     spreadsheet (1.1.1)
       ruby-ole (>= 1.0)
-    sprockets (3.6.3)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
@@ -975,7 +975,7 @@ DEPENDENCIES
   shoulda-matchers
   sitemap_generator
   spreadsheet
-  sprockets (= 3.6.3)
+  sprockets (= 3.7.2)
   sqlite3 (= 1.3.10)
   turbolinks
   twitter-bootstrap-rails

@@ -58,7 +58,7 @@ gem 'spreadsheet'
 
 gem 'exception_handler'
 gem 'bcrypt'
-gem 'sprockets', '3.6.3'
+gem 'sprockets', '3.7.2'
 gem 'aasm'
 gem 'nokogiri'
 
