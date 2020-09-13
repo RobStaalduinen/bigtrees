@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :extra_costs, only: [ :create, :destroy ]
   resources :work_records do
     get 'report', to: 'work_records#report', on: :collection, as: :report
+    get 'summaries', to: 'work_records#summaries', on: :collection
   end
   resources :invoices do
     post '/pay', to: 'invoices#pay', as: :pay
@@ -56,6 +57,8 @@ Rails.application.routes.draw do
   resources :equipment_requests do
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve
   end
+
+  resources :vue_test, only: [ :new ]
 
   get ':controller/:action'
 

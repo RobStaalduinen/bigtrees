@@ -23,7 +23,7 @@ module Reports
       def export_days
         @spreadsheet_writer.set_worksheet(0)
         dates = @work_records.pluck(:date).uniq.sort
-        write_header(dates)
+        write_header(dates.map { |d| d.strftime('%Y-%m-%d')})
         write_arborist_daily_hours(dates)
       end
 

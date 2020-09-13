@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Big Trees - Admin</title>
+
+  <%= csrf_meta_tags %>
+  
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+  <%= javascript_pack_tag 'application' %>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700" media="none" onload="this.media='all';">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+  <script>
+    var userId = <%== current_user.id %>;
+    var isAdmin = <%== current_user.admin %>;
+  </script>
+</head>
+<body>
+  <div id='app'>
+
+  </div>
+</body>
+</html>
