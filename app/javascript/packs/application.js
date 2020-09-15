@@ -50,6 +50,10 @@ Vue.filter('localizeTimepicker', function (value) {
   return time.format("h:mm a");
 })
 
+Vue.prototype.$adminCheck = function () {
+  return isAdmin;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     el: '#app',

@@ -54,6 +54,8 @@ Rails.application.routes.draw do
   resources :expirations
   resources :payouts
 
+  resources :hours, only: [ :index ]
+
   resources :equipment_requests do
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve
   end

@@ -2,17 +2,21 @@
   <div>
     <app-header title='Hours'>
       <template v-slot:header-right>
-        <a href='/work_records/report'>
+        <a href='/work_records/report' v-if='isAdmin'>
           <b-icon icon='download'></b-icon> 
           Tracker
+        </a>
+        <a href='/work_records/new' v-else>
+          Record Hours
         </a>
       </template>
     </app-header>
 
     <div id='hours-body'>
-      <div id='hours-container'>
+      <div id='hours-container' v-if='isAdmin'>
         <hours-table></hours-table>
       </div>
+
       <div id='summaries-container'>
         <summaries></summaries>
       </div>
@@ -32,7 +36,12 @@ export default {
   },
   data() {
     return {
-
+      isAdmin: this.admin()
+    }
+  },
+  methods: {
+    admin() {
+      return this.$adminCheck();
     }
   }
 }

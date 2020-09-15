@@ -8,8 +8,8 @@ class WorkRecordsController < AdminBaseController
     @work_records = @work_records.includes(:arborist)
 
     # FILTERS
-    @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days)
-    @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today)
+    @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days) if params[:start_at]
+    @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today) if params[:end_at]
   end
   
   def new
@@ -45,7 +45,7 @@ class WorkRecordsController < AdminBaseController
   end
 
   def summaries
-    @work_records = WorkRecord.all.includes(:arborist)
+    @work_records = current_user.admin? ? WorkRecord.all : current_user.work_records
 
     if params[:summary_type] == 'days'
       @work_records = @work_records.where('date >= ?', Date.today - 31.days).order('date DESC').group_by { |w| w.date.strftime('%Y-%m-%d') }
