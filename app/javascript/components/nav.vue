@@ -12,7 +12,7 @@
         <b-dropdown-item href="/payouts">Payouts</b-dropdown-item>
         <b-dropdown-item href="/receipts">Receipts</b-dropdown-item>
         <b-dropdown-item href="/equipment_requests">Repair Requests</b-dropdown-item>
-        <b-dropdown-item href="/work_records">Hours</b-dropdown-item>
+        <b-dropdown-item href="/hours">Hours</b-dropdown-item>
         <b-dropdown-item v-bind:href="profileLink">Profile</b-dropdown-item>
       </b-collapse>
     </b-navbar>
