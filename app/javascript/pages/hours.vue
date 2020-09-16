@@ -51,6 +51,7 @@ export default {
   #hours-body{
     display: flex;
     flex-direction: column;
+    padding-bottom: 64px;
   }
   #hours-container{
     width: 100%;
