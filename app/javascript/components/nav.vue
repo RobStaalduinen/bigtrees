@@ -8,11 +8,11 @@
         <b-dropdown-item href="/estimates">Quotes</b-dropdown-item>
         <b-dropdown-item href="/vehicles">Vehicles</b-dropdown-item>
         <b-dropdown-item href="/arborists">Arborists</b-dropdown-item>
-        <b-dropdown-item href="/customers">Customers</b-dropdown-item>
+        <b-dropdown-item to='/admin/customers'>Customers</b-dropdown-item>
         <b-dropdown-item href="/payouts">Payouts</b-dropdown-item>
         <b-dropdown-item href="/receipts">Receipts</b-dropdown-item>
         <b-dropdown-item href="/equipment_requests">Repair Requests</b-dropdown-item>
-        <b-dropdown-item href="/hours">Hours</b-dropdown-item>
+        <b-dropdown-item to='/admin/hours'>Hours</b-dropdown-item>
         <b-dropdown-item v-bind:href="profileLink">Profile</b-dropdown-item>
       </b-collapse>
     </b-navbar>

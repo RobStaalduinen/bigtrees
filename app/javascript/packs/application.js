@@ -17,8 +17,10 @@
 
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueRouter from 'vue-router';
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueRouter);
 Vue.use(require('vue-moment'));
 
 import App from '../app.vue'
@@ -33,10 +35,20 @@ import moment from 'moment'
 import Header from '../components/ui/header.vue'
 import ShadowBox from '../components/ui/shadowBox.vue'
 import Loader from '../components/ui/loader.vue';
+import PageTemplate from '../components/templates/pageTemplate.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
 Vue.component('app-loader', Loader)
+Vue.component('page-template', PageTemplate)
+
+
+// Form components
+import SearchField from '../components/form/searchField.vue';
+import Pagination from '../components/form/pagination.vue';
+
+Vue.component('app-search-field', SearchField);
+Vue.component('app-pagination', Pagination);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
@@ -54,9 +66,25 @@ Vue.prototype.$adminCheck = function () {
   return isAdmin;
 };
 
+// Pages
+import Hours from '../pages/hours.vue'
+import Customers from '../pages/customers.vue'
+
+const routes = [
+  { path: '/admin/hours', component: Hours },
+  { path: '/admin/customers', component: Customers }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes: routes
+})
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     el: '#app',
+    router: router,
     render: h => h(App)
   })
   console.log(app)

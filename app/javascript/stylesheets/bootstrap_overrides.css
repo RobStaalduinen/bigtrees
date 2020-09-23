@@ -26,8 +26,35 @@ button {
   background-color: #8A0000;
 }
 
+.main-color-button{
+  background-color: #8A0000;
+}
+
+.button-small{
+  font-size: 14px;
+}
+
 a {
   color: #8A0000;
+}
+
+.col-form-label{
+  line-height: 1 !important;
+  font-weight: 500 !important;
+}
+
+.page-link{
+  color: var(--main-color);
+}
+
+.page-item.active .page-link {
+  background-color: var(--main-color);
+  color: white;
+  border-color: var(--main-color);
+}
+
+.page-link:focus{
+  box-shadow: none;
 }
 
 @media (min-width: 200px) and (max-width: 759px){

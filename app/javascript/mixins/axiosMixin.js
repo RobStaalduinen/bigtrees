@@ -6,9 +6,9 @@ export default {
       this.setupAxios();
       return axios.put(endpoint, options, { withCredentials: true });
     },
-    axiosGet(endpoint){
+    axiosGet(endpoint, params = {}){
       this.setupAxios();
-      return axios.get(endpoint, { withCredentials: true });
+      return axios.get(endpoint, { params: params, withCredentials: true });
     },
     setupAxios() {
       axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content;;

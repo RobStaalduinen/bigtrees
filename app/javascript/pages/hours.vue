@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <page-template>
     <app-header title='Hours'>
       <template v-slot:header-right>
         <a href='/work_records/report' v-if='isAdmin'>
@@ -21,8 +21,7 @@
         <summaries></summaries>
       </div>
     </div>
-  </div>
-
+  </page-template>
 </template>
 
 <script>
@@ -51,7 +50,6 @@ export default {
   #hours-body{
     display: flex;
     flex-direction: column;
-    padding-bottom: 64px;
   }
   #hours-container{
     width: 100%;

@@ -2,10 +2,18 @@ class CustomersController < ApplicationController
   layout 'admin'
 
   before_action :signed_in_user
-  
+
   def index
     authorize! :manage, Customer
-    @customers = Customer.with_name.order('name ASC')
+    @customers = Customer.with_name.order('id DESC')
+    if params[:q]
+      @customers = @customers.where(
+        'LOWER(name) LIKE :value OR LOWER(email) LIKE :value',
+        value: "%#{params[:q].downcase}%"
+      )
+    end
+
+    @customers = @customers.paginate(page: params[:page], per_page: params[:per_page])
   end
 
   def show

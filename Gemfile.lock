@@ -911,6 +911,7 @@ GEM
       railties (>= 4.2)
     whenever (0.10.0)
       chronic (>= 0.6.3)
+    will_paginate (3.3.0)
 
 PLATFORMS
   ruby
@@ -983,6 +984,7 @@ DEPENDENCIES
   web-console (~> 2.0)
   webpacker
   whenever
+  will_paginate
 
 BUNDLED WITH
    1.17.3

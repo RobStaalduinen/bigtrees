@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <app-nav></app-nav>
-    <b-container>
-      <app-hours></app-hours>
-    </b-container>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
