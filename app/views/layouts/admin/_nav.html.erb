@@ -6,13 +6,13 @@
       <li class = "menu-item"><%= link_to "Create Quote", new_estimate_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Vehicles", vehicles_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
-      <li class = "menu-item"><%= link_to "Customers", customers_path, :class => "nav-link" %></li>
+      <li class = "menu-item"><%= link_to "Customers", '/admin/customers', :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Payouts", payouts_path, :class => "nav-link" %></li> 
     <% end %>
     
     <li class = "menu-item"><%= link_to "Receipts", receipts_path, :class => "nav-link" %></li>
     <li class = "menu-item"><%= link_to "Repair Requests", equipment_requests_path, :class => "nav-link" %></li>
-    <li class = "menu-item"><%= link_to "Hours", hours_path, :class => "nav-link" %></li>
+    <li class = "menu-item"><%= link_to "Hours", '/admin/hours', :class => "nav-link" %></li>
     <li class = "menu-item"><%= link_to "My Profile", arborist_path(current_user), :class => "nav-link" %></li>
   <% else %>
     <li class = "menu-item">None</li>
