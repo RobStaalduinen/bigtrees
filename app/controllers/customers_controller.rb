@@ -5,7 +5,7 @@ class CustomersController < ApplicationController
 
   def index
     authorize! :manage, Customer
-    @customers = Customer.with_name.order('id DESC')
+    @customers = Customer.with_name.order('id DESC').includes(:estimates)
     if params[:q]
       @customers = @customers.where(
         'LOWER(name) LIKE :value OR LOWER(email) LIKE :value',

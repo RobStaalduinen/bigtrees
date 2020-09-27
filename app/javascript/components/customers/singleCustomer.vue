@@ -4,15 +4,16 @@
       <span class='customer-name'>{{ customer.name }}</span>
       <div class='contact-entry'>
         <b-icon icon='envelope' class='contact-icon'></b-icon>
-        {{ customer.email }} <span class='preferred'>{{ preferredString('email') }}</span>
+       <a :href="'mailto:' + customer.email">{{ customer.email }}</a> <span class='preferred'>{{ preferredString('email') }}</span>
       </div>
       <div class='contact-entry'>
         <b-icon icon='telephone' class='contact-icon'></b-icon>
-        {{ customer.phone }} <span class='preferred'>{{ preferredString('phone') }}</span>
+        <a :href="'tel:' + customer.phone">{{ customer.phone }}</a> <span class='preferred'>{{ preferredString('phone') }}</span>
       </div>
     </div>
     <div class='contact-actions'>
-      <b-button class='main-color-button button-small' :href='`/estimates/new?customer_id=${customer.id}`'>New Estimate</b-button>
+      <b-button class='main-color-button button-small' :href='`/estimates/${customer.recent_estimate_id}`'>Recent Estimate</b-button>
+      <b-button class='main-color-button button-small' id='new-estimate-button' :href='`/estimates/new?customer_id=${customer.id}`'>New Estimate</b-button>
     </div>
   </div>
 </template>
@@ -85,5 +86,9 @@ export default {
   .preferred {
     font-size: 10px;
     margin-left: 4px;
+  }
+
+  #new-estimate-button{
+    margin-left: 16px;
   }
 </style>

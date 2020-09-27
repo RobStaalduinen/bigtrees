@@ -1,5 +1,7 @@
 {
-  customers: @customers.map { |c| c.slice(:id, :name, :email, :phone, :preferred_contact) },
+  customers: @customers.map { |c| 
+    c.slice(:id, :name, :email, :phone, :preferred_contact, :recent_estimate_id) 
+  },
   total_entries: @customers.total_entries
 }
 

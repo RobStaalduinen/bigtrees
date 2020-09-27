@@ -1,4 +1,9 @@
 require 'fileutils'
+require 'rubyXL/convenience_methods/cell'
+require 'rubyXL/convenience_methods/color'
+require 'rubyXL/convenience_methods/font'
+require 'rubyXL/convenience_methods/workbook'
+require 'rubyXL/convenience_methods/worksheet'
 
 class GenerateMasterTracker
 
@@ -46,7 +51,7 @@ class GenerateMasterTracker
         insert(worksheet, row, 18, estimate.total_cost * 0.13)
         insert(worksheet, row, 19, estimate.total_cost * 1.13)
 
-        if estimate.work_date.present? && !estimate.is_unknown
+        if estimate.invoice.present? && estimate.invoice.sent_at.present? && !estimate.is_unknown
           insert(worksheet, row, 20, estimate.outstanding_amount * 1.13)
         end
       end
