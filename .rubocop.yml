@@ -26,9 +26,21 @@ Metrics/ClassLength:
   Max: 200
 
 Layout/LineLength:
-  Max: 100
+  Max: 120
   IgnoredPatterns:
     - !ruby/regexp /\A +(it|describe|context|shared_examples|include_examples|it_behaves_like) ["']/
 
 Style/ClassAndModuleChildren:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/IndentationStyle:
+  Enabled: false
+
+Layout/IndentationWidth:
   Enabled: false

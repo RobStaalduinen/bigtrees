@@ -1,0 +1,12 @@
+{
+  total_entries: @estimates.total_entries,
+  estimates: @estimates.map do |e|
+    e.slice(:id, :is_unknown, :created_at, :quote_sent_date, :work_date, :status).merge({
+      formatted_status: e.formatted_status,
+      additional_message: e.additional_message,
+      customer: e.customer.serialized,
+      site: e.site.serialized,
+      invoice: e.invoice&.serialized
+    })
+  end
+}

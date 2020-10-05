@@ -25,51 +25,162 @@ describe EstimatesController do
     end
   end
 
-  describe "index" do
-    before do
-      get :index
+  describe 'index' do
+    render_views
+    let(:params) { {} }
+    subject(:get_request) do
+      get :index, params.merge({ format: :json })
+      response
     end
+    let(:parsed_response) { JSON.parse(get_request.body) }
 
-    it "renders index template" do
-      should render_template(:index)
-    end
-
-    it "assigns estimates list" do
-      expect(assigns(:estimates)).not_to be_nil
-    end
-
-    context "with no estimates" do
-      it "sets empty estimate list" do
-        expect(assigns(:estimates).count).to eq(0)
-      end
-    end
-
-    context "with estimate" do
+    context 'with single estimate' do
       let!(:estimate) { create(:estimate) }
 
-      it "sets single element estimate list" do
-        expect(assigns(:estimates).count).to eq(1)
+      it { should have_http_status(:ok) }
+
+      it 'has a single estimate' do
+        expect(parsed_response['estimates'].count).to eq(1)
+        expect(parsed_response['total_entries']).to eq(1)
       end
 
-      it "includes estimate" do
-        expect(assigns(:estimates)).to include(estimate)
+      it 'has correct format' do
+        first_estimate = parsed_response['estimates'].first
+        expect(first_estimate['id']).to eq(estimate.id)
+        expect(first_estimate['customer']['id']).to eq(estimate.customer.id)
+        expect(first_estimate['customer']['name']).to eq(estimate.customer.name) 
+      end
+    end
+
+    describe 'Pagination' do
+      before do
+        3.times { create(:estimate) }
+      end
+
+      context 'with per_page param' do
+        let(:params) { { per_page: 2 } }
+
+        it 'limits response length' do
+          expect(parsed_response['estimates'].count).to eq(2)
+          expect(parsed_response['total_entries']).to eq(3)
+        end
+      end
+
+      context 'with page param' do
+        let(:params) { { per_page: 2, page: 2 } }
+
+        it 'offsets response' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['total_entries']).to eq(3)
+        end
       end
     end
 
-    context "with unrequested estimate" do
-      let!(:estimate) { create(:estimate) }
-      let!(:unrequested) { create(:estimate, submission_completed: false) }
+    describe 'Search' do
+      let(:first_site) { create(:site, street: 'Division St', city: 'Kingston') }
+      let(:first_customer) { create(:customer, name: 'Rob Staalduinen', email: 'rob.staalduinen@gmail.com', phone: '1112223333') }
+      let!(:first_estimate) { create(:estimate, customer: first_customer, site: first_site) }
 
-      it "sets single element estimate list" do
-        expect(assigns(:estimates).count).to eq(1)
+      let(:second_site) { create(:site, street: 'Front St', city: 'Toronto') }
+      let(:second_customer) { create(:customer, name: 'Tyler Brewer', email: 't.brewer@gmail.com', phone: '5556667777') }
+      let!(:second_estimate) { create(:estimate, customer: second_customer, site: second_site) }
+
+      let(:search_query) { '' }
+      let(:params) { { q: search_query } }
+
+      context 'for name' do
+        let(:search_query) { 'Tyle' }
+
+        it 'should return one estimate' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['estimates'].first['id']).to eq(second_estimate.id)
+        end
       end
 
-      it "screens out unrequested estimate" do
-        expect(assigns(:estimates)).to include(estimate)
-        expect(assigns(:estimates)).not_to include(unrequested)
+      context 'for email' do
+        let(:search_query) { 'rob.st' }
+
+        it 'should return one estimate' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['estimates'].first['id']).to eq(first_estimate.id)
+        end
+      end
+
+      context 'for phone' do
+        let(:search_query) { '55566' }
+
+        it 'should return one estimate' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['estimates'].first['id']).to eq(second_estimate.id)
+        end
+      end
+
+      context 'for city' do
+        let(:search_query) { 'Kings' }
+
+        it 'should return one estimate' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['estimates'].first['id']).to eq(first_estimate.id)
+        end
+      end
+
+      context 'for street' do
+        let(:search_query) { 'Front' }
+
+        it 'should return one estimate' do
+          expect(parsed_response['estimates'].count).to eq(1)
+          expect(parsed_response['estimates'].first['id']).to eq(second_estimate.id)
+        end
       end
     end
+
   end
+
+  # describe "index" do
+  #   before do
+  #     get :index
+  #   end
+
+  #   it "renders index template" do
+  #     should render_template(:index)
+  #   end
+
+  #   it "assigns estimates list" do
+  #     expect(assigns(:estimates)).not_to be_nil
+  #   end
+
+  #   context "with no estimates" do
+  #     it "sets empty estimate list" do
+  #       expect(assigns(:estimates).count).to eq(0)
+  #     end
+  #   end
+
+  #   context "with estimate" do
+  #     let!(:estimate) { create(:estimate) }
+
+  #     it "sets single element estimate list" do
+  #       expect(assigns(:estimates).count).to eq(1)
+  #     end
+
+  #     it "includes estimate" do
+  #       expect(assigns(:estimates)).to include(estimate)
+  #     end
+  #   end
+
+  #   context "with unrequested estimate" do
+  #     let!(:estimate) { create(:estimate) }
+  #     let!(:unrequested) { create(:estimate, submission_completed: false) }
+
+  #     it "sets single element estimate list" do
+  #       expect(assigns(:estimates).count).to eq(1)
+  #     end
+
+  #     it "screens out unrequested estimate" do
+  #       expect(assigns(:estimates)).to include(estimate)
+  #       expect(assigns(:estimates)).not_to include(unrequested)
+  #     end
+  #   end
+  # end
 
   describe "new" do
     it "renders new template" do

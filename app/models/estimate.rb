@@ -29,8 +29,38 @@ class Estimate < ActiveRecord::Base
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
-	scope :with_customer, -> { where.not(customer: nil) }
-	
+  scope :with_customer, -> { where.not(customer: nil) }
+
+  # Filters
+  scope :created_after, -> (filter_string) do
+    case filter_string
+    when 'one_week'
+      where('created_at >= ?', Date.today - 1.week)
+    when 'one_month'
+      where('created_at >= ?', Date.today - 1.month)
+    when 'six_months'
+      where('created_at >= ?', Date.today - 6.months)
+    else
+      all
+    end
+  end
+
+  scope :for_status, -> (filter_string) do
+    case filter_string
+    when 'needs_pricing'
+      price_required
+    when 'awaiting_response'
+      sent
+    when 'to_pay'
+      pending_payment
+    when 'scheduled'
+      scheduled
+    else
+      all
+    end
+  end
+
+
 	enum status: { 
 		needs_costs: 0,
 		needs_arborist: 1,
@@ -62,9 +92,9 @@ class Estimate < ActiveRecord::Base
 
 	def additional_message
 		if self.read_attribute(:status) < 4 && self.picture_request_sent_at.present?
-			return "Picture Request Sent"
+			return "Picture Request"
 		elsif self.is_unknown
-			return 'No Response - Followup sent'
+			return 'Followup (no response)'
 		end
 		nil
 	end

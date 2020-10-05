@@ -1,31 +1,34 @@
 class EstimatesController < ApplicationController
-	require 'date'
-	layout 'admin'
+  require 'date'
+  layout 'admin'
 
-	before_action :signed_in_user, except: [ :create, :update ]
+  before_action :signed_in_user, except: %i[create update]
 
-	def index
-		authorize! :manage, Estimate
+  def index
+    authorize! :manage, Estimate
 
-		@estimates = Estimate.submitted.
-			order('estimates.id DESC').
-			joins(:customer).
-			includes(:customer).
-			includes(:site).
-			with_customer
+    @estimates = Estimate.submitted.
+      order('estimates.id DESC').
+      joins(:customer).
+      joins(:site).
+      includes(:customer).
+      includes(:site).
+      includes(:invoice)
 
-		@autoscroll = params[:autoscroll] || false
+    @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
+    @estimates = @estimates.for_status(params[:status]) if params[:status]
+    @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
-		render 'index', layout: 'admin_material'
-	end
+    @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
+  end
 
-	def new
-		authorize! :manage, Estimate
+  def new
+    authorize! :manage, Estimate
 
-		@customer = Customer.find_by(id: params[:customer_id]) || Customer.new
-		@arborist = current_user
-		@last_estimate = @customer.estimates.last || Estimate.new
-	end
+    @customer = Customer.find_by(id: params[:customer_id]) || Customer.new
+    @arborist = current_user
+    @last_estimate = @customer.estimates.last || Estimate.new
+  end
 
 	def show
 		authorize! :manage, Estimate
@@ -38,14 +41,14 @@ class EstimatesController < ApplicationController
 	def create
 		estimate = Estimate.create(request_params)
 
-    render json: { estimate_id: estimate.id }
+		render json: { estimate_id: estimate.id }
 	end
 
-	def update
+  def update  
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(estimate_params)
 		@estimate.set_status
-		
+
 		respond_to do |format|
 			format.json { render json: { success: true } }
 			format.html { redirect_to estimate_path(@estimate) }
@@ -72,13 +75,26 @@ class EstimatesController < ApplicationController
 		redirect_to estimate_path(@estimate)
 	end
 
-	private
+  private
 
-		def estimate_params
-			e_params = params.require(:estimate).permit(
-				:status, :arborist_id, :is_unknown, :work_date
-			)
-			e_params[:is_unknown] ||= false
-			e_params
-		end
+  def search_estimates(estimates, query)
+    estimates.where(
+      '
+        LOWER(customers.name) LIKE :search OR
+        LOWER(customers.email) LIKE :search OR
+        LOWER(customers.phone) LIKE :search OR
+        LOWER(sites.street) LIKE :search OR
+        LOWER(sites.city) LIKE :search
+      ',
+      search: "%#{query.downcase}%"
+    )
+  end
+
+  def estimate_params
+    e_params = params.require(:estimate).permit(
+      :status, :arborist_id, :is_unknown, :work_date
+    )
+    e_params[:is_unknown] ||= false
+    e_params
+  end
 end

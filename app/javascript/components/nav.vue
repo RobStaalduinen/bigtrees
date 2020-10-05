@@ -5,7 +5,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-dropdown-item href="/estimates">Quotes</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates">Quotes</b-dropdown-item>
         <b-dropdown-item href="/vehicles">Vehicles</b-dropdown-item>
         <b-dropdown-item href="/arborists">Arborists</b-dropdown-item>
         <b-dropdown-item to='/admin/customers'>Customers</b-dropdown-item>
@@ -42,7 +42,7 @@ export default {
 
   @media (min-width: 200px) and (max-width: 759px){
     .navbar {
-      padding: 8px;
+      padding: 0 8px;
     }
   }
 

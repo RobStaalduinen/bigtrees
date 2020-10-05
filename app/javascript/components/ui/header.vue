@@ -1,6 +1,6 @@
 <template>
   <div id='header-container'>
-    <h4 id='title-text'>{{ title }}</h4>
+    <h5 id='title-text'>{{ title }}</h5>
 
     <slot name='header-right'></slot>
   </div>

@@ -1,3 +1,10 @@
 :root{
   --main-color: #8A0000;
+  --secondary-red: rgb(180, 10, 10);
+  --main-color-faded: rgba(138, 0, 0, 0.75);
+}
+
+.shadow-box-entry{
+  border: 1px solid lightgray;
+  box-shadow: 0 5px 3px -3px rgba(153, 153, 153, 0.5);
 }

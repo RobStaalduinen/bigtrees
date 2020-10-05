@@ -1,5 +1,5 @@
 <template>
-  <div class='customer-list-entry'>
+  <div class='shadow-box-entry customer-list-entry'>
     <div class='customer-list-contact'>
       <span class='customer-name'>{{ customer.name }}</span>
       <div class='contact-entry'>
@@ -43,12 +43,10 @@ export default {
 <style scoped>
   .customer-list-entry {
     width: 100%;
-    border: 1px solid lightgray;
-    box-shadow: 0 5px 3px -3px rgba(153, 153, 153, 0.5);
-    padding: 8px;
     margin-bottom: 8px;
     display: flex;
     flex-direction: column;
+    padding: 8px;
   }
 
   .customer-list-contact {

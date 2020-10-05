@@ -7,10 +7,10 @@ describe CustomersController do
     log_in_user(arborist)
   end
 
-  describe "#index" do
+  describe '#index' do
     let(:params) { {} }
     subject(:get_request) do
-      get :index, params.merge({format: :json})
+      get :index, params.merge({ format: :json })
       response
     end
     let(:parsed_response) { JSON.parse(get_request.body) }

@@ -13,8 +13,12 @@ class Customer < ActiveRecord::Base
     customer
   end
 
+  def serialized
+    self.slice(:id, :name, :phone, :email, :preferred_contact)
+  end
+
   def recent_estimate_id
-    estimates.order('id DESC').first.id
+    estimates.order('id DESC').first&.id
   end
 
   def first_name

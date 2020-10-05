@@ -3,6 +3,10 @@ class Invoice < ActiveRecord::Base
   
   belongs_to :estimate
 
+  def serialized
+    slice(:id, :number, :payment_method, :sent_at, :paid_at)
+  end
+
   def is_final?
     self.number.present?
   end

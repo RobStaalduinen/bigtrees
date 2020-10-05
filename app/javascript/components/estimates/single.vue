@@ -1,0 +1,141 @@
+<template>
+  <div class='shadow-box-entry estimate'>
+    <div class='estimate-header'>
+      <div class='estimate-header-name'>{{ estimate.customer.name }}</div>
+      <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
+      <div class='estimate-header-status'>{{ estimate.formatted_status }}</div>
+    </div>
+
+    <div class='estimate-body'>
+      <div class='estimate-body-row'>
+        <b-icon icon='globe' class='contact-icon'></b-icon>
+        {{ estimate.site.full_address }}
+      </div>
+      <div class='estimate-body-row'>
+        <b-icon icon='telephone' class='contact-icon'></b-icon>
+        <a :href="'tel:' + estimate.customer.phone">{{ estimate.customer.phone }}</a>
+        <b-icon icon='envelope' class='contact-icon' id='email-row'></b-icon>
+        <a :href="'mailto:' + estimate.customer.email">{{ estimate.customer.email }}</a>
+      </div>
+    </div>
+
+    <div class='estimate-footer'>
+      <app-estimate-actions-list :estimate='estimate' @estimateChanged='changeEstimate()'></app-estimate-actions-list>
+
+      <a class='estimate-link' v-b-modal='"timelineModal" + estimate.id'>
+        Timeline
+      </a>
+
+      <a class='estimate-link' :href='"/estimates/" + estimate.id'>
+        Details
+      </a>
+    </div>
+
+    <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal>
+  </div>
+</template>
+
+<script>
+import TimelineModal from './timelineModal';
+import ActionsList from './actionsList';
+
+export default {
+  props: {
+    'estimate':{
+      type: Object,
+      required: true
+    }
+  },
+  components: {
+    'app-timeline-modal': TimelineModal,
+    'app-estimate-actions-list': ActionsList
+  },
+  methods: 
+  {
+    changeEstimate() {
+      this.$emit('estimateChanged');
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .estimate { 
+    width: 100%;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+  }
+
+  .estimate-header {
+    display: flex;
+    justify-content: space-between;
+
+    border-width: 0 0 1px 0;
+    border-color: lightgray;
+    border-style: solid;
+
+    margin-bottom: 8px;
+  }
+
+  .estimate-header-name {
+    font-weight: 600;
+    padding: 4px;
+  }
+
+  .estimate-additional-message {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .estimate-header-status {
+    background-color: var(--secondary-red);
+    color: white;
+    min-width: 30%;
+    display: flex;
+    justify-content: center;
+    padding: 4px;
+  }
+
+  .estimate-body {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    padding-left: 4px;
+
+    border-width: 0 0 1px 0;
+    border-color: lightgray;
+    border-style: solid;
+  }
+
+  .estimate-body-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  #email-row{
+    margin-left: 12px;
+  }
+
+  .contact-icon {
+    color: var(--main-color);
+    margin-right: 4px;
+  }
+
+  .estimate-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .estimate-link {
+    padding: 6px 12px;
+
+    border-width: 0 0 0 1px;
+    border-color: lightgray;
+    border-style: solid;
+  }
+
+</style>

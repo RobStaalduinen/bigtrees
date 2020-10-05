@@ -35,20 +35,26 @@ import moment from 'moment'
 import Header from '../components/ui/header.vue'
 import ShadowBox from '../components/ui/shadowBox.vue'
 import Loader from '../components/ui/loader.vue';
+import LoadingOverlay from '../components/ui/loadingOverlay.vue';
+import AppButton from '../components/ui/button.vue';
 import PageTemplate from '../components/templates/pageTemplate.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
 Vue.component('app-loader', Loader)
+Vue.component('app-loading-overlay', LoadingOverlay)
 Vue.component('page-template', PageTemplate)
+Vue.component('app-button', AppButton)
 
 
 // Form components
 import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
+import ArrowPagination from '../components/form/arrowPagination.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
+Vue.component('app-arrow-pagination', ArrowPagination);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
@@ -69,10 +75,12 @@ Vue.prototype.$adminCheck = function () {
 // Pages
 import Hours from '../pages/hours.vue'
 import Customers from '../pages/customers.vue'
+import Estimates from '../pages/estimates.vue'
 
 const routes = [
   { path: '/admin/hours', component: Hours },
-  { path: '/admin/customers', component: Customers }
+  { path: '/admin/customers', component: Customers },
+  { path: '/admin/estimates', component: Estimates }
 ]
 
 const router = new VueRouter({

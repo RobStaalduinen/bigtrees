@@ -2,6 +2,10 @@ class Site < ActiveRecord::Base
   belongs_to :estimate
   has_many :trees, through: :estimate
 
+  def serialized
+    slice(:street, :city, :wood_removal, :vehicle_access, :breakables, :cleanup).merge({ full_address: full_address })
+  end
+
   def answer_for(attribute)
 		self[attribute] ? "Yes" : "No"
   end

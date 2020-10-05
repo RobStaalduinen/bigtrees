@@ -1,6 +1,8 @@
 <template>
   <div>
-    <app-search-field v-model='searchTerm'></app-search-field>
+    <div id='search-container'>
+      <app-search-field v-model='searchTerm'></app-search-field>
+    </div>
     <app-pagination 
       v-model='currentPage'
       :totalRows='totalCustomers'
@@ -80,6 +82,10 @@ export default {
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.1);
+  }
+
+  #search-container {
+    margin-bottom: 8px;
   }
 
 </style>
