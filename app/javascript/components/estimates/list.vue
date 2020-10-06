@@ -1,19 +1,23 @@
 <template>
 <div>
+
+  <div id='estimate-search-controls'>  
+    <div id='search-container'>
+      <div id='search-field-container'>
+        <app-search-field v-model='searchTerm'></app-search-field>
+      </div>
+      <app-button text='Reset' :click='resetFiltering'></app-button>
+      <app-button text='Filters' icon='filter' v-b-modal='"Filters"'></app-button>
+    </div>
+    <app-arrow-pagination :totalEntries='totalEntries' :perPage='perPage' v-model='page'></app-arrow-pagination>
+  </div>
+
   <div id='estimates-container'>
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate' @estimateChanged='retrieveEstimates()'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
-    <div id='estimate-search-controls'>
-      <div id='search-container'>
-        <div id='search-field-container'>
-          <app-search-field v-model='searchTerm'></app-search-field>
-        </div>
-        <app-button text='Reset' :click='resetFiltering'></app-button>
-        <app-button text='Filters' icon='filter' v-b-modal='"Filters"'></app-button>
-      </div>
-      <app-arrow-pagination :totalEntries='totalEntries' :perPage='perPage' v-model='page'></app-arrow-pagination>
-    </div>
+  
+
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
 </div>
@@ -144,5 +148,14 @@ export default {
 
   #search-field-container {
     width: 60%;
+  }
+
+  @media(min-width: 760px) {
+    #estimate-search-controls {
+      position: relative;
+      margin-bottom: 8px;
+      margin-top: -16px;
+      border-width: 0;
+    }
   }
 </style>
