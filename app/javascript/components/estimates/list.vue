@@ -23,6 +23,7 @@
 <script>
 import SingleEstimate from './single';
 import Filters from './filters';
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -32,15 +33,17 @@ export default {
   data() {
     return {
       loadingEstimates: true,
-      estimates: null,
       searchTerm: null,
-      totalEntries: 0,
       perPage: 20,
       page: 1,
+      totalEntries: 1,
       status: 'all',
       filters: { createdAfter: 'six_months', status: 'all' }
     }
   },
+  computed: mapState({
+    estimates: state => state.estimates,
+  }),
   methods: {
     retrieveEstimates() {
       this.loadingEstimates = true;
@@ -58,7 +61,7 @@ export default {
       this.axiosGet(`/estimates.json`, params)
           .then(response => {
             console.log(response.data);
-            this.estimates = response.data['estimates'];
+            this.$store.commit('setEstimates', response.data.estimates)
             this.totalEntries = response.data['total_entries'];
             this.loadingEstimates = false;
           })
@@ -77,7 +80,6 @@ export default {
     },
     refreshFiltering() {
       var oldFilters = JSON.parse(localStorage.getItem('estimate-filtering-params'))
-      console.log(oldFilters);
       if(oldFilters != null) {
         this.page = (oldFilters.page || 1);
         this.searchTerm = oldFilters.searchTerm;

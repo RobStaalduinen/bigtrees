@@ -2,7 +2,7 @@
   <page-template>
     <app-header title='Hours'>
       <template v-slot:header-right>
-        <a href='/work_records/report' v-if='isAdmin'>
+        <a href='/work_records/report' v-if='admin'>
           <b-icon icon='download'></b-icon> 
           Tracker
         </a>
@@ -13,7 +13,7 @@
     </app-header>
 
     <div id='hours-body'>
-      <div id='hours-container' v-if='isAdmin'>
+      <div id='hours-container' v-if='admin'>
         <hours-table></hours-table>
       </div>
 
@@ -35,12 +35,12 @@ export default {
   },
   data() {
     return {
-      isAdmin: this.admin()
+
     }
   },
-  methods: {
+  computed: {
     admin() {
-      return this.$adminCheck();
+      return this.$store.state.user.admin;
     }
   }
 }

@@ -2,14 +2,17 @@
   <div class='shadow-box-entry estimate'>
     <div class='estimate-header'>
       <div class='estimate-header-name'>{{ estimate.customer.name }}</div>
-      <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
       <div class='estimate-header-status'>{{ estimate.formatted_status }}</div>
     </div>
 
     <div class='estimate-body'>
-      <div class='estimate-body-row'>
-        <b-icon icon='globe' class='contact-icon'></b-icon>
-        {{ estimate.site.full_address }}
+
+      <div class='contact-row'>
+        <div class='estimate-body-row'>
+          <b-icon icon='globe' class='contact-icon'></b-icon>
+          {{ estimate.site.full_address }}
+        </div>
+        <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
       </div>
       <div class='estimate-body-row'>
         <b-icon icon='telephone' class='contact-icon'></b-icon>
@@ -114,6 +117,13 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 6px;
+  }
+
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 6px;
+    align-items: flex-start;
   }
 
   #email-row{

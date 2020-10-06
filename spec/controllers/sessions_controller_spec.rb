@@ -18,7 +18,7 @@ describe SessionsController do
       context "for admin" do
         it "redirects to estimates page" do
           get :new
-          should redirect_to(estimates_path)
+          should redirect_to('/admin/estimates')
         end
       end
 
@@ -69,7 +69,7 @@ describe SessionsController do
       context "for admin" do
         it "redirects to estmates path" do
           post :create, { email: arborist.email, password: arborist.password }
-          should redirect_to(estimates_path)
+          should redirect_to('/admin/estimates')
         end
 
         it "sets a session token" do

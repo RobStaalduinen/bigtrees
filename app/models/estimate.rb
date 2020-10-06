@@ -92,9 +92,9 @@ class Estimate < ActiveRecord::Base
 
 	def additional_message
 		if self.read_attribute(:status) < 4 && self.picture_request_sent_at.present?
-			return "Picture Request"
+			return "Picture Request Sent"
 		elsif self.is_unknown
-			return 'Followup (no response)'
+			return 'No Response Followup Sent'
 		end
 		nil
 	end

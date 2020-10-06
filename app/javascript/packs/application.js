@@ -18,6 +18,7 @@
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueRouter from 'vue-router';
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter);
@@ -88,12 +89,14 @@ const router = new VueRouter({
   routes: routes
 })
 
+import { store } from '../store/store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     el: '#app',
     router: router,
-    render: h => h(App)
+    render: h => h(App),
+    store: store
   })
   console.log(app)
 })
