@@ -6,6 +6,10 @@ class EstimatesController < ApplicationController
 
   def index
     authorize! :manage, Estimate
+    if request.format.html?
+      redirect_to '/admin/estimates'
+      return
+    end
 
     @estimates = Estimate.submitted.
       order('estimates.id DESC').
