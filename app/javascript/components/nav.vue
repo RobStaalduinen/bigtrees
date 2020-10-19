@@ -6,7 +6,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-dropdown-item to="/admin/estimates" v-if='admin'>Quotes</b-dropdown-item>
-        <b-dropdown-item href="/estimates/new" v-if='admin'>Create Quote</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates/new" v-if='admin'>Create Quote</b-dropdown-item>
         <b-dropdown-item href="/vehicles" v-if='admin'>Vehicles</b-dropdown-item>
         <b-dropdown-item href="/arborists" v-if='admin'>Arborists</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='admin'>Customers</b-dropdown-item>

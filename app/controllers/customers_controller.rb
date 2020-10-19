@@ -27,6 +27,13 @@ class CustomersController < ApplicationController
     @redirect_location = params[:redirect_location]
   end
 
+  def create
+    authorize! :manage, Customer
+    @customer = Customer.create(customer_params)
+
+    render json: @customer.serialized
+  end
+
   def update
     authorize! :manage, Customer
     @customer = Customer.includes(:estimates).find(params[:id])
@@ -38,7 +45,7 @@ class CustomersController < ApplicationController
 
   def customer_params
     params.require(:customer).permit(
-      :name, :email, :phone
+      :name, :email, :phone, address_attributes: [ :id, :street, :city, :postal_code ]
     )
   end
 

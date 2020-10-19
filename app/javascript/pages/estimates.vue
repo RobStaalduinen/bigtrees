@@ -1,6 +1,6 @@
 <template>
   <page-template>
-    <app-header title='Estimates'>
+    <app-header title='Quotes'>
       <template v-slot:header-right>
         <a href='/trackers.xlsx'>
           <b-icon icon='download'></b-icon> 

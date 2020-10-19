@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     resources :sites, only: [ :create, :edit, :update ]
     resources :costs, only: [ :new, :create ] do
       get '/edit', to: 'costs#edit', on: :collection, as: :edit
-      post '', to: 'costs#update', on: :collection, as: :update
     end
 
     post '/cancel', to: 'estimates#cancel', on: :member
@@ -36,7 +35,9 @@ Rails.application.routes.draw do
   resources :customers
   resources :requests
   resources :trees
-  resources :tree_images, only: [ :create ]
+  resources :tree_images, only: [ :new, :create ] do
+    post '/create_from_urls', to: 'tree_images#create_from_urls', on: :collection
+  end
   resources :extra_costs, only: [ :create, :destroy ]
   resources :work_records do
     get 'report', to: 'work_records#report', on: :collection, as: :report

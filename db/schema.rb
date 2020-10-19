@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200718191623) do
+ActiveRecord::Schema.define(version: 20201018102125) do
+
+  create_table "addresses", force: :cascade do |t|
+    t.string   "street",      limit: 255
+    t.string   "city",        limit: 255
+    t.string   "postal_code", limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -48,10 +56,11 @@ ActiveRecord::Schema.define(version: 20200718191623) do
   end
 
   create_table "customers", force: :cascade do |t|
-    t.string "name",              limit: 255
-    t.string "email",             limit: 255
-    t.string "phone",             limit: 255
-    t.string "preferred_contact", limit: 255
+    t.string  "name",              limit: 255
+    t.string  "email",             limit: 255
+    t.string  "phone",             limit: 255
+    t.string  "preferred_contact", limit: 255
+    t.integer "address_id",        limit: 4
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -188,14 +197,16 @@ ActiveRecord::Schema.define(version: 20200718191623) do
   end
 
   create_table "sites", force: :cascade do |t|
-    t.integer "estimate_id",    limit: 4
-    t.string  "street",         limit: 255
-    t.string  "city",           limit: 255
-    t.boolean "wood_removal",               default: true
-    t.boolean "vehicle_access",             default: false
-    t.boolean "breakables",                 default: false
-    t.string  "access_width",   limit: 255
-    t.boolean "cleanup",                    default: false
+    t.integer "estimate_id",      limit: 4
+    t.string  "street",           limit: 255
+    t.string  "city",             limit: 255
+    t.boolean "wood_removal",                 default: true
+    t.boolean "vehicle_access",               default: false
+    t.boolean "breakables",                   default: false
+    t.string  "access_width",     limit: 255
+    t.boolean "cleanup",                      default: false
+    t.integer "address_id",       limit: 4
+    t.boolean "low_access_width",             default: false
   end
 
   add_index "sites", ["estimate_id"], name: "index_sites_on_estimate_id", using: :btree
@@ -206,6 +217,7 @@ ActiveRecord::Schema.define(version: 20200718191623) do
     t.integer  "asset_file_size",    limit: 4
     t.datetime "asset_updated_at"
     t.integer  "tree_id",            limit: 4
+    t.string   "image_url",          limit: 255
   end
 
   create_table "trees", force: :cascade do |t|

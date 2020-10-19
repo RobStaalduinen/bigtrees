@@ -35,7 +35,7 @@
     <% tree.tree_images.each_with_index do |tree_image, j| %>
       <% image_id = "tree_#{i}_image_#{j}"%>
       <div id="trees__single-image-container">
-        <img id=<%= image_id %> src="<%= tree_image.asset.url%>" class="trees__image" onClick='openModal("<%= image_id.to_s %>")'>
+        <img id=<%= image_id %> src="<%= tree_image.image_url || tree_image.asset.url%>" class="trees__image" onClick='openModal("<%= image_id.to_s %>")'>
       </div>
 
       <script>

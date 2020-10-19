@@ -1,5 +1,7 @@
 class Customer < ActiveRecord::Base
   has_many :estimates
+  belongs_to :address
+  accepts_nested_attributes_for :address
 
   before_save :downcase_fields
 
@@ -14,7 +16,7 @@ class Customer < ActiveRecord::Base
   end
 
   def serialized
-    self.slice(:id, :name, :phone, :email, :preferred_contact)
+    slice(:id, :name, :phone, :email, :preferred_contact).merge({ address: address&.serialized })
   end
 
   def recent_estimate_id
@@ -24,10 +26,6 @@ class Customer < ActiveRecord::Base
   def first_name
 		self.name.split(" ")[0]
 	end
-
-  def address
-    [self.street, self.city].compact.join(", ")
-  end
 
   def contact_list
     [self.email, self.phone].compact.join("  |  ")
