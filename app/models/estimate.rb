@@ -21,8 +21,14 @@ class Estimate < ActiveRecord::Base
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where("status < 4") }
 	scope :price_required, -> { active.where("status = 0").where(picture_request_sent_at: nil) }
-	scope :sent, -> { active.where("status = 3 OR (status < 4 AND picture_request_sent_at IS NOT NULL)") }
-	scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
+  scope :sent, -> do
+     active.where("
+      status = 3 OR
+      (status < 4 AND picture_request_sent_at IS NOT NULL AND is_unknown = false) OR
+      (status < 4 AND followup_sent_at IS NOT NULL AND is_unknown = false)
+    ")
+  end
+  scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_date: Date.today) }
@@ -55,6 +61,8 @@ class Estimate < ActiveRecord::Base
       pending_payment
     when 'scheduled'
       scheduled
+    when 'unknown'
+      unknown
     else
       all
     end
@@ -91,12 +99,8 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def additional_message
-		if self.read_attribute(:status) < 4 && self.picture_request_sent_at.present?
-			return "Picture Request Sent"
-		elsif self.is_unknown
-			return 'No Response Followup Sent'
-		end
-		nil
+    return 'Picture Request Sent' if read_attribute(:status) < 4 && picture_request_sent_at.present?
+    return 'No Response Followup Sent' if read_attribute(:status) < 4 && followup_sent_at.present?
 	end
 
 	def quote_sent?

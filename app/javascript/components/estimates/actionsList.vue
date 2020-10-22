@@ -5,10 +5,14 @@
     right
   >
     <b-dropdown-item v-if="!estimate.is_unknown" :href='`/estimates/${estimate.id}/quote_mailouts/new?mail_type=followup`'>
-      Unknown
+      Send Followup
     </b-dropdown-item>
 
-    <b-dropdown-item v-if="estimate.is_unknown" @click='reactivate()'>
+    <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
+      Move to Unknown
+    </b-dropdown-item>
+
+    <b-dropdown-item v-if="estimate.is_unknown" @click='updateStatus(false)'>
       Reactivate
     </b-dropdown-item>
     
@@ -34,8 +38,8 @@ export default {
     canSchedule(){
       return this.estimate.status == 'quote_sent';
     },
-    reactivate() {
-      var params = { estimate: { is_unknown: false } };
+    updateStatus(unknownStatus) {
+      var params = { estimate: { is_unknown: unknownStatus } };
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$emit('estimateChanged', null);
       });

@@ -44,7 +44,8 @@ export default {
         { value: 'needs_pricing', text: 'Needs Pricing' },
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },
-        { value: 'scheduled', text: 'Approved and Scheduled' }
+        { value: 'scheduled', text: 'Approved and Scheduled' },
+        { value: 'unknown', text: 'Unknown' }
       ],
       createdOptions: [
         { value: 'one_week', text: 'One Week' },

@@ -30,6 +30,6 @@ class QuoteMailoutsController < ApplicationController
     end
 
     def estimate_params
-      params.permit(:quote_sent_date, :is_unknown)
+      params.permit(:quote_sent_date, :is_unknown, :followup_sent_at)
     end
 end
