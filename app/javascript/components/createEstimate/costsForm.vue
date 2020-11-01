@@ -1,9 +1,9 @@
 <template>
   <div id='cost-list-container'>
 
-    <div class='single-cost' v-for='index in costs.length' :key='index - 1'>
+    <div class='single-cost' v-for='index in costs.length' :key='version + "_" + (index - 1)'>
       <cost-list-single-cost 
-        v-model='costs[index -1]'
+        v-model='costs[index-1]'
         @deleted='handleDelete'
         :index='index-1'
         :displayDelete='displayDelete'
@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      costs: [{}]
+      costs: [{}],
+      version: 0
     }
   },
   computed: {
@@ -39,9 +40,13 @@ export default {
   methods: {
     addCost() {
       this.costs.push({})
+      this.version += 1;
     },
     handleDelete(index) {
+      console.log(`DELETING INDEX AT ${index}`)
       this.costs.splice(index, 1);
+      this.version += 1;
+      console.log(this.costs);
     }
   },
   watch: {
