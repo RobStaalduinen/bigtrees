@@ -67,14 +67,26 @@
 
     <div id='view-estimate__row'>
 
-      <div id='view-estimate__row-entry'>
-        <div id="view_estimate__entry-header">
-          Gate Width
+
+      <% unless site.access_width %>
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Access width under 36 inches?
+          </div>
+          <div>
+            <%= site.answer_for(:low_access_width) %>
+          </div>
         </div>
-        <div>
-          <%= site.should_display_access? ? site.access_width : 'N/A' %>
+      <% else %>
+        <div id='view-estimate__row-entry'>
+          <div id="view_estimate__entry-header">
+            Gate Width
+          </div>
+          <div>
+            <%= site.should_display_access? ? site.access_width : 'N/A' %>
+          </div>
         </div>
-      </div>
+      <% end %>
 
     </div>
   <% end %>

@@ -52,12 +52,15 @@ export default {
   },
   data() {
     return {
-      input: null
+      input: this.value ? this.value : null
     }
   },
   watch: {
     input: function() {
       this.$emit('input', this.input)
+    },
+    value: function(){
+      this.input = this.value;
     }
   },
   methods: {

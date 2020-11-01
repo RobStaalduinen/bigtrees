@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" class='nav' id='app-nav'>
+    <b-navbar toggleable="true" class='nav' id='app-nav'>
       <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

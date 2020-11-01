@@ -1,7 +1,6 @@
 <script>
   function submitContact(){
     let form = document.getElementById("contact-form");
-    let contactMethod = document.querySelector('input[name="contact_method"]:checked').value
 
     if(!form.checkValidity()){
       document.getElementById('contact-submit').click();
@@ -19,8 +18,7 @@
       customer: { 
         name: name,
         email: email,
-        phone: phone,
-        preferred_contact: contactMethod
+        phone: phone
       } 
     }
 
@@ -39,35 +37,8 @@
 <%= form_tag('/#', method: :post, id: 'contact-form') do %>
 <div id='estimate-form__container'>
   <div id='estimate-form__question'>
-    How would you prefer we contact you?
+    How can we contact you with our estimate?
   </div>
-
-    <div id="estimate-form__radio-buttons">
-      <%= 
-        render 'form_components/radio_box', 
-        name: 'contact_method',
-        label: 'Email',
-        value: 'email',
-        smallLabel: true,
-        checked: 'checked'
-      %>
-
-      <%= 
-        render 'form_components/radio_box', 
-        name: 'contact_method',
-        label: 'Phone',
-        value: 'phone',
-        smallLabel: true
-      %>
-
-      <%= 
-        render 'form_components/radio_box', 
-        name: 'contact_method',
-        label: 'Text',
-        value: 'text',
-        smallLabel: true
-      %>
-    </div>
 
     <div class='estimate-form__field-group' id="email-group">
       <div class='estimate-form__label'>

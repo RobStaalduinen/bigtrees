@@ -6,7 +6,13 @@
       </estimate-form-section>
 
       <estimate-form-section header='Address'>
-        <app-address-form v-model='addresses'></app-address-form>
+        <app-address-form 
+          v-model='addresses'
+          :initialSite='initialAddresses.site'
+          :initialBilling='initialAddresses.billing'
+          @addressesChanged='(payload) => { addresses = payload }'
+        >
+        </app-address-form>
       </estimate-form-section>
 
       <estimate-form-section header='Site Details'>
@@ -56,13 +62,17 @@ export default {
       customerId: null,
       siteId: null,
       estimateId: null,
-      validationErrorMessage: 'Please check all fields and try again'
+      validationErrorMessage: 'Please check all fields and try again',
+      initialAddresses: { site: null, billing: null},
     }
   },
   watch: {
     treeImages: function() {
       console.log("TREES");
       console.log(this.treeImages);
+    },
+    customer: function() { 
+      console.log(this.customer)
     }
   },
   methods: {
@@ -113,6 +123,33 @@ export default {
             window.location.href = `/estimates/${estimateId}`
           })
         })
+      })
+    }
+  },
+  mounted() {
+    var query = this.$route.query;
+    if(query.customer_id) {
+      this.axiosGet(`/customers/${query.customer_id}`).then(response => {
+        if(response.data.id == query.customer_id) {
+          var customer = response.data;
+          this.customer = {
+            id: customer.id,
+            name: customer.name,
+            email: customer.email,
+            phone: customer.phone
+          }
+
+          var addresses = {}
+          if(customer.address) { 
+            addresses.billing = { ...customer.address };
+          }
+
+          if(customer.site_address) {
+            addresses.site = { ...customer.site_address }
+          }
+
+          this.initialAddresses = addresses;
+        }
       })
     }
   }

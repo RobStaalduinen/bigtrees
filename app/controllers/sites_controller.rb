@@ -22,7 +22,8 @@ class SitesController < ApplicationController
 
   def site_params
     params.require(:site).permit(
-      :street, :city, :wood_removal, :breakables, :vehicle_access, :access_width
+      :wood_removal, :breakables, :vehicle_access, :low_access_width,
+      address_attributes: [ :id, :street, :city, :postal_code ]
     )
   end
 end

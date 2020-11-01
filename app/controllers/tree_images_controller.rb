@@ -34,11 +34,13 @@ class TreeImagesController < ApplicationController
 
   # Temporary, while supporting two different creation mechanisms
   def create_from_urls
-    params[:images].each do |image|
-      TreeImage.create(
-        tree: tree,
-        image_url: image
-      )
+    if params[:images].present? && params[:images].any?
+      params[:images].each do |image|
+        TreeImage.create(
+          tree: tree,
+          image_url: image
+        )
+      end
     end
 
     render json: { status: :ok }

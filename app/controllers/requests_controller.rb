@@ -22,7 +22,10 @@ class RequestsController < ApplicationController
   def update
     estimate = Estimate.find(params[:id])
     estimate.update(request_params)
-    estimate.site.update(site_params)
+    
+    if params[:site].present?
+      estimate.site.update(site_params)
+    end
 
     if params[:customer].present?
       customer = Customer.find_or_create_by_params(customer_params)

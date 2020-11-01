@@ -1,14 +1,22 @@
 <template>
   <div>
     <span>Site Address</span>
-    <app-single-address-form v-model='siteAddress'></app-single-address-form>
+    <app-single-address-form
+      :initialAddress='initialSite'
+      @addressChange='(payload) => {siteAddress = payload}'
+      name='site'
+    ></app-single-address-form>
 
     <div v-if='billingAddressRequired'>
       <div id='business-header-row'>
         <span>Billing Address</span>
         <a @click.prevent='billingAddressRequired=false' class='toggle-link'>Remove</a>
       </div>
-      <app-single-address-form v-model='billingAddress'></app-single-address-form>
+      <app-single-address-form 
+        :initialAddress='initialBilling'
+        @addressChange='(payload) => {billingAddress = payload}'
+        name='billing'
+      ></app-single-address-form>
     </div>
     <div v-else id='business-toggle' class='toggle-link'>
       <a @click.prevent='billingAddressRequired = true'>+ Add Billing Address +</a>
@@ -20,29 +28,42 @@
 import SingleAddressForm from './singleAddressForm';
 
 export default {
+  props: ['initialSite', 'initialBilling'],
   components: {
     'app-single-address-form': SingleAddressForm
   },
   data(){
     return {
-      billingAddressRequired: false,
-      siteAddress: {},
-      billingAddress: {}
+      billingAddressRequired:  false,
+      siteAddress: { ...this.initialSite},
+      billingAddress: { ...this.initialBilling }
     }
   },
   computed: {
     addresses() {
-      var merged = { siteAddress: this.siteAddress }
+      var merged = { siteAddress: { ...this.siteAddress } }
       if(this.billingAddressRequired){
-        merged.billingAddress = this.billingAddress;
+        merged.billingAddress = { ...this.billingAddress };
       }
-
       return merged;
     }
   },
   watch: {
     addresses: function() {
-      this.$emit('input', this.addresses);
+      this.$emit('addressesChanged', this.addresses);
+    },
+    initialBilling() {
+      // this.billingAddress = { ...this.initialBilling };
+      console.log("INITIAL");
+      console.log(this.initialBilling);
+      if(this.initialBilling) {
+        this.billingAddressRequired = true;
+      }
+    },
+    initialSite() {
+      console.log("SITE");
+      console.log(this.initialSite);
+      this.$forceUpdate();
     }
   }
   
