@@ -9,25 +9,25 @@
 
     let street = document.querySelector('input[name="street"]').value;
     let city = document.querySelector('input[name="city"]').value;
+    let postal_code = document.querySelector('input[name="postal_code"]').value;
 
     let wood = document.querySelector('input[name="wood_removal"]:checked').value;
     let vehicle = document.querySelector('input[name="vehicle_access"]:checked').value;
     let breakables = document.querySelector('input[name="breakables"]:checked').value;
-    let access_width = document.querySelector('input[name="access_width"]').value;
-    let access_width_unit = document.querySelector('select[name="access_width_unit"]').value;
+    let low_access_width = document.querySelector('input[name="low_access_width"]:checked').value;
 
     let params = {
-      site:{
-        street: street,
-        city: city,
+      site: {
+        address_attributes: {
+          street: street,
+          city: city,
+          postal_code: postal_code
+        },
         wood_removal: wood,
         vehicle_access: vehicle,
         breakables: breakables,
+        low_access_width: low_access_width
       }
-    }
-
-    if(displayAccess){
-      params.site.access_width = `${access_width} ${access_width_unit}`;
     }
 
     var xmlhttp = new XMLHttpRequest();
@@ -38,17 +38,6 @@
 
     xmlhttp.onload = function(){  
       nextForm();
-    }
-  }
-
-  function setupQuestions(){
-    let accessField = document.getElementById("access-question");
-
-    if(displayAccess){
-      accessField.style.display = 'flex';
-    }
-    else{
-      accessField.style.display = 'none';
     }
   }
 
@@ -72,6 +61,13 @@
       City
     </div>
     <%= text_field_tag('city', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      Postal Code
+    </div>
+    <%= text_field_tag('postal_code', '' , id: 'estimate-form__field', required: true) %>
   </div>
 
   <div class='estimate-form__field-group'>
@@ -143,11 +139,27 @@
     </div>
   </div>
 
-  <div class='estimate-form__field-group' id ='access-question' style="display: none;">
+    <div class='estimate-form__field-group'>
     <div class='estimate-form__label'>
-      How wide is the access to your back yard? (i.e 36 inches)
+      At any point, is the access width to your tree(s) less than 36 inches?
     </div>
-    <%= render 'estimate_forms/components/access_field' %>
+    <div id='estimate-form__radio-question'>
+      <%= 
+        render 'form_components/radio_field',
+        label: 'No',
+        name: 'low_access_width',
+        value: false,
+        checked: true
+      %>
+
+      <%= 
+        render 'form_components/radio_field',
+        label: 'Yes',
+        name: 'low_access_width',
+        value: true,
+        checked: false
+      %>
+    </div>
   </div>
 
   <div id="estimate-form__submit" onClick="submitSite();">

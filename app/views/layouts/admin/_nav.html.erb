@@ -3,7 +3,7 @@
   <% if current_user %>
     <% if current_user.admin? %>
       <li class = "menu-item"><%= link_to "Quotes", '/admin/estimates', :class => "nav-link" %></li>
-      <li class = "menu-item"><%= link_to "Create Quote", new_estimate_path, :class => "nav-link" %></li>
+      <li class = "menu-item"><%= link_to "Create Quote", '/admin/estimates/new', :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Vehicles", vehicles_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Customers", '/admin/customers', :class => "nav-link" %></li>

@@ -20,12 +20,12 @@ class CostsController < ApplicationController
   end
 
   def create
-    @estimate = Estimate.find(params[:estimate_id]) 
+    @estimate = Estimate.find(params[:estimate_id])
 
     create_costs
 
     @estimate.update(arborist: Arborist.where(id: params[:arborist_id]).last || current_user) unless @estimate.arborist.present?
-    
+
     @estimate.set_status(true)
 
     respond_to do |format|
@@ -35,7 +35,7 @@ class CostsController < ApplicationController
   end
 
   def update
-    @estimate = Estimate.find(params[:estimate_id]) 
+    @estimate = Estimate.find(params[:estimate_id])
     @estimate.costs.where(discount: discount).destroy_all
 
     create_costs

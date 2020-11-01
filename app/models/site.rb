@@ -2,6 +2,9 @@ class Site < ActiveRecord::Base
   belongs_to :estimate
   has_many :trees, through: :estimate
 
+  belongs_to :address
+  accepts_nested_attributes_for :address
+
   def serialized
     slice(:street, :city, :wood_removal, :vehicle_access, :breakables, :cleanup).merge({ full_address: full_address })
   end
@@ -11,7 +14,11 @@ class Site < ActiveRecord::Base
   end
   
   def full_address
-		[self.street, self.city].join(", ")
+    if address.present?
+      address.full_address
+    else
+      [street, city].join(", ")
+    end
   end
   
   def should_display_access?

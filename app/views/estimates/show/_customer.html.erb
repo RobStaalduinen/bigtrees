@@ -56,9 +56,20 @@
     </div>
   </div>
 
+  <% if customer.address.present? %>
+    <div id='view-estimate__row-vertical'>
+      <div id="view_estimate__entry-header">
+        Billing Address
+      </div>
+      <div>
+        <%=  customer.address.full_address %>
+      </div>
+    </div>
+  <% end %>
+
   <div id ="view-estimate__row">
     <div id="single-estimate-entry__action-button" style="width: 50%;">
-      <%= link_to new_estimate_path(customer_id: customer.id), id: "single-estimate__details-link" do %>
+      <%= link_to "/admin/estimates/new?customer_id=#{customer.id}", id: "single-estimate__details-link" do %>
           New Estimate
       <% end %>
     </div>

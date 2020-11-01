@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" class='nav' id='app-nav'>
+    <b-navbar toggleable="true" class='nav' id='app-nav'>
       <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-dropdown-item to="/admin/estimates" v-if='admin'>Quotes</b-dropdown-item>
-        <b-dropdown-item href="/estimates/new" v-if='admin'>Create Quote</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates/new" v-if='admin'>Create Quote</b-dropdown-item>
         <b-dropdown-item href="/vehicles" v-if='admin'>Vehicles</b-dropdown-item>
         <b-dropdown-item href="/arborists" v-if='admin'>Arborists</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='admin'>Customers</b-dropdown-item>

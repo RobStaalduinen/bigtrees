@@ -18,6 +18,18 @@
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueRouter from 'vue-router';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+extend('required', {
+  ...required,
+  message: 'This field is required'
+});
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -52,10 +64,12 @@ Vue.component('app-button', AppButton)
 import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
+import InputField from '../components/form/inputField.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
+Vue.component('app-input-field', InputField);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
@@ -77,11 +91,13 @@ Vue.prototype.$adminCheck = function () {
 import Hours from '../pages/hours.vue'
 import Customers from '../pages/customers.vue'
 import Estimates from '../pages/estimates.vue'
+import CreateEstimate from '../pages/createEstimate.vue'
 
 const routes = [
   { path: '/admin/hours', component: Hours },
   { path: '/admin/customers', component: Customers },
-  { path: '/admin/estimates', component: Estimates }
+  { path: '/admin/estimates', component: Estimates },
+  { path: '/admin/estimates/new', component: CreateEstimate }
 ]
 
 const router = new VueRouter({

@@ -28,7 +28,8 @@ class GenerateQuote
     # Email Address
     worksheet[7][2].change_contents(estimate.customer.email)
     # Address
-    worksheet[8][2].change_contents(estimate.site.full_address)
+    address = estimate.customer&.address&.full_address || estimate.site.full_address
+    worksheet[8][2].change_contents(address)
 
     arborist = estimate.arborist
 

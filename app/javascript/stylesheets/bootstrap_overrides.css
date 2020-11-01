@@ -57,6 +57,20 @@ a {
   box-shadow: none;
 }
 
+.container {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  border-color: var(--main-color) !important;
+  background-color: var(--main-color) !important;
+}
+
+.form-control {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+}
+
 @media (min-width: 200px) and (max-width: 759px){
   .dropdown-item{
     padding: 12px 0 12px 32px;

@@ -28,9 +28,12 @@ gem "font-awesome-rails"
 
 gem "sitemap_generator"
 
-gem 'dropbox_api'
-gem 'paperclip'
+# File storage
+gem 'aws-sdk'
 gem 'fog-aws'
+gem 'paperclip'
+
+# Secret management
 gem 'figaro'
 
 gem 'daemons'
