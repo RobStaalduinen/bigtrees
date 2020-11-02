@@ -105,7 +105,7 @@ export default {
       let options = {
         customer: customerAttributes,
         site: siteAttributes,
-        estimate: { tree_quantity: 1, requested: true }
+        estimate: { tree_quantity: 1, submission_completed: true }
       }
 
       this.axiosPost('/requests', options).then(response => {

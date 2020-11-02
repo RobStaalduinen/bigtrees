@@ -12,6 +12,7 @@
         :state="getValidationState(valContext)"
         aria-describedby="input-feedback"
         :maxlength='maxLength'
+        autocomplete='off'
       ></b-form-input>
       <b-form-invalid-feedback id="input-feedback">{{ valContext.errors[0] }}</b-form-invalid-feedback>
     </b-form-group>
