@@ -4,30 +4,14 @@
       v-model='street'
       :name='name + "street"'
       label='Street and Number'
-      validationRules='required'
     ></app-input-field>
 
-    <div class='form-row'>
-      <div class='half-form-group'>
-        <app-input-field
-          v-model='city'
-          :name='name + "_city"'
-          label='City'
-          validationRules='required'
-        ></app-input-field>
-      </div>
-
-      <div class='half-form-group'>
-        <app-input-field
-          v-model='postal_code'
-          :name='name + "_postal_code"'
-          label='Postal Code'
-          validationRules='required'
-        ></app-input-field>
-      </div>
-
-    </div>
-  </div>  
+    <app-input-field
+      v-model='city'
+      :name='name + "_city"'
+      label='City'
+    ></app-input-field>
+  </div>
 </template>
 
 <script>
@@ -43,16 +27,14 @@ export default {
   data(){
     return {
       street: null,
-      city: null,
-      postal_code: null
+      city: null
     }
   },
   computed: {
     address(){
       return {
         street: this.street,
-        city: this.city,
-        postal_code: this.postal_code
+        city: this.city
       }
     }
   },
@@ -69,7 +51,6 @@ export default {
       if(this.initialAddress) {
         this.street = this.initialAddress.street;
         this.city = this.initialAddress.city;
-        this.postal_code = this.initialAddress.postal_code;
       }
     }
   },
@@ -77,7 +58,7 @@ export default {
     this.updateInitialAddress();
     this.$emit('addressChange', this.address);
   }
-  
+
 }
 </script>
 

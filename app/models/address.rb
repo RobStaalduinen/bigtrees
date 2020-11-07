@@ -2,10 +2,10 @@
 
 class Address < ActiveRecord::Base
   def serialized
-    slice(:id, :street, :city, :postal_code)
+    slice(:id, :street, :city)
   end
 
   def full_address
-		[street, city, postal_code].join(', ')
+		[street, city].join(', ')
   end
 end

@@ -12,7 +12,7 @@
         <span>Billing Address</span>
         <a @click.prevent='billingAddressRequired=false' class='toggle-link'>Remove</a>
       </div>
-      <app-single-address-form 
+      <app-single-address-form
         :initialAddress='initialBilling'
         @addressChange='(payload) => {billingAddress = payload}'
         name='billing'
@@ -21,7 +21,7 @@
     <div v-else id='business-toggle' class='toggle-link'>
       <a @click.prevent='billingAddressRequired = true'>+ Add Billing Address +</a>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -53,20 +53,15 @@ export default {
       this.$emit('addressesChanged', this.addresses);
     },
     initialBilling() {
-      // this.billingAddress = { ...this.initialBilling };
-      console.log("INITIAL");
-      console.log(this.initialBilling);
       if(this.initialBilling) {
         this.billingAddressRequired = true;
       }
     },
     initialSite() {
-      console.log("SITE");
-      console.log(this.initialSite);
       this.$forceUpdate();
     }
   }
-  
+
 }
 </script>
 

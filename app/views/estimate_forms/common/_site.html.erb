@@ -9,7 +9,6 @@
 
     let street = document.querySelector('input[name="street"]').value;
     let city = document.querySelector('input[name="city"]').value;
-    let postal_code = document.querySelector('input[name="postal_code"]').value;
 
     let wood = document.querySelector('input[name="wood_removal"]:checked').value;
     let vehicle = document.querySelector('input[name="vehicle_access"]:checked').value;
@@ -20,8 +19,7 @@
       site: {
         address_attributes: {
           street: street,
-          city: city,
-          postal_code: postal_code
+          city: city
         },
         wood_removal: wood,
         vehicle_access: vehicle,
@@ -36,7 +34,7 @@
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(params));
 
-    xmlhttp.onload = function(){  
+    xmlhttp.onload = function(){
       nextForm();
     }
   }
@@ -65,17 +63,10 @@
 
   <div class='estimate-form__field-group'>
     <div class='estimate-form__label'>
-      Postal Code
-    </div>
-    <%= text_field_tag('postal_code', '' , id: 'estimate-form__field', required: true) %>
-  </div>
-
-  <div class='estimate-form__field-group'>
-    <div class='estimate-form__label'>
       Do you want the wood removed?
     </div>
     <div id='estimate-form__radio-question'>
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'No',
         name: 'wood_removal',
@@ -83,7 +74,7 @@
         checked: false
       %>
 
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'Yes',
         name: 'wood_removal',
@@ -98,7 +89,7 @@
       Is there vehicle access to your trees?
     </div>
     <div id='estimate-form__radio-question'>
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'No',
         name: 'vehicle_access',
@@ -106,7 +97,7 @@
         checked: true
       %>
 
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'Yes',
         name: 'vehicle_access',
@@ -121,7 +112,7 @@
       Are there breakables near your trees?
     </div>
     <div id='estimate-form__radio-question'>
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'No',
         name: 'breakables',
@@ -129,7 +120,7 @@
         checked: true
       %>
 
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'Yes',
         name: 'breakables',
@@ -144,7 +135,7 @@
       At any point, is the access width to your tree(s) less than 36 inches?
     </div>
     <div id='estimate-form__radio-question'>
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'No',
         name: 'low_access_width',
@@ -152,7 +143,7 @@
         checked: true
       %>
 
-      <%= 
+      <%=
         render 'form_components/radio_field',
         label: 'Yes',
         name: 'low_access_width',

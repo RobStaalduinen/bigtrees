@@ -1,13 +1,13 @@
-parsed_customer = @customer.slice(:id, :name, :email, :phone, :preferred_contact, :recent_estimate_id) 
+parsed_customer = @customer.slice(:id, :name, :email, :phone, :preferred_contact, :recent_estimate_id)
 
 if @customer.address.present?
-  parsed_customer[:address] = @customer&.address&.slice(:street, :city, :postal_code)
+  parsed_customer[:address] = @customer&.address&.slice(:street, :city)
 end
 
 estimate = @customer.estimates.joins(:site).last
 
 if estimate.present? && estimate.site.present?
-  parsed_customer[:site_address] = estimate.site.address&.slice(:street, :city, :postal_code)
+  parsed_customer[:site_address] = estimate.site.address&.slice(:street, :city)
 end
 
 parsed_customer

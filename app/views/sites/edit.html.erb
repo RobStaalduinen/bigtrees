@@ -2,7 +2,7 @@
   <h3>Update Site</h3>
   <%= form_for([@estimate, @site]) do |f| %>
     <input type="hidden" name="_method" value="patch">
-    
+
     <div class='form__box'>
       <%= f.fields_for :address do |builder| %>
         <div class='form__row-vertical'>
@@ -14,11 +14,6 @@
           <b><%= builder.label(:city, 'City') %></b>
           <%= builder.text_field(:city, class: 'form-field form__field-full') %>
         </div>
-
-        <div class='form__row-vertical'>
-          <b><%= builder.label(:postal_code, 'City') %></b>
-          <%= builder.text_field(:postal_code, class: 'form-field form__field-full') %>
-        </div>
       <% end %>
 
       <div id="form__row">
@@ -27,7 +22,7 @@
     </div>
 
 
-    
+
 
   <% end %>
 </section>
