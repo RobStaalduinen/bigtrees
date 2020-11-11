@@ -6,7 +6,7 @@
       </estimate-form-section>
 
       <estimate-form-section header='Address'>
-        <app-address-form 
+        <app-address-form
           v-model='addresses'
           :initialSite='initialAddresses.site'
           :initialBilling='initialAddresses.billing'
@@ -19,13 +19,11 @@
         <estimate-site-questions v-model='site'></estimate-site-questions>
       </estimate-form-section>
 
-      <estimate-form-section header='Images'>
-        <estimate-image-form v-model='treeImages'></estimate-image-form>
+      <estimate-form-section header='Tasks'>
+        <estimate-task-form :value='tasks' @input='(payload) => { this.tasks = [...payload] }'></estimate-task-form>
       </estimate-form-section>
 
-      <estimate-form-section header='Costs'>
-        <estimate-cost-form v-model='costs'></estimate-cost-form>
-      </estimate-form-section>
+
 
 
       <span id='submit-error' v-if='validationErrors'>{{ validationErrorMessage }}</span>
@@ -38,8 +36,7 @@
 import CustomerForm from './customerForm';
 import AddressForm from './addressForm';
 import SiteQuestions from './siteQuestions';
-import ImageForm from './imageForm';
-import CostForm from './costsForm';
+import TaskForm from './taskForm';
 import FormSection from './formSection'
 
 export default {
@@ -47,8 +44,7 @@ export default {
     'app-customer-form': CustomerForm,
     'app-address-form': AddressForm,
     'estimate-site-questions': SiteQuestions,
-    'estimate-image-form': ImageForm,
-    'estimate-cost-form': CostForm,
+    'estimate-task-form': TaskForm,
     'estimate-form-section': FormSection
   },
   data() {
@@ -56,6 +52,7 @@ export default {
       customer: {},
       addresses: {},
       site: {},
+      tasks: [],
       costs: [],
       treeImages: [],
       validationErrors: false,
@@ -67,11 +64,11 @@ export default {
     }
   },
   watch: {
-    treeImages: function() {
-      console.log("TREES");
-      console.log(this.treeImages);
+    tasks: function() {
+      console.log("TASKS");
+      console.log(this.tasks);
     },
-    customer: function() { 
+    customer: function() {
       console.log(this.customer)
     }
   },
@@ -84,7 +81,7 @@ export default {
           this.validationErrors = true;
           return;
         }
-        var allUploadsComplete = this.treeImages.every(tree => { return tree.uploadCompleted == true })
+        var allUploadsComplete = this.tasks.every(task => { return task.image.uploadCompleted == true })
         if(!allUploadsComplete) {
             this.validationErrorMessage = 'Wait for image uploads to finish and try again'
             this.validationErrors = true;
@@ -111,15 +108,19 @@ export default {
       this.axiosPost('/requests', options).then(response => {
         var estimateId = response.data.estimate_id
         let costOptions = {
-          costs: this.costs
+          costs: this.tasks.map(task => { return task.cost })
         }
         this.axiosPost(`/estimates/${estimateId}/costs`, costOptions).then(response => {
-          var imageOptions = {
+          var treeOptions = {
             estimate_id: estimateId,
-            images: this.treeImages.map(image => { return image.url } )
+            trees: this.tasks.map(task => {
+              return {
+                tree_images_attributes: [{ image_url: task.image.url }]
+              }
+            })
           }
 
-          this.axiosPost('/tree_images/create_from_urls', imageOptions).then(response => {
+          this.axiosPost('/trees/bulk_create', treeOptions).then(response => {
             window.location.href = `/estimates/${estimateId}`
           })
         })
@@ -140,7 +141,7 @@ export default {
           }
 
           var addresses = {}
-          if(customer.address) { 
+          if(customer.address) {
             addresses.billing = { ...customer.address };
           }
 
@@ -153,7 +154,7 @@ export default {
       })
     }
   }
-  
+
 }
 </script>
 

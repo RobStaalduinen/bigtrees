@@ -1,27 +1,25 @@
 <template>
-  <div>
-    
-    <div class='single-cost-top-row'>
-      <div id='single-cost-amount'>
-        <app-input-field
-          v-model='cost.amount'
-          name='amount'
-          label='Amount'
-          validationRules='required'
-          inputType='number'
-        ></app-input-field>
-      </div>
+  <div id='cost-row'>
 
-      <b-icon icon='trash-fill' class='icon' @click='emitDelete' v-if='displayDelete'></b-icon>
+    <div id='cost-row-left'>
+      <app-input-field
+        v-model='cost.amount'
+        name='amount'
+        label='Amount'
+        validationRules='required'
+        inputType='number'
+      ></app-input-field>
     </div>
 
-    <app-input-field
-      v-model='cost.description'
-      name='description'
-      label='Description'
-      validationRules='required'
-      :maxLength='65'
-    ></app-input-field>
+    <div id='cost-row-right'>
+      <app-input-field
+        v-model='cost.description'
+        name='description'
+        label='Invoice Description'
+        validationRules='required'
+        :maxLength='65'
+      ></app-input-field>
+    </div>
   </div>
 </template>
 
@@ -30,13 +28,6 @@ export default {
   props: {
     value: {
       default: () => { return { amount: null, description: null } }
-    },
-    index: {
-      required: true,
-      type: Number
-    },
-    displayDelete: {
-      type: Boolean
     }
   },
   data() {
@@ -44,15 +35,14 @@ export default {
       cost: this.value
     }
   },
-  watch: {
-    cost: function() {
-      this.$emit('input', this.cost);
+  computed: {
+    costValue() {
+      return { ...this.cost }
     }
   },
-  methods: {
-    emitDelete() {
-      console.log("DELETE EMITTED");
-      this.$emit('deleted', this.index);
+  watch: {
+    costValue: function() {
+      this.$emit('input', this.costValue);
     }
   }
 }
@@ -68,11 +58,25 @@ export default {
   #single-cost-amount {
     width: 80%;
   }
-  
+
   .icon {
     color: var(--main-color);
     font-size: 22px;
     margin-right: 8px;
     cursor: pointer;
+  }
+
+  #cost-row{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  #cost-row-left{
+    width: 22%;
+  }
+
+  #cost-row-right{
+    width: 76%;
   }
 </style>

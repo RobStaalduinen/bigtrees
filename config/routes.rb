@@ -35,7 +35,9 @@ Rails.application.routes.draw do
   end
   resources :customers
   resources :requests
-  resources :trees
+  resources :trees do
+    post '/bulk_create', to: 'trees#bulk_create', on: :collection
+  end
   resources :tree_images, only: [ :new, :create ] do
     post '/create_from_urls', to: 'tree_images#create_from_urls', on: :collection
   end

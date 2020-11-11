@@ -7,7 +7,7 @@
       </div>
       <div :class='{"text-loading": uploadingImage}'>{{ file.name }}</div>
     </div>
-    
+
     <b-icon v-if='!uploadingImage' id='delete-icon' icon='x-circle' @click="$emit('delete-image')"></b-icon>
   </div>
 </template>
@@ -17,10 +17,6 @@ export default {
   props: {
     file: {
       type: File,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     }
   },
