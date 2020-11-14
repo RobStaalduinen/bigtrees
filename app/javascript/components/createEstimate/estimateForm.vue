@@ -81,7 +81,7 @@ export default {
           this.validationErrors = true;
           return;
         }
-        var allUploadsComplete = this.tasks.every(task => { return task.image.uploadCompleted == true })
+        var allUploadsComplete = this.tasks.every(task => { return task.image == undefined || task.image.uploadCompleted == true })
         if(!allUploadsComplete) {
             this.validationErrorMessage = 'Wait for image uploads to finish and try again'
             this.validationErrors = true;
@@ -115,7 +115,7 @@ export default {
             estimate_id: estimateId,
             trees: this.tasks.map(task => {
               return {
-                tree_images_attributes: [{ image_url: task.image.url }]
+                tree_images_attributes: this.getTreeImageAttributes()
               }
             })
           }
@@ -124,6 +124,13 @@ export default {
             window.location.href = `/estimates/${estimateId}`
           })
         })
+      })
+    },
+    getTreeImageAttributes() {
+      return this.tasks.map(task => {
+        if(task.image != undefined && task.image != null) {
+          return task.image.url;
+        }
       })
     }
   },
