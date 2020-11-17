@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module Bigtrees
   class Application < Rails::Application
 
-    Rails.application.config.assets.precompile += %w( jquery-1.11.3.js )
+    Rails.application.config.assets.precompile += %w( jquery-1.11.3.js pdf_styles.css )
 
     Rails.application.config.autoload_paths += Dir[Rails.root.join('lib')]
     Rails.application.config.autoload_paths += Dir[Rails.root.join('lib', "{*/}")]
