@@ -2,9 +2,9 @@ class Estimate < ActiveRecord::Base
 
 	SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
 	SIGN_DISCOUNT = -25.0
-	
+
 	TAX_RATE = 0.13
-	
+
 	before_save :set_status
 
 	has_many :trees
@@ -69,12 +69,12 @@ class Estimate < ActiveRecord::Base
   end
 
 
-	enum status: { 
+	enum status: {
 		needs_costs: 0,
 		needs_arborist: 1,
 		pending_quote: 2,
-		quote_sent: 3, 
-		quote_accepted: 4, 
+		quote_sent: 3,
+		quote_accepted: 4,
 		work_scheduled: 5,
 		work_completed: 6,
 		final_invoice_sent: 7,
@@ -136,14 +136,15 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_quote
-		estimate_file = GenerateQuote.call(self)
-		destination = Rails.root.join("tmp", "Quote__Estimate_#{self.id}__PDF.pdf")
-		Libreconv.convert(estimate_file.to_s, destination.to_s)
-		return destination.to_s
+		# destination = Rails.root.join("tmp", "Quote__Estimate_#{self.id}__PDF.pdf")
+		# Libreconv.convert(estimate_file.to_s, destination.to_s)
+    # return destination.to_s
+
+    GenerateQuote.call(self)
 	end
 
 	def pdf_file_name
-		base_name = "#{self.customer.first_name}-#{self.site.street}-#{self.site.city}".gsub('.', '').gsub('\/', '')
+		base_name = "#{self.customer.first_name}-#{self.site.address.street}-#{self.site.address.city}".gsub('.', '').gsub('\/', '')
 		"#{base_name}.pdf"
 	end
 
@@ -166,7 +167,7 @@ class Estimate < ActiveRecord::Base
 	def outstanding_amount
 		self.paid? ? 0.0 : self.total_cost
 	end
-	
+
 	def set_status(save = false)
 		new_status = if(self.cancelled_at.present?)
 			:cancelled

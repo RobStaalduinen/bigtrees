@@ -1,0 +1,92 @@
+<% include_method ||= false %>
+
+<div class='cost-summary'>
+  <div class='cost-summary-row'>
+    <div class='cost-summary-row-left'>
+      <b>Description of Work</b>
+    </div>
+
+    <div class='cost-summary-row-right'>
+      <b>Cost</b>
+    </div>
+  </div>
+
+  <% estimate.costs.order(discount: :asc).each do |cost| %>
+    <div class='cost-summary-row'>
+      <div class='cost-summary-row-left'>
+        <%= cost.description %>
+      </div>
+
+      <div class='cost-summary-row-right'>
+        <div class='cost-amount'>
+          <%= number_to_currency(cost.amount) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% blank_rows = [(8-estimate.costs.count), 1].max %>
+
+  <% blank_rows.times do %>
+    <div class='cost-summary-row'>
+      <div class='cost-summary-row-left'>
+
+      </div>
+
+      <div class='cost-summary-row-right'>
+      </div>
+    </div>
+  <% end %>
+
+  <div class='cost-summary-row'>
+    <div class='cost-summary-row-left totals'>
+      SUBTOTAL
+    </div>
+
+    <div class='cost-summary-row-right'>
+      <div class='cost-amount'>
+        <%= number_to_currency(estimate.total_cost.to_f) %>
+      </div>
+    </div>
+  </div>
+
+  <div class='cost-summary-row'>
+    <div class='cost-summary-row-left totals'>
+      HST
+    </div>
+
+    <div class='cost-summary-row-right'>
+      <div class='cost-amount'>
+        <%= number_to_currency(estimate.hst.to_f) %>
+      </div>
+    </div>
+  </div>
+
+  <div class='cost-summary-row'>
+    <div class='cost-summary-row-left totals'>
+      TOTAL
+    </div>
+
+    <div class='cost-summary-row-right'>
+      <div class='cost-amount'>
+        <b><%= number_to_currency(estimate.total_cost_with_tax.to_f) %></b>
+      </div>
+    </div>
+  </div>
+
+  <% if include_method %>
+    <div class='cost-summary-row'>
+      <div class='cost-summary-row-left totals'>
+        PAID BY
+      </div>
+
+      <div class='cost-summary-row-right'>
+        <div class='cost-amount'>
+          <b><%= estimate.invoice.payment_method %></b>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+
+</div>

@@ -1,0 +1,13 @@
+<% estimate ||= @estimate %>
+
+<div class='alwaysbreak page'>
+  <%= render 'quotes/pdf/quote', estimate: estimate %>
+</div>
+
+<div class='alwaysbreak page'>
+  <%= render 'quotes/pdf/details' %>
+</div>
+
+<div class='alwaysbreak page'>
+  <%= render 'quotes/pdf/terms' %>
+</div>

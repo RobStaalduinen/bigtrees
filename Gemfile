@@ -44,7 +44,7 @@ gem 'axlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-# gem 'execjs' 
+# gem 'execjs'
 # gem 'therubyracer'
 gem 'mini_racer'
 gem 'mysql2'
@@ -72,6 +72,10 @@ gem 'webpacker'
 gem 'jb'
 gem 'rack-cors'
 gem 'will_paginate'
+
+# PDF Generation
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

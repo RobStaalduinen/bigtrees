@@ -1,0 +1,117 @@
+<div class='alwaysbreak page'>
+
+  <%= render 'quotes/pdf/header'%>
+
+  <div class='estimate-header'>
+    <b>Receipt for Invoice #<%= estimate.invoice.number %></b>
+  </div>
+
+  <div class='info-box'>
+    <div class='info-row'>
+      <div class='title-column'>
+        <b>Date Tendered:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= Date.today.strftime("%d/%m/%Y") %>
+      </div>
+
+      <div class='title-column'>
+        <b>Completion Date:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= estimate.work_date&.strftime("%d/%m/%Y") %>
+      </div>
+    </div>
+
+    <div class='info-row'>
+      <div class='title-column'>
+        <b>Customer Name:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= estimate.customer.name %>
+      </div>
+
+      <div class='title-column'>
+        <b>Email:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= estimate.customer.email %>
+      </div>
+    </div>
+
+    <div class='info-row'>
+      <div class='title-column'>
+        <b>Phone Number:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= estimate.customer.phone %>
+      </div>
+
+      <div class='title-column'>
+        <b>Address:</b>
+      </div>
+
+      <div class='entry-column'>
+        <%= estimate.customer&.address&.full_address || estimate.site.full_address %>
+      </div>
+    </div>
+
+    <div class='info-row'>
+      <div class='title-column'>
+        <b>Arborist Name:</b>
+      </div>
+
+      <div class='entry-column'>
+        Tyler Brewer
+      </div>
+
+      <div class='title-column'>
+        <b>Arborist Cert:</b>
+      </div>
+
+      <div class='entry-column'>
+        400184807
+      </div>
+    </div>
+
+    <div class='info-row'>
+      <div class='title-column'>
+        <b>Cell Number:</b>
+      </div>
+
+      <div class='entry-column'>
+        705-943-7374
+      </div>
+
+      <div class='title-column'>
+        <b>Email:</b>
+      </div>
+
+      <div class='entry-column'>
+        tbrewer@bigislandgroup.ca
+      </div>
+    </div>
+  </div>
+
+  <%= render 'quotes/pdf/cost_summary', estimate: estimate, include_method: true %>
+
+  <div class='liability-row'>
+    <div class='liability-column'>
+      <b>Big Tree - Brampton, ON</b><br>
+      <b>43 Farmington Dr.</b><br>
+      <b>tbrewer@bigislandgroup.ca</b><br>
+      <b>1 877 542 5551</b><br>
+    </div>
+    <div class='liability-column'>
+      <b>Intact Insurance</b><br>
+      <b>Policy # 501381704</b><br>
+      <b>$2,000,000 Commercial General Liability</b><br>
+      <b>GST # 720295724RT0001</b><br>
+    </div>
+  </div>
+</div>

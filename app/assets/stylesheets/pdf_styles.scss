@@ -1,0 +1,172 @@
+.alwaysbreak {
+  page-break-before: always;
+}
+
+.page {
+  padding: 16px 48px;
+}
+
+.pdf_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pdf_header-image {
+  max-width: 400px;
+}
+
+.address {
+  font-size: 15px;
+  color: gray;
+  margin-top: 40px;
+}
+
+.company-name {
+  font-size: 18px;
+  color: #4d4d4d;
+}
+
+.logo-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-details {
+  margin-top: -24px;
+  margin-left: 112px;
+  color: #4d4d4d;
+}
+
+.estimate-header {
+  margin-top: 16px;
+  padding: 4px;
+  border-width: 1px 0 1px 0;
+  border-color: lightgrey;
+  border-style: none;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  font-size: 18px;
+}
+
+.info-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0px;
+  border: 1px solid lightgray;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.info-row {
+  display: flex;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.title-column {
+  text-align: right;
+  width: 15%;
+  padding: 4px;
+  margin-right: 8px;
+}
+
+.entry-column {
+  // border-width: 0 0 1px 0;
+  border-width: 0;
+  border-style: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: lightgrey;
+  width: 30%;
+  padding: 4px;
+  text-align: center;
+  margin-right: 16px;
+  font-size: 14px;
+}
+
+.cost-summary {
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+}
+
+.cost-summary-row {
+  width: 100%;
+  display: flex;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgray;
+}
+
+.cost-summary-row-left {
+  width: 75%;
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: lightgray;
+  padding: 4px;
+  padding-top: 6px;
+  min-height: 24px;
+}
+
+.cost-summary-row-right {
+  width: 25%;
+  padding: 6px;
+}
+
+.cost-amount {
+  width: 100%;
+
+}
+
+.totals {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signature-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 32px;
+}
+
+.signature-left {
+  width: 55%;
+  font-size: 14px;
+}
+
+.signature-box {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+}
+
+.signature-field {
+  border-width: 0 0 1px 0;
+  border-color: lightgray;
+  border-style: none;
+  border-bottom-style: solid;
+}
+
+.signature-description {
+  text-align: center;
+}
+
+.liability-row {
+  border: 1px solid lightgray;
+  padding: 8px;
+  display: flex;
+  margin-top: 64px;
+}
+
+.liability-column {
+  width: 50%;
+  line-height: 30px;
+}
+
+.details-box {
+  margin-top: 16px;
+  font-size: 16px;
+}

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :estimates do
     resources :quotes, only: [ :index ] do
       get '/receipt', to: 'quotes#receipt'
+      get '/pdf', to: 'quotes#pdf', on: :collection
     end
     resources :image_requests, only: [ :new, :create ]
     resources :quote_mailouts, only: [ :new, :create ]

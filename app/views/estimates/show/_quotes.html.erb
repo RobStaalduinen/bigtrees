@@ -7,7 +7,7 @@
           <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:team]) do %>
             Send to Team
           <% end %>
-          | 
+          |
           <%= link_to new_estimate_quote_mailout_path(estimate_id: estimate.id, mail_type: QuoteMailout::MAIL_TYPES[:quote]) do %>
             Resend Quote
           <% end %>
@@ -17,14 +17,6 @@
 
 
     <div id='view-estimate__row'>
-      <div id='view-estimate__row-entry'>
-        <%= link_to estimate_quotes_path(estimate_id: estimate.id, format: :xlsx) do %>
-          <div class='form__submit view-estimate__quote-button'>
-            Excel
-          </div>
-        <% end %>
-      </div>
-
       <div id='view-estimate__row-entry'>
         <%= link_to estimate_quotes_path(estimate_id: estimate.id, format: :pdf) do %>
           <div class='form__submit view-estimate__quote-button'>
