@@ -16,7 +16,7 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees).includes(:arborist).order("created_at ASC, status DESC")
+    estimates = estimates.includes(:trees, :arborist, :invoice, :customer, :site, :costs).order("created_at ASC, status DESC")
 
     estimates.each_with_index do |estimate, i|
       row = 1 + i
@@ -31,14 +31,14 @@ class GenerateMasterTracker
       insert(worksheet, row, 3, estimate.created_at.strftime("%B")) rescue ""
       insert(worksheet, row, 4, estimate.created_at.strftime("%Y")) rescue ""
 
-      
+
       insert(worksheet, row, 5, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
       insert(worksheet, row, 6, estimate.invoice.paid_at.strftime("%B")) rescue ""
       insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%Y")) rescue ""
-      
+
       insert(worksheet, row, 8, customer.name)
-      insert(worksheet, row, 9, estimate.street || estimate.site.street)
-      insert(worksheet, row, 10, estimate.city || estimate.site.city)
+      insert(worksheet, row, 9, estimate.street || estimate.site.address&.street)
+      insert(worksheet, row, 10, estimate.city || estimate.site.address&.city)
       insert(worksheet, row, 11, estimate.trees.count)
       insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 13, contact.capitalize)
