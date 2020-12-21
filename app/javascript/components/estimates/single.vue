@@ -8,9 +8,9 @@
     <div class='estimate-body'>
 
       <div class='contact-row'>
-        <div class='estimate-body-row'>
+        <div class='estimate-body-row' v-if='estimate.site.address'>
           <b-icon icon='globe' class='contact-icon'></b-icon>
-          {{ estimate.site.full_address }}
+          {{ estimate.site.address.full_address }}
         </div>
         <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
       </div>
@@ -29,9 +29,9 @@
         Timeline
       </a>
 
-      <a class='estimate-link' :href='"/estimates/" + estimate.id'>
+      <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
         Details
-      </a>
+      </router-link>
     </div>
 
     <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal>
@@ -53,7 +53,7 @@ export default {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList
   },
-  methods: 
+  methods:
   {
     changeEstimate() {
       this.$emit('estimateChanged');
@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style scoped>
-  .estimate { 
+  .estimate {
     width: 100%;
     margin-bottom: 8px;
     display: flex;

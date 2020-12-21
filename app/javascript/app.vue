@@ -23,10 +23,13 @@ export default {
     signedIn() {
       return this.$store.state.user.logged_in;
     }
+  },
+  mounted() {
+    this.$store.dispatch('refreshArborists');
   }
 }
 </script>
 
 <style scoped>
-  
+
 </style>

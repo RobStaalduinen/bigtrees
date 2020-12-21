@@ -1,10 +1,14 @@
 class ArboristsController < ApplicationController
   before_action :signed_in_admin, except: [ :show ]
   layout 'admin_material'
-  
+
   def index
-    authorize! :manage, Arborist
     @arborists = Arborist.real
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @arborists }
+    end
   end
 
   def show
@@ -18,7 +22,7 @@ class ArboristsController < ApplicationController
     authorize! :manage, Arborist
     @arborist = Arborist.new
   end
-  
+
   def edit
     authorize! :manage, Arborist
     @arborist = Arborist.find(params[:id])
@@ -53,6 +57,6 @@ class ArboristsController < ApplicationController
     def arborist_params
       params.require(:arborist).permit(:name, :certification, :email, :phone_number, :hourly_rate, :password, :password_confirmation)
     end
-    
+
 
 end

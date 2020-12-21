@@ -77,6 +77,9 @@ gem 'will_paginate'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
+# Serialization
+gem 'active_model_serializers', '~> 0.10.2'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

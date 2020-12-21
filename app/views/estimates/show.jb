@@ -1,0 +1,8 @@
+@estimate.slice(:id, :is_unknown, :created_at, :quote_sent_date, :work_date, :status).merge({
+  formatted_status: @estimate.formatted_status,
+  additional_message: @estimate.additional_message,
+  customer: @estimate.customer.serialized,
+  site: @estimate.site.serialized,
+  invoice: @estimate.invoice&.serialized,
+  arborist: @estimate.arborist.serialized
+})

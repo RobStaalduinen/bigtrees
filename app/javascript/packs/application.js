@@ -65,11 +65,13 @@ import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
+import SubmitButton from '../components/form/submitButton.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
+Vue.component('app-submit-button', SubmitButton);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
@@ -92,12 +94,14 @@ import Hours from '../pages/hours.vue'
 import Customers from '../pages/customers.vue'
 import Estimates from '../pages/estimates.vue'
 import CreateEstimate from '../pages/createEstimate.vue'
+import SingleEstimate from '../pages/singleEstimate.vue'
 
 const routes = [
   { path: '/admin/hours', component: Hours },
   { path: '/admin/customers', component: Customers },
   { path: '/admin/estimates', component: Estimates },
-  { path: '/admin/estimates/new', component: CreateEstimate }
+  { path: '/admin/estimates/new', component: CreateEstimate },
+  { path: '/admin/estimates/:estimate_id', component: SingleEstimate }
 ]
 
 const router = new VueRouter({

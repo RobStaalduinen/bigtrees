@@ -15,15 +15,18 @@ class EstimatesController < ApplicationController
       order('estimates.id DESC').
       joins(:customer).
       joins(:site).
-      includes(:customer).
-      includes(:site).
-      includes(:invoice)
+      includes(customer: [:address]).
+      includes(site: [:address]).
+      includes(:invoice).
+      includes(:arborist)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
+
+    render json: @estimates, meta: { total_entries: @estimates.total_entries }
   end
 
   def new
@@ -37,9 +40,9 @@ class EstimatesController < ApplicationController
 	def show
 		authorize! :manage, Estimate
 
-		@estimate = Estimate.find(params[:id])
+    @estimate = Estimate.find(params[:id])
 
-		render 'show', layout: 'admin_material'
+    render json: @estimate
 	end
 
 	def create
@@ -48,16 +51,16 @@ class EstimatesController < ApplicationController
 		render json: { estimate_id: estimate.id }
 	end
 
-  def update  
+  def update
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(estimate_params)
 		@estimate.set_status
 
 		respond_to do |format|
-			format.json { render json: { success: true } }
+			format.json { render json: @estimate }
 			format.html { redirect_to estimate_path(@estimate) }
 		end
-	end
+  end
 
 	def edit
 		authorize! :manage, Estimate
@@ -73,7 +76,7 @@ class EstimatesController < ApplicationController
 
 	def cancel
 		authorize! :manage, Estimate
-		
+
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(cancelled_at: Date.today)
 		redirect_to estimate_path(@estimate)

@@ -1,6 +1,6 @@
 class Arborist < ActiveRecord::Base
   DEFAULT_ID = 2
-  
+
   has_secure_password
 
   has_many :estimates
@@ -9,6 +9,10 @@ class Arborist < ActiveRecord::Base
   has_many :documents
 
   before_create :set_session_token
+
+  def serialized
+    slice(:id, :name).merge({ can_manage_estimates: true })
+  end
 
   def set_session_token
     self.session_token = SecureRandom.hex

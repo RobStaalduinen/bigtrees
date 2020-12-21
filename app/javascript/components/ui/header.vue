@@ -1,7 +1,13 @@
 <template>
   <div id='header-container'>
-    <h5 id='title-text'>{{ title }}</h5>
-
+    <div id='header-left'>
+      <div id='back-icon' v-if='shouldDisplayBack'>
+        <router-link :to="backLink">
+          <b-icon id='back-icon' icon='arrow-left-short'></b-icon>
+        </router-link>
+      </div>
+      <h5 id='title-text'>{{ title }}</h5>
+    </div>
     <slot name='header-right'></slot>
   </div>
 </template>
@@ -11,12 +17,27 @@ export default {
   props: {
     title:{
       required: true
+    },
+    backLink: {
+      required: false,
+      default: null
+    }
+  },
+  computed: {
+    shouldDisplayBack() {
+      return this.backLink != null
     }
   }
 }
 </script>
 
 <style scoped>
+  #back-icon {
+    font-size: 36px;
+    line-height: 36px;
+    padding-right: 8px;
+    cursor: pointer;
+  }
   #title-text{
     margin: 0;
     padding: 0;
@@ -32,6 +53,11 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
     font-size: 14px;
+  }
+
+  #header-left {
+    display: flex;
+    align-items: center;
   }
 
   @media(min-width: 760px){

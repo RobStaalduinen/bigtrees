@@ -63,15 +63,6 @@ export default {
       initialAddresses: { site: null, billing: null},
     }
   },
-  watch: {
-    tasks: function() {
-      console.log("TASKS");
-      console.log(this.tasks);
-    },
-    customer: function() {
-      console.log(this.customer)
-    }
-  },
   methods: {
     onSubmit() {
       this.validationErrors = false;

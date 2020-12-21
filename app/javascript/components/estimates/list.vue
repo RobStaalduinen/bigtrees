@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <div id='estimate-search-controls'>  
+  <div id='estimate-search-controls'>
     <div id='search-container'>
       <div id='search-field-container'>
         <app-search-field v-model='searchTerm'></app-search-field>
@@ -16,7 +16,7 @@
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate' @estimateChanged='retrieveEstimates()'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
-  
+
 
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
@@ -64,9 +64,9 @@ export default {
       }
       this.axiosGet(`/estimates.json`, params)
           .then(response => {
-            console.log(response.data);
+            console.log(response);
             this.$store.commit('setEstimates', response.data.estimates)
-            this.totalEntries = response.data['total_entries'];
+            this.totalEntries = response.data.meta.total_entries;
             this.loadingEstimates = false;
           })
     },
@@ -135,7 +135,7 @@ export default {
     left: 0;
     z-index: 20;
     width: 100%;
-    
+
     background-color: white;
     border-top: 4px var(--main-color) solid;
   }

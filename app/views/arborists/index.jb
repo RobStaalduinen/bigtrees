@@ -1,0 +1,1 @@
+@arborists.map { |a| a.serialized }

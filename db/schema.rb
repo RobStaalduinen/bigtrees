@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201107142337) do
+ActiveRecord::Schema.define(version: 20201221110839) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -33,18 +33,19 @@ ActiveRecord::Schema.define(version: 20201107142337) do
   end
 
   create_table "arborists", force: :cascade do |t|
-    t.string  "name",            limit: 255,                 null: false
-    t.string  "certification",   limit: 255,                 null: false
-    t.string  "phone_number",    limit: 255
-    t.string  "email",           limit: 255
-    t.string  "password",        limit: 255
-    t.boolean "is_admin",                    default: false
-    t.string  "session_token",   limit: 255
-    t.string  "password_digest", limit: 255
-    t.boolean "admin",                       default: false
-    t.boolean "hidden",                      default: false
-    t.boolean "active",                      default: true
-    t.float   "hourly_rate",     limit: 24
+    t.string  "name",                 limit: 255,                 null: false
+    t.string  "certification",        limit: 255,                 null: false
+    t.string  "phone_number",         limit: 255
+    t.string  "email",                limit: 255
+    t.string  "password",             limit: 255
+    t.boolean "is_admin",                         default: false
+    t.string  "session_token",        limit: 255
+    t.string  "password_digest",      limit: 255
+    t.boolean "admin",                            default: false
+    t.boolean "hidden",                           default: false
+    t.boolean "active",                           default: true
+    t.float   "hourly_rate",          limit: 24
+    t.boolean "can_manage_estimates",             default: false
   end
 
   create_table "costs", force: :cascade do |t|
