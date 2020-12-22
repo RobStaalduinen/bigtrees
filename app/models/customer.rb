@@ -1,7 +1,7 @@
 class Customer < ActiveRecord::Base
   has_many :estimates
   belongs_to :address
-  accepts_nested_attributes_for :address
+  accepts_nested_attributes_for :address, allow_destroy: true
 
   before_save :downcase_fields
 

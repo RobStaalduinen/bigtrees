@@ -34,8 +34,8 @@ export default {
   },
   data(){
     return {
-      billingAddressRequired:  false,
-      siteAddress: { ...this.initialSite},
+      billingAddressRequired: false,
+      siteAddress: { ...this.initialSite },
       billingAddress: { ...this.initialBilling }
     }
   },
@@ -60,8 +60,12 @@ export default {
     initialSite() {
       this.$forceUpdate();
     }
+  },
+  mounted() {
+    if(this.initialBilling != null) {
+      this.billingAddressRequired = true;
+    }
   }
-
 }
 </script>
 

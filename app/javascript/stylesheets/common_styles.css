@@ -1,0 +1,30 @@
+.right-column {
+  text-align: right;
+}
+
+.spaced-row {
+  margin-top: 8px;
+}
+
+.app-icon {
+  color: var(--main-color);
+}
+
+/* Single estimate page */
+
+.single-estimate-link-row{
+  display: flex;
+  justify-content: flex-end;
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  border-color: lightgray;
+  margin-top: 8px;
+}
+
+.single-estimate-link {
+  padding: 6px 12px;
+
+  border-width: 0 0 0 1px;
+  border-color: lightgray;
+  border-style: solid;
+}

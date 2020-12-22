@@ -8,6 +8,10 @@
       <section class='estimate-section'>
         <single-estimate-customer :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-customer>
       </section>
+
+      <section class='estimate-section'>
+        <single-estimate-addresses :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-addresses>
+      </section>
     </div>
   </page-template>
 </template>
@@ -15,11 +19,13 @@
 <script>
 import Owner from '../components/singleEstimate/owner';
 import Customer from '../components/singleEstimate/customer';
+import Addresses from '../components/singleEstimate/addresses';
 
 export default {
   components: {
     'single-estimate-owner': Owner,
-    'single-estimate-customer': Customer
+    'single-estimate-customer': Customer,
+    'single-estimate-addresses': Addresses
   },
   data() {
     return {

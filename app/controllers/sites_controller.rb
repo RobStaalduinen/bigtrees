@@ -17,7 +17,10 @@ class SitesController < ApplicationController
     @site = Site.find(params[:id])
     @site.update(site_params)
 
-    redirect_to estimate_path(id: params[:estimate_id])
+    respond_to do |format|
+      format.html { redirect_to estimate_path(id: params[:estimate_id]) }
+      format.json { render json: @site }
+    end
   end
 
   def site_params

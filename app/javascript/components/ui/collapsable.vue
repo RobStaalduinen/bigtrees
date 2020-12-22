@@ -4,7 +4,7 @@
       <b-icon icon='chevron-up' class='collapsable-icon' v-if='collapsed'></b-icon>
       <b-icon icon='chevron-down' class='collapsable-icon' v-if='!collapsed'></b-icon>
 
-      {{ title }}
+      <slot name='title'></slot>
     </div>
 
     <b-collapse :id='id + "_content"' class='collapsable-body'>
@@ -16,9 +16,6 @@
 <script>
 export default {
   props: {
-    title: {
-      required: true
-    },
     id: {
       required: true
     }
@@ -40,7 +37,6 @@ export default {
 <style scoped>
   .collapsable-header {
     padding: 8px;
-    font-weight: 600;
     border: 1px lightgray solid;
     display: flex;
     align-items: center;
