@@ -51,6 +51,8 @@ import Loader from '../components/ui/loader.vue';
 import LoadingOverlay from '../components/ui/loadingOverlay.vue';
 import AppButton from '../components/ui/button.vue';
 import PageTemplate from '../components/templates/pageTemplate.vue';
+import Collapsable from '../components/ui/collapsable.vue';
+import RightSidebar from '../components/ui/rightSidebar.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -58,6 +60,8 @@ Vue.component('app-loader', Loader)
 Vue.component('app-loading-overlay', LoadingOverlay)
 Vue.component('page-template', PageTemplate)
 Vue.component('app-button', AppButton)
+Vue.component('app-collapsable', Collapsable)
+Vue.component('app-right-sidebar', RightSidebar)
 
 
 // Form components

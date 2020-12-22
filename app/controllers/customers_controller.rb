@@ -40,7 +40,10 @@ class CustomersController < ApplicationController
     @customer.update(customer_params)
 
     # Refactor to some sort of session
-    redirect_to params[:customer][:redirect_location] || customer_path(id: @customer.id)
+    respond_to do |format|
+      format.html { redirect_to params[:customer][:redirect_location] || customer_path(id: @customer.id) }
+      format.json { render json: @customer }
+    end
   end
 
   def customer_params

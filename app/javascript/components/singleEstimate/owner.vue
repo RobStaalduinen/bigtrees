@@ -34,7 +34,6 @@ export default {
   },
   computed: {
     options() {
-      console.log(this.$store.state.arborists);
       return this.$store.state.arborists.map(arborist => {
         if(arborist.can_manage_estimates) {
           return {
@@ -52,10 +51,15 @@ export default {
           arborist_id: this.arborist
         }
       }
-      this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
+      if(this.arborist != this.estimate.arborist.id) {
+        this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
+          this.isEdit = false;
+          this.$emit('changed', response.data.estimate);
+        })
+      }
+      else{
         this.isEdit = false;
-        this.$emit('changed', response.data.estimate);
-      })
+      }
     }
   },
   mounted() {

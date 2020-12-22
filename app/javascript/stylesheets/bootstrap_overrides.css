@@ -26,6 +26,12 @@ button {
   background-color: #8A0000;
 }
 
+.inverse-button {
+  border-color: #8A0000;
+  background-color: white;
+  color: #8A0000;
+}
+
 .main-color-button{
   background-color: #8A0000;
 }
