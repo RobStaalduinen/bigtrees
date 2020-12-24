@@ -12,6 +12,18 @@
       <section class='estimate-section'>
         <single-estimate-addresses :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-addresses>
       </section>
+
+      <section class='estimate-section'>
+        <single-estimate-site :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-site>
+      </section>
+
+      <section class ='estimate-section'>
+        <single-estimate-quotes :estimate='estimate'></single-estimate-quotes>
+      </section>
+
+      <section class='estimate-section' v-if='estimate.invoice && estimate.invoice.sent_at'>
+        <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
+      </section>
     </div>
   </page-template>
 </template>
@@ -20,12 +32,18 @@
 import Owner from '../components/singleEstimate/owner';
 import Customer from '../components/singleEstimate/customer';
 import Addresses from '../components/singleEstimate/addresses';
+import Site from '../components/singleEstimate/site';
+import Invoice from '../components/invoice/views/summary';
+import Quote from '../components/quote/views/collapsed';
 
 export default {
   components: {
     'single-estimate-owner': Owner,
     'single-estimate-customer': Customer,
-    'single-estimate-addresses': Addresses
+    'single-estimate-addresses': Addresses,
+    'single-estimate-site': Site,
+    'single-estimate-invoice': Invoice,
+    'single-estimate-quotes': Quote
   },
   data() {
     return {

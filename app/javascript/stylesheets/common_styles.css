@@ -27,4 +27,7 @@
   border-width: 0 0 0 1px;
   border-color: lightgray;
   border-style: solid;
+
+  color: var(--main-color);
+  cursor: pointer;
 }

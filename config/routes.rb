@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   end
   resources :invoices do
     post '/pay', to: 'invoices#pay', as: :pay
+    get '/pdf', to: 'invoices#pdf'
   end
 
   match '/receipts/xlsx', to: 'receipts#xlsx', via: :get, as: :receipts_xlsx

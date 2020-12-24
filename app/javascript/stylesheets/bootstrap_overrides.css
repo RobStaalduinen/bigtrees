@@ -74,7 +74,7 @@ a {
 }
 
 .form-control {
-  height: calc(1.5em + 0.5rem + 2px) !important;
+  height: calc(1.5em + 0.5rem + 2px);
 }
 
 @media (min-width: 200px) and (max-width: 759px){

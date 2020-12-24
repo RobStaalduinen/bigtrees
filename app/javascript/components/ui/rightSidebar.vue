@@ -1,5 +1,5 @@
 <template>
-  <b-sidebar :id='id' right shadow no-header class='right-sidebar'>
+  <b-sidebar :id='id' right shadow no-header lazy class='right-sidebar'>
     <div id='edit-sidebar'>
       <div id='edit-header'>{{ title }}</div>
       <slot name='content'></slot>
@@ -38,6 +38,7 @@ export default {
     padding: 8px;
     padding-top: 32px;
     position: relative;
+    margin-bottom: 48px;
   }
 
   #edit-header {
@@ -65,6 +66,9 @@ export default {
     border-width: 1px 0 0 0;
     border-color: lightgray;
     border-style: solid;
+
+    z-index: 2;
+    background-color: white;
   }
 
   .sidebar-button {
