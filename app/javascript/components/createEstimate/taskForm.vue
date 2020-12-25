@@ -17,7 +17,7 @@
 
 <script>
   import SingleImageForm from './singleImageForm';
-  import SingleCost from './singleCost';
+  import SingleCost from '../costs/forms/single';
 
   export default {
     components: {

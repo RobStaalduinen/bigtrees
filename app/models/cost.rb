@@ -3,10 +3,14 @@ class Cost < ActiveRecord::Base
 
   SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
   SIGN_DISCOUNT = -25.0
-  
+
+  default_scope { order("discount, id") }
+
   scope :summary_order, -> { order("discount, id") }
   scope :discount, -> { where(discount: true) }
   scope :charge, -> { where(discount: false) }
+
+  before_save :set_discount
 
   def self.json_cost(description, amount)
     {
@@ -23,5 +27,9 @@ class Cost < ActiveRecord::Base
       amount: SIGN_DISCOUNT,
       discount: true
     )
+  end
+
+  def set_discount
+    self.discount = true if amount < 0.0
   end
 end

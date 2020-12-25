@@ -24,6 +24,10 @@
       <section class='estimate-section' v-if='estimate.invoice && estimate.invoice.sent_at'>
         <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
       </section>
+
+      <section class ='estimate-section'>
+        <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
+      </section>
     </div>
   </page-template>
 </template>
@@ -35,6 +39,7 @@ import Addresses from '../components/singleEstimate/addresses';
 import Site from '../components/singleEstimate/site';
 import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
+import Costs from '../components/costs/views/collapsed';
 
 export default {
   components: {
@@ -43,7 +48,8 @@ export default {
     'single-estimate-addresses': Addresses,
     'single-estimate-site': Site,
     'single-estimate-invoice': Invoice,
-    'single-estimate-quotes': Quote
+    'single-estimate-quotes': Quote,
+    'single-estimate-costs': Costs
   },
   data() {
     return {

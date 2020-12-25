@@ -19,6 +19,14 @@ class CostsController < ApplicationController
     @initial_costs = @estimate.costs.where(discount: discount)
   end
 
+  def create_single
+    @estimate = Estimate.find(params[:estimate_id])
+
+    @estimate.costs.create(params[:cost].permit(:amount, :description))
+
+    render json: @estimate
+  end
+
   def create
     @estimate = Estimate.find(params[:estimate_id])
 
@@ -36,14 +44,14 @@ class CostsController < ApplicationController
 
   def update
     @estimate = Estimate.find(params[:estimate_id])
-    @estimate.costs.where(discount: discount).destroy_all
+    @estimate.costs.destroy_all
 
     create_costs
 
     @estimate.set_status(true)
 
     respond_to do |format|
-      format.json { }
+      format.json { render json: @estimate }
       format.html { redirect_to estimate_path(@estimate) }
     end
   end
@@ -52,20 +60,8 @@ class CostsController < ApplicationController
 
     def create_costs
       params[:costs].each do |cost_params|
-        @estimate.costs.create({
-          amount: normalize_amount(cost_params[:amount].to_f, discount),
-          description: cost_params[:description],
-          discount: discount
-        })
+        @estimate.costs.create(cost_params.permit(:amount, :description))
       end
-    end
-
-    def normalize_amount(amount, discount)
-      if discount
-        return amount < 0 ? amount : amount * -1
-      end
-      
-      return amount
     end
 
     def discount

@@ -6,8 +6,8 @@
     </div>
 
     <div id='submission'>
-      <b-button type='submit' class='inverse-button sidebar-button' v-b-toggle='id'>Cancel</b-button>
-      <b-button type='submit' class='submit-button sidebar-button' @click='onSubmit'>{{ submitText }}</b-button>
+      <b-button type='submit' class='inverse-button sidebar-button' @click='cancel'>Cancel</b-button>
+      <b-button type='submit' class='submit-button sidebar-button' @click='submit'>{{ submitText }}</b-button>
     </div>
   </b-sidebar>
 </template>
@@ -28,6 +28,16 @@ export default {
     onSubmit: {
       required: false,
       type: Function
+    }
+  },
+  methods: {
+    submit() {
+      this.onSubmit();
+      this.$emit('completed');
+    },
+    cancel(){
+      this.$root.$emit('bv::toggle::collapse', this.id);
+      this.$emit('completed');
     }
   }
 }

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :sites, only: [ :create, :edit, :update ]
     resources :costs, only: [ :new, :create ] do
       get '/edit', to: 'costs#edit', on: :collection, as: :edit
+      post '/create_single', to: 'costs#create_single', on: :collection
       post '/update', to: 'costs#update', on: :collection, as: :update
     end
 

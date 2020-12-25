@@ -1,6 +1,5 @@
 <template>
   <div id='cost-row'>
-
     <div id='cost-row-left'>
       <app-input-field
         v-model='cost.amount'
@@ -44,7 +43,7 @@ export default {
     costValue: function() {
       this.$emit('input', this.costValue);
     }
-  }
+  },
 }
 </script>
 

@@ -14,10 +14,14 @@ class EstimateSerializer < ApplicationSerializer
   # Virtual
   attribute :formatted_status
   attribute :additional_message
+  attribute :total_cost
+  attribute :hst
+  attribute :total_cost_with_tax
 
   # Associations
   belongs_to :arborist
   belongs_to :customer
   has_one :site, include_nested_associations: true
   has_one :invoice
+  has_many :costs
 end

@@ -18,7 +18,8 @@ class EstimatesController < ApplicationController
       includes(customer: [:address]).
       includes(site: [:address]).
       includes(:invoice).
-      includes(:arborist)
+      includes(:arborist).
+      includes(:costs)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]

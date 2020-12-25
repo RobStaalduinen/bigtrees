@@ -55,5 +55,6 @@ export default {
   .collapsable-body {
     border: 1px lightgray solid;
     border-width: 0 1px 1px 1px;
+    padding: 4px 8px;
   }
 </style>
