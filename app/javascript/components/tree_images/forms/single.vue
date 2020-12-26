@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import SingleImage from './singleImage';
+import SingleImage from './uploader';
 export default {
   components: {
     'app-single-image': SingleImage

@@ -28,12 +28,23 @@ export default {
     onSubmit: {
       required: false,
       type: Function
+    },
+    validate: {
+      required: false,
+      type: Function
     }
   },
   methods: {
     submit() {
-      this.onSubmit();
-      this.$emit('completed');
+      var validationStatus = true;
+      if(this.validate != undefined || this.validate != null) {
+        validationStatus = this.validate();
+      }
+
+      if(validationStatus){
+        this.onSubmit();
+        this.$emit('completed');
+      }
     },
     cancel(){
       this.$root.$emit('bv::toggle::collapse', this.id);

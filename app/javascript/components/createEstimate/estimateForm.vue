@@ -23,10 +23,7 @@
         <estimate-task-form :value='tasks' @input='(payload) => { this.tasks = [...payload] }'></estimate-task-form>
       </estimate-form-section>
 
-
-
-
-      <span id='submit-error' v-if='validationErrors'>{{ validationErrorMessage }}</span>
+      <span class='submit-error' v-if='validationErrors'>{{ validationErrorMessage }}</span>
       <b-button type='submit' block class='submit-button'>Submit</b-button>
     </b-form>
   </validation-observer>
@@ -106,23 +103,24 @@ export default {
             estimate_id: estimateId,
             trees: this.tasks.map(task => {
               return {
-                tree_images_attributes: this.getTreeImageAttributes()
+                tree_images_attributes: this.getTreeImageAttributes(task)
               }
             })
           }
 
           this.axiosPost('/trees/bulk_create', treeOptions).then(response => {
-            window.location.href = `/estimates/${estimateId}`
+            window.location.href = `/admin/estimates/${estimateId}`
           })
         })
       })
     },
-    getTreeImageAttributes() {
-      return this.tasks.map(task => {
+    getTreeImageAttributes(task) {
         if(task.image != undefined && task.image != null) {
-          return task.image.url;
+          return [{ image_url: task.image.url }];
         }
-      })
+        else {
+          return [];
+        }
     }
   },
   mounted() {
@@ -157,8 +155,5 @@ export default {
 </script>
 
 <style scoped>
-  #submit-error {
-    color: #dc3545;
-    font-size: 80%;
-  }
+
 </style>

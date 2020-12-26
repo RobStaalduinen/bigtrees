@@ -65,7 +65,6 @@ export default {
   },
   watch: {
     fileResponse: function() {
-      console.log(this.fileResponse);
       this.$emit('input', this.fileResponse);
     }
   }

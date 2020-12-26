@@ -43,7 +43,7 @@ class TreeImagesController < ApplicationController
       end
     end
 
-    render json: { status: :ok }
+    render json: estimate
   end
 
   private
@@ -54,5 +54,9 @@ class TreeImagesController < ApplicationController
               else
                 Tree.create(estimate_id: params[:estimate_id], work_type: 5)
               end
+  end
+
+  def estimate
+    @estimate ||= Estimate.find(params[:estimate_id])
   end
 end

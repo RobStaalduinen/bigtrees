@@ -19,7 +19,8 @@ class EstimatesController < ApplicationController
       includes(site: [:address]).
       includes(:invoice).
       includes(:arborist).
-      includes(:costs)
+      includes(:costs).
+      includes(trees: [:tree_images])
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]

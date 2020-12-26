@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import SingleImageForm from './singleImageForm';
+  import SingleImageForm from '../tree_images/forms/single';
   import SingleCost from '../costs/forms/single';
 
   export default {

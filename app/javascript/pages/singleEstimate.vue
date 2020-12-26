@@ -17,7 +17,7 @@
         <single-estimate-site :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-site>
       </section>
 
-      <section class ='estimate-section'>
+      <section class ='estimate-section' v-if='estimate.quote_sent_date'>
         <single-estimate-quotes :estimate='estimate'></single-estimate-quotes>
       </section>
 
@@ -27,6 +27,10 @@
 
       <section class ='estimate-section'>
         <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
+      </section>
+
+      <section class ='estimate-section'>
+        <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
       </section>
     </div>
   </page-template>
@@ -40,6 +44,7 @@ import Site from '../components/singleEstimate/site';
 import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
 import Costs from '../components/costs/views/collapsed';
+import Trees from '../components/trees/views/collapsed';
 
 export default {
   components: {
@@ -49,7 +54,8 @@ export default {
     'single-estimate-site': Site,
     'single-estimate-invoice': Invoice,
     'single-estimate-quotes': Quote,
-    'single-estimate-costs': Costs
+    'single-estimate-costs': Costs,
+    'single-estimate-trees': Trees
   },
   data() {
     return {
@@ -69,7 +75,12 @@ export default {
         })
     },
     handleUpdate(payload) {
-      this.estimate = Object.assign({}, this.estimate, payload);
+      if(payload.estimate) {
+        this.estimate = payload.estimate
+      }
+      else{
+        this.estimate = Object.assign({}, this.estimate, payload);
+      }
     }
   }
 }

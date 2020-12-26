@@ -31,3 +31,8 @@
   color: var(--main-color);
   cursor: pointer;
 }
+
+.submit-error {
+  color: #dc3545;
+  font-size: 80%;
+}
