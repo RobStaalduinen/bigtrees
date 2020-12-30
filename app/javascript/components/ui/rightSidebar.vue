@@ -10,7 +10,9 @@
       <b-button type='submit' class='inverse-button sidebar-button' v-if='alternateAction' @click='() => alternateAction()'>
         {{ alternateActionText }}
       </b-button>
-      <b-button type='submit' class='submit-button sidebar-button' @click='submit'>{{ submitText }}</b-button>
+      <div class='sidebar-button'>
+        <app-submit-button :label='submitText' :onSubmit='submit'></app-submit-button>
+      </div>
     </div>
   </b-sidebar>
 </template>
@@ -105,6 +107,8 @@ export default {
 
   .sidebar-button {
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .inverse-button {

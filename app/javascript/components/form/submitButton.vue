@@ -2,7 +2,7 @@
   <b-button
     type='submit'
     block
-    class='submit-button'
+    :class='buttonClass'
     @click='onClick'
     v-if='!submitting'
     >
@@ -24,6 +24,11 @@ export default {
       type: Function,
       required: false,
       default: null
+    },
+    buttonClass: {
+      required: false,
+      type: String,
+      default: 'submit-button'
     }
   },
   data() {

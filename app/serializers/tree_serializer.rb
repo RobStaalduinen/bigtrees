@@ -2,6 +2,7 @@
 
 class TreeSerializer < ApplicationSerializer
   attribute :description
+  attribute :stump_removal
 
   # Virtual
   attribute :work_name

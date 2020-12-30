@@ -72,6 +72,9 @@ export default {
   #owner {
     display: flex;
     align-items: center;
+
+    padding: 8px;
+    background-color: #f5f5f5;
   }
 
   #owner-label {

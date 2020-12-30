@@ -5,6 +5,9 @@
     </div>
 
     <div class='single-estimate-link-row'>
+      <div class='single-estimate-link' @click='toggleImages'>
+        View Images
+      </div>
       <div id='next-label' v-if='currentAction'>
         <b>Next Step:</b>
       </div>
@@ -22,6 +25,8 @@ import ScheduleWork from '../estimate/actions/schedule';
 import SendInvoice from '../invoice/actions/send';
 import PayInvoice from '../invoice/actions/pay';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions.js';
+
+import EventBus from '@/store/eventBus'
 
 const STEPS = {
   'quote_sent': {
@@ -52,6 +57,11 @@ export default {
   computed: {
     currentAction() {
       return STEPS[this.estimate.status];
+    }
+  },
+  methods: {
+    toggleImages() {
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', null);
     }
   }
 }
