@@ -7,6 +7,9 @@
 
     <div id='submission'>
       <b-button type='submit' class='inverse-button sidebar-button' @click='cancel'>Cancel</b-button>
+      <b-button type='submit' class='inverse-button sidebar-button' v-if='alternateAction' @click='() => alternateAction()'>
+        {{ alternateActionText }}
+      </b-button>
       <b-button type='submit' class='submit-button sidebar-button' @click='submit'>{{ submitText }}</b-button>
     </div>
   </b-sidebar>
@@ -24,6 +27,14 @@ export default {
     submitText: {
       required: false,
       default: 'Submit'
+    },
+    alternateAction: {
+      required: false,
+      type: Function
+    },
+    alternateActionText: {
+      required: false,
+      default: 'Skip'
     },
     onSubmit: {
       required: false,
@@ -93,7 +104,7 @@ export default {
   }
 
   .sidebar-button {
-    width: 50%;
+    width: 100%;
   }
 
   .inverse-button {

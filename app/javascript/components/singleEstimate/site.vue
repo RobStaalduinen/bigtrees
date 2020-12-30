@@ -8,15 +8,6 @@
       <template v-slot:content>
         <b-row class='spaced-row'>
           <b-col cols='6' class='right-column'>
-            <b>Vehicle Access</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.vehicle_access) }}
-          </b-col>
-        </b-row>
-
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
             <b>Wood removal</b>
           </b-col>
           <b-col cols='6'>
@@ -26,19 +17,28 @@
 
         <b-row class='spaced-row'>
           <b-col cols='6' class='right-column'>
-            <b>Breakables</b>
+            <b>Complete Cleanup</b>
           </b-col>
           <b-col cols='6'>
-            {{ formatAnswer(estimate.site.breakables) }}
+            {{ formatAnswer(estimate.site.cleanup) }}
           </b-col>
         </b-row>
 
         <b-row class='spaced-row'>
           <b-col cols='6' class='right-column'>
-            <b>Complete Cleanup</b>
+            <b>Vehicle Access</b>
           </b-col>
           <b-col cols='6'>
-            {{ formatAnswer(estimate.site.cleanup) }}
+            {{ formatAnswer(estimate.site.vehicle_access) }}
+          </b-col>
+        </b-row>
+
+        <b-row class='spaced-row'>
+          <b-col cols='6' class='right-column'>
+            <b>Breakables</b>
+          </b-col>
+          <b-col cols='6'>
+            {{ formatAnswer(estimate.site.breakables) }}
           </b-col>
         </b-row>
 

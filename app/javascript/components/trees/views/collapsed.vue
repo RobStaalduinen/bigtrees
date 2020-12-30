@@ -19,7 +19,7 @@
             <img
               v-for='(image, imageIndex) in tree.tree_images'
               :key='index + "_" + imageIndex'
-              :src='image.image_url'
+              :src='image.url'
               class='tree-image'
               @click='toggleModal(index, imageIndex)'
             />
@@ -34,9 +34,11 @@
       </template>
     </app-collapsable>
 
-    <b-modal id="image-modal" modal-class="bottom-modal" centered title='Images'>
+    <b-modal id="image-modal" modal-class="bottom-modal" centered>
       <div id='modal-body'>
-        <img :src='displayedImageDefinition.url' class='modal-image'/>
+        <div id='modal-image-container'>
+          <img :src='displayedImageDefinition.url' class='modal-image'/>
+        </div>
 
         <div id='modal-image-info'>
           <b>{{ displayedImageDefinition.imageName }}</b>
@@ -89,7 +91,7 @@ export default {
       var allUrls = this.estimate.trees.map((tree, index) => {
         return tree.tree_images.map((image, imageIndex) => {
           return {
-            url: image.image_url,
+            url: image.url,
             imageName: `Task #${index+1}, Image #${imageIndex+1}`,
             workType: tree.work_name,
             description: tree.description
@@ -163,7 +165,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 400px;
+    min-height: 400px;
   }
 
   #modal-footer {
@@ -175,8 +177,15 @@ export default {
     padding: 4px 8px;
   }
 
+  #modal-image-container {
+    height: 450px;
+    display: flex;
+    justify-content: center;
+  }
+
   .modal-image {
-    width: 100%;
+    max-width:100%;
+    max-height:100%;
   }
 
   #image-counter {

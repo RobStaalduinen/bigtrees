@@ -8,18 +8,13 @@
         validationRules='required'
       ></app-input-field>
 
-      <b-form-group
-        label="Payment Method"
-        label-for="payment_method"
-      >
-        <b-form-select
-          :value='value.payment_method'
-          @input="(value) => update('payment_method', value)"
-          name='payment_method'
-          :options="['Cheque', 'E-Transfer', 'Debit', 'Credit', 'Cash']"
-          id='payment-method-select'
-        />
-      </b-form-group>
+      <app-select-field
+        label='Payment Method'
+        :value='value.payment_method'
+        @input="(value) => update('payment_method', value)"
+        name='payment_method'
+        :options="['Cheque', 'E-Transfer', 'Debit', 'Credit', 'Cash']"
+      />
   </div>
 </template>
 
@@ -35,6 +30,9 @@ export default {
   methods: {
     update(key, value) {
       this.$emit('input', { ...this.value, [key]: value })
+    },
+    getValidationState({ dirty, validated, valid = null }) {
+      return !valid && (dirty || validated) ? valid : null;
     }
   }
 }

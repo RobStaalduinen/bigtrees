@@ -5,6 +5,14 @@ export default {
     this.setup();
     return axios.get(endpoint, { params: params, withCredentials: true });
   },
+  post(endpoint, options){
+    this.setup();
+    return axios.post(endpoint, options, { withCredentials: true });
+  },
+  put (endpoint, options) {
+    this.setup();
+    return axios.put(endpoint, options, { withCredentials: true });
+  },
   setup() {
     axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content;
     axios.defaults.headers.common['Accept'] = 'application/json'

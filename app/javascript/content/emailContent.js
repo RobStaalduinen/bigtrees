@@ -26,4 +26,10 @@ Thanks,\n\n\
 Tyler Brewer\n\
 Certified Utility Arborist"
 
-export { invoiceContent, quoteContent }
+var receiptContent='Hi, \n\n\
+Your payment has been received. Here is your receipt.\n\n\
+Thank you so much for the business. Give us a call anytime!\n\n\
+Tyler Brewer\n\
+Certified Utility Arborist'
+
+export { invoiceContent, quoteContent, receiptContent }

@@ -80,7 +80,7 @@ class Estimate < ActiveRecord::Base
 		final_invoice_sent: 7,
 		completed: 8,
 		cancelled: 10
-	}
+  }
 
 	# Associations
 	alias :get_invoice :invoice
@@ -185,10 +185,12 @@ class Estimate < ActiveRecord::Base
 			:final_invoice_sent
 		elsif(self.invoice.paid?)
 			:completed
-		end
+    end
 
+    self.is_unknown = false if new_status != self.status
 		self.status = new_status
 
 		self.save! if save
-	end
+  end
+
 end

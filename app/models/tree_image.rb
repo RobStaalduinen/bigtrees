@@ -1,10 +1,15 @@
 class TreeImage < ActiveRecord::Base
   belongs_to :tree
 
-  has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
+  # has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
+  has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"
 
   Paperclip.interpolates :image_name do |attachment, style|
     attachment.instance.generate_image_name
+  end
+
+  def url
+    image_url || asset.url
   end
 
   def generate_image_name

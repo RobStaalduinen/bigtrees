@@ -70,12 +70,14 @@ import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
+import SelectField from '../components/form/selectField';
 import SubmitButton from '../components/form/submitButton.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
+Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
 
 //Mixins
@@ -101,6 +103,10 @@ Vue.filter('currency', function (value) {
   });
   return formatter.format(value);
 });
+
+Vue.filter('localizeDate', function(date) {
+  return moment(date).format('MMMM Do, YYYY');
+})
 
 Vue.prototype.$adminCheck = function () {
   return isAdmin;

@@ -6,6 +6,10 @@
       <single-estimate-owner :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-owner>
 
       <section class='estimate-section'>
+        <single-estimate-timeline :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-timeline>
+      </section>
+
+      <section class='estimate-section'>
         <single-estimate-customer :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-customer>
       </section>
 
@@ -32,14 +36,20 @@
       <section class ='estimate-section'>
         <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
       </section>
+
+      <section class ='estimate-section' id='status-container'>
+        <single-estimate-actions :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-actions>
+      </section>
     </div>
   </page-template>
 </template>
 
 <script>
+import Timeline from '../components/estimate/views/timelineCollapsed';
 import Owner from '../components/singleEstimate/owner';
 import Customer from '../components/singleEstimate/customer';
 import Addresses from '../components/singleEstimate/addresses';
+import StatusAndActions from '../components/singleEstimate/statusAndActions';
 import Site from '../components/singleEstimate/site';
 import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
@@ -48,9 +58,11 @@ import Trees from '../components/trees/views/collapsed';
 
 export default {
   components: {
+    'single-estimate-timeline': Timeline,
     'single-estimate-owner': Owner,
     'single-estimate-customer': Customer,
     'single-estimate-addresses': Addresses,
+    'single-estimate-actions': StatusAndActions,
     'single-estimate-site': Site,
     'single-estimate-invoice': Invoice,
     'single-estimate-quotes': Quote,
@@ -89,9 +101,18 @@ export default {
 <style scoped>
   #estimate-body {
     padding: 0 8px;
+    padding-bottom: 48px;
   }
 
   .estimate-section {
     margin-top: 16px;
+  }
+
+  #status-container {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
   }
 </style>

@@ -8,6 +8,12 @@ class InvoicesController < ApplicationController
     @invoice.assign_number
   end
 
+  def show
+    @invoice = Invoice.find(params[:id])
+
+    render json: @invoice, serializer: InvoicePreviewSerializer
+  end
+
   def edit
     @invoice = Invoice.find(params[:id])
     render template: "invoices/edit/#{params[:form_option]}"
