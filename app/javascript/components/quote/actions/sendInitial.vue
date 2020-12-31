@@ -40,10 +40,12 @@ export default {
       var params = {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
-        subject: this.emailDefinition.subject
+        subject: this.emailDefinition.subject,
+        quote_sent_date: moment().format('YYYY-MM-DD')
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
+        this.$emit('changed', response.data);
       })
     }
   }

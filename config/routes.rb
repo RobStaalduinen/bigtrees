@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     end
     resources :invoice_mailouts, only: [ :create ]
     resources :invoice_receipts, only: [ :create ]
+    resources :followups, only: [ :create ]
 
     post '/cancel', to: 'estimates#cancel', on: :member
   end

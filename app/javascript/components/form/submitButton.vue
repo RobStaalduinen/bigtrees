@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import EventBus from '@/store/eventBus'
+
 export default {
   props: {
     label: {
@@ -40,9 +42,18 @@ export default {
     onClick() {
       this.submitting = true;
       if(this.onSubmit != null) {
-        this.onSubmit();
+        var validationPassed = this.onSubmit();
+
+        if(validationPassed === false) {
+          this.submitting = false
+        }
       }
     }
+  },
+  mounted() {
+    // EventBus.$on('SUBMISSION_FAILED', () => {
+    //   this.submitting = false;
+    // });
   }
 }
 </script>

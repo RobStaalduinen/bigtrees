@@ -6,7 +6,7 @@
       </template>
 
       <template v-slot:content>
-        <b-row class='spaced-row' v-if='estimate.quote_sent_date'>
+        <b-row class='spaced-row'>
           <b-col cols='4' class='right-column'>
             <b>Requested</b>
           </b-col>
@@ -24,7 +24,7 @@
           </b-col>
         </b-row>
 
-        <b-row class='spaced-row' v-if='estimate.quote_sent_date'>
+        <b-row class='spaced-row' v-if='estimate.work_date'>
           <b-col cols='4' class='right-column'>
             <b>Scheduled</b>
           </b-col>
@@ -34,7 +34,7 @@
           </b-col>
         </b-row>
 
-        <b-row class='spaced-row' v-if='estimate.quote_sent_date'>
+        <b-row class='spaced-row' v-if='estimate.invoice.sent_at'>
           <b-col cols='4' class='right-column'>
             <b>Invoice Sent</b>
           </b-col>
@@ -43,7 +43,7 @@
           </b-col>
         </b-row>
 
-        <b-row class='spaced-row' v-if='estimate.quote_sent_date'>
+        <b-row class='spaced-row' v-if='estimate.invoice.paid_at'>
           <b-col cols='4' class='right-column'>
             <b>Paid</b>
           </b-col>

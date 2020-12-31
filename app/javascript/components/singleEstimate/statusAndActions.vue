@@ -8,15 +8,18 @@
       <div class='single-estimate-link' @click='toggleImages'>
         View Images
       </div>
-      <div id='next-label' v-if='currentAction'>
-        <b>Next Step:</b>
-      </div>
       <div class='single-estimate-link' v-b-toggle.input-action v-if='currentAction'>
-        {{ currentAction.actionLabel }}
+        <b>{{ `Next: ${currentAction.actionLabel}` }}</b>
       </div>
     </div>
 
-    <component v-if='currentAction' :is='currentAction.inputComponent' :estimate='estimate' id='input-action' @changed="(payload) => $emit('changed', payload)"></component>
+    <component
+      v-if='currentAction'
+      :is='currentAction.inputComponent'
+      :estimate='estimate'
+      id='input-action'
+      @changed="(payload) => $emit('changed', payload)"
+    ></component>
   </div>
 </template>
 
@@ -24,11 +27,21 @@
 import ScheduleWork from '../estimate/actions/schedule';
 import SendInvoice from '../invoice/actions/send';
 import PayInvoice from '../invoice/actions/pay';
+import AddCosts from '../costs/actions/createMultiple';
+import SendQuote from '../quote/actions/sendInitial';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions.js';
 
 import EventBus from '@/store/eventBus'
 
 const STEPS = {
+  'needs_costs': {
+    actionLabel: 'Add Costs',
+    inputComponent: 'estimate-add-costs'
+  },
+  'pending_quote': {
+    actionLabel: 'Send Quote',
+    inputComponent: 'estimate-send-quote',
+  },
   'quote_sent': {
     actionLabel: 'Schedule',
     inputComponent: 'estimate-schedule-quote'
@@ -46,8 +59,10 @@ const STEPS = {
 export default {
   components: {
     'estimate-schedule-quote': ScheduleWork,
+    'estimate-send-quote': SendQuote,
     'estimate-send-invoice': SendInvoice,
-    'estimate-pay-invoice': PayInvoice
+    'estimate-pay-invoice': PayInvoice,
+    'estimate-add-costs': AddCosts
   },
   props: {
     estimate: {
@@ -84,9 +99,5 @@ export default {
     display: flex;
     justify-content: center;
     padding: 4px;
-  }
-
-  #next-label {
-    padding: 6px 12px;
   }
 </style>

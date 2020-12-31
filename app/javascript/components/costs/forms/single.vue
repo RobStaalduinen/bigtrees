@@ -3,7 +3,7 @@
     <div id='cost-row-left'>
       <app-input-field
         v-model='cost.amount'
-        name='amount'
+        :name='baseName + "_amount"'
         label='Amount'
         validationRules='required'
         inputType='number'
@@ -13,7 +13,7 @@
     <div id='cost-row-right'>
       <app-input-field
         v-model='cost.description'
-        name='description'
+        :name='baseName + "_description"'
         label='Invoice Description'
         validationRules='required'
         :maxLength='65'
@@ -27,6 +27,10 @@ export default {
   props: {
     value: {
       default: () => { return { amount: null, description: null } }
+    },
+    baseName: {
+      required: false,
+      default: 'cost'
     }
   },
   data() {

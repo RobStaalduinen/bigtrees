@@ -32,4 +32,23 @@ Thank you so much for the business. Give us a call anytime!\n\n\
 Tyler Brewer\n\
 Certified Utility Arborist'
 
-export { invoiceContent, quoteContent, receiptContent }
+var noResponseFollowup="Hi, \n\n\
+I didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. My cell is 705 943 7374 or you can reach me toll free at 1 877 542 5551. \n\n\
+If you are interested, there are a couple ways to save some money. First is a another discount ($25) for leaving a 5 star review online. Third is a 5% discount if you schedule the work to be completed in the winter. \n\n\
+Once again, thanks for your time and consideration. \n\n\
+Have a great day. \n\n\
+Tyler Brewer \n\
+Certified Utility Arborist"
+
+var imageRequest="Hi,\n\n\
+I can definitely take care of that for you.\n\n\
+We have two options... \n\n\
+1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote. \n\n\
+ OR \n\
+2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\n\
+Feel free to call/text me on my cell at 705 943 7374 or call me toll free at 1 877 542 5551. We have arborists across the GTA that can make sure we expedite this quote for you.\n\n\
+Thanks, \n\
+Tyler \n\
+Certified Arborist and Utility Arborist"
+
+export { invoiceContent, quoteContent, receiptContent, noResponseFollowup, imageRequest }

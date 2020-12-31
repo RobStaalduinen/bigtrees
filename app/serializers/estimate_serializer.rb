@@ -8,6 +8,9 @@ class EstimateSerializer < ApplicationSerializer
   attribute :work_date
   attribute :is_unknown
 
+  attribute :picture_request_sent_at
+  attribute :followup_sent_at
+
   attribute :created_at
   attribute :updated_at
 

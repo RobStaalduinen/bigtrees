@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Send Quote' submitText='Send' :onSubmit='sendQuote'>
+  <app-right-sidebar :id='id' title='Send Image Request' submitText='Send' :onSubmit='sendImageRequest'>
     <template v-slot:content>
       <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
     </template>
@@ -8,7 +8,7 @@
 
 <script>
 import EmailForm from '../../common/forms/email';
-import { quoteContent } from '../../../content/emailContent';
+import { imageRequest } from '../../../content/emailContent';
 import moment from 'moment';
 
 export default {
@@ -27,8 +27,8 @@ export default {
     return {
       emailDefinition: {
         email: this.estimate.customer.email,
-        content: quoteContent,
-        subject: 'Quote from Big Tree'
+        content: imageRequest,
+        subject: 'Your Big Tree Services Job'
       }
     }
   },
@@ -36,14 +36,17 @@ export default {
     handleChange(new_email) {
       this.emailDefinition = { ...new_email }
     },
-    sendQuote() {
+    sendImageRequest() {
       var params = {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
-        subject: this.emailDefinition.subject
+        subject: this.emailDefinition.subject,
+        picture_request_sent_at: moment().format('YYYY-MM-DD'),
+        include_quote: false
       }
-      this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
+      this.axiosPost(`/estimates/${this.estimate.id}/followups`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
+        this.$emit('changed', response.data)
       })
     }
   }

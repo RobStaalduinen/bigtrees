@@ -4,9 +4,9 @@
     text="Actions"
     right
   >
-    <b-dropdown-item v-if="!estimate.is_unknown" :href='`/estimates/${estimate.id}/quote_mailouts/new?mail_type=followup`'>
+    <!-- <b-dropdown-item v-if="!estimate.is_unknown" :href='`/estimates/${estimate.id}/quote_mailouts/new?mail_type=followup`'>
       Send Followup
-    </b-dropdown-item>
+    </b-dropdown-item> -->
 
     <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
       Move to Unknown
@@ -15,14 +15,14 @@
     <b-dropdown-item v-if="estimate.is_unknown" @click='updateStatus(false)'>
       Reactivate
     </b-dropdown-item>
-    
-    <b-dropdown-item v-if="canSchedule()" :href='`/estimates/${estimate.id}/edit?form_option=set_work_date`'>
+
+    <!-- <b-dropdown-item v-if="canSchedule()" :href='`/estimates/${estimate.id}/edit?form_option=set_work_date`'>
       Schedule
     </b-dropdown-item>
 
     <b-dropdown-item v-if="estimate.status == 'final_invoice_sent'" :href='`/invoices/${estimate.invoice.id}/edit?form_option=finalize_payment`'>
       Set Payment
-    </b-dropdown-item>
+    </b-dropdown-item> -->
   </b-nav-item-dropdown>
 </template>
 

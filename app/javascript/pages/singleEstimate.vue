@@ -37,6 +37,10 @@
         <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
       </section>
 
+      <section class ='estimate-section'>
+        <single-estimate-followups :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-followups>
+      </section>
+
       <section class ='estimate-section' id='status-container'>
         <single-estimate-actions :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-actions>
       </section>
@@ -55,6 +59,7 @@ import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
 import Costs from '../components/costs/views/collapsed';
 import Trees from '../components/trees/views/collapsed';
+import Followups from '../components/followups/views/collapsed';
 
 export default {
   components: {
@@ -67,7 +72,8 @@ export default {
     'single-estimate-invoice': Invoice,
     'single-estimate-quotes': Quote,
     'single-estimate-costs': Costs,
-    'single-estimate-trees': Trees
+    'single-estimate-trees': Trees,
+    'single-estimate-followups': Followups
   },
   data() {
     return {
