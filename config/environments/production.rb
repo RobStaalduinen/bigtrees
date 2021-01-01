@@ -88,8 +88,8 @@ Rails.application.configure do
     :address => 'smtp.sendgrid.net',
     :port => 587,
     :domain => 'bigtreeservices.ca',
-    :user_name => ENV["EMAIL_USERNAME"],
-    :password => ENV["EMAIL_PASSWORD"],
+    :user_name => 'apikey',
+    :password => ENV['SENDGRID_API_KEY'],
     :authentication => 'plain',
     :enable_starttls_auto => true
   }
