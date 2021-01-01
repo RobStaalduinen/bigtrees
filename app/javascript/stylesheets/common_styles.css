@@ -36,3 +36,21 @@
   color: #dc3545;
   font-size: 80%;
 }
+
+.mobile-only {
+  display: inherit !important;
+}
+
+.desktop-only {
+  display: none !important;
+}
+
+@media(min-width: 760px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: inherit !important;
+  }
+}

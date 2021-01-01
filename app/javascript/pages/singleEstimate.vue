@@ -3,47 +3,65 @@
     <app-header :title='"Estimate #" + estimate_id' backLink='/admin/estimates'></app-header>
 
     <div v-if='estimate' id='estimate-body'>
-      <single-estimate-owner :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-owner>
 
-      <section class='estimate-section'>
-        <single-estimate-timeline :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-timeline>
-      </section>
+      <div id='estimate-body-left'>
+        <section class='estimate-section mobile-only'>
+          <single-estimate-owner
+            :estimate='estimate'
+            @changed='(payload) => handleUpdate(payload)'
+          ></single-estimate-owner>
+        </section>
 
-      <section class='estimate-section'>
-        <single-estimate-customer :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-customer>
-      </section>
+        <section class='estimate-section'>
+          <single-estimate-timeline :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-timeline>
+        </section>
 
-      <section class='estimate-section'>
-        <single-estimate-addresses :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-addresses>
-      </section>
+        <section class='estimate-section'>
+          <single-estimate-customer :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-customer>
+        </section>
 
-      <section class='estimate-section'>
-        <single-estimate-site :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-site>
-      </section>
+        <section class='estimate-section'>
+          <single-estimate-addresses :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-addresses>
+        </section>
 
-      <section class ='estimate-section' v-if='estimate.quote_sent_date'>
-        <single-estimate-quotes :estimate='estimate'></single-estimate-quotes>
-      </section>
+        <section class='estimate-section'>
+          <single-estimate-site :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-site>
+        </section>
 
-      <section class='estimate-section' v-if='estimate.invoice && estimate.invoice.sent_at'>
-        <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
-      </section>
+        <section class ='estimate-section' v-if='estimate.quote_sent_date'>
+          <single-estimate-quotes :estimate='estimate'></single-estimate-quotes>
+        </section>
 
-      <section class ='estimate-section'>
-        <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
-      </section>
+        <section class='estimate-section' v-if='estimate.invoice && estimate.invoice.sent_at'>
+          <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
+        </section>
 
-      <section class ='estimate-section'>
-        <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
-      </section>
+        <section class ='estimate-section'>
+          <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
+        </section>
 
-      <section class ='estimate-section'>
-        <single-estimate-followups :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-followups>
-      </section>
+        <section class ='estimate-section'>
+          <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
+        </section>
+      </div>
 
-      <section class ='estimate-section' id='status-container'>
-        <single-estimate-actions :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-actions>
-      </section>
+      <div id='estimate-body-left'>
+        <section class='estimate-section desktop-only'>
+          <single-estimate-owner
+            :estimate='estimate'
+            @changed='(payload) => handleUpdate(payload)'
+          ></single-estimate-owner>
+        </section>
+
+        <section class ='estimate-section'>
+          <single-estimate-followups :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-followups>
+        </section>
+
+        <section class ='estimate-section' id='status-container'>
+          <single-estimate-actions :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-actions>
+        </section>
+      </div>
+
     </div>
   </page-template>
 </template>
@@ -112,6 +130,7 @@ export default {
 
   .estimate-section {
     margin-top: 16px;
+    width: 100%;
   }
 
   #status-container {
@@ -120,5 +139,30 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 20;
+  }
+
+  @media(min-width: 760px) {
+    #estimate-body {
+      display: flex;
+    }
+
+    #estimate-body-left {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      margin-right: 16px;
+    }
+
+    #estimate-body-right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      margin-left: 16px;
+    }
+
+    #status-container {
+      position: relative;
+      border: 1px lightgray solid;
+    }
   }
 </style>

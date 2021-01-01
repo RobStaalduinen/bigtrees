@@ -75,6 +75,7 @@ export default {
 
     padding: 8px;
     background-color: #f5f5f5;
+    width: 100%;
   }
 
   #owner-label {

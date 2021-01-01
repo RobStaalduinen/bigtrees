@@ -5,6 +5,11 @@
     </div>
 
     <div class='single-estimate-link-row'>
+      <estimate-actions-list
+        :estimate='estimate'
+        @changed="(payload) => $emit('changed', payload)"
+      ></estimate-actions-list>
+
       <div class='single-estimate-link' @click='toggleImages'>
         View Images
       </div>
@@ -29,6 +34,7 @@ import SendInvoice from '../invoice/actions/send';
 import PayInvoice from '../invoice/actions/pay';
 import AddCosts from '../costs/actions/createMultiple';
 import SendQuote from '../quote/actions/sendInitial';
+import ActionList from '@/components/estimates/actionsList';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions.js';
 
 import EventBus from '@/store/eventBus'
@@ -62,7 +68,8 @@ export default {
     'estimate-send-quote': SendQuote,
     'estimate-send-invoice': SendInvoice,
     'estimate-pay-invoice': PayInvoice,
-    'estimate-add-costs': AddCosts
+    'estimate-add-costs': AddCosts,
+    'estimate-actions-list': ActionList
   },
   props: {
     estimate: {

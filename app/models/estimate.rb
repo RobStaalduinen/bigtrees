@@ -187,7 +187,7 @@ class Estimate < ActiveRecord::Base
 			:completed
     end
 
-    self.is_unknown = false if new_status != self.status
+    # self.is_unknown = false if new_status != self.status
 		self.status = new_status
 
 		self.save! if save

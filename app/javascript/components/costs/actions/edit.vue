@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Edit Costs' submitText='Save' :onSubmit='updateCosts' @completed='reset'>
+  <app-right-sidebar :id='id' title='Edit Costs' submitText='Save' :onSubmit='updateCosts' @cancelled='reset'>
     <template v-slot:content>
       <i id='info-header'>Use negative numbers for discounts</i>
       <div v-for='(cost, index) in costs' :key='cost.id' class='cost-entry'>
@@ -42,6 +42,7 @@ export default {
       this.axiosPost(`/estimates/${this.estimate.id}/costs/update`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         this.$emit('changed', response.data.estimate);
+        this.reset();
       })
     },
     setCost(index, payload) {

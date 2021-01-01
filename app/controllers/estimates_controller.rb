@@ -54,7 +54,7 @@ class EstimatesController < ApplicationController
 	end
 
   def update
-		@estimate = Estimate.find(params[:id])
+    @estimate = Estimate.find(params[:id])
 		@estimate.update(estimate_params)
 		@estimate.set_status
 
@@ -101,7 +101,7 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :status, :arborist_id, :is_unknown, :work_date
+      :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date
     )
     e_params[:is_unknown] ||= false
     e_params

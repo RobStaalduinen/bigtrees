@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Create Costs' submitText='Submit' :onSubmit='createCosts'>
+  <app-right-sidebar :id='id' title='Create Costs' submitText='Submit' :onSubmit='createCosts' @cancelled='reset'>
     <template v-slot:content>
       <validation-observer ref="observer">
         <app-multi-costs

@@ -42,6 +42,7 @@ export default {
       var params = { estimate: { is_unknown: unknownStatus } };
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$emit('estimateChanged', null);
+        this.$emit('changed', response.data)
       });
     }
   }

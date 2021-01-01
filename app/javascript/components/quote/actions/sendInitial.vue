@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Send Quote' submitText='Send' :onSubmit='sendQuote'>
+  <app-right-sidebar :id='id' title='Send Quote' submitText='Send' :onSubmit='sendQuote' :alternateAction='skipSend'>
     <template v-slot:content>
       <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
     </template>
@@ -44,6 +44,16 @@ export default {
         quote_sent_date: moment().format('YYYY-MM-DD')
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
+        this.$root.$emit('bv::toggle::collapse', this.id);
+        this.$emit('changed', response.data);
+      })
+    },
+    skipSend() {
+      var params = {
+        estimate: { quote_sent_date: moment().format('YYYY-MM-DD') }
+      }
+
+      this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         this.$emit('changed', response.data);
       })

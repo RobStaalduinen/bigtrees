@@ -61,7 +61,7 @@ export default {
     },
     cancel(){
       this.$root.$emit('bv::toggle::collapse', this.id);
-      this.$emit('completed');
+      this.$emit('cancelled');
     }
   }
 }
