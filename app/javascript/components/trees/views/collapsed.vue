@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     toggleModal(image_id) {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', image_id);
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { image_id: image_id });
     }
   },
   updated(){

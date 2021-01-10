@@ -17,6 +17,8 @@
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
 
+  <app-image-gallery></app-image-gallery>
+
 
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
@@ -26,13 +28,15 @@
 
 <script>
 import SingleEstimate from './single';
+import ImageGallery from '@/components/tree_images/views/galleryModal';
 import Filters from './filters';
 import { mapState } from 'vuex'
 
 export default {
   components: {
     'app-single-estimate': SingleEstimate,
-    'app-estimate-filters': Filters
+    'app-estimate-filters': Filters,
+    'app-image-gallery': ImageGallery
   },
   data() {
     return {

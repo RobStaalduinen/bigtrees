@@ -29,6 +29,10 @@
         Timeline
       </a>
 
+      <a class='estimate-link' @click='openImages' v-if='hasImages()'>
+        Images
+      </a>
+
       <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
         Details
       </router-link>
@@ -41,6 +45,7 @@
 <script>
 import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
+import EventBus from '@/store/eventBus'
 
 export default {
   props: {
@@ -57,6 +62,14 @@ export default {
   {
     changeEstimate() {
       this.$emit('estimateChanged');
+    },
+    openImages() {
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate: this.estimate })
+    },
+    hasImages() {
+      return this.estimate.trees.map(tree => {
+        return tree.tree_images.length > 0
+      }).some(img => img === true);
     }
   }
 }

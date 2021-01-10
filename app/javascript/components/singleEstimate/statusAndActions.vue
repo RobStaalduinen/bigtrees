@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     toggleImages() {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', null);
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', {});
     }
   }
 }

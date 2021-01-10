@@ -1,42 +1,41 @@
 <template>
-  <b-modal id="image-modal" modal-class="bottom-modal" centered>
-    <template v-slot:modal-header><span></span></template>
-
-    <div id='modal-body'>
+  <div id="image-gallery" v-if='display' @click='closeModal'>
+    <div id='image-gallery-internal'>
       <div id='modal-image-container'>
-        <img :src='displayedImageDefinition.url' class='modal-image'/>
+        <img :src='displayedImageDefinition.url' class='modal-image' @click.stop />
       </div>
 
-      <div id='modal-image-info'>
-        <b>{{ displayedImageDefinition.imageName }}</b>
-        <div v-if='displayedImageDefinition.workType != "Other"'>
-          <b>Work Type: </b>{{ displayedImageDefinition.workType }}
+      <div id='image-gallery-bottom' @click.stop>
+        <div id='modal-image-info'>
+          <b>{{ displayedImageDefinition.imageName }}</b>
+          <div v-if='displayedImageDefinition.workType != "Other"'>
+            <b>Work Type: </b>{{ displayedImageDefinition.workType }}
+          </div>
+          <div v-if='displayedImageDefinition.description'>
+            <b>Customer Description: </b> {{ displayedImageDefinition.description }}
+          </div>
+          <div v-if='displayedImageDefinition.workType == "Removal"'>
+            <b>Stump Removal: </b> {{ displayedImageDefinition.stumpRemoval }}
+          </div>
         </div>
-        <div v-if='displayedImageDefinition.description'>
-          <b>Customer Description: </b> {{ displayedImageDefinition.description }}
+
+        <div id='gallery-footer'>
+          <b-icon icon='x' id='exit-icon' @click='closeModal'></b-icon>
+
+          <div id='gallery-control-info'>
+            <div id='image-counter'>{{ displayedImage + ' / ' + totalImages }}</div>
+            <div class='gallery-control' @click='changeDisplayedImage(-1)'>
+              <b-icon icon='chevron-left'></b-icon>
+            </div>
+            <div class='gallery-control' @click='changeDisplayedImage(1)'>
+              <b-icon icon='chevron-right'></b-icon>
+            </div>
+          </div>
         </div>
-        <div v-if='displayedImageDefinition.workType == "Removal"'>
-          <b>Stump Removal: </b> {{ displayedImageDefinition.stumpRemoval }}
-        </div>
+
       </div>
     </div>
-
-    <template v-slot:modal-footer>
-      <div id='modal-footer'>
-        <b-icon icon='x' id='exit-icon' @click='closeModal'></b-icon>
-
-        <div id='modal-info'>
-          <div id='image-counter'>{{ displayedImage + ' / ' + totalImages }}</div>
-          <div class='modal-control' @click='changeDisplayedImage(-1)'>
-            <b-icon icon='chevron-left'></b-icon>
-          </div>
-          <div class='modal-control' @click='changeDisplayedImage(1)'>
-            <b-icon icon='chevron-right'></b-icon>
-          </div>
-        </div>
-      </div>
-    </template>
-  </b-modal>
+  </div>
 </template>
 
 <script>
@@ -45,17 +44,19 @@ import EventBus from '@/store/eventBus'
 export default {
   props: {
     estimate: {
-      required: true
+      required: false
     }
   },
   data() {
     return {
       displayedImage: 1,
+      display: false,
+      workingEstimate: this.estimate
     }
   },
   computed: {
     imageDefinitions() {
-      var allUrls = this.estimate.trees.map((tree, index) => {
+      var allUrls = this.workingEstimate.trees.map((tree, index) => {
         return tree.tree_images.map((image, imageIndex) => {
           return {
             id: image.id,
@@ -89,81 +90,119 @@ export default {
       }
     },
     closeModal() {
-      this.$bvModal.hide('image-modal');
+      this.display = false;
+      document.documentElement.style.overflow = 'auto'
     }
   },
   mounted() {
-    EventBus.$on('TOGGLE_IMAGE_GALLERY', (image_id) => {
+    EventBus.$on('TOGGLE_IMAGE_GALLERY', (payload) => {
+      if(payload.estimate != null) {
+        this.workingEstimate = payload.estimate;
+      }
+      var image_id = payload.image_id;
       if(image_id != null) {
         this.displayedImage = (this.imageDefinitions.findIndex(imageDef => imageDef.id === image_id) + 1);
       }
       else {
         this.displayedImage = 1;
       }
-
-      this.$bvModal.show('image-modal');
+      document.documentElement.style.overflow = 'hidden'
+      this.display = true;
     });
   }
 }
 </script>
 
 <style>
-  #image-modal > .modal-dialog > .modal-content > .modal-header {
-    padding: 0;
+  #image-gallery{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+
+    z-index: 100;
   }
 
- #modal-image-info{
-    display: flex;
-    flex-direction: column;
-    margin-top: 8px;
-    padding: 8px;
-
-    font-size: 14px;
-
-    background-color: #f5f5f5;
-
-  }
-
-  #modal-info {
-    display: flex;
-    align-items: center
-  }
-
-  #modal-body {
+  #image-gallery-internal {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 400px;
-  }
-
-  #modal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
-  }
-
-  #exit-icon {
-    font-size: 22px;
-    font-weight: 600;
-  }
-
-  .modal-control {
-    padding: 4px 8px;
+    height: 100%;
   }
 
   #modal-image-container {
-    height: 450px;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    height: 100%;
+    padding-top: 16px;
+    margin-bottom: 16px;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .modal-image {
-    max-width:100%;
-    max-height:100%;
+    max-width: 100%;
+    height: auto;
   }
 
-  #image-counter {
-    margin-right: 8px;
+  #image-gallery-bottom {
+    max-height: 20%;
+    background-color: white;
+    border-width: 1px 0 0 0;
+    border-color: lightgray;
+    border-style: solid
   }
+
+  #modal-image-info {
+    padding: 4px 8px;
+  }
+
+  #gallery-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+
+    border-width: 1px 0 0 0;
+    border-color: lightgray;
+    border-style: solid
+  }
+
+  #gallery-control-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .gallery-control {
+    font-size: 30px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  #exit-icon {
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  @media(min-width: 760px) {
+    .modal-image {
+      margin: 0 auto;
+      height: 100%;
+    }
+
+    #image-gallery-bottom {
+      width: 50%;
+      margin: 0 auto;
+    }
+
+      #modal-image-container {
+        display: grid;
+        height: 80%;
+      }
+
+  }
+
 </style>

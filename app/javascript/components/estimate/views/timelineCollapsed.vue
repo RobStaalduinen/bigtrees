@@ -88,7 +88,7 @@ export default {
         return `Quote Sent: ${localizeDate(estimate.quote_sent_date)}`
       }
       else {
-        return `Received: ${localizeDate(estimate.created_at)}`
+        return `Requested: ${localizeDate(estimate.created_at)}`
       }
     }
   }
