@@ -2,9 +2,14 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include UserHelper
-  
+
   protect_from_forgery with: :null_session
-  rescue_from CanCan::AccessDenied, with: :redirect_unauthorized
+  rescue_from CanCan::AccessDenied do |exception|
+    respond_to do |format|
+      format.html { :redirect_unauthorized }
+      format.json { render json: { error: 'Unauthorized'}, status: :unauthorized }
+    end
+  end
 
   before_filter :redirect_if_old
 
@@ -20,6 +25,6 @@ class ApplicationController < ActionController::Base
   def redirect_unauthorized
     redirect_to arborist_path(current_user)
   end
-  
+
 
 end

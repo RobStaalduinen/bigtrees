@@ -35,9 +35,14 @@ class Ability
       can :read, Receipt
       can :create, Receipt
 
+      if arborist.can_manage_estimates?
+        can :query, Estimate
+        can :read, Estimate, arborist_id: arborist.id
+      end
+
       if arborist.admin?
-        can :manage, Arborist
         can :manage, Estimate
+        can :manage, Arborist
         can :manage, Customer
         can :manage, EquipmentRequest
         can :manage, Vehicle

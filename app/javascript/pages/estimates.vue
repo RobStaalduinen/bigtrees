@@ -2,8 +2,8 @@
   <page-template>
     <app-header title='Quotes'>
       <template v-slot:header-right>
-        <a href='/trackers.xlsx'>
-          <b-icon icon='download'></b-icon> 
+        <a href='/trackers.xlsx' v-if='admin'>
+          <b-icon icon='download'></b-icon>
           Tracker
         </a>
       </template>
@@ -17,18 +17,23 @@
 <script>
 import EstimateList from '../components/estimates/list';
 
-export default {  
+export default {
   components: {
     'app-estimate-list': EstimateList
   },
   data() {
     return {
-      
+
     }
   },
+  computed: {
+    admin() {
+      return this.$store.state.user.admin;
+    },
+  }
 }
 </script>
 
 <style scoped>
-  
+
 </style>

@@ -5,14 +5,15 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-dropdown-item to="/admin/estimates" v-if='admin'>Quotes</b-dropdown-item>
-        <b-dropdown-item to="/admin/estimates/new" v-if='admin'>Create Quote</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates" v-if='canManageEstimates'>Quotes</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates/new" v-if='canManageEstimates'>Create Quote</b-dropdown-item>
         <b-dropdown-item href="/vehicles" v-if='admin'>Vehicles</b-dropdown-item>
         <b-dropdown-item href="/arborists" v-if='admin'>Arborists</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='admin'>Customers</b-dropdown-item>
         <b-dropdown-item href="/payouts" v-if='admin'>Payouts</b-dropdown-item>
         <b-dropdown-item href="/receipts">Receipts</b-dropdown-item>
-        <b-dropdown-item href="/equipment_requests">Repair Requests</b-dropdown-item>
+        <b-dropdown-item href="/equipment_requests" v-if='admin'>Repair Requests</b-dropdown-item>
+        <b-dropdown-item href="/equipment_requests/new" v-if='!admin'>Create Repair Request</b-dropdown-item>
         <b-dropdown-item to='/admin/hours'>Hours</b-dropdown-item>
         <b-dropdown-item v-bind:href="profileLink">Profile</b-dropdown-item>
       </b-collapse>
@@ -25,6 +26,9 @@ export default {
   computed: {
     admin() {
       return this.$store.state.user.admin;
+    },
+    canManageEstimates(){
+      return this.admin || this.$store.state.user.can_manage_estimates;
     },
     userId() {
       return this.$store.state.user.user_id;

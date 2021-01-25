@@ -1,5 +1,5 @@
 class ArboristsController < ApplicationController
-  before_action :signed_in_admin, except: [ :show ]
+  before_action :signed_in_admin, except: [ :index, :show ]
   layout 'admin_material'
 
   def index
@@ -55,7 +55,7 @@ class ArboristsController < ApplicationController
   private
 
     def arborist_params
-      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :hourly_rate, :password, :password_confirmation)
+      params.require(:arborist).permit(:name, :certification, :email, :phone_number, :hourly_rate, :password, :password_confirmation, :can_manage_estimates)
     end
 
 

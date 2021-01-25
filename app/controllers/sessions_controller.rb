@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
 
   def authenticate
     if current_user
-      render json: { logged_in: true, admin: current_user.admin?, user_id: current_user.id }
+      render json: { logged_in: true, admin: current_user.admin?, user_id: current_user.id, can_manage_estimates: current_user.can_manage_estimates }
     else
       render json: { logged_in: false, admin: false }
     end
@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
       if @arborist.admin?
         redirect_to '/admin/estimates'
       else
-        redirect_to arborists_path(@arborist)
+        redirect_to arborist_path(@arborist)
       end
     else
       flash[:error] = "Invalid email/password"

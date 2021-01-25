@@ -44,7 +44,7 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :submission_completed, :stumping_only,
-      ).merge({ arborist_id: Arborist::DEFAULT_ID })
+      ).merge({ arborist_id: current_user.id })
     end
 
     def site_params

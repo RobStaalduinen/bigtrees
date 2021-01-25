@@ -67,12 +67,16 @@ export default {
         params['q'] = this.searchTerm
       }
       this.axiosGet(`/estimates.json`, params)
-          .then(response => {
-            console.log(response);
-            this.$store.commit('setEstimates', response.data.estimates)
-            this.totalEntries = response.data.meta.total_entries;
-            this.loadingEstimates = false;
-          })
+        .then(response => {
+          console.log(response);
+          this.$store.commit('setEstimates', response.data.estimates)
+          this.totalEntries = response.data.meta.total_entries;
+          this.loadingEstimates = false;
+        }).catch(
+          (error) => {
+            location.pathname = `/arborists/${this.$store.state.user.user_id}`
+          }
+        )
     },
     changeFilters(new_filters) {
       this.filters = new_filters;

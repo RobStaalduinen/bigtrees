@@ -34,3 +34,11 @@
     <%= form.label(:hourly_rate, 'Hourly Rate', class: active ? 'active' : '') %>
   </div>
 </div>
+
+<div class="row">
+  <label>
+    <%= check_box_tag 'arborist[can_manage_estimates]', 'true', @arborist.can_manage_estimates? %>
+    <span>Can Manage Estimates?</span>
+  </label>
+
+</div>

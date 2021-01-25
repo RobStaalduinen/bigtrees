@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    user: { logged_in: false, admin: false, user_id: null },
+    user: { logged_in: false, admin: false, user_id: null, can_manage_estimates: false },
     estimates: [],
     arborists: []
   },

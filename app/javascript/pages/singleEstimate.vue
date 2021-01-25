@@ -106,9 +106,12 @@ export default {
     retrieveEstimate() {
       this.axiosGet(`/estimates/${this.estimate_id}.json`)
         .then(response => {
-          console.log(response);
           this.estimate = response.data.estimate;
-        })
+        }).catch(
+          (error) => {
+            this.$router.push('/admin/estimates');
+          }
+        )
     },
     handleUpdate(payload) {
       if(payload.estimate) {

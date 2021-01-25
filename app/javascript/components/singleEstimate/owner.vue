@@ -108,7 +108,7 @@ export default {
 
   @media(min-width: 760px){
     #arborist-form {
-      width: 30%;
+      width: 60%;
     }
   }
 </style>

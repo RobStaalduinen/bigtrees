@@ -5,13 +5,19 @@ class EstimatesController < ApplicationController
   before_action :signed_in_user, except: %i[create update]
 
   def index
-    authorize! :manage, Estimate
+    authorize! :query, Estimate
     if request.format.html?
       redirect_to '/admin/estimates'
       return
     end
 
-    @estimates = Estimate.submitted.
+    if current_user.admin?
+      @estimates = Estimate.all
+    else
+      @estimates = current_user.estimates
+    end
+
+    @estimates = @estimates.submitted.
       order('estimates.id DESC').
       joins(:customer).
       joins(:site).
@@ -39,10 +45,9 @@ class EstimatesController < ApplicationController
     @last_estimate = @customer.estimates.last || Estimate.new
   end
 
-	def show
-		authorize! :manage, Estimate
-
+  def show
     @estimate = Estimate.find(params[:id])
+    authorize! :read, @estimate
 
     render json: @estimate
 	end
