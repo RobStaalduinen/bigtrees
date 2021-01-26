@@ -93,7 +93,7 @@ export default {
         estimate: { tree_quantity: 1, submission_completed: true }
       }
 
-      this.axiosPost('/requests', options).then(response => {
+      this.axiosPost('/estimates', options).then(response => {
         var estimateId = response.data.estimate_id
         let costOptions = {
           costs: this.tasks.map(task => { return task.cost })

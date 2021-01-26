@@ -2,7 +2,7 @@ class EstimatesController < ApplicationController
   require 'date'
   layout 'admin'
 
-  before_action :signed_in_user, except: %i[create update]
+  before_action :signed_in_user, except: %i[update]
 
   def index
     authorize! :query, Estimate
@@ -53,8 +53,18 @@ class EstimatesController < ApplicationController
 	end
 
 	def create
-    estimate = Estimate.create(request_params)
+    estimate = Estimate.create(estimate_params)
     estimate.update(arborist: current_user)
+
+    if params[:site].present?
+      estimate.site.update(site_params)
+    end
+
+    if params[:customer].present?
+      customer = Customer.find_by(id: customer_params[:id]) || Customer.new
+      customer.update(customer_params)
+      estimate.update(customer: customer)
+    end
 
 		render json: { estimate_id: estimate.id }
 	end
@@ -107,9 +117,23 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date
+      :tree_quantity, :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date, :submission_completed
     )
     e_params[:is_unknown] ||= false
     e_params
+  end
+
+  def site_params
+    params.require(:site).permit(
+      :id, :wood_removal, :breakables, :vehicle_access, :cleanup, :access_width, :low_access_width,
+      address_attributes: [ :id, :street, :city ]
+    )
+  end
+
+  def customer_params
+    params.require(:customer).permit(
+      :id, :name, :phone, :email, :preferred_contact,
+      address_attributes: [ :id, :street, :city ]
+    )
   end
 end
