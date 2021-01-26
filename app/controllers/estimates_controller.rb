@@ -53,7 +53,8 @@ class EstimatesController < ApplicationController
 	end
 
 	def create
-		estimate = Estimate.create(request_params)
+    estimate = Estimate.create(request_params)
+    estimate.update(arborist: current_user)
 
 		render json: { estimate_id: estimate.id }
 	end

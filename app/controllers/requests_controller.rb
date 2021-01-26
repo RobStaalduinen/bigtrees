@@ -6,6 +6,7 @@ class RequestsController < ApplicationController
 
   def create
     estimate = Estimate.create(request_params)
+
     if params[:site].present?
       estimate.site.update(site_params)
     end
@@ -44,7 +45,7 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :submission_completed, :stumping_only,
-      ).merge({ arborist_id: current_user.id })
+      ).merge({ arborist_id: Arborist::DEFAULT_ID })
     end
 
     def site_params
