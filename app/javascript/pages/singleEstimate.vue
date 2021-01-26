@@ -36,7 +36,7 @@
           <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
         </section>
 
-        <section class ='estimate-section'>
+        <section class ='estimate-section' v-if='estimate.costs && estimate.costs.length > 0'>
           <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
         </section>
 

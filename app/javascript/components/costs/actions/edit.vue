@@ -12,6 +12,10 @@
           @input='(payload) => setCost(index, payload)'>
         </app-single-cost>
       </div>
+
+      <div id='add-cost-row' @click.prevent='addCost'>
+        <span>+ Add Cost +</span>
+      </div>
     </template>
   </app-right-sidebar>
 </template>
@@ -45,11 +49,21 @@ export default {
         this.reset();
       })
     },
+    addCost(){
+      this.costs.push(this.defaultCost());
+    },
     setCost(index, payload) {
         this.costs[index] = { ...payload };
     },
     deleteCost(index) {
       this.costs.splice(index, 1);
+    },
+    defaultCost() {
+      return {
+        key: Math.random().toString(36).substr(2, 9),
+        amount: null,
+        description: null
+      }
     },
     reset() {
       this.costs =  JSON.parse(JSON.stringify(this.estimate.costs))
@@ -81,4 +95,15 @@ export default {
   .delete-icon {
     color: var(--main-color);
   }
+
+  #add-cost-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: var(--main-color);
+    font-size: 18px;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+
 </style>

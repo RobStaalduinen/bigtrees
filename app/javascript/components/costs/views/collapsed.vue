@@ -35,9 +35,6 @@
         </b-row>
 
         <div class='single-estimate-link-row'>
-          <div class='single-estimate-link' v-b-toggle.create-cost>
-            Add Cost/Discount
-          </div>
           <div class='single-estimate-link' v-b-toggle.edit-costs>
             <b-icon icon='pencil-square' class='app-icon'></b-icon>
           </div>
@@ -47,18 +44,15 @@
     </app-collapsable>
 
     <app-edit-costs :estimate='estimate' id='edit-costs' @changed="(payload) => $emit('changed', payload)"></app-edit-costs>
-    <app-create-single-cost :estimate='estimate' id='create-cost' @changed="(payload) => $emit('changed', payload)"></app-create-single-cost>
   </div>
 </template>
 
 <script>
 import EditCosts from '../actions/edit'
-import CreateSingle from '../actions/createSingle';
 
 export default {
   components: {
-    'app-edit-costs': EditCosts,
-    'app-create-single-cost': CreateSingle
+    'app-edit-costs': EditCosts
   },
   props: {
     estimate: {

@@ -1,5 +1,5 @@
 <template>
-  <b-sidebar :id='id' right shadow no-header lazy class='right-sidebar'>
+  <b-sidebar :id='id' right shadow no-header lazy class='right-sidebar' @shown='broadcastShown' ref='sidebar'>
     <div id='edit-sidebar'>
       <div id='edit-header'>{{ title }}</div>
       <slot name='content'></slot>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import EventBus from '@/store/eventBus'
+
 export default {
   props: {
     title: {
@@ -62,7 +64,20 @@ export default {
     cancel(){
       this.$root.$emit('bv::toggle::collapse', this.id);
       this.$emit('cancelled');
+    },
+    broadcastShown() {
+      EventBus.$emit('TOGGLE_SIDEBAR', this.id);
+
     }
+  },
+  mounted() {
+    EventBus.$on('TOGGLE_SIDEBAR', (open_id) => {
+      if(this.$refs.sidebar.isOpen){
+        if(open_id != this.id) {
+          this.$root.$emit('bv::toggle::collapse', this.id);
+        }
+      }
+    });
   }
 }
 </script>

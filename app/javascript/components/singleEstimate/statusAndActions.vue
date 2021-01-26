@@ -13,7 +13,7 @@
       <div class='single-estimate-link' @click='toggleImages'>
         View Images
       </div>
-      <div class='single-estimate-link' v-b-toggle.input-action v-if='currentAction'>
+      <div class='single-estimate-link' @click='toggleAction' v-if='currentAction'>
         <b>{{ `Next: ${currentAction.actionLabel}` }}</b>
       </div>
     </div>
@@ -22,7 +22,7 @@
       v-if='currentAction'
       :is='currentAction.inputComponent'
       :estimate='estimate'
-      id='input-action'
+      :id='currentAction.inputComponent'
       @changed="(payload) => $emit('changed', payload)"
     ></component>
   </div>
@@ -42,7 +42,7 @@ import EventBus from '@/store/eventBus'
 const STEPS = {
   'needs_costs': {
     actionLabel: 'Add Costs',
-    inputComponent: 'estimate-add-costs'
+    inputComponent: 'estimate-add-costs',
   },
   'pending_quote': {
     actionLabel: 'Send Quote',
@@ -84,6 +84,9 @@ export default {
   methods: {
     toggleImages() {
       EventBus.$emit('TOGGLE_IMAGE_GALLERY', {});
+    },
+    toggleAction() {
+      this.$root.$emit('bv::toggle::collapse', this.currentAction.inputComponent);
     }
   }
 }

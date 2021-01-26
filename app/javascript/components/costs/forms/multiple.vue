@@ -80,6 +80,7 @@ export default {
     color: var(--main-color);
     font-size: 18px;
     margin-top: 8px;
+    cursor: pointer;
   }
 
   .cost-entry {
