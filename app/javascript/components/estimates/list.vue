@@ -19,9 +19,8 @@
 
   <app-image-gallery></app-image-gallery>
 
-
-
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
+  <app-list-action-handler></app-list-action-handler>
 </div>
 
 </template>
@@ -30,13 +29,16 @@
 import SingleEstimate from './single';
 import ImageGallery from '@/components/tree_images/views/galleryModal';
 import Filters from './filters';
+import ListActionHandler from '@/components/estimate/utils/listActionHandler';
 import { mapState } from 'vuex'
+import EventBus from '@/store/eventBus'
 
 export default {
   components: {
     'app-single-estimate': SingleEstimate,
     'app-estimate-filters': Filters,
-    'app-image-gallery': ImageGallery
+    'app-image-gallery': ImageGallery,
+    'app-list-action-handler': ListActionHandler
   },
   data() {
     return {
@@ -110,6 +112,10 @@ export default {
   },
   mounted() {
     this.retrieveEstimates();
+
+    EventBus.$on('ESTIMATE_UPDATED', (payload) => {
+      this.retrieveEstimates();
+    })
   },
   watch: {
     searchTerm: function(){

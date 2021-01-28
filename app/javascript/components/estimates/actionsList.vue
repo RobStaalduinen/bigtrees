@@ -16,22 +16,42 @@
       Reactivate
     </b-dropdown-item>
 
-    <!-- <b-dropdown-item v-if="canSchedule()" :href='`/estimates/${estimate.id}/edit?form_option=set_work_date`'>
-      Schedule
+    <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
+      Send Quote
     </b-dropdown-item>
 
-    <b-dropdown-item v-if="estimate.status == 'final_invoice_sent'" :href='`/invoices/${estimate.invoice.id}/edit?form_option=finalize_payment`'>
-      Set Payment
-    </b-dropdown-item> -->
+    <b-dropdown-item @click='triggerAction("schedule_work")' v-if='estimateHelper.canSchedule()'>
+      Schedule Work
+    </b-dropdown-item>
+
+    <b-dropdown-item @click='triggerAction("send_invoice")' v-if='estimateHelper.canSendInvoice()'>
+      Send Invoice
+    </b-dropdown-item>
+
+    <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
+      Pay Invoice
+    </b-dropdown-item>
+
+    <b-dropdown-item @click='triggerAction("send_to_team")'>
+      Send to Team
+    </b-dropdown-item>
   </b-nav-item-dropdown>
 </template>
 
 <script>
+import EventBus from '@/store/eventBus'
+import { EstimateHelper } from '@/components/estimate/utils/estimateHelper';
+
 export default {
   props: {
     estimate: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      estimateHelper: new EstimateHelper(this.estimate)
     }
   },
   methods: {
@@ -44,6 +64,9 @@ export default {
         this.$emit('estimateChanged', null);
         this.$emit('changed', response.data)
       });
+    },
+    triggerAction(name) {
+      EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
     }
   }
 }

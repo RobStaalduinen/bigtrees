@@ -51,9 +51,9 @@ export default {
     }
   },
   mounted() {
-    // EventBus.$on('SUBMISSION_FAILED', () => {
-    //   this.submitting = false;
-    // });
+    EventBus.$on('FORM_VALIDATION_FAILED', () => {
+      this.submitting = false;
+    });
   }
 }
 </script>

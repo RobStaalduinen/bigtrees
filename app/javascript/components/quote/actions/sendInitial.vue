@@ -10,6 +10,7 @@
 import EmailForm from '../../common/forms/email';
 import { quoteContent } from '../../../content/emailContent';
 import moment from 'moment';
+import EventBus from '@/store/eventBus'
 
 export default {
   components: {
@@ -46,6 +47,7 @@ export default {
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         this.$emit('changed', response.data);
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     },
     skipSend() {
@@ -56,7 +58,13 @@ export default {
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         this.$emit('changed', response.data);
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
+    }
+  },
+  watch: {
+    estimate() {
+      this.emailDefinition.email = this.estimate.customer.email;
     }
   }
 }

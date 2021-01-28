@@ -18,6 +18,7 @@
 import EmailForm from '../../common/forms/email';
 import { invoiceContent } from '../../../content/emailContent';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions';
+import EventBus from '@/store/eventBus'
 
 export default {
   components: {
@@ -55,6 +56,7 @@ export default {
 
       invoiceSent(this.estimate, params).then(response => {
         this.$emit('changed', response.data);
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
     },
@@ -62,6 +64,7 @@ export default {
       var params = { invoice: {}, skip_mail: true }
       invoiceSent(this.estimate, params).then(response => {
         this.$emit('changed', response.data);
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
     }

@@ -69,12 +69,11 @@ export default {
   },
   watch: {
     emailDefinition() {
-      console.log(this.emailDefinition);
       this.$emit('changed', this.emailDefinition)
-    },
-    recipient() {
-      console.log(this.recipient);
     }
+  },
+  mounted() {
+    this.$emit('changed', this.emailDefinition);
   }
 }
 </script>

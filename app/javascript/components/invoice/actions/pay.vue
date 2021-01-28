@@ -33,6 +33,7 @@
 <script>
 import InvoiceForm from '../forms/full';
 import EmailForm from '../../common/forms/email';
+import EventBus from '@/store/eventBus'
 import { receiptContent } from '../../../content/emailContent';
 import { paymentReceived } from '@/components/estimate/utils/stateTransitions.js';
 
@@ -64,18 +65,20 @@ export default {
     updateInvoice() {
       this.$refs.observer.validate().then(success => {
         if (!success) {
+          EventBus.$emit('FORM_VALIDATION_FAILED');
           return;
         }
-      })
-      var params = {
-        invoice: { payment_method: this.payment_method },
-        send_receipt: this.sendReceipt,
-        email: this.emailDefinition
-       }
+        var params = {
+          invoice: { payment_method: this.payment_method },
+          send_receipt: this.sendReceipt,
+          email: this.emailDefinition
+        }
 
-      paymentReceived(this.estimate, params).then(response => {
-        this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', response.data);
+        paymentReceived(this.estimate, params).then(response => {
+          this.$root.$emit('bv::toggle::collapse', this.id);
+          this.$emit('changed', response.data);
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+        })
       })
     },
     updateEmailContent(new_email) {
