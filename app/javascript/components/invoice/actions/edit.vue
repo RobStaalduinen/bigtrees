@@ -8,6 +8,7 @@
 
 <script>
 import InvoiceForm from '../forms/full';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -31,7 +32,7 @@ export default {
       var params = { invoice: this.invoice }
       this.axiosPut(`/invoices/${this.estimate.invoice.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', { invoice: response.data.invoice });
+        EventBus.$emit('ESTIMATE_UPDATED', { invoice: response.data.invoice });
       })
     }
   }

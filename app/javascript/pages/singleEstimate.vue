@@ -8,24 +8,23 @@
         <section class='estimate-section mobile-only'>
           <single-estimate-owner
             :estimate='estimate'
-            @changed='(payload) => handleUpdate(payload)'
           ></single-estimate-owner>
         </section>
 
         <section class='estimate-section'>
-          <single-estimate-timeline :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-timeline>
+          <single-estimate-timeline :estimate='estimate'></single-estimate-timeline>
         </section>
 
         <section class='estimate-section'>
-          <single-estimate-customer :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-customer>
+          <single-estimate-customer :estimate='estimate'></single-estimate-customer>
         </section>
 
         <section class='estimate-section'>
-          <single-estimate-addresses :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-addresses>
+          <single-estimate-addresses :estimate='estimate'></single-estimate-addresses>
         </section>
 
         <section class='estimate-section'>
-          <single-estimate-site :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-site>
+          <single-estimate-site :estimate='estimate'></single-estimate-site>
         </section>
 
         <section class ='estimate-section' v-if='estimate.quote_sent_date'>
@@ -33,15 +32,15 @@
         </section>
 
         <section class='estimate-section' v-if='estimate.invoice && estimate.invoice.sent_at'>
-          <single-estimate-invoice :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-invoice>
+          <single-estimate-invoice :estimate='estimate'></single-estimate-invoice>
         </section>
 
         <section class ='estimate-section' v-if='estimate.costs && estimate.costs.length > 0'>
-          <single-estimate-costs :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-costs>
+          <single-estimate-costs :estimate='estimate'></single-estimate-costs>
         </section>
 
         <section class ='estimate-section'>
-          <single-estimate-trees :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-trees>
+          <single-estimate-trees :estimate='estimate'></single-estimate-trees>
         </section>
       </div>
 
@@ -49,16 +48,15 @@
         <section class='estimate-section desktop-only'>
           <single-estimate-owner
             :estimate='estimate'
-            @changed='(payload) => handleUpdate(payload)'
           ></single-estimate-owner>
         </section>
 
         <section class ='estimate-section'>
-          <single-estimate-followups :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-followups>
+          <single-estimate-followups :estimate='estimate'></single-estimate-followups>
         </section>
 
         <section class ='estimate-section' id='status-container'>
-          <single-estimate-actions :estimate='estimate' @changed='(payload) => handleUpdate(payload)'></single-estimate-actions>
+          <single-estimate-actions :estimate='estimate'></single-estimate-actions>
         </section>
       </div>
 
@@ -78,6 +76,8 @@ import Quote from '../components/quote/views/collapsed';
 import Costs from '../components/costs/views/collapsed';
 import Trees from '../components/trees/views/collapsed';
 import Followups from '../components/followups/views/collapsed';
+
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -101,6 +101,15 @@ export default {
   },
   mounted() {
     this.retrieveEstimate();
+
+    EventBus.$on('ESTIMATE_UPDATED', (payload) => {
+      if(payload.estimate) {
+        this.estimate = payload.estimate
+      }
+      else{
+        this.estimate = Object.assign({}, this.estimate, payload);
+      }
+    })
   },
   methods: {
     retrieveEstimate() {

@@ -70,6 +70,7 @@
 
 <script>
 import SiteForm from '../createEstimate/siteQuestions';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -94,7 +95,7 @@ export default {
       var params = { site: this.site }
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', 'site-edit');
-        this.$emit('changed', { site: response.data.site });
+        EventBus.$emit('ESTIMATE_UPDATED',  { site: response.data.site });
       })
     }
   }

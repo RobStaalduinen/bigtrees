@@ -35,9 +35,7 @@ export default {
       var params = { estimate: { work_date: this.work_date } }
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        var payload = { estimate: response.data.estimate };
-        this.$emit('changed', payload);
-        EventBus.$emit('ESTIMATE_UPDATED', payload);
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     }
   },

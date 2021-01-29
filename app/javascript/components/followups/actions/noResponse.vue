@@ -10,6 +10,7 @@
 import EmailForm from '../../common/forms/email';
 import { noResponseFollowup } from '../../../content/emailContent';
 import moment from 'moment';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -46,7 +47,7 @@ export default {
       }
       this.axiosPost(`/estimates/${this.estimate.id}/followups`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', response.data)
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     }
   }

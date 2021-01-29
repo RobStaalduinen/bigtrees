@@ -23,7 +23,7 @@
     </div>
 
     <div class='estimate-footer'>
-      <app-estimate-actions-list :estimate='estimate' @estimateChanged='changeEstimate()'></app-estimate-actions-list>
+      <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
 
       <a class='estimate-link' v-b-modal='"timelineModal" + estimate.id'>
         Timeline
@@ -60,9 +60,6 @@ export default {
   },
   methods:
   {
-    changeEstimate() {
-      this.$emit('estimateChanged');
-    },
     openImages() {
       EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate: this.estimate })
     },

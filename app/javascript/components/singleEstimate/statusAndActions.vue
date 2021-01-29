@@ -23,7 +23,6 @@
       :is='currentAction.inputComponent'
       :estimate='estimate'
       :id='currentAction.inputComponent'
-      @changed="(payload) => $emit('changed', payload)"
     ></component>
   </div>
 </template>

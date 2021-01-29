@@ -43,7 +43,7 @@
       </template>
     </app-collapsable>
 
-    <app-edit-costs :estimate='estimate' id='edit-costs' @changed="(payload) => $emit('changed', payload)"></app-edit-costs>
+    <app-edit-costs :estimate='estimate' id='edit-costs'></app-edit-costs>
   </div>
 </template>
 

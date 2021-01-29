@@ -39,13 +39,11 @@
     <estimate-image-request
       id='image-request'
       :estimate='estimate'
-      @changed='(payload) => this.$emit("changed", payload)'
     ></estimate-image-request>
 
     <estimate-no-response
       id='no-response'
       :estimate='estimate'
-      @changed='(payload) => this.$emit("changed", payload)'
     ></estimate-no-response>
   </div>
 </template>

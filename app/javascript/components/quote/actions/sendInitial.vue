@@ -46,7 +46,6 @@ export default {
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', response.data);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     },
@@ -57,7 +56,6 @@ export default {
 
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', response.data);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     }

@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import EventBus from '@/store/eventBus';
+
 export default {
   props: {
     estimate: {
@@ -54,7 +56,7 @@ export default {
       if(this.arborist != this.estimate.arborist.id) {
         this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
           this.isEdit = false;
-          this.$emit('changed', response.data.estimate);
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
         })
       }
       else{

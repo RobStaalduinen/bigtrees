@@ -4,7 +4,6 @@
     :is='currentAction().inputComponent'
     :estimate='estimate'
     :id='currentAction().inputComponent'
-    @changed="(payload) => $emit('changed', payload)"
     @cancelled="cancelled()"
   ></component>
 </template>
@@ -59,13 +58,11 @@ export default {
       return ACTIONS[this.actionName];
     },
     cancelled() {
-      console.log("CANCELLED");
       this.estimate = null;
     }
   },
   mounted() {
     EventBus.$on('ESTIMATE_TRIGGER_ACTION', (action_name, estimate_id) => {
-      console.log("TRIGGERING " + action_name + " FOR " + estimate_id);
       this.estimate = this.$store.state.estimates.filter((estimate) => estimate.id == estimate_id)[0];
       this.actionName = action_name;
       this.$nextTick(() => {

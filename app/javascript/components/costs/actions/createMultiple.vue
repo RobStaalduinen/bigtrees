@@ -13,6 +13,7 @@
 
 <script>
 import MultipeCosts from '../forms/multiple';
+import EventBus from '@/store/eventBus';
 
 import { setInitialCosts } from '@/components/estimate/utils/stateTransitions';
 
@@ -42,15 +43,9 @@ export default {
         setInitialCosts(this.estimate, { costs: this.costs }).then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);
           this.reset();
-          this.$emit('changed', response.data.estimate);
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
         })
       })
-
-      // var params = { cost: this.cost }
-      // this.axiosPost(`/estimates/${this.estimate.id}/costs`, params).then(response => {
-      //   this.$root.$emit('bv::toggle::collapse', this.id);
-      //   this.$emit('changed', response.data.estimate);
-      // })
     },
     reset() {
       this.costs = [];

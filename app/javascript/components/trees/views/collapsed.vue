@@ -36,7 +36,7 @@
 
     <app-image-gallery-modal :estimate='estimate'></app-image-gallery-modal>
 
-    <app-add-image :estimate='estimate' id='add-image' @changed="(payload) => $emit('changed', payload)"></app-add-image>
+    <app-add-image :estimate='estimate' id='add-image'></app-add-image>
   </div>
 </template>
 

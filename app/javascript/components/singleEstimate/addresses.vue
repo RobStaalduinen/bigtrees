@@ -49,6 +49,8 @@
 
 <script>
 import AddressForm from '../createEstimate/addressForm';
+import EventBus from '@/store/eventBus';
+
 export default {
   components: {
     'app-address-form': AddressForm
@@ -80,7 +82,7 @@ export default {
         }
       }
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
-        this.$emit('changed', { site: response.data.site });
+        EventBus.$emit('ESTIMATE_UPDATED', { site: response.data.site });
         this.updateBillingAddress().then(response => {
           this.$root.$emit('bv::toggle::collapse', 'address-edit');
         })
@@ -112,7 +114,7 @@ export default {
       }
 
       return this.axiosPut(`/customers/${this.estimate.customer.id}`, params).then(response => {
-        this.$emit('changed', { customer: response.data.customer });
+        EventBus.$emit('ESTIMATE_UPDATED', { customer: response.data.customer });
       })
     },
     initialSite() {

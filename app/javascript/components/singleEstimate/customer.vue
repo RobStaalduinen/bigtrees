@@ -53,6 +53,7 @@
 
 <script>
 import CustomerForm from '../createEstimate/customerForm';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -73,7 +74,7 @@ export default {
       var params = { customer: this.customer }
       this.axiosPut(`/customers/${this.customer.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', 'customer-edit');
-        this.$emit('changed', { customer: response.data.customer });
+        EventBus.$emit('ESTIMATE_UPDATED', { customer: response.data.customer });
       });
     }
   }

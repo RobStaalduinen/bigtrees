@@ -55,7 +55,6 @@ export default {
       }
 
       invoiceSent(this.estimate, params).then(response => {
-        this.$emit('changed', response.data);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
@@ -63,7 +62,6 @@ export default {
     skipSend() {
       var params = { invoice: {}, skip_mail: true }
       invoiceSent(this.estimate, params).then(response => {
-        this.$emit('changed', response.data);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
         this.$root.$emit('bv::toggle::collapse', this.id);
       })

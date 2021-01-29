@@ -69,7 +69,7 @@ export default {
   },
   watch: {
     emailDefinition() {
-      this.$emit('changed', this.emailDefinition)
+      this.$emit('changed', this.emailDefinition);
     }
   },
   mounted() {

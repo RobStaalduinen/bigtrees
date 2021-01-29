@@ -22,6 +22,7 @@
 
 <script>
 import SingleImage from '../forms/single';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -59,7 +60,7 @@ export default {
 
       this.axiosPost('/tree_images/create_from_urls', params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
-        this.$emit('changed', { estimate: response.data.estimate });
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
     },
     optionForTree(tree, index){

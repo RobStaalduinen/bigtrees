@@ -54,7 +54,7 @@
       </template>
     </app-collapsable>
 
-    <estimate-schedule-work id='timeline-schedule-work' :estimate='estimate' @changed='(payload) => $emit("changed", payload)'></estimate-schedule-work>
+    <estimate-schedule-work id='timeline-schedule-work' :estimate='estimate'></estimate-schedule-work>
   </div>
 </template>
 

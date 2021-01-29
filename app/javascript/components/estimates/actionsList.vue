@@ -55,14 +55,10 @@ export default {
     }
   },
   methods: {
-    canSchedule(){
-      return this.estimate.status == 'quote_sent';
-    },
     updateStatus(unknownStatus) {
       var params = { estimate: { is_unknown: unknownStatus } };
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
-        this.$emit('estimateChanged', null);
-        this.$emit('changed', response.data)
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
       });
     },
     triggerAction(name) {

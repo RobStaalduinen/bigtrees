@@ -52,7 +52,7 @@
     </app-collapsable>
 
     <app-resend-invoice id='invoice-send' :estimate='estimate'></app-resend-invoice>
-    <app-edit-invoice id='invoice-edit' :estimate='estimate' @changed='payload => broadcastChange(payload)'></app-edit-invoice>
+    <app-edit-invoice id='invoice-edit' :estimate='estimate'></app-edit-invoice>
   </div>
 </template>
 
@@ -80,11 +80,6 @@ export default {
       else {
         return `Paid by ${invoice.payment_method} at ${invoice.paid_at}`
       }
-    }
-  },
-  methods: {
-    broadcastChange(payload) {
-      this.$emit('changed', payload)
     }
   }
 }

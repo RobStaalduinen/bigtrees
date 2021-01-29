@@ -13,7 +13,7 @@
   </div>
 
   <div id='estimates-container'>
-    <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate' @estimateChanged='retrieveEstimates()'></app-single-estimate>
+    <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
 
