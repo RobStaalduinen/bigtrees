@@ -16,25 +16,27 @@
       Reactivate
     </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
-      Send Quote
-    </b-dropdown-item>
+    <template v-if="!statusOnly">
+      <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
+        Send Quote
+      </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("schedule_work")' v-if='estimateHelper.canSchedule()'>
-      Schedule Work
-    </b-dropdown-item>
+      <b-dropdown-item @click='triggerAction("schedule_work")' v-if='estimateHelper.canSchedule()'>
+        Schedule Work
+      </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("send_invoice")' v-if='estimateHelper.canSendInvoice()'>
-      Send Invoice
-    </b-dropdown-item>
+      <b-dropdown-item @click='triggerAction("send_invoice")' v-if='estimateHelper.canSendInvoice()'>
+        Send Invoice
+      </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
-      Pay Invoice
-    </b-dropdown-item>
+      <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
+        Pay Invoice
+      </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("send_to_team")'>
-      Send to Team
-    </b-dropdown-item>
+      <b-dropdown-item @click='triggerAction("send_to_team")'>
+        Send to Team
+      </b-dropdown-item>
+    </template>
   </b-nav-item-dropdown>
 </template>
 
@@ -47,6 +49,10 @@ export default {
     estimate: {
       type: Object,
       required: true
+    },
+    statusOnly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

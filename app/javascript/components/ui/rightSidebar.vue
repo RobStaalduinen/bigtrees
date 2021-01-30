@@ -72,7 +72,7 @@ export default {
   },
   mounted() {
     EventBus.$on('TOGGLE_SIDEBAR', (open_id) => {
-      if(this.$refs.sidebar.isOpen){
+      if(this.$refs.sidebar && this.$refs.sidebar.isOpen){
         if(open_id != this.id) {
           this.$root.$emit('bv::toggle::collapse', this.id);
         }

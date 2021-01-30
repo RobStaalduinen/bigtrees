@@ -7,10 +7,10 @@
     <div class='single-estimate-link-row'>
       <estimate-actions-list
         :estimate='estimate'
-        @changed="(payload) => $emit('changed', payload)"
+        :statusOnly='true'
       ></estimate-actions-list>
 
-      <div class='single-estimate-link' @click='toggleImages'>
+      <div class='single-estimate-link' @click='toggleImages' v-if='hasImages()'>
         View Images
       </div>
       <div class='single-estimate-link' @click='toggleAction' v-if='currentAction'>
@@ -24,6 +24,8 @@
       :estimate='estimate'
       :id='currentAction.inputComponent'
     ></component>
+
+    <estimate-action-handler></estimate-action-handler>
   </div>
 </template>
 
@@ -34,6 +36,7 @@ import PayInvoice from '../invoice/actions/pay';
 import AddCosts from '../costs/actions/createMultiple';
 import SendQuote from '../quote/actions/sendInitial';
 import ActionList from '@/components/estimates/actionsList';
+import ListActionHandler from '@/components/estimate/utils/listActionHandler';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions.js';
 
 import EventBus from '@/store/eventBus'
@@ -68,7 +71,8 @@ export default {
     'estimate-send-invoice': SendInvoice,
     'estimate-pay-invoice': PayInvoice,
     'estimate-add-costs': AddCosts,
-    'estimate-actions-list': ActionList
+    'estimate-actions-list': ActionList,
+    'estimate-action-handler': ListActionHandler
   },
   props: {
     estimate: {
@@ -86,6 +90,11 @@ export default {
     },
     toggleAction() {
       this.$root.$emit('bv::toggle::collapse', this.currentAction.inputComponent);
+    },
+    hasImages() {
+      return this.estimate.trees.map(tree => {
+        return tree.tree_images.length > 0
+      }).some(img => img === true);
     }
   }
 }
