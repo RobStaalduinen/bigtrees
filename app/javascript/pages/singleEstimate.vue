@@ -1,6 +1,9 @@
 <template>
   <page-template>
-    <app-header :title='"Estimate #" + estimate_id' backLink='/admin/estimates'></app-header>
+    <app-header
+      :title='getTitle()'
+      backLink='/admin/estimates'
+    ></app-header>
 
     <div v-if='estimate' id='estimate-body'>
 
@@ -129,6 +132,15 @@ export default {
       else{
         this.estimate = Object.assign({}, this.estimate, payload);
       }
+    },
+    getTitle() {
+      var title = "Estimate #" + this.estimate_id;
+
+      if(this.estimate && this.estimate.is_unknown){
+        title += ' (Unknown)';
+      }
+
+      return title;
     }
   }
 }

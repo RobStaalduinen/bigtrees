@@ -2,6 +2,7 @@
   <div class='shadow-box-entry estimate'>
     <div class='estimate-header'>
       <div class='estimate-header-name'>{{ estimate.customer.name }}</div>
+      <div v-if='estimate.is_unknown' class='estimate-unknown-header'>Unknown</div>
       <div class='estimate-header-status'>{{ estimate.formatted_status }}</div>
     </div>
 
@@ -101,6 +102,12 @@ export default {
     font-size: 10px;
     display: flex;
     align-items: center;
+  }
+
+  .estimate-unknown-header {
+    display: flex;
+    align-items: center;
+    font-style: italic;
   }
 
   .estimate-header-status {
