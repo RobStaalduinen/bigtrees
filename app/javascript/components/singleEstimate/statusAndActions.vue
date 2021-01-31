@@ -11,7 +11,7 @@
       ></estimate-actions-list>
 
       <div class='single-estimate-link' @click='toggleImages' v-if='hasImages()'>
-        View Images
+        Images
       </div>
       <div class='single-estimate-link' @click='toggleAction' v-if='currentAction'>
         <b>{{ `Next: ${currentAction.actionLabel}` }}</b>
