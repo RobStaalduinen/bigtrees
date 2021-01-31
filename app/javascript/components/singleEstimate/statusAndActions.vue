@@ -7,7 +7,6 @@
     <div class='single-estimate-link-row'>
       <estimate-actions-list
         :estimate='estimate'
-        :statusOnly='true'
       ></estimate-actions-list>
 
       <div class='single-estimate-link' @click='toggleImages' v-if='hasImages()'>
@@ -25,7 +24,9 @@
       :id='currentAction.inputComponent'
     ></component>
 
-    <estimate-action-handler></estimate-action-handler>
+    <estimate-action-handler
+      :estimate='estimate'
+    ></estimate-action-handler>
   </div>
 </template>
 

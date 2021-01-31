@@ -1,8 +1,8 @@
 <template>
   <component
-    v-if='estimate && currentAction()'
+    v-if='targetEstimate && currentAction()'
     :is='currentAction().inputComponent'
-    :estimate='estimate'
+    :estimate='targetEstimate'
     :id='currentAction().inputComponent'
     @cancelled="cancelled()"
   ></component>
@@ -15,6 +15,7 @@ import ScheduleWork from '@/components/estimate/actions/schedule';
 import SendInvoice from '@/components/invoice/actions/send';
 import PayInvoice from '@/components/invoice/actions/pay';
 import SendToTeam from '@/components/quote/actions/sendToTeam';
+import NoResponse from '@/components/followups/actions/noResponse';
 
 const ACTIONS = {
   'send_quote': {
@@ -36,20 +37,31 @@ const ACTIONS = {
   'send_to_team': {
     actionLabel: 'Send to Team',
     inputComponent: 'estimate-send-to-team'
+  },
+  'no_response_followup': {
+    actionLabel: 'Send Followup',
+    inputComponent: 'estimate-no-response'
   }
 }
 
 export default {
+  props: {
+    estimate: {
+      required: false,
+      default: null
+    }
+  },
   components: {
     'estimate-send-quote': SendQuote,
     'estimate-schedule-work': ScheduleWork,
     'estimate-send-invoice': SendInvoice,
     'estimate-pay-invoice': PayInvoice,
-    'estimate-send-to-team': SendToTeam
+    'estimate-send-to-team': SendToTeam,
+    'estimate-no-response': NoResponse
   },
   data() {
     return {
-      estimate: null,
+      targetEstimate: null,
       actionName: null
     }
   },
@@ -58,17 +70,22 @@ export default {
       return ACTIONS[this.actionName];
     },
     cancelled() {
-      this.estimate = null;
+      this.targetEstimate = null;
     }
   },
   mounted() {
     EventBus.$on('ESTIMATE_TRIGGER_ACTION', (action_name, estimate_id) => {
-      this.estimate = this.$store.state.estimates.filter((estimate) => estimate.id == estimate_id)[0];
+      if(this.estimate != null) {
+        this.targetEstimate = this.estimate;
+      }
+      else {
+        this.targetEstimate = this.$store.state.estimates.filter((estimate) => estimate.id == estimate_id)[0];
+      }
+
       this.actionName = action_name;
       this.$nextTick(() => {
         this.$root.$emit('bv::toggle::collapse', this.currentAction().inputComponent);
       })
-
     });
   }
 }

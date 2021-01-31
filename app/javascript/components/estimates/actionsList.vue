@@ -4,10 +4,6 @@
     text="Actions"
     right
   >
-    <!-- <b-dropdown-item v-if="!estimate.is_unknown" :href='`/estimates/${estimate.id}/quote_mailouts/new?mail_type=followup`'>
-      Send Followup
-    </b-dropdown-item> -->
-
     <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
       Move to Unknown
     </b-dropdown-item>
@@ -16,27 +12,29 @@
       Reactivate
     </b-dropdown-item>
 
-    <template v-if="!statusOnly">
-      <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
-        Send Quote
-      </b-dropdown-item>
+    <b-dropdown-item @click='triggerAction("no_response_followup")' v-if='estimateHelper.canSendFollowup()'>
+      Send Followup
+    </b-dropdown-item>
 
-      <b-dropdown-item @click='triggerAction("schedule_work")' v-if='estimateHelper.canSchedule()'>
-        Schedule Work
-      </b-dropdown-item>
+    <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
+      Send Quote
+    </b-dropdown-item>
 
-      <b-dropdown-item @click='triggerAction("send_invoice")' v-if='estimateHelper.canSendInvoice()'>
-        Send Invoice
-      </b-dropdown-item>
+    <b-dropdown-item @click='triggerAction("schedule_work")' v-if='estimateHelper.canSchedule()'>
+      Schedule Work
+    </b-dropdown-item>
 
-      <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
-        Pay Invoice
-      </b-dropdown-item>
+    <b-dropdown-item @click='triggerAction("send_invoice")' v-if='estimateHelper.canSendInvoice()'>
+      Send Invoice
+    </b-dropdown-item>
 
-      <b-dropdown-item @click='triggerAction("send_to_team")'>
-        Send to Team
-      </b-dropdown-item>
-    </template>
+    <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
+      Pay Invoice
+    </b-dropdown-item>
+
+    <b-dropdown-item @click='triggerAction("send_to_team")'>
+      Send to Team
+    </b-dropdown-item>
   </b-nav-item-dropdown>
 </template>
 
@@ -49,10 +47,6 @@ export default {
     estimate: {
       type: Object,
       required: true
-    },
-    statusOnly: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
