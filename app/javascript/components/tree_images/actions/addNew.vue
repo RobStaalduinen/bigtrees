@@ -39,23 +39,29 @@ export default {
   data() {
     return {
       image: {},
-      taskNumber: this.estimate.trees[0].id,
+      taskNumber: 'new',
       validationErrorMessage: null
     }
   },
   computed: {
     options() {
-      return this.estimate.trees.map((tree, index) => {
+      var arr =  this.estimate.trees.map((tree, index) => {
         return this.optionForTree(tree, index);
       })
+      arr.unshift({value: 'new', text: 'New Task'});
+
+      return arr;
     }
   },
   methods: {
     saveImage() {
       var params = {
         estimate_id: this.estimate.id,
-        tree_id: this.taskNumber,
         images: [this.image.url]
+      }
+
+      if(this.taskNumber != 'new') {
+        params.tree_id = this.taskNumber
       }
 
       this.axiosPost('/tree_images/create_from_urls', params).then(response => {

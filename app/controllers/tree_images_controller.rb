@@ -52,7 +52,7 @@ class TreeImagesController < ApplicationController
     @tree ||= if params[:tree_id].present?
                 Tree.find(params[:tree_id])
               else
-                Tree.create(estimate_id: params[:estimate_id], work_type: 5)
+                Tree.create(estimate_id: params[:estimate_id], work_type: 4)
               end
   end
 
