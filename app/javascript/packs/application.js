@@ -39,11 +39,15 @@ Vue.use(require('vue-moment'));
 import App from '../app.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "vue-multiselect/dist/vue-multiselect.min.css"
 import '../stylesheets/variables'
 import '../stylesheets/bootstrap_overrides.css'
 import '../stylesheets/common_styles.css'
 
 import moment from 'moment'
+
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect)
 
 // Global components
 import Header from '../components/ui/header.vue'
