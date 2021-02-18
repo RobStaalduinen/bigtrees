@@ -60,7 +60,7 @@ export default {
         return tree.tree_images.map((image, imageIndex) => {
           return {
             id: image.id,
-            url: image.url,
+            url: image.image_url_md,
             imageName: `Task #${index+1}, Image #${imageIndex+1}`,
             workType: tree.work_name,
             description: tree.description,

@@ -1,0 +1,23 @@
+<% estimate.tree_images.each_slice(9).each_with_index do |images, i| %>
+  <div class='alwaysbreak page'>
+    <%= render 'quotes/pdf/header' %>
+
+    <div class='estimate-header'>
+      <% if i == 0 %>
+        Proposed Work
+      <% else %>
+        Proposed Work Cont.
+      <% end %>
+    </div>
+
+    <div class='details-box'>
+      <% images.each_slice(3).each do |image_row| %>
+        <div class='image-row'>
+          <% image_row.each do |image| %>
+            <img class='tree-image' src="<%= image.image_url_sm %>">
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

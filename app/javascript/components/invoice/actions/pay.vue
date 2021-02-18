@@ -6,7 +6,7 @@
           label='Payment Method'
           v-model='payment_method'
           name='payment_method'
-          :options="['Cheque', 'E-Transfer', 'Debit', 'Credit', 'Cash']"
+          :options="options"
           validationRules='required'
         />
 
@@ -36,6 +36,7 @@ import EmailForm from '../../common/forms/email';
 import EventBus from '@/store/eventBus'
 import { receiptContent } from '../../../content/emailContent';
 import { paymentReceived } from '@/components/estimate/utils/stateTransitions.js';
+import { PAYMENT_METHODS } from '@/constants';
 
 export default {
   components: {
@@ -54,6 +55,7 @@ export default {
     return {
       payment_method: this.estimate.invoice.payment_method,
       sendReceipt: true,
+      options: PAYMENT_METHODS,
       emailDefinition: {
         email: this.estimate.customer.email,
         content: receiptContent,

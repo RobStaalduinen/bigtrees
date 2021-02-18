@@ -171,3 +171,14 @@
   margin-top: 16px;
   font-size: 16px;
 }
+
+.image-row {
+  width: 100%;
+  display: flex;
+}
+
+.tree-image {
+  max-width: 250px;
+  min-width: 250px;
+  margin-right: 16px;
+}

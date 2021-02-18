@@ -1,28 +1,25 @@
 <template>
   <div>
-    <b-form-group
-      label="Recipient"
-      label-for="recipient"
-    >
-    <multiselect
-      v-model="recipientObjects"
-      name='recipient'
-      :options="options"
-      :searchable='false'
-      :allow-empty='false'
-      label='text'
-      track-by='value'
-      :multiple='true'
-      :close-on-select='false'
-      :taggable='false'
-      :showPointer='false'
-    ></multiselect>
-      <!-- <b-form-select
-        v-model='recipient'
+    <app-multi-select
+        v-model="recipientObjects"
         name='recipient'
         :options="options"
-      /> -->
-    </b-form-group>
+        validationRules='required'
+        label='Recipient'
+    ></app-multi-select>
+      <!-- <multiselect
+        v-model="recipientObjects"
+        name='recipient'
+        :options="options"
+        :searchable='false'
+        :allow-empty='false'
+        label='text'
+        track-by='value'
+        :multiple='true'
+        :close-on-select='false'
+        :taggable='false'
+        :showPointer='false'
+      ></multiselect> -->
 
     <app-input-field
       v-model='emailSubject'
