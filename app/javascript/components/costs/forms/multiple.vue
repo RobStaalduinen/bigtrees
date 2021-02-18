@@ -29,12 +29,12 @@ export default {
   props: {
     value: {
       required: false,
-      default: () => this.defaultCost()
+      default: () => [this.defaultCost()]
     }
   },
   data() {
     return {
-      costs: [this.defaultCost()]
+      costs: this.value
     }
   },
   methods: {
@@ -59,11 +59,21 @@ export default {
       }
     },
     reset() {
-      this.costs = [this.defaultCost()];
+      if(this.value == null || this.value.length === 0){
+        this.costs = [this.defaultCost()];
+      }
+      else {
+        this.costs = this.value;
+      }
     }
   },
   mounted() {
     this.reset();
+  },
+  watch: {
+    value() {
+      console.log(this.value);
+    }
   }
 }
 </script>

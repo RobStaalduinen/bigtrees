@@ -1,15 +1,25 @@
 <template>
   <div>
-    <b-form-group
-      label="Recipient"
-      label-for="recipient"
-    >
-      <b-form-select
-        v-model='recipient'
+    <app-multi-select
+        v-model="recipientObjects"
         name='recipient'
         :options="options"
-      />
-    </b-form-group>
+        validationRules='required'
+        label='Recipient'
+    ></app-multi-select>
+      <!-- <multiselect
+        v-model="recipientObjects"
+        name='recipient'
+        :options="options"
+        :searchable='false'
+        :allow-empty='false'
+        label='text'
+        track-by='value'
+        :multiple='true'
+        :close-on-select='false'
+        :taggable='false'
+        :showPointer='false'
+      ></multiselect> -->
 
     <app-input-field
       v-model='emailSubject'
@@ -44,13 +54,16 @@ export default {
   props: ['value'],
   data() {
     return {
-      recipient: 'tbrewer@bigislandgroup.ca',
+      recipientObjects: [],
       emailSubject: this.value.subject,
       emailBody: this.value.content,
       editBody: false
     }
   },
   computed: {
+    recipients() {
+      return this.recipientObjects.map( obj => { return obj.value })
+    },
     options() {
       return this.$store.state.arborists.map(arborist => {
         return {
@@ -61,7 +74,7 @@ export default {
     },
     emailDefinition() {
       return {
-        email: this.recipient,
+        email: this.recipients,
         subject: this.emailSubject,
         content: this.emailBody
       }

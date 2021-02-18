@@ -81,6 +81,16 @@ a {
   height: 100% !important;
 }
 
+/* Multiselect */
+
+.multiselect__tag {
+  background-color: var(--main-color);
+}
+
+.multiselect__tag-icon:after {
+  color: white;
+}
+
 @media (min-width: 200px) and (max-width: 759px){
   .dropdown-item{
     padding: 12px 0 12px 32px;

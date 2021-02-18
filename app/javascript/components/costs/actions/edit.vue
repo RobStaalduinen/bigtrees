@@ -1,21 +1,7 @@
 <template>
   <app-right-sidebar :id='id' title='Edit Costs' submitText='Save' :onSubmit='updateCosts' @cancelled='reset'>
     <template v-slot:content>
-      <i id='info-header'>Use negative numbers for discounts</i>
-      <div v-for='(cost, index) in costs' :key='cost.id' class='cost-entry'>
-        <div class='cost-header'>
-          Cost #{{ (parseInt(index) + 1) }}
-          <b-icon icon='trash-fill' class='delete-icon' @click='deleteCost(index)'/>
-        </div>
-        <app-single-cost
-          :value='cost'
-          @input='(payload) => setCost(index, payload)'>
-        </app-single-cost>
-      </div>
-
-      <div id='add-cost-row' @click.prevent='addCost'>
-        <span>+ Add Cost +</span>
-      </div>
+      <app-multi-costs v-model='costs'></app-multi-costs>
     </template>
   </app-right-sidebar>
 </template>
@@ -23,10 +9,12 @@
 <script>
 import SingleCost from '../forms/single';
 import EventBus from '@/store/eventBus';
+import MultiCostFrom from '@/components/costs/forms/multiple';
 
 export default {
   components: {
-    'app-single-cost': SingleCost
+    'app-single-cost': SingleCost,
+    'app-multi-costs': MultiCostFrom
   },
   props: {
     id: {
@@ -67,7 +55,7 @@ export default {
       }
     },
     reset() {
-      this.costs =  JSON.parse(JSON.stringify(this.estimate.costs))
+      this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
     }
   },
   mounted() {

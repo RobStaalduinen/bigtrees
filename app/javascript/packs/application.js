@@ -39,11 +39,15 @@ Vue.use(require('vue-moment'));
 import App from '../app.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "vue-multiselect/dist/vue-multiselect.min.css"
 import '../stylesheets/variables'
 import '../stylesheets/bootstrap_overrides.css'
 import '../stylesheets/common_styles.css'
 
 import moment from 'moment'
+
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect)
 
 // Global components
 import Header from '../components/ui/header.vue'
@@ -72,6 +76,7 @@ import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
 import SelectField from '../components/form/selectField';
 import SubmitButton from '../components/form/submitButton.vue';
+import Multi from '../components/form/multiSelect.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
@@ -79,6 +84,7 @@ Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
 Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
+Vue.component('app-multi-select', Multi);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
