@@ -32,7 +32,7 @@ export default {
       default: function() {
         return {
           status: 'all',
-          createdAfter: 'six_months'
+          createdAfter: 'forever'
         }
       }
     }
