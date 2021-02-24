@@ -41,11 +41,11 @@ class Estimate < ActiveRecord::Base
   scope :created_after, -> (filter_string) do
     case filter_string
     when 'one_week'
-      where('created_at >= ?', Date.today - 1.week)
+      where('estimates.created_at >= ?', Date.today - 1.week)
     when 'one_month'
-      where('created_at >= ?', Date.today - 1.month)
+      where('estimates.created_at >= ?', Date.today - 1.month)
     when 'six_months'
-      where('created_at >= ?', Date.today - 6.months)
+      where('estimates.created_at >= ?', Date.today - 6.months)
     else
       all
     end

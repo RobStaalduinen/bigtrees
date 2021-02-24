@@ -20,7 +20,7 @@ class EstimatesController < ApplicationController
     @estimates = @estimates.submitted.
       order('estimates.id DESC').
       joins(:customer).
-      joins(:site).
+      joins(site: :address).
       includes(customer: [:address]).
       includes(site: [:address]).
       includes(:invoice).
@@ -109,7 +109,9 @@ class EstimatesController < ApplicationController
         LOWER(customers.email) LIKE :search OR
         LOWER(customers.phone) LIKE :search OR
         LOWER(sites.street) LIKE :search OR
-        LOWER(sites.city) LIKE :search
+        LOWER(sites.city) LIKE :search OR
+        LOWER(addresses.street) LIKE :search OR
+        LOWER(addresses.city) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )
