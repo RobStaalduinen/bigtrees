@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
   methods: {
-    axiosPut (endpoint, options) { 
+    axiosPut (endpoint, options) {
       this.setupAxios();
       return axios.put(endpoint, options, { withCredentials: true });
     },
@@ -17,6 +17,12 @@ export default {
     axiosImagePost(endpoint, formData){
       let options = { 'Content-Type': 'multipart/form-data' };
       return axios.post(endpoint, formData, options);
+    },
+    axiosBase64ImagePost(endpoint, image) {
+      let options = {
+        'Content-Type': 'image/png',
+        'Content-Encoding': 'base64'
+      };
     },
     setupAxios() {
       axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content;

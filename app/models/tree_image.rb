@@ -18,6 +18,11 @@ class TreeImage < ActiveRecord::Base
     url.gsub(BUCKET_URL, IMGIX_CDN).split('?')[0]
   end
 
+  def edited_imgix_url
+    return nil unless edited_image_url
+    edited_image_url.gsub(BUCKET_URL, IMGIX_CDN).split('?')[0]
+  end
+
   def generate_image_name
     e_id = self.tree.try(:estiamte_id) || "-"
     t_id = self.tree_id || "-"
@@ -30,6 +35,11 @@ class TreeImage < ActiveRecord::Base
 
   def image_url_md
     "#{imgix_url}?w=800"
+  end
+
+  def edited_image_url_md
+    return nil unless edited_imgix_url
+    "#{edited_imgix_url}?w=800"
   end
 
   validates_attachment_content_type :asset, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]

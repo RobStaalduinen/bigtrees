@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210213154020) do
+ActiveRecord::Schema.define(version: 20210219185050) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 20210213154020) do
     t.integer  "tree_id",            limit: 4
     t.string   "image_url",          limit: 255
     t.string   "image_small_url",    limit: 255
+    t.string   "edited_image_url",   limit: 255
   end
 
   create_table "trees", force: :cascade do |t|

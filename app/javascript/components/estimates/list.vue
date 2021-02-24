@@ -17,7 +17,7 @@
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
 
-  <app-image-gallery></app-image-gallery>
+  <!-- <app-image-gallery></app-image-gallery> -->
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
   <app-list-action-handler></app-list-action-handler>

@@ -40,12 +40,14 @@
     </div>
 
     <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal>
+    <app-image-gallery :estimate='estimate'></app-image-gallery>
   </div>
 </template>
 
 <script>
 import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
+import ImageGallery from '@/components/tree_images/views/galleryModal';
 import EventBus from '@/store/eventBus'
 
 export default {
@@ -57,12 +59,13 @@ export default {
   },
   components: {
     'app-timeline-modal': TimelineModal,
-    'app-estimate-actions-list': ActionsList
+    'app-estimate-actions-list': ActionsList,
+    'app-image-gallery': ImageGallery
   },
   methods:
   {
     openImages() {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate: this.estimate })
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id })
     },
     hasImages() {
       return this.estimate.trees.map(tree => {
