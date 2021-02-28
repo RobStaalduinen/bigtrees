@@ -1,6 +1,6 @@
 class TreeImage < ActiveRecord::Base
   BUCKET_URL = 'https://bigtreecare.s3.amazonaws.com'
-  IMGIX_CDN = 'http://bigtrees.imgix.net'
+  IMGIX_CDN = 'https://bigtrees.imgix.net'
   belongs_to :tree
 
   # has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
