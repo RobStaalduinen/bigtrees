@@ -9,5 +9,6 @@ class TreeImageSerializer < ApplicationSerializer
   attribute :image_url_sm
   attribute :image_url_md
 
+  attribute :edited_image_url_sm
   attribute :edited_image_url_md
 end

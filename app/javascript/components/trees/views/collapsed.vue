@@ -19,7 +19,7 @@
             <img
               v-for='(image, imageIndex) in tree.tree_images'
               :key='index + "_" + imageIndex'
-              :src='image.url'
+              :src='image.edited_image_url_sm || image.image_url_sm'
               class='tree-image'
               @click='toggleModal(image.id)'
             />

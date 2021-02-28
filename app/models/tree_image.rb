@@ -37,8 +37,15 @@ class TreeImage < ActiveRecord::Base
     "#{imgix_url}?w=800"
   end
 
+  def edited_image_url_sm
+    return nil unless edited_imgix_url
+
+    "#{edited_imgix_url}?w=400"
+  end
+
   def edited_image_url_md
     return nil unless edited_imgix_url
+
     "#{edited_imgix_url}?w=800"
   end
 

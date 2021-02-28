@@ -160,6 +160,7 @@ export default {
           var params = { edited_image_url: parseImageUploadResponse(imgResponse) };
 
           this.axiosPut(`/tree_images/${this.editedId}?estimate_id=${this.estimate.id}`, params).then(response => {
+            this.changeImageVersion('edited');
             EventBus.$emit('ESTIMATE_UPDATED', response.data);
             this.toggleEdit(null, null);
           })
@@ -167,7 +168,7 @@ export default {
       })
     },
     setImageById(imageId) {
-      this.displayedImage = imageId != null ? findImageById(imageId) : 1;
+      this.displayedImage = imageId != null ? this.findImageById(imageId) : 1;
     },
     findImageById(imageId) {
       return this.imageDefinitions.findIndex(imageDef => imageDef.treeImage.id === imageId) + 1;
