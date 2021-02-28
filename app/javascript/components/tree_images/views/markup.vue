@@ -116,10 +116,10 @@ export default {
       this.$nextTick(() => {
         this.renderCanvas = true;
 
-        this.$nextTick(() => {
+        setTimeout(() => {
           this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
           this.$refs.editor.setBackgroundImage(this.urlToEdit);
-        })
+        }, 200)
       })
     }
   }
