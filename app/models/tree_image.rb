@@ -53,7 +53,8 @@ class TreeImage < ActiveRecord::Base
 
   def set_image_url
     return unless image_url.blank? && asset.present?
-    image_url = asset.url
+
+    self.image_url = asset.url
   end
 
   validates_attachment_content_type :asset, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
