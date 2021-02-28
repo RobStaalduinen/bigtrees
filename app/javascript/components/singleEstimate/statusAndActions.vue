@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     toggleImages() {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', {});
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id });
     },
     toggleAction() {
       this.$root.$emit('bv::toggle::collapse', this.currentAction.inputComponent);

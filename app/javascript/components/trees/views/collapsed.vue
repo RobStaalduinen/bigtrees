@@ -19,7 +19,7 @@
             <img
               v-for='(image, imageIndex) in tree.tree_images'
               :key='index + "_" + imageIndex'
-              :src='image.url'
+              :src='image.edited_image_url_sm || image.image_url_sm'
               class='tree-image'
               @click='toggleModal(image.id)'
             />
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     toggleModal(image_id) {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { image_id: image_id });
+      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id, image_id: image_id });
     }
   },
   updated(){

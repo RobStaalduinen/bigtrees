@@ -2,20 +2,51 @@
   <div id="image-gallery" v-if='display' @click='closeModal'>
     <div id='image-gallery-internal'>
       <div id='modal-image-container'>
-        <img :src='displayedImageDefinition.url' class='modal-image' @click.stop />
+        <img :src='displayedUrl' class='modal-image' @click.stop />
       </div>
 
       <div id='image-gallery-bottom' @click.stop>
         <div id='modal-image-info'>
-          <b>{{ displayedImageDefinition.imageName }}</b>
-          <div v-if='displayedImageDefinition.workType != "Other"'>
-            <b>Work Type: </b>{{ displayedImageDefinition.workType }}
+          <b>{{ displayedImageDefinition.tree.treeName + ', ' + displayedImageDefinition.treeImage.imageName }}</b>
+          <div v-if='displayedImageDefinition.tree.workType != "Other"'>
+            <b>Work Type: </b>{{ displayedImageDefinition.tree.workType }}
           </div>
-          <div v-if='displayedImageDefinition.description'>
-            <b>Customer Description: </b> {{ displayedImageDefinition.description }}
+          <div v-if='displayedImageDefinition.tree.description'>
+            <b>Customer Description: </b> {{ displayedImageDefinition.tree.description }}
           </div>
-          <div v-if='displayedImageDefinition.workType == "Removal"'>
-            <b>Stump Removal: </b> {{ displayedImageDefinition.stumpRemoval }}
+          <div v-if='displayedImageDefinition.tree.workType == "Removal"'>
+            <b>Stump Removal: </b> {{ displayedImageDefinition.tree.stumpRemoval }}
+          </div>
+        </div>
+
+        <div id='modal-edits'>
+          <div class='modal-edits-left'>
+            <div
+              class='modal-edits-link'
+              v-bind:class="{ 'modal-edits-link-active': imageVersion == 'original' }"
+              @click='changeImageVersion("original")'
+            >
+              Original
+            </div>
+
+            <div
+              class='modal-edits-link'
+              v-if='hasEdit'
+              v-bind:class="{ 'modal-edits-link-active': imageVersion == 'edited' }"
+              @click='changeImageVersion("edited")'
+            >
+              Edited
+            </div>
+
+            <div
+              v-else
+              class='modal-edits-link'
+            >
+              No Edited version
+            </div>
+          </div>
+          <div class='modal-edits-icon'>
+            <b-icon icon='pencil-square' @click='toggleEdit(displayedImageDefinition.treeImage.id)'></b-icon>
           </div>
         </div>
 
@@ -35,13 +66,27 @@
 
       </div>
     </div>
+
+    <app-image-markup
+      v-if='editedId != null'
+      :imageUrl='displayedUrl'
+      @cancel='editedId = null'
+      :onSave='onEditSave'
+    ></app-image-markup>
   </div>
 </template>
 
 <script>
 import EventBus from '@/store/eventBus'
+import Markup from './markup';
+import { base64ToBlob } from '@/utils/fileUtils';
+import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
+import { Tree, TreeImage } from '@/models';
 
 export default {
+  components: {
+    'app-image-markup': Markup
+  },
   props: {
     estimate: {
       required: false
@@ -51,20 +96,17 @@ export default {
     return {
       displayedImage: 1,
       display: false,
-      workingEstimate: this.estimate
+      imageVersion: null,
+      editedId: null
     }
   },
   computed: {
     imageDefinitions() {
-      var allUrls = this.workingEstimate.trees.map((tree, index) => {
+      var allUrls = this.estimate.trees.map((tree, index) => {
         return tree.tree_images.map((image, imageIndex) => {
           return {
-            id: image.id,
-            url: image.image_url_md,
-            imageName: `Task #${index+1}, Image #${imageIndex+1}`,
-            workType: tree.work_name,
-            description: tree.description,
-            stumpRemoval: tree.stumpRemoval ? 'Yes' : 'No'
+            tree: new Tree(tree).galleryDisplay(index),
+            treeImage: new TreeImage(image).galleryDisplay(imageIndex)
           }
         })
       })
@@ -73,10 +115,16 @@ export default {
     },
     displayedImageDefinition() {
       var image = this.imageDefinitions[this.displayedImage - 1];
-      return image ? image : { url: null, imageName: null, workType: 'other'}
+      return image ? image : { treeImage: { url: null, imageName: null }, tree: { workType: 'other' }}
     },
     totalImages() {
       return this.imageDefinitions.length;
+    },
+    hasEdit() {
+      return this.displayedImageDefinition.treeImage.edited_url != null
+    },
+    displayedUrl(){
+      return this.imageVersion == 'edited' ? this.displayedImageDefinition.treeImage.edited_url : this.displayedImageDefinition.treeImage.url
     }
   },
   methods: {
@@ -88,24 +136,51 @@ export default {
       if(this.displayedImage > this.totalImages) {
         this.displayedImage = 1;
       }
+
+      this.setInitialImageVersion();
     },
     closeModal() {
       this.display = false;
       document.documentElement.style.overflow = 'auto'
+    },
+    setInitialImageVersion(){
+      this.imageVersion = this.hasEdit ? 'edited' : 'original'
+    },
+    changeImageVersion(imageType) {
+      this.imageVersion = imageType;
+    },
+    toggleEdit(imageId) {
+      this.editedId = imageId;
+    },
+    onEditSave(image_base64) {
+      this.axiosGet('/tree_images/new', { filename: 'edited' }).then(response => {
+        const formData = signedUrlFormData(response.data.fields, base64ToBlob(image_base64));
+
+        this.axiosImagePost(response.data.url, formData).then(imgResponse => {
+          var params = { edited_image_url: parseImageUploadResponse(imgResponse) };
+
+          this.axiosPut(`/tree_images/${this.editedId}?estimate_id=${this.estimate.id}`, params).then(response => {
+            this.changeImageVersion('edited');
+            EventBus.$emit('ESTIMATE_UPDATED', response.data);
+            this.toggleEdit(null, null);
+          })
+        })
+      })
+    },
+    setImageById(imageId) {
+      this.displayedImage = imageId != null ? this.findImageById(imageId) : 1;
+    },
+    findImageById(imageId) {
+      return this.imageDefinitions.findIndex(imageDef => imageDef.treeImage.id === imageId) + 1;
     }
   },
   mounted() {
     EventBus.$on('TOGGLE_IMAGE_GALLERY', (payload) => {
-      if(payload.estimate != null) {
-        this.workingEstimate = payload.estimate;
+      if(payload.estimate_id != null && payload.estimate_id != this.estimate.id) {
+        return;
       }
-      var image_id = payload.image_id;
-      if(image_id != null) {
-        this.displayedImage = (this.imageDefinitions.findIndex(imageDef => imageDef.id === image_id) + 1);
-      }
-      else {
-        this.displayedImage = 1;
-      }
+      this.setImageById(payload.image_id);
+      this.setInitialImageVersion();
       document.documentElement.style.overflow = 'hidden'
       this.display = true;
     });
@@ -134,7 +209,8 @@ export default {
   }
 
   #modal-image-container {
-    display: grid;
+    display: flex;
+    justify-content: center;
     height: 100%;
     padding-top: 16px;
     margin-bottom: 16px;
@@ -144,8 +220,50 @@ export default {
   }
 
   .modal-image {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #modal-edits {
+    display: flex;
+    justify-content: space-between;
+
+    border-style: solid;
+    border-color: lightgray;
+    border-width: 1px 0 0 0;
+  }
+
+  .modal-edits-left {
+    display: flex;
+  }
+
+  .modal-edits-link {
+    display: flex;
+    justify-content: center;
+    padding: 8px 16px;
+    margin-right: 16px;
+    cursor: pointer;
+  }
+
+  .modal-edits-link-active {
+    background-color: var(--main-color);
+    color: white;
+  }
+
+  .modal-edits-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-color);
+    font-size: 22px;
+    padding: 8px;
+
+    border-style: solid;
+    border-color: lightgray;
+    border-width: 0 0 0 1px;
+
+    cursor: pointer;
   }
 
   #image-gallery-bottom {
@@ -188,18 +306,13 @@ export default {
   }
 
   @media(min-width: 760px) {
-    .modal-image {
-      margin: 0 auto;
-      height: 100%;
-    }
-
     #image-gallery-bottom {
       width: 50%;
       margin: 0 auto;
     }
 
       #modal-image-container {
-        display: grid;
+        /* display: grid; */
         height: 80%;
       }
 

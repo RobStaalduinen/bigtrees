@@ -14,7 +14,7 @@
       <% images.each_slice(3).each do |image_row| %>
         <div class='image-row'>
           <% image_row.each do |image| %>
-            <img class='tree-image' src="<%= image.image_url_sm %>">
+            <img class='tree-image' src="<%= image.edited_image_url_sm || image.image_url_sm %>">
           <% end %>
         </div>
       <% end %>

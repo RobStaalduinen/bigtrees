@@ -21,9 +21,11 @@ import VueRouter from 'vue-router';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
+import Editor from 'vue-image-markup';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('Editor', Editor);
 
 extend('required', {
   ...required,

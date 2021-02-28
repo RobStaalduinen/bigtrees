@@ -32,6 +32,14 @@ class TreeImagesController < ApplicationController
     render json: { status: :ok }
   end
 
+  def update
+    tree_image = TreeImage.find(params[:id])
+
+    tree_image.update(tree_image_params)
+
+    render json: estimate
+  end
+
   # Temporary, while supporting two different creation mechanisms
   def create_from_urls
     if params[:images].present? && params[:images].any?
@@ -58,5 +66,9 @@ class TreeImagesController < ApplicationController
 
   def estimate
     @estimate ||= Estimate.find(params[:estimate_id])
+  end
+
+  def tree_image_params
+    params.permit(:image_url, :edited_image_url)
   end
 end

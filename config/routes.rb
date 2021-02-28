@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :trees do
     post '/bulk_create', to: 'trees#bulk_create', on: :collection
   end
-  resources :tree_images, only: [ :new, :create ] do
+  resources :tree_images, only: [ :new, :create, :update ] do
     post '/create_from_urls', to: 'tree_images#create_from_urls', on: :collection
   end
   resources :extra_costs, only: [ :create, :destroy ]
