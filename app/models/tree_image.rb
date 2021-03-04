@@ -6,7 +6,7 @@ class TreeImage < ActiveRecord::Base
   # has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
   has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"
 
-  before_save :set_image_url
+  after_save :update_image_url
 
   Paperclip.interpolates :image_name do |attachment, style|
     attachment.instance.generate_image_name
@@ -51,10 +51,10 @@ class TreeImage < ActiveRecord::Base
     "#{edited_imgix_url}?w=800"
   end
 
-  def set_image_url
+  def update_image_url
     return unless image_url.blank? && asset.present?
 
-    self.image_url = asset.url
+    self.update_attribute(:image_url, asset.url)
   end
 
   validates_attachment_content_type :asset, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
