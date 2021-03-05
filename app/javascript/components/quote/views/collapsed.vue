@@ -25,6 +25,9 @@
         </b-row>
 
         <div class='single-estimate-link-row'>
+          <a class='single-estimate-link' :href='`/estimates/${estimate.id}/quotes.pdf`'>
+            Download
+          </a>
           <div class='single-estimate-link' v-b-toggle.quote-send-team>
             Send to Team
           </div>
