@@ -7,19 +7,6 @@
         validationRules='required'
         label='Recipient'
     ></app-multi-select>
-      <!-- <multiselect
-        v-model="recipientObjects"
-        name='recipient'
-        :options="options"
-        :searchable='false'
-        :allow-empty='false'
-        label='text'
-        track-by='value'
-        :multiple='true'
-        :close-on-select='false'
-        :taggable='false'
-        :showPointer='false'
-      ></multiselect> -->
 
     <app-input-field
       v-model='emailSubject'
@@ -65,12 +52,16 @@ export default {
       return this.recipientObjects.map( obj => { return obj.value })
     },
     options() {
-      return this.$store.state.arborists.map(arborist => {
+      var initial = this.$store.state.arborists.map(arborist => {
         return {
           value: arborist.email,
           text: arborist.name
         }
       })
+
+      initial.push({ value: 'tanishahearn@outlook.com', text: 'Tanisha Hearn' })
+
+      return initial;
     },
     emailDefinition() {
       return {
