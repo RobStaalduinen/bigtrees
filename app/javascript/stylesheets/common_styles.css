@@ -10,6 +10,9 @@
   color: var(--main-color);
 }
 
+.edit-icon {
+  cursor: pointer
+}
 /* Single estimate page */
 
 .single-estimate-link-row{

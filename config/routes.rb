@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   resources :trackers, only: [ :new, :index ]
   resources :arborists do
-    resources :documents, only: [ :new, :create, :destroy ]
+    resources :documents, only: [ :index, :new, :create, :destroy ]
   end
   resources :customers
   resources :requests

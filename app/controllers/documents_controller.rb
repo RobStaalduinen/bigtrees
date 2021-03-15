@@ -3,8 +3,14 @@ class DocumentsController < ApplicationController
 
   before_action :set_arborist
 
+  def index
+    authorize! :read, @arborist
+
+    render json: @arborist.documents
+  end
+
   def new
-  
+
   end
 
   def create
@@ -37,5 +43,5 @@ class DocumentsController < ApplicationController
       @arborist = Arborist.find(params[:arborist_id])
     end
 
-  
+
 end

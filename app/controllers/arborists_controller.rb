@@ -14,8 +14,16 @@ class ArboristsController < ApplicationController
   def show
     @arborist = Arborist.find(params[:id])
     authorize! :read, @arborist
-    @recent_work = @arborist.recent_work
-    @documents = @arborist.documents
+
+    respond_to do |format|
+      format.html do
+        @recent_work = @arborist.recent_work
+        @documents = @arborist.documents
+      end
+      format.json do
+        render json: @arborist
+      end
+    end
   end
 
   def new
