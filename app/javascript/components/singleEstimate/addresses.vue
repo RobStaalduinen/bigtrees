@@ -11,7 +11,7 @@
             <b>Site Addr.</b>
           </b-col>
           <b-col cols='8'>
-            {{ estimate.site.address.full_address }}
+            {{ getFullAddress(estimate.site.address) }}
           </b-col>
         </b-row>
 
@@ -20,7 +20,7 @@
             <b>Billing Addr.</b>
           </b-col>
           <b-col cols='8'>
-            {{ estimate.customer.address.full_address }}
+            {{ getFullAddress(estimate.customer.address) }}
           </b-col>
         </b-row>
 
@@ -72,15 +72,22 @@ export default {
     }
   },
   methods: {
+    getFullAddress(address) {
+      return address != null ? address.full_address : ''
+    },
     updateAddress() {
       var params = {
         site: {
           address_attributes: {
-            id: this.estimate.site.address.id,
             ... this.addresses.siteAddress
           }
         }
       }
+
+      if(this.estimate.site.address){
+        params.site.address_attributes.id = this.estimate.site.address.id
+      }
+
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
         EventBus.$emit('ESTIMATE_UPDATED', { site: response.data.site });
         this.updateBillingAddress().then(response => {

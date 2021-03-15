@@ -20,7 +20,6 @@ class EstimatesController < ApplicationController
     @estimates = @estimates.submitted.
       order('estimates.id DESC').
       joins(:customer).
-      joins(site: :address).
       includes(customer: [:address]).
       includes(site: [:address]).
       includes(:invoice).

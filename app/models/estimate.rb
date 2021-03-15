@@ -144,7 +144,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_file_name
-		base_name = "#{self.customer.first_name}-#{self.site.address.street}-#{self.site.address.city}".gsub('.', '').gsub('\/', '')
+		base_name = "#{self.customer.first_name}-#{self.site.address&.street}-#{self.site.address&.city}".gsub('.', '').gsub('\/', '')
 		"#{base_name}.pdf"
 	end
 
