@@ -20,6 +20,8 @@ class EstimatesController < ApplicationController
     @estimates = @estimates.submitted.
       order('estimates.id DESC').
       joins(:customer).
+      joins("LEFT OUTER JOIN sites ON sites.estimate_id = estimates.id").
+      joins("LEFT OUTER JOIN addresses ON sites.address_id = addresses.id").
       includes(customer: [:address]).
       includes(site: [:address]).
       includes(:invoice).
