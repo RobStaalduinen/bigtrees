@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      costs: this.value
+      costs: null
     }
   },
   methods: {
@@ -46,7 +46,8 @@ export default {
       this.$emit('input', this.costs);
     },
     deleteCost(index) {
-      this.costs.splice(index, 1);
+      this.costs.splice(index, 1)
+
     },
     canDeleteCosts() {
       return this.costs.length > 1;
@@ -63,17 +64,15 @@ export default {
         this.costs = [this.defaultCost()];
       }
       else {
-        this.costs = this.value;
+        this.costs = this.value.map((cost) => {
+          cost.key = Math.random().toString(36).substr(2, 9);
+          return cost;
+        } );
       }
     }
   },
   mounted() {
     this.reset();
-  },
-  watch: {
-    value() {
-      console.log(this.value);
-    }
   }
 }
 </script>

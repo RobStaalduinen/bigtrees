@@ -3,7 +3,6 @@
     <app-collapsable id='costs-collapse'>
       <template v-slot:title>
         <b>Costs</b> &nbsp; - Total: {{ estimate.total_cost_with_tax | currency }}
-
       </template>
 
       <template v-slot:content>
