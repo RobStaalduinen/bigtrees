@@ -64,6 +64,11 @@ export default {
     triggerAction(name) {
       EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
     }
+  },
+  watch: {
+    estimate() {
+      this.estimateHelper = new EstimateHelper(this.estimate)
+    }
   }
 }
 </script>

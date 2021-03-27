@@ -7,7 +7,7 @@ class SitesController < ApplicationController
 
   def create
     estimate = Estimate.find(params[:estimate_id])
-    estimate.site = Site.create(site_params)
+    estimate.site.update(site_params)
     estimate.save!
 
     render json: { status: :ok }
