@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   resources :trackers, only: [ :new, :index ]
   resources :arborists do
-    resources :documents, only: [ :index, :new, :create, :destroy ]
+    resources :documents
   end
   resources :customers
   resources :requests
@@ -70,6 +70,8 @@ Rails.application.routes.draw do
   resources :equipment_requests do
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve
   end
+
+  resources :files, only: [ :new ]
 
   resources :vue_test, only: [ :new ]
 

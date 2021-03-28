@@ -16,12 +16,13 @@
       </div>
     </div>
 
-    <app-documents-collapsed :documents='documents'></app-documents-collapsed>
+    <app-documents-collapsed :documents='documents' :arborist_id='user_id'></app-documents-collapsed>
   </page-template>
 </template>
 
 <script>
 import DocumentsCollapsed from '@/components/documents/views/collapsed';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -59,6 +60,10 @@ export default {
   mounted() {
     this.retrieveUser();
     this.retrieveDocuments();
+
+    EventBus.$on('DOCUMENT_UPDATED', () => {
+      this.retrieveDocuments();
+    })
   }
 }
 </script>
