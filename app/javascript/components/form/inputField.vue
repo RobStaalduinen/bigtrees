@@ -5,13 +5,14 @@
         :label-for="name"
         :class='groupClass'
       >
-      <b-form-input 
+      <b-form-input
         v-model="input"
         :name='name'
         :type='inputType'
         :state="getValidationState(valContext)"
         aria-describedby="input-feedback"
         :maxlength='maxLength'
+        :disabled='disabled'
         autocomplete='off'
       ></b-form-input>
       <b-form-invalid-feedback id="input-feedback">{{ valContext.errors[0] }}</b-form-invalid-feedback>
@@ -23,7 +24,7 @@
 export default {
   props: {
     value: {
-      
+
     },
     name: {
       type: String,
@@ -32,7 +33,7 @@ export default {
     validationRules: {
       type: String
     },
-    label: { 
+    label: {
       type: String,
       required: true
     },
@@ -42,13 +43,17 @@ export default {
     groupClass: {
       type: String
     },
-    inputType: { 
+    inputType: {
       type: String,
       default: 'text'
     },
     maxLength: {
       type: Number,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -69,7 +74,7 @@ export default {
       return !valid && (dirty || validated) ? valid : null;
     }
   }
-  
+
 }
 </script>
 

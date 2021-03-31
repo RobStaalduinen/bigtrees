@@ -1,38 +1,53 @@
 <template>
   <page-template v-if='user'>
-    <app-header
-      :title='user.name'
-    ></app-header>
+    <app-header>
+      <template v-slot:header-left>
+        <div id='user-header'>
+          <h5>{{ user.name }}</h5>
 
-    <div id='user-contact-details'>
-      <div id='user-contact-row'>
-        <b-icon icon='telephone' class='contact-icon'></b-icon>
-        <a :href="'tel:' + user.phone_number">{{ user.phone_number }}</a>
-      </div>
+          <div id='user-contact-details'>
+            <div id='user-contact-row'>
+              <b-icon icon='telephone' class='contact-icon'></b-icon>
+              <a :href="'tel:' + user.phone_number">{{ user.phone_number }}</a>
+            </div>
 
-      <div id='user-contact-row'>
-        <b-icon icon='envelope' class='contact-icon'></b-icon>
-        <a :href="'mailto:' + user.email">{{ user.email }}</a>
-      </div>
-    </div>
+            <div id='user-contact-row'>
+              <b-icon icon='envelope' class='contact-icon'></b-icon>
+              <a :href="'mailto:' + user.email">{{ user.email }}</a>
+            </div>
+          </div>
+        </div>
+      </template>
 
-    <app-documents-collapsed :documents='documents' :arborist_id='user_id'></app-documents-collapsed>
+    </app-header>
+
+    <section class='spaced-row'>
+      <app-documents-collapsed :documents='documents' :arborist_id='user_id'></app-documents-collapsed>
+    </section>
+
+    <section class='spaced-row'>
+      <app-hours-collapsed :hours='hours'></app-hours-collapsed>
+    </section>
+
   </page-template>
 </template>
 
 <script>
 import DocumentsCollapsed from '@/components/documents/views/collapsed';
+import HoursCollapsed from '@/components/hours/views/collapsed';
 import EventBus from '@/store/eventBus';
 
 export default {
   components: {
-    'app-documents-collapsed' : DocumentsCollapsed
+    'app-documents-collapsed' : DocumentsCollapsed,
+    'app-hours-collapsed': HoursCollapsed
   },
   data(){
     return {
       user_id: this.$route.params.user_id,
       user: null,
-      documents: null
+      documents: null,
+      hours: []
     }
   },
   methods: {
@@ -55,15 +70,27 @@ export default {
             // this.$router.push('/admin/estimates');
           }
         )
+    },
+    retrieveWorkRecords() {
+      let params = { arborist_id: this.user_id}
+      this.axiosGet('/work_records/for_arborist', params).then(response => {
+        this.hours = response.data.work_records;
+        console.log(this.hours);
+      })
     }
   },
   mounted() {
     this.retrieveUser();
     this.retrieveDocuments();
+    this.retrieveWorkRecords();
 
     EventBus.$on('DOCUMENT_UPDATED', () => {
       this.retrieveDocuments();
     })
+
+    EventBus.$on('WORK_RECORD_UPDATED', () => {
+      this.retrieveWorkRecords();
+    });
   }
 }
 </script>
@@ -83,6 +110,12 @@ export default {
   .contact-icon {
     color: var(--main-color);
     margin-right: 4px;
+  }
+
+  #user-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: -8px;
   }
 
   @media(min-width: 760px) {

@@ -29,7 +29,7 @@ import SingleSummary from './singleSummary.vue';
 export default {
   components: {
     'app-single-summary': SingleSummary
-  }  
+  }
 }
 </script>
 

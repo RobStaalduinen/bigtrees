@@ -22,8 +22,8 @@ class WorkRecord < ActiveRecord::Base
   end
 
   def range_string
-    start_string = self.start_at.strftime("%l:%M") rescue "?"
-    end_string = self.end_at.strftime("%l:%M") rescue "?"
+    start_string = self.start_at.strftime("%l:%M %P") rescue "?"
+    end_string = self.end_at.strftime("%l:%M %P") rescue "?"
     "#{start_string} - #{end_string}"
   end
 

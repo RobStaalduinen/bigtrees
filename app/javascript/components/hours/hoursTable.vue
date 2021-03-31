@@ -7,8 +7,8 @@
         <div id ='record-controls'>
           <div class='record-control-row'>
             <div id='record-start'>
-              <b-form-datepicker 
-                size='sm' v-model='start_at' 
+              <b-form-datepicker
+                size='sm' v-model='start_at'
                 :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                 @input='retrieveHours'
                 locale='en-CA'
@@ -19,8 +19,8 @@
             <span> - </span>
 
             <div id='record-start'>
-              <b-form-datepicker size='sm' 
-                v-model='end_at' 
+              <b-form-datepicker size='sm'
+                v-model='end_at'
                 :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                 offset="-125"
                 @input='retrieveHours'
@@ -64,7 +64,7 @@
 
       </template>
     </app-shadow-box>
-  
+
     <b-modal id="editModal" centered title='Edit Record'>
       <div v-if="editSelectedRecord != null">
         <hours-form :work-record='editSelectedRecord' @hoursSubmitted='closeEdit'></hours-form>
@@ -80,6 +80,7 @@ import axios from 'axios'
 import EditableRow from './editableRow';
 import HoursForm from './hoursForm';
 import moment from 'moment';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -97,6 +98,10 @@ export default {
   },
   mounted() {
     this.retrieveHours();
+
+    EventBus.$on('WORK_RECORD_UPDATED', () => {
+      this.retrieveHours();
+    });
   },
   methods: {
     retrieveHours() {

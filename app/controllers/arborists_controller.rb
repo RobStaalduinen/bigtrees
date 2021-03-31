@@ -17,8 +17,7 @@ class ArboristsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @recent_work = @arborist.recent_work
-        @documents = @arborist.documents
+        redirect_to "/admin/users/#{@arborist.id}"
       end
       format.json do
         render json: @arborist

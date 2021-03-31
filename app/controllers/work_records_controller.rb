@@ -1,17 +1,30 @@
 class WorkRecordsController < AdminBaseController
   before_action :signed_in_user
-  
+
   layout 'admin_material'
 
   def index
     @work_records = current_user.admin? ? WorkRecord.all : current_user.work_records
+    if params[:arborist_id]
+      @work_records = @work_records.where(arborist_id: params[:arborist_id])
+    end
+
     @work_records = @work_records.includes(:arborist)
 
     # FILTERS
-    @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days) if params[:start_at]
-    @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today) if params[:end_at]
+    @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days)
+    @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today)
   end
-  
+
+  def for_arborist
+    @work_records = WorkRecord.where(arborist_id: params[:arborist_id]).includes(:arborist).order('date DESC')
+
+    @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days)
+    @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today)
+
+    render json: @work_records
+  end
+
   def new
     @work_record = WorkRecord.new
   end
@@ -20,23 +33,19 @@ class WorkRecordsController < AdminBaseController
     @work_record = current_user.work_records.find_or_initialize_by(date: work_record_params[:date])
     @work_record.update(work_record_params)
 
-    if @work_record.persisted?
-      redirect_to arborist_path(current_user)
-    else
-      render new_work_record_path
-    end
+    render json: @work_record
   end
 
   def update
     @work_record = WorkRecord.find(params[:id])
     @work_record.update(work_record_params)
 
-    render json: { status: 200}
+    render json: { status: 200 }
   end
-  
+
   def report
     authorize! :manage, Arborist
-    
+
     report = Reports::Hours.new(
       spreadsheet_writer: Excel::Writer.new('hours_template.xlsx', 'big_tree_hours.xlsx')
     ).create_spreadsheet
@@ -47,17 +56,26 @@ class WorkRecordsController < AdminBaseController
   def summaries
     @work_records = current_user.admin? ? WorkRecord.all : current_user.work_records
 
+    if params[:arborist_id]
+      @work_records = @work_records.where(arborist_id: params[:arborist_id])
+    end
+
+    @work_records = @work_records.includes(:arborist)
+
     if params[:summary_type] == 'days'
       @work_records = @work_records.where('date >= ?', Date.today - 31.days).order('date DESC').group_by { |w| w.date.strftime('%Y-%m-%d') }
     elsif params[:summary_type] == 'weeks'
       @work_records = @work_records.where('date >= ?', Date.today - 90.days).order('date DESC').group_by { |w| w.week_number }
-      # remove lowest
-      lowest_key = @work_records.keys.sort.first
-      @work_records = @work_records.except(lowest_key)
+      if @work_records.keys.count > 52
+        lowest_key = @work_records.keys.sort.first
+        @work_records = @work_records.except(lowest_key)
+      end
     elsif params[:summary_type] == 'months'
       @work_records = @work_records.where('date >= ?', Date.today - 1.year).order('date DESC').group_by { |w| w.date.strftime("%m - %B") }
-      lowest_key = @work_records.keys.sort.first
-      @work_records = @work_records.except(lowest_key)
+      if @work_records.keys.count > 12
+        lowest_key = @work_records.keys.sort.first
+        @work_records = @work_records.except(lowest_key)
+      end
     else
       @work_records = @work_records.order('date DESC').group_by { |w| w.date.strftime("%Y") }
     end
