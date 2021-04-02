@@ -11,6 +11,7 @@ import EmailForm from '../../common/forms/email';
 import { quoteContent } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -26,11 +27,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: quoteContent,
-        subject: 'Quote from Big Tree'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -61,8 +58,15 @@ export default {
     }
   },
   watch: {
-    estimate() {
-      this.emailDefinition.email = this.estimate.customer.email;
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Quote from Big Tree',
+          quoteContent
+        )
+      }
     }
   }
 }

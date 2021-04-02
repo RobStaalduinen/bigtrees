@@ -9,6 +9,8 @@
 <script>
 import EmailForm from '../../common/forms/email';
 import { invoiceContent } from '../../../content/emailContent';
+import { EmailDefinition } from '@/models';
+
 export default {
   components: {
     'app-email-form': EmailForm
@@ -23,11 +25,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: invoiceContent,
-        subject: 'Big Tree Services Final Invoice'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -43,6 +41,18 @@ export default {
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
+    }
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Big Tree Services Final Invoice',
+          invoiceContent
+        )
+      }
     }
   }
 }

@@ -80,11 +80,13 @@ export default {
 
       if(image.uploadCompleted == null){
         this.validationErrorMessage = 'Pleae add an image';
+        EventBus.$emit('FORM_VALIDATION_FAILED');
         return false;
       }
 
       if(image.uploadCompleted == false){
         this.validationErrorMessage = 'Wait for image uploads to finish and try again';
+        EventBus.$emit('FORM_VALIDATION_FAILED');
         return false;
       }
 

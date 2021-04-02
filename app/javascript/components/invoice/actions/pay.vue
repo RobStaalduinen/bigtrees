@@ -37,6 +37,7 @@ import EventBus from '@/store/eventBus'
 import { receiptContent } from '../../../content/emailContent';
 import { paymentReceived } from '@/components/estimate/utils/stateTransitions.js';
 import { PAYMENT_METHODS } from '@/constants';
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -53,14 +54,10 @@ export default {
   },
   data() {
     return {
-      payment_method: this.estimate.invoice.payment_method,
+      payment_method: null,
       sendReceipt: true,
       options: PAYMENT_METHODS,
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: receiptContent,
-        subject: 'Big Tree Services Receipt'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -85,6 +82,20 @@ export default {
     updateEmailContent(new_email) {
       this.emailDefinition = { ...new_email }
     },
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.payment_method = this.estimate.invoice.payment_method;
+
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Big Tree Services Receipt',
+          receiptContent
+        )
+      }
+    }
   }
 }
 </script>

@@ -12,6 +12,8 @@
 import EmailForm from '../../common/forms/emailArboristSelect';
 import { quoteContent } from '../../../content/emailContent';
 import EventBus from '@/store/eventBus'
+import { EmailDefinition } from '@/models';
+
 export default {
   components: {
     'app-email-form': EmailForm
@@ -26,11 +28,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: null,
-        content: 'Take a look at this quote',
-        subject: 'Quote from Big Tree'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -54,7 +52,18 @@ export default {
           })
         }
       })
-
+    }
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          null,
+          'Quote from Big Tree',
+          'Take a look at this quote'
+        )
+      }
     }
   }
 }

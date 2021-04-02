@@ -10,6 +10,7 @@
 import EmailForm from '../../common/forms/email';
 import { quoteContent } from '../../../content/emailContent';
 import moment from 'moment';
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -25,11 +26,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: quoteContent,
-        subject: 'Quote from Big Tree'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -45,6 +42,18 @@ export default {
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
+    }
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Quote from Big Tree',
+          quoteContent
+        )
+      }
     }
   }
 }

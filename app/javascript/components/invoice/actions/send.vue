@@ -19,6 +19,7 @@ import EmailForm from '../../common/forms/email';
 import { invoiceContent } from '../../../content/emailContent';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions';
 import EventBus from '@/store/eventBus'
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -34,11 +35,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: invoiceContent,
-        subject: 'Big Tree Services Final Invoice'
-      },
+      emailDefinition: null,
       invoiceNumber: null
     }
   },
@@ -71,7 +68,20 @@ export default {
     this.axiosGet(`/invoices/${this.estimate.invoice.id}`).then(response => {
       this.invoiceNumber = response.data.invoice.potential_number;
     })
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Big Tree Services Final Invoice',
+          invoiceContent
+        )
+      }
+    }
   }
+
 }
 </script>
 
