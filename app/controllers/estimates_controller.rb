@@ -58,7 +58,8 @@ class EstimatesController < ApplicationController
     estimate.update(arborist: current_user)
 
     if params[:site].present?
-      estimate.site.update(site_params)
+      site = estimate.site || Site.new(estimate: estimate)
+      site.update(site_params)
     end
 
     if params[:customer].present?

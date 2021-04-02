@@ -88,11 +88,6 @@ class Estimate < ActiveRecord::Base
 		get_invoice || Invoice.new(estimate: self)
 	end
 
-	alias :get_site :site
-	def site
-		get_site || Site.new(estimate: self)
-	end
-
 	def formatted_status
 		return "Invoice Sent" if status == 'final_invoice_sent'
 		self.status.gsub('_', ' ').capitalize

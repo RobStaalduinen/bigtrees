@@ -21,8 +21,8 @@ class GenerateMasterTracker
     estimates.each_with_index do |estimate, i|
       row = 1 + i
       discount = estimate.invoice && estimate.invoice.discount ? "YES" : "NO"
-      customer = estimate.customer
-      contact = customer.preferred_contact || ""
+      customer = estimate.customer || Customer.new
+      contact = customer&.preferred_contact || ""
 
       insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice.number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
@@ -37,8 +37,8 @@ class GenerateMasterTracker
       insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%Y")) rescue ""
 
       insert(worksheet, row, 8, customer.name)
-      insert(worksheet, row, 9, estimate.street || estimate.site.address&.street)
-      insert(worksheet, row, 10, estimate.city || estimate.site.address&.city)
+      insert(worksheet, row, 9, estimate.street || estimate.site&.address&.street)
+      insert(worksheet, row, 10, estimate.city || estimate.site&.address&.city)
       insert(worksheet, row, 11, estimate.trees.count)
       insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 13, contact.capitalize)
