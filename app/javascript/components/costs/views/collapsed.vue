@@ -38,7 +38,6 @@
             <b-icon icon='pencil-square' class='app-icon'></b-icon>
           </div>
         </div>
-
       </template>
     </app-collapsable>
 

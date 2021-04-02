@@ -14,8 +14,15 @@ class ArboristsController < ApplicationController
   def show
     @arborist = Arborist.find(params[:id])
     authorize! :read, @arborist
-    @recent_work = @arborist.recent_work
-    @documents = @arborist.documents
+
+    respond_to do |format|
+      format.html do
+        redirect_to "/admin/users/#{@arborist.id}"
+      end
+      format.json do
+        render json: @arborist
+      end
+    end
   end
 
   def new

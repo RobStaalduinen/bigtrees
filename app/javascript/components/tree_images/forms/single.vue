@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       initialImage: null,
-      uploadedFile: null,
+      uploadedFile: this.value,
       selectedFile: null
     }
   },

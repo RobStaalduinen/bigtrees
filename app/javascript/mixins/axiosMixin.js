@@ -14,6 +14,10 @@ export default {
       this.setupAxios();
       return axios.post(endpoint, options, { withCredentials: true });
     },
+    axiosDelete(endpoint, options){
+      this.setupAxios();
+      return axios.delete(endpoint, options, { withCredentials: true });
+    },
     axiosImagePost(endpoint, formData){
       let options = { 'Content-Type': 'multipart/form-data' };
       return axios.post(endpoint, formData, options);

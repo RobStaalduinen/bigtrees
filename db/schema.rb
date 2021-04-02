@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210219185050) do
+ActiveRecord::Schema.define(version: 20210327202258) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 20210219185050) do
     t.datetime "file_updated_at"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.date     "expires_at"
+    t.string   "url",               limit: 255
   end
 
   add_index "documents", ["arborist_id"], name: "index_documents_on_arborist_id", using: :btree

@@ -1,12 +1,14 @@
 <template>
   <div id='header-container'>
     <div id='header-left'>
-      <div id='back-icon' v-if='shouldDisplayBack'>
-        <router-link :to="backLink">
-          <b-icon id='back-icon' icon='arrow-left-short'></b-icon>
-        </router-link>
-      </div>
-      <h5 id='title-text'>{{ title }}</h5>
+      <slot name='header-left'>
+        <div id='back-icon' v-if='shouldDisplayBack'>
+          <router-link :to="backLink">
+            <b-icon id='back-icon' icon='arrow-left-short'></b-icon>
+          </router-link>
+        </div>
+        <h5 id='title-text'>{{ title }}</h5>
+      </slot>
     </div>
     <slot name='header-right'></slot>
   </div>
@@ -16,7 +18,7 @@
 export default {
   props: {
     title:{
-      required: true
+      required: false
     },
     backLink: {
       required: false,

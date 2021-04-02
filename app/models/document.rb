@@ -3,8 +3,10 @@ class Document < ActiveRecord::Base
 
   has_attached_file :file
 
-  validates :name, presence: true
-  validates_attachment_presence :file
+  def file_url
+    # Replace with more basic uploader
+    self.url || self.file.url
+  end
 
-  validates_attachment_content_type :file, :content_type => ["application/pdf", "application/x-pdf", "image/png", "image/gif", "image/jpg", "image/jpeg"]
+  validates :name, presence: true
 end

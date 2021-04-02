@@ -15,7 +15,7 @@
         <b-dropdown-item href="/equipment_requests" v-if='admin'>Repair Requests</b-dropdown-item>
         <b-dropdown-item href="/equipment_requests/new" v-if='!admin'>Create Repair Request</b-dropdown-item>
         <b-dropdown-item to='/admin/hours'>Hours</b-dropdown-item>
-        <b-dropdown-item v-bind:href="profileLink">Profile</b-dropdown-item>
+        <b-dropdown-item :to="profileLink">Profile</b-dropdown-item>
       </b-collapse>
     </b-navbar>
   </div>
@@ -34,7 +34,7 @@ export default {
       return this.$store.state.user.user_id;
     },
     profileLink() {
-      return `/arborists/${this.userId}`;
+      return `/admin/users/${this.userId}`;
     }
   },
   mounted() {

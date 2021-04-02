@@ -126,13 +126,15 @@ import Customers from '../pages/customers.vue'
 import Estimates from '../pages/estimates.vue'
 import CreateEstimate from '../pages/createEstimate.vue'
 import SingleEstimate from '../pages/singleEstimate.vue'
+import Users from '../pages/users.vue';
 
 const routes = [
   { path: '/admin/hours', component: Hours },
   { path: '/admin/customers', component: Customers },
   { path: '/admin/estimates', component: Estimates },
   { path: '/admin/estimates/new', component: CreateEstimate },
-  { path: '/admin/estimates/:estimate_id', component: SingleEstimate }
+  { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
+  { path: '/admin/users/:user_id', component: Users }
 ]
 
 const router = new VueRouter({

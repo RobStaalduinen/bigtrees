@@ -3,10 +3,10 @@
     <app-header title='Hours'>
       <template v-slot:header-right>
         <a href='/work_records/report' v-if='admin'>
-          <b-icon icon='download'></b-icon> 
+          <b-icon icon='download'></b-icon>
           Tracker
         </a>
-        <a href='/work_records/new' v-else>
+        <a v-else v-b-toggle.update-hours>
           Record Hours
         </a>
       </template>
@@ -21,17 +21,21 @@
         <summaries></summaries>
       </div>
     </div>
+
+    <app-update-hours id='update-hours'></app-update-hours>
   </page-template>
 </template>
 
 <script>
 import HoursTable from '../components/hours/hoursTable.vue';
 import Summaries from '../components/hours/summaries.vue';
+import UpdateHours from '@/components/hours/actions/update';
 
 export default {
   components: {
     'hours-table': HoursTable,
-    'summaries': Summaries
+    'summaries': Summaries,
+    'app-update-hours': UpdateHours
   },
   data() {
     return {
@@ -73,7 +77,7 @@ export default {
   #summaries-container{
     width: 45%;
     margin-top: 0px;
-    
+
   }
   }
 </style>

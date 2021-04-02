@@ -15,10 +15,12 @@
     </table>
 
     <app-loader v-if='loadingSummary'></app-loader>
-  </div>  
+  </div>
 </template>
 
 <script>
+import EventBus from '@/store/eventBus';
+
 export default {
   props: ['summaryType'],
   data() {
@@ -27,21 +29,31 @@ export default {
       loadingSummary: true
     }
   },
-  mounted(){
-    this.axiosGet(`/work_records/summaries?summary_type=${this.summaryType}`)
+  methods: {
+    retrieveSummary() {
+      this.axiosGet(`/work_records/summaries?summary_type=${this.summaryType}`)
         .then(response => {
+          console.log(response);
           if(response.status == 200){
             this.hours = response.data;
             this.loadingSummary = false;
           }
         })
+    }
+  },
+  mounted(){
+    this.retrieveSummary();
+
+    EventBus.$on('WORK_RECORD_UPDATED', () => {
+      this.retrieveSummary();
+    });
   }
 }
 </script>
 
 <style scoped>
   .summary-container{
-    
+
   }
 
   #summary-table{
@@ -53,7 +65,7 @@ export default {
     border-color: lightgrey;
     border-style: solid;
 
-    
+
     font-size: 12px;
   }
 
