@@ -4,15 +4,22 @@ class EquipmentRequestsController < ApplicationController
   before_action :signed_in_user
 
   def index
-    authorize! :manage, EquipmentRequest
-    @equipment_requests = EquipmentRequest.all
+    @equipment_requests = EquipmentRequest.all.includes(:vehicle).includes(:arborist).order('submitted_at DESC')
+
+    if params[:state] == 'resolved'
+      @equipment_requests = @equipment_requests.resolved
+    else
+      @equipment_requests = @equipment_requests.submitted
+    end
+
+    render json: @equipment_requests, include: [:vehicle, :arborist]
   end
 
   def show
     authorize! :manage, EquipmentRequest
     @equipment_request = EquipmentRequest.find(params[:id])
   end
-  
+
   def new
     authorize! :create, EquipmentRequest
     @equipment_request = EquipmentRequest.new

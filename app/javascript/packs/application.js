@@ -59,6 +59,9 @@ import LoadingOverlay from '../components/ui/loadingOverlay.vue';
 import AppButton from '../components/ui/button.vue';
 import PageTemplate from '../components/templates/pageTemplate.vue';
 import Collapsable from '../components/ui/collapsable.vue';
+import CollapsableListItem from '../components/ui/collapsableListItem.vue';
+import CollapsableActionBar from '../components/ui/collapsableActionBar.vue';
+import ActionBarItem from '../components/ui/actionBarItem.vue';
 import RightSidebar from '../components/ui/rightSidebar.vue';
 
 Vue.component('app-header', Header)
@@ -68,6 +71,9 @@ Vue.component('app-loading-overlay', LoadingOverlay)
 Vue.component('page-template', PageTemplate)
 Vue.component('app-button', AppButton)
 Vue.component('app-collapsable', Collapsable)
+Vue.component('app-collapsable-list-item', CollapsableListItem)
+Vue.component('app-collapsable-action-bar', CollapsableActionBar)
+Vue.component('app-action-bar-item', ActionBarItem)
 Vue.component('app-right-sidebar', RightSidebar)
 
 
@@ -127,6 +133,7 @@ import Estimates from '../pages/estimates.vue'
 import CreateEstimate from '../pages/createEstimate.vue'
 import SingleEstimate from '../pages/singleEstimate.vue'
 import Users from '../pages/users.vue';
+import Equipment from '../pages/equipment.vue';
 
 const routes = [
   { path: '/admin/hours', component: Hours },
@@ -134,7 +141,9 @@ const routes = [
   { path: '/admin/estimates', component: Estimates },
   { path: '/admin/estimates/new', component: CreateEstimate },
   { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
-  { path: '/admin/users/:user_id', component: Users }
+  { path: '/admin/users/:user_id', component: Users },
+  { path: '/admin/equipment', component: Equipment }
+
 ]
 
 const router = new VueRouter({

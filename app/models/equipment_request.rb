@@ -15,7 +15,11 @@ class EquipmentRequest < ActiveRecord::Base
 
   has_attached_file :image
 
-  CATEGORIES = ['other', 'mechanical', 'equipment', 'supplies', 'paperwork']
+  CATEGORIES = %w[other mechanical equipment supplies paperwork].freeze
+
+  def image_path
+    image.present? ? image.url : nil
+  end
 
   validates :category, inclusion: { in: CATEGORIES }, presence: true
   validates :description, presence: true

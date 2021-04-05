@@ -12,8 +12,7 @@
         <b-dropdown-item to='/admin/customers' v-if='admin'>Customers</b-dropdown-item>
         <b-dropdown-item href="/payouts" v-if='admin'>Payouts</b-dropdown-item>
         <b-dropdown-item href="/receipts">Receipts</b-dropdown-item>
-        <b-dropdown-item href="/equipment_requests" v-if='admin'>Repair Requests</b-dropdown-item>
-        <b-dropdown-item href="/equipment_requests/new" v-if='!admin'>Create Repair Request</b-dropdown-item>
+        <b-dropdown-item to="/admin/equipment">Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours'>Hours</b-dropdown-item>
         <b-dropdown-item :to="profileLink">Profile</b-dropdown-item>
       </b-collapse>
