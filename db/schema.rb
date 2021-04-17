@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210327202258) do
+ActiveRecord::Schema.define(version: 20210405142612) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -107,7 +107,12 @@ ActiveRecord::Schema.define(version: 20210327202258) do
     t.datetime "image_updated_at"
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
+    t.string   "image_url",          limit: 255
+    t.integer  "resolver_id",        limit: 4
+    t.string   "resolution_notes",   limit: 255
   end
+
+  add_index "equipment_requests", ["resolver_id"], name: "index_equipment_requests_on_resolver_id", using: :btree
 
   create_table "estimates", force: :cascade do |t|
     t.integer  "tree_quantity",           limit: 4,                  default: 1

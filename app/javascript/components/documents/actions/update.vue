@@ -100,12 +100,6 @@ export default {
 </script>
 
 <style scoped>
-  .error-box {
-    margin-top: 16px;
-    font-size: 14px;
-    color: red;
-  }
-
   #form-container {
     display: flex;
     flex-direction: column;

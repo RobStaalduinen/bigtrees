@@ -16,14 +16,27 @@
           <div class='equipment-request-content-row'><b>Vehicle: </b> {{ vehicleName() }}</div>
           <div class='equipment-request-content-row'><b>Description: </b> {{ equipmentRequest.description }}</div>
         </div>
-        <!-- {{ equipmentRequest.category }} - {{ equipmentRequest.description }} -->
       </template>
 
       <template v-slot:collapsed>
         <app-collapsable-action-bar>
           <template v-slot:content>
-            <app-action-bar-item name='Resolve' />
-            <app-action-bar-item name='Details' :onClick='toggleModal' />
+            <app-action-bar-item
+              name='Send to Team'
+              icon='envelope'
+              :onClick='toggleSend'
+            />
+            <app-action-bar-item
+              name='Resolve'
+              icon='check-circle'
+              :onClick='toggleResolve'
+              v-if='equipmentRequest.state == "submitted"'
+            />
+            <app-action-bar-item
+              name='Details'
+              icon='clipboard-plus'
+              :onClick='toggleModal'
+            />
           </template>
         </app-collapsable-action-bar>
       </template>
@@ -35,9 +48,17 @@
         <div class='modal-row'><b>Submitter:</b> {{ equipmentRequest.arborist.name }}</div>
         <div class='modal-row'><b>Description:</b> {{ equipmentRequest.description }}</div>
         <div class='modal-row'><b>Vehicle:</b> {{ vehicleName() }}</div>
+        <div class='modal-row' v-if='equipmentRequest.resolution_notes'><b>Resolution Notes:</b>
+          {{ equipmentRequest.resolution_notes }}
+        </div>
 
         <div v-if='equipmentRequest.image_path' class='modal-row'>
           <b-img fluid :src='equipmentRequest.image_path' />
+        </div>
+
+        <div class='modal-button-row'>
+          <b-button class='inverse-button modal-button' @click='toggleSend'>Send to Team</b-button>
+          <b-button class='inverse-button modal-button' @click='toggleResolve'>Resolve</b-button>
         </div>
       </div>
 
@@ -50,6 +71,9 @@
 </template>
 
 <script>
+import ResolveRequest from '@/components/equipment/actions/resolve';
+import EventBus from '@/store/eventBus';
+
 export default {
   props: {
     'equipmentRequest': {
@@ -67,6 +91,14 @@ export default {
     },
     toggleModal() {
       this.$bvModal.show(`eq-modal-${this.equipmentRequest.id}`);
+    },
+    toggleResolve() {
+      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      EventBus.$emit('RESOLVE_EQUIPMENT_REQUEST', this.equipmentRequest);
+    },
+    toggleSend() {
+      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      EventBus.$emit('SEND_EQUIPMENT_REQUEST', this.equipmentRequest);
     },
     close() {
       this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
@@ -123,5 +155,15 @@ export default {
   .modal-row {
     margin-top: 4px;
     width: 100%;
+  }
+
+  .modal-button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .modal-button {
+    width: 49%;
   }
 </style>

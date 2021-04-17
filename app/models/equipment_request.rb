@@ -18,7 +18,11 @@ class EquipmentRequest < ActiveRecord::Base
   CATEGORIES = %w[other mechanical equipment supplies paperwork].freeze
 
   def image_path
-    image.present? ? image.url : nil
+    image.present? ? image.url : image_url
+  end
+
+  def file_name
+    image_path.gsub('%2F', '/').split('/').last
   end
 
   validates :category, inclusion: { in: CATEGORIES }, presence: true

@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
   resources :equipment_requests do
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve
+    post '/send_mailout', to: 'equipment_requests#send_mailout'
   end
 
   resources :files, only: [ :new ]

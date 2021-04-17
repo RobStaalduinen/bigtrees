@@ -1,5 +1,11 @@
 <template>
 <div class='request-list'>
+  <app-select-field
+    label='Status'
+    v-model='status'
+    name='status'
+    :options="options"
+  />
   <div
     class='single-request-container'
     v-for='request in equipmentRequests'
@@ -13,6 +19,7 @@
 
 <script>
 import ListItem from './singleListItem';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
@@ -20,18 +27,31 @@ export default {
   },
   data() {
     return {
-      equipmentRequests: []
+      equipmentRequests: [],
+      status: 'submitted',
+      options: [
+        { text: 'Submitted', value: 'submitted' },
+        { text: 'Resolved', value: 'resolved' }]
     }
   },
   methods: {
     retrieveEquipmentRequests() {
-      this.axiosGet('/equipment_requests').then(response => {
+      this.axiosGet(`/equipment_requests?state=${this.status}`).then(response => {
         this.equipmentRequests = response.data.equipment_requests
       })
     }
   },
   mounted() {
     this.retrieveEquipmentRequests();
+
+    EventBus.$on('EQUIPMENT_REQUEST_UPDATED', () => {
+      this.retrieveEquipmentRequests();
+    })
+  },
+  watch: {
+    status() {
+      this.retrieveEquipmentRequests();
+    }
   }
 }
 </script>

@@ -1,12 +1,18 @@
 <template>
   <div class='action-link' @click='handleClick'>
     {{ name }}
+
+    <b-icon
+      v-if='icon'
+      class='action-icon'
+      :icon='icon'
+    />
   </div>
 </template>
 
 <script>
 export default {
-  props: [ 'name', 'onClick'],
+  props: [ 'name', 'onClick', 'icon'],
   methods: {
     handleClick() {
       if(!this.onClick) {
@@ -27,6 +33,15 @@ export default {
     border-style: solid;
 
     cursor: pointer;
+    color: var(--main-color);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .action-icon {
+    margin-left: 4px;
     color: var(--main-color);
   }
 </style>

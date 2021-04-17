@@ -13,6 +13,13 @@
 .edit-icon {
   cursor: pointer
 }
+
+.error-box {
+  margin-top: 16px;
+  font-size: 14px;
+  color: red;
+}
+
 /* Single estimate page */
 
 .single-estimate-link-row{

@@ -24,7 +24,22 @@ import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils'
 import { fileNameFromPath } from '@/utils/fileUtils';
 
 export default {
-  props: [ 'value', 'accept' ],
+  props: {
+    'value': {
+      required: true
+    },
+    'accept': {
+      type: String
+    },
+    'bucketName': {
+      type: String,
+      default: 'documents'
+    },
+    'name': {
+      type: String,
+      default: 'document'
+    }
+  },
   data() {
     return {
       url: this.value,
@@ -35,9 +50,10 @@ export default {
   methods: {
     removeFile() {
       this.url = null;
+      this.uploading = false;
     },
     uploadFile() {
-      this.axiosGet('/files/new', { bucket_name: 'documents', filename: this.fileName }).then(response => {
+      this.axiosGet('/files/new', { bucket_name: this.bucketName, filename: this.fileName }).then(response => {
         const formData = signedUrlFormData(response.data.fields, this.imageToUpload);
 
         this.axiosImagePost(response.data.url, formData).then(response => {
@@ -70,6 +86,9 @@ export default {
     },
     url() {
       this.$emit('input', this.url);
+    },
+    uploading() {
+      this.$emit('upload-status-changed', this.uploading)
     }
   }
 }

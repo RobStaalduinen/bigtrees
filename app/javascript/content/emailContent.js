@@ -51,4 +51,8 @@ Thanks, \n\
 Tyler \n\
 Certified Arborist and Utility Arborist"
 
-export { invoiceContent, quoteContent, receiptContent, noResponseFollowup, imageRequest }
+var repairRequest="Hi,\n\n\
+Have a look at this repair request.\n\n\n\
+"
+
+export { invoiceContent, quoteContent, receiptContent, noResponseFollowup, imageRequest, repairRequest }

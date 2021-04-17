@@ -70,7 +70,6 @@ export default {
       }
       this.axiosGet(`/estimates.json`, params)
         .then(response => {
-          console.log(response);
           this.$store.commit('setEstimates', response.data.estimates)
           this.totalEntries = response.data.meta.total_entries;
           this.loadingEstimates = false;

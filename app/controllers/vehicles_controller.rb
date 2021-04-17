@@ -5,6 +5,11 @@ class VehiclesController < ApplicationController
 
   def index
     @vehicles = Vehicle.all.includes(:expirations)
+
+    respond_to do |format|
+      format.json { render json: @vehicles }
+      format.html
+    end
   end
 
   def new
