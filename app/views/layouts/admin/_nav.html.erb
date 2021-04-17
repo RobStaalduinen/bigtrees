@@ -11,13 +11,9 @@
       <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Customers", '/admin/customers', :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Payouts", payouts_path, :class => "nav-link" %></li>
-      <li class = "menu-item"><%= link_to "Repair Requests", equipment_requests_path, :class => "nav-link" %></li>
     <% end %>
 
-    <% if !current_user.admin? %>
-      <li class = "menu-item"><%= link_to "Create Repair Request", new_equipment_request_path, :class => "nav-link" %></li>
-    <% end %>
-
+    <li class = "menu-item"><%= link_to "Repair Requests", '/admin/equipment', :class => "nav-link" %></li>
     <li class = "menu-item"><%= link_to "Receipts", receipts_path, :class => "nav-link" %></li>
     <li class = "menu-item"><%= link_to "Hours", '/admin/hours', :class => "nav-link" %></li>
     <li class = "menu-item"><%= link_to "My Profile", "/admin/users/#{current_user.id}", :class => "nav-link" %></li>

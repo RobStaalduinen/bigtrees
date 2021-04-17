@@ -25,12 +25,13 @@
               name='Send to Team'
               icon='envelope'
               :onClick='toggleSend'
+              v-if='admin'
             />
             <app-action-bar-item
               name='Resolve'
               icon='check-circle'
               :onClick='toggleResolve'
-              v-if='equipmentRequest.state == "submitted"'
+              v-if='equipmentRequest.state == "submitted" && admin'
             />
             <app-action-bar-item
               name='Details'
@@ -57,8 +58,21 @@
         </div>
 
         <div class='modal-button-row'>
-          <b-button class='inverse-button modal-button' @click='toggleSend'>Send to Team</b-button>
-          <b-button class='inverse-button modal-button' @click='toggleResolve'>Resolve</b-button>
+          <b-button
+            class='inverse-button modal-button'
+            @click='toggleSend'
+            v-if='admin'
+          >
+            Send to Team
+          </b-button>
+
+          <b-button
+            class='inverse-button modal-button'
+            @click='toggleResolve'
+            v-if='equipmentRequest.state == "submitted" && admin'
+          >
+            Resolve
+          </b-button>
         </div>
       </div>
 
@@ -103,6 +117,11 @@ export default {
     close() {
       this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
     }
+  },
+  computed: {
+    admin() {
+      return this.$store.state.user.admin;
+    },
   }
 }
 </script>

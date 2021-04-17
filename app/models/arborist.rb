@@ -7,6 +7,7 @@ class Arborist < ActiveRecord::Base
   has_many :receipts
   has_many :work_records
   has_many :documents
+  has_many :equipment_requests
 
   before_create :set_session_token
 

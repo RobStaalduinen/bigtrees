@@ -4,7 +4,13 @@ class EquipmentRequestsController < ApplicationController
   before_action :signed_in_user
 
   def index
-    @equipment_requests = EquipmentRequest.all.includes(:vehicle).includes(:arborist).order('created_at DESC')
+    if current_user.admin?
+      @equipment_requests = EquipmentRequest.all
+    else
+      @equipment_requests = current_user.equipment_requests
+    end
+
+    @equipment_requests = @equipment_requests.includes(:vehicle).includes(:arborist).order('created_at DESC')
 
     if params[:state] == 'resolved'
       @equipment_requests = @equipment_requests.resolved
