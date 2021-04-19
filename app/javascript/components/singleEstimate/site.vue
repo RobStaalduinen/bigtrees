@@ -92,7 +92,7 @@ export default {
       return answer ? 'Yes' : 'No';
     },
     updateSite() {
-      var params = { site: this.site }
+      var params = { tree_site: this.site }
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', 'site-edit');
         EventBus.$emit('ESTIMATE_UPDATED',  { site: response.data.site });

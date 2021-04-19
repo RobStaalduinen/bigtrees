@@ -7,7 +7,7 @@ class RequestsController < ApplicationController
   def create
     estimate = Estimate.create(request_params)
 
-    if params[:site].present?
+    if params[:tree_site].present?
       site = estimate.site || Site.new(estimate: estimate)
       site.update(site_params)
     end
@@ -25,7 +25,7 @@ class RequestsController < ApplicationController
     estimate = Estimate.find(params[:id])
     estimate.update(request_params)
 
-    if params[:site].present?
+    if params[:tree_site].present?
       site = estimate.site || Site.new(estimate: estimate)
       site.update(site_params)
     end
@@ -51,7 +51,7 @@ class RequestsController < ApplicationController
     end
 
     def site_params
-      params.require(:site).permit(
+      params.require(:tree_site).permit(
         :id, :wood_removal, :breakables, :vehicle_access, :cleanup, :access_width, :low_access_width,
         address_attributes: [ :id, :street, :city ]
       )

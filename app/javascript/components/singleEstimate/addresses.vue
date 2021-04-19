@@ -77,7 +77,7 @@ export default {
     },
     updateAddress() {
       var params = {
-        site: {
+        tree_site: {
           address_attributes: {
             ... this.addresses.siteAddress
           }

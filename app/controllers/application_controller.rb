@@ -3,7 +3,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include UserHelper
 
-  protect_from_forgery with: :null_session
+  # protect_from_forgery with: :null_session
+
+  skip_before_action :verify_authenticity_token
+
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html { :redirect_unauthorized }

@@ -9,7 +9,7 @@
     <div class='estimate-body'>
 
       <div class='contact-row'>
-        <div class='estimate-body-row' v-if='estimate.site.address'>
+        <div class='estimate-body-row' v-if='estimate.site && estimate.site.address'>
           <b-icon icon='globe' class='contact-icon'></b-icon>
           {{ estimate.site.address.full_address }}
         </div>

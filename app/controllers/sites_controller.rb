@@ -6,9 +6,16 @@ class SitesController < ApplicationController
   end
 
   def create
+    puts 'SITE CREATION'
+    puts site_params
+    puts 'END SITE CREATION'
+
     estimate = Estimate.find(params[:estimate_id])
-    estimate.site = Site.create(site_params)
-    estimate.save!
+    site = Site.new(site_params)
+    site.estimate_id = estimate.id
+    site.save
+
+    estimate.save
 
     render json: { status: :ok }
   end
@@ -24,7 +31,7 @@ class SitesController < ApplicationController
   end
 
   def site_params
-    params.require(:site).permit(
+    params.require(:tree_site).permit(
       :wood_removal, :breakables, :vehicle_access, :low_access_width, :cleanup,
       address_attributes: [ :id, :street, :city ]
     )
