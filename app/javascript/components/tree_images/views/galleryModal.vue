@@ -267,11 +267,11 @@ export default {
   }
 
   #image-gallery-bottom {
-    max-height: 20%;
     background-color: white;
     border-width: 1px 0 0 0;
     border-color: lightgray;
-    border-style: solid
+    border-style: solid;
+    padding-bottom: 16px;
   }
 
   #modal-image-info {
@@ -286,7 +286,7 @@ export default {
 
     border-width: 1px 0 0 0;
     border-color: lightgray;
-    border-style: solid
+    border-style: solid;
   }
 
   #gallery-control-info {
