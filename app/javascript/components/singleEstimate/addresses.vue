@@ -85,7 +85,7 @@ export default {
       }
 
       if(this.estimate.site.address){
-        params.site.address_attributes.id = this.estimate.site.address.id
+        params.tree_site.address_attributes.id = this.estimate.site.address.id
       }
 
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
