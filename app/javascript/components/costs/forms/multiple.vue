@@ -46,7 +46,8 @@ export default {
       this.$emit('input', this.costs);
     },
     deleteCost(index) {
-      this.costs.splice(index, 1)
+      this.costs.splice(index, 1);
+      this.$emit('input', this.costs);
 
     },
     canDeleteCosts() {
