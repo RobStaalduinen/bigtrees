@@ -82,7 +82,9 @@ export default {
   }
 
   .image-row {
-    display: flex
+    display: flex;
+    width: 100%;
+    overflow: scroll;
   }
 
   .tree-image {
