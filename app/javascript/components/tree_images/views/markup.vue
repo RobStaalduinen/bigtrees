@@ -1,76 +1,92 @@
 <template>
   <div id='edit-modal' @click.stop>
     <div id='edit-modal-internal'>
-      <div id="image-container">
+      <div id="image-container" v-if='!renderCanvas'>
         <img
           :src='imageUrl'
           id='edited-image'
           ref='image'
-          v-if='!renderCanvas'
           @load='setupCanvas'
         />
+      </div>
+
+      <!-- <div id="image-container">
+        <img
+          :src='imageUrl'
+          id='edited-image'
+          ref='image'
+        />
+      </div> -->
+        <!--
         <template v-if='renderCanvas'>
           <Editor :canvasWidth='canvasWidth' :canvasHeight='canvasHeight' ref='editor'></Editor>
-        </template>
-      </div>
-      <div id="edit-controls">
-        <div class='edit-controls-row'>
-          <div id='color-controls'>
-            <div
-              class='single-color'
-              style='background-color: red'
-              v-bind:class="{ 'single-color-active': selectedColor == 'red' }"
-              @click='setColor("red")'
-            ></div>
+        </template> -->
 
-            <div
-              class='single-color'
-              style='background-color: blue'
-              v-bind:class="{ 'single-color-active': selectedColor == 'blue' }"
-              @click='setColor("blue")'
-            ></div>
+        <div id='editor-wrapper'>
+          <tui-image-editor ref='editor' :include-ui='false' :options='options' class='image-editor'></tui-image-editor>
+        </div>
 
-            <div
-              class='single-color'
-              style='background-color: yellow'
-              v-bind:class="{ 'single-color-active': selectedColor == 'yellow' }"
-              @click='setColor("yellow")'
-            ></div>
+        <div id="edit-controls">
+          <div class='edit-controls-row'>
+            <div id='color-controls'>
+              <div
+                class='single-color'
+                style='background-color: red'
+                v-bind:class="{ 'single-color-active': selectedColor == 'red' }"
+                @click='setColor("red")'
+              ></div>
+
+              <div
+                class='single-color'
+                style='background-color: blue'
+                v-bind:class="{ 'single-color-active': selectedColor == 'blue' }"
+                @click='setColor("blue")'
+              ></div>
+
+              <div
+                class='single-color'
+                style='background-color: yellow'
+                v-bind:class="{ 'single-color-active': selectedColor == 'yellow' }"
+                @click='setColor("yellow")'
+              ></div>
+            </div>
+
+            <div id='undo-controls'>
+              <b-icon
+                icon='arrow-counterclockwise'
+                class='undo-control-icon'
+                @click='undo'
+              ></b-icon>
+            </div>
           </div>
 
-          <div id='undo-controls'>
-            <b-icon
-              icon='arrow-counterclockwise'
-              class='undo-control-icon'
-              @click='undo'
-            ></b-icon>
+          <div class="edit-controls-row edit-controls-save-row">
+            <b-button
+              type='submit'
+              class='inverse-button'
+              @click='cancel'
+            >Cancel</b-button>
+
+            <div class='sidebar-button' style='margin-left: 16px;'>
+              <app-submit-button
+                label='Save'
+                :onSubmit='save'
+              ></app-submit-button>
+            </div>
           </div>
         </div>
 
-        <div class="edit-controls-row edit-controls-save-row">
-          <b-button
-            type='submit'
-            class='inverse-button'
-            @click='cancel'
-          >Cancel</b-button>
-
-          <div class='sidebar-button' style='margin-left: 16px;'>
-            <app-submit-button
-              label='Save'
-              :onSubmit='save'
-            ></app-submit-button>
-          </div>
-        </div>
-
       </div>
-    </div>
   </div>
 </template>
 
 <script>
-
+import ImageEditor from '@toast-ui/vue-image-editor/src/ImageEditor.vue'
 
 export default {
+  components: {
+    'tui-image-editor': ImageEditor
+  },
   props: {
     imageUrl: {
       required: true,
@@ -88,40 +104,64 @@ export default {
       canvasWidth: null,
       canvasHeight: null,
       renderCanvas: false,
-      selectedColor: 'red'
+      selectedColor: 'red',
+      options: {
+        cssMaxWidth: 1500,
+        cssMaxHeight: 1500
+      }
     }
   },
   methods: {
     setColor(newColor){
       this.selectedColor = newColor;
-      this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
+      this.$refs.editor.invoke('setBrush', { color: this.selectedColor, width: 8 });
+      // this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
     },
     undo(){
-      this.$refs.editor.clear();
-      this.$refs.editor.setBackgroundImage(this.imageUrl);
+      // this.$refs.editor.clear();
+      // this.$refs.editor.setBackgroundImage(this.imageUrl);
     },
     redo(){
-      this.$refs.editor.redo();
+      // this.$refs.editor.redo();
     },
     cancel() {
       this.$emit('cancel');
     },
     save() {
-      this.onSave(this.$refs.editor.saveImage())
+      // this.onSave(this.$refs.editor.saveImage())
+      this.onSave(this.$refs.editor.invoke('toDataURL'));
+      // const dataUrl = this.$refs.editor.invoke('toDataURL');
+      // console.log(dataUrl);
     },
     setupCanvas() {
       this.canvasWidth = this.$refs.image.clientWidth;
       this.canvasHeight = this.$refs.image.clientHeight;
 
-      this.$nextTick(() => {
-        this.renderCanvas = true;
+      console.log(this.canvasWidth);
+      console.log(this.canvasHeight);
 
-        this.$nextTick(() => {
-          this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
-          this.$refs.editor.setBackgroundImage(this.urlToEdit);
-        })
-      })
+      this.$refs.editor.invoke('loadImageFromURL', this.urlToEdit, 'Test.png').then(() => {
+        this.$refs.editor.invoke('resizeCanvasDimension', { width: this.canvasWidth, height: this.canvasHeight })
+      });
+      this.renderCanvas = true;
+
+      // this.$nextTick(() => {
+      //   this.renderCanvas = true;
+
+      //   this.$nextTick(() => {
+      //     this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
+      //     this.$refs.editor.setBackgroundImage(this.urlToEdit);
+      //   })
+      // })
     }
+  },
+  mounted() {
+    // console.log(this.$refs.editor);
+    // console.log(this.urlToEdit);
+    // this.$refs.editor.invoke('loadImageFromURL', this.urlToEdit, 'Test.png').then(() => {
+    //   this.$refs.editor.invoke('resizeCanvasDimension', { width: 800, height: 120 })
+    // });
+    this.$refs.editor.invoke('startDrawingMode', 'FREE_DRAWING', { color: 'red', width: 8 })
   }
 }
 </script>
@@ -163,12 +203,26 @@ export default {
     object-fit: contain;
   }
 
+  #editor-wrapper {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .image-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   #edit-controls {
     background-color: white;
     width: 100%;
 
     display: flex;
     flex-direction: column;
+    padding-bottom: 32px;
   }
 
   .edit-controls-row {
@@ -221,6 +275,10 @@ export default {
 
     #edit-controls {
       width: 50%;
+    }
+
+    #editor-wrapper {
+      width: 60%;
     }
   }
 </style>
