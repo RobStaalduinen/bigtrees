@@ -30,6 +30,12 @@
         </div>
 
         <div class='single-estimate-link-row'>
+          <div class='single-estimate-link'>
+            <router-link to='/admin/hours'>
+              Summaries
+            </router-link>
+          </div>
+
           <div class='single-estimate-link' v-b-toggle.update-hours>
             Submit Hours
           </div>
