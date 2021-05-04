@@ -3,16 +3,20 @@ import Vuex from 'vuex'
 
 import axiosFunc from '../mixins/axiosFunctions';
 
+import { Authorization } from '../models';
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    user: { logged_in: false, admin: false, user_id: null, can_manage_estimates: false },
+    user: { logged_in: false, user_id: null },
+    authorization: null,
     estimates: [],
     arborists: []
   },
   mutations: {
     setUser (state, user) {
+      state.authorization = new Authorization(user.role_permissions);
       state.user = user;
     },
     setEstimates(state, payload) {
@@ -20,18 +24,26 @@ export const store = new Vuex.Store({
     },
     setArborists(state, payload) {
       state.arborists = payload;
-    }
+    },
   },
   actions: {
     refreshArborists({ commit }) {
       axiosFunc.get('/arborists.json').then(response => {
         commit('setArborists', response.data.arborists);
       })
+    },
+    authenticate({ commit }) {
+      return axiosFunc.get('/authenticate').then(response => {
+        if(response.status == 200 && response.data.logged_in){
+          commit('setUser', response.data);
+        }
+
+      })
     }
   },
   getters: {
-    isAdmin: state => {
-      return state.user && state.user.admin;
+    hasPermission: (state) => (page, permission_type) => {
+      return state.authorization.hasPermission(page, permission_type);
     }
   }
 })

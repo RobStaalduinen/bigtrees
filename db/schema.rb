@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210405142612) do
+ActiveRecord::Schema.define(version: 20210502154241) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20210405142612) do
   end
 
   create_table "arborists", force: :cascade do |t|
-    t.string  "name",                 limit: 255,                 null: false
-    t.string  "certification",        limit: 255,                 null: false
+    t.string  "name",                 limit: 255,                      null: false
+    t.string  "certification",        limit: 255,                      null: false
     t.string  "phone_number",         limit: 255
     t.string  "email",                limit: 255
     t.string  "password",             limit: 255
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 20210405142612) do
     t.boolean "active",                           default: true
     t.float   "hourly_rate",          limit: 24
     t.boolean "can_manage_estimates",             default: false
+    t.integer "organization_id",      limit: 4
+    t.string  "role",                 limit: 255, default: "arborist"
   end
 
   create_table "costs", force: :cascade do |t|
@@ -169,6 +171,12 @@ ActiveRecord::Schema.define(version: 20210405142612) do
 
   add_index "invoices", ["estimate_id"], name: "index_invoices_on_estimate_id", using: :btree
   add_index "invoices", ["number"], name: "index_invoices_on_number", using: :btree
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "payouts", force: :cascade do |t|
     t.date     "date"

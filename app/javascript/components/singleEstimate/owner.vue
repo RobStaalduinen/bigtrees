@@ -37,7 +37,7 @@ export default {
   computed: {
     options() {
       return this.$store.state.arborists.map(arborist => {
-        if(arborist.can_manage_estimates) {
+        if(arborist.role == 'admin' || arborist.role == 'team_lead') {
           return {
             value: arborist.id,
             text: arborist.name

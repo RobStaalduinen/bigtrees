@@ -35,11 +35,23 @@
   </div>
 </div>
 
-<div class="row">
-  <label>
-    <%= hidden_field_tag 'arborist[can_manage_estimates]', 'false'%>
-    <%= check_box_tag 'arborist[can_manage_estimates]', 'true', @arborist.can_manage_estimates? %>
-    <span>Can Manage Estimates?</span>
-  </label>
-
+<div class='row'>
+  <div class='input-field col s12'>
+    <% roles = [ ['Employee', 'employee'], ['Team Lead', 'team_lead'], ['Mechanic', 'mechanic'] ] %>
+    <%=
+      form.select(
+        :role,
+        options_for_select(roles, roles.first),
+        {},
+        { required: true }
+      )
+    %>
+    <%= form.label(:category, 'Role') %>
+  </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
+</script>

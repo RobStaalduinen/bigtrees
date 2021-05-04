@@ -2,7 +2,7 @@
   <page-template>
     <app-header title='Quotes'>
       <template v-slot:header-right>
-        <a href='/trackers.xlsx' v-if='admin'>
+        <a href='/trackers.xlsx' v-if='hasPermission("estimates", "admin")'>
           <b-icon icon='download'></b-icon>
           Tracker
         </a>
@@ -16,6 +16,7 @@
 
 <script>
 import EstimateList from '../components/estimates/list';
+import { store } from '@/store/store'
 
 export default {
   components: {
@@ -25,11 +26,6 @@ export default {
     return {
 
     }
-  },
-  computed: {
-    admin() {
-      return this.$store.state.user.admin;
-    },
   }
 }
 </script>

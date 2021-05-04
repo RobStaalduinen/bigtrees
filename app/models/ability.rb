@@ -35,7 +35,7 @@ class Ability
       can :read, Receipt
       can :create, Receipt
 
-      if arborist.can_manage_estimates?
+      if arborist.role == 'admin' || arborist.role == 'team_lead'
         can :query, Estimate
         can :read, Estimate, arborist_id: arborist.id
       end

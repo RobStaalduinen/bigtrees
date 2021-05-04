@@ -1,12 +1,12 @@
 <!-- Collect the nav links, forms, and other content for toggling -->
 <ul id="navbar">
   <% if current_user %>
-    <% if current_user.admin? || current_user.can_manage_estimates? %>
+    <% if current_user.admin? || current_user.role == 'admin' || current_user.role == 'team_lead' %>
       <li class = "menu-item"><%= link_to "Quotes", '/admin/estimates', :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Create Quote", '/admin/estimates/new', :class => "nav-link" %></li>
     <% end %>
 
-    <% if current_user.admin? %>
+    <% if current_user.admin? || current_user.role == 'admin' %>
       <li class = "menu-item"><%= link_to "Vehicles", vehicles_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Arborists", arborists_path, :class => "nav-link" %></li>
       <li class = "menu-item"><%= link_to "Customers", '/admin/customers', :class => "nav-link" %></li>

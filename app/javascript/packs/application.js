@@ -96,7 +96,9 @@ Vue.component('app-multi-select', Multi);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';
+import PermissionMixin from '../mixins/permissionMixin';
 Vue.mixin(AxiosMixin)
+Vue.mixin(PermissionMixin)
 
 // Filters
 
@@ -122,10 +124,6 @@ Vue.filter('localizeDate', function(date) {
   return moment(date).format('MMMM Do, YYYY');
 })
 
-Vue.prototype.$adminCheck = function () {
-  return isAdmin;
-};
-
 // Pages
 import Hours from '../pages/hours.vue'
 import Customers from '../pages/customers.vue'
@@ -135,23 +133,61 @@ import SingleEstimate from '../pages/singleEstimate.vue'
 import Users from '../pages/users.vue';
 import Equipment from '../pages/equipment.vue';
 
+import { store } from '../store/store.js';
+
 const routes = [
-  { path: '/admin/hours', component: Hours },
+  { path: '/admin/hours', component: Hours, name: 'hours' },
   { path: '/admin/customers', component: Customers },
-  { path: '/admin/estimates', component: Estimates },
+  {
+    path: '/admin/estimates',
+    component: Estimates,
+    meta: {
+      authRequired: true,
+      permission: { page: 'estimates', permission_type: 'list' }
+    }
+  },
   { path: '/admin/estimates/new', component: CreateEstimate },
   { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
-  { path: '/admin/users/:user_id', component: Users },
+  { path: '/admin/users/:user_id', component: Users, name: 'profile' },
   { path: '/admin/equipment', component: Equipment }
-
 ]
+
+// BeforeEach
+// Check for token
+// If no token, go to login
+// If token and no auth, await auth
+// If auth, check permissions
+// If no permissions, redirect to 'from'
+
 
 const router = new VueRouter({
   mode: 'history',
   routes: routes
 })
 
-import { store } from '../store/store.js';
+router.beforeEach(async (to, from, next) => {
+  if(!store.state.user.logged_in) {
+    await store.dispatch('authenticate');
+
+    if(!store.state.user.logged_in) {
+      window.location.href = '/login'
+    }
+  }
+  if (to.meta.authRequired) {
+    var authRequirement = to.meta.permission;
+    if(store.getters.hasPermission(authRequirement.page, authRequirement.permission_type)){
+      next();
+    }
+    else{
+      console.log(from);
+      next({ name: 'hours' })
+    }
+  }
+  else {
+    next();
+  }
+
+})
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({

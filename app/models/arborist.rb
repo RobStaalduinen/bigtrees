@@ -3,6 +3,8 @@ class Arborist < ActiveRecord::Base
 
   has_secure_password
 
+  belongs_to :organization
+
   has_many :estimates
   has_many :receipts
   has_many :work_records
@@ -12,7 +14,7 @@ class Arborist < ActiveRecord::Base
   before_create :set_session_token
 
   def serialized
-    slice(:id, :name).merge({ can_manage_estimates: true })
+    slice(:id, :name)
   end
 
   def set_session_token
@@ -28,6 +30,10 @@ class Arborist < ActiveRecord::Base
       this_month: self.work_records.for_month(Date.today),
       last_month: self.work_records.for_month(Date.today - 1.month)
     }
+  end
+
+  def role_permissions
+    Roles.for_name(self.role)
   end
 
   scope :real, -> { where.not(hidden: true) }

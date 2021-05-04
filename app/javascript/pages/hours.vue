@@ -2,7 +2,7 @@
   <page-template>
     <app-header title='Hours'>
       <template v-slot:header-right>
-        <a href='/work_records/report' v-if='admin'>
+        <a href='/work_records/report' v-if='hasPermission("hours", "admin")'>
           <b-icon icon='download'></b-icon>
           Tracker
         </a>
@@ -13,7 +13,7 @@
     </app-header>
 
     <div id='hours-body'>
-      <div id='hours-container' v-if='admin'>
+      <div id='hours-container' v-if='hasPermission("hours", "admin")'>
         <hours-table></hours-table>
       </div>
 
@@ -36,16 +36,6 @@ export default {
     'hours-table': HoursTable,
     'summaries': Summaries,
     'app-update-hours': UpdateHours
-  },
-  data() {
-    return {
-
-    }
-  },
-  computed: {
-    admin() {
-      return this.$store.state.user.admin;
-    }
   }
 }
 </script>

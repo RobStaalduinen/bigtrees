@@ -5,16 +5,16 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-dropdown-item to="/admin/estimates" v-if='canManageEstimates'>Quotes</b-dropdown-item>
-        <b-dropdown-item to="/admin/estimates/new" v-if='canManageEstimates'>Create Quote</b-dropdown-item>
-        <b-dropdown-item href="/vehicles" v-if='admin'>Vehicles</b-dropdown-item>
-        <b-dropdown-item href="/arborists" v-if='admin'>Arborists</b-dropdown-item>
-        <b-dropdown-item to='/admin/customers' v-if='admin'>Customers</b-dropdown-item>
-        <b-dropdown-item href="/payouts" v-if='admin'>Payouts</b-dropdown-item>
-        <b-dropdown-item href="/receipts">Receipts</b-dropdown-item>
-        <b-dropdown-item to="/admin/equipment">Repair Requests</b-dropdown-item>
-        <b-dropdown-item to='/admin/hours'>Hours</b-dropdown-item>
-        <b-dropdown-item :to="profileLink">Profile</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "list")'>Quotes</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates/new" v-if='permissions.canUpdate("estimates")'>Create Quote</b-dropdown-item>
+        <b-dropdown-item href="/vehicles" v-if='permissions.canList("vehicles")'>Vehicles</b-dropdown-item>
+        <b-dropdown-item href="/arborists" v-if='permissions.canList("arborists")'>Arborists</b-dropdown-item>
+        <b-dropdown-item to='/admin/customers' v-if='permissions.canList("customers")'>Customers</b-dropdown-item>
+        <b-dropdown-item href="/payouts" v-if='permissions.canList("payouts")'>Payouts</b-dropdown-item>
+        <b-dropdown-item href="/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>
+        <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
+        <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
+        <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
       </b-collapse>
     </b-navbar>
   </div>
@@ -23,18 +23,15 @@
 <script>
 export default {
   computed: {
-    admin() {
-      return this.$store.state.user.admin;
-    },
-    canManageEstimates(){
-      return this.admin || this.$store.state.user.can_manage_estimates;
-    },
     userId() {
       return this.$store.state.user.user_id;
     },
     profileLink() {
       return `/admin/users/${this.userId}`;
-    }
+    },
+    permissions() {
+      return this.$store.state.authorization;
+    },
   },
   mounted() {
     console.log(this.$store.state.user);
