@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 
 module Roles
-  class Base
-    def self.permission_set(list: false, show: false, create: false, update: false, delete: false, admin: false, scope_level: 'self', extras: {})
+  class Base < Core
+
+    def universal_permissions
       {
-        list: list,
-        show: show,
-        create: create,
-        update: update,
-        delete: delete,
-        admin: admin,
-        scope_level: scope_level
-      }.merge(extras)
+        documents: permission_set(list: true, show: true, create: true, update: true, delete: true),
+        hours: permission_set(list: true, show: true, update: true)
+      }
+    end
+
+    def role_permissions
+      {}
+    end
+
+    def all_permissions
+      universal_permissions.merge(role_permissions)
     end
   end
 end

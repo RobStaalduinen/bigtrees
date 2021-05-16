@@ -4,6 +4,8 @@ class InvoiceReceiptsController < ApplicationController
   before_action :signed_in_user
 
   def create
+    authorize Estimate, :update?
+
     Invoice.transaction do
       invoice.update(invoice_params) if invoice_params
 
@@ -32,7 +34,7 @@ class InvoiceReceiptsController < ApplicationController
   end
 
   def estimate
-    @estimate ||= Estimate.find(params[:estimate_id])
+    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
   end
 
   def invoice

@@ -2,10 +2,13 @@
 
 module Roles
   class TeamLead < Base
-    PERMISSIONS = Arborist::PERMISSIONS.merge(
-      {
-        estimates: permission_set(list: true, show: true, update: true)
-      }
-    ).freeze
+    def role_permissions
+      Roles::Arborist.role_permissions.merge(
+        {
+          estimates: permission_set(list: true, show: true, update: true),
+          customers: permission_set(show: true, create: true, update: true)
+        }
+      )
+    end
   end
 end

@@ -44,8 +44,6 @@ gem 'axlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-# gem 'execjs'
-# gem 'therubyracer'
 gem 'mini_racer'
 gem 'mysql2'
 gem 'jquery-ui-rails'
@@ -55,7 +53,10 @@ gem 'libreconv'
 gem 'letter_opener'
 # gem 'less-rails', '~> 2.7.1'
 gem 'materialize-sass', '~> 1.0.0'
+
+
 gem 'cancancan'
+gem 'pundit'
 
 gem 'spreadsheet'
 

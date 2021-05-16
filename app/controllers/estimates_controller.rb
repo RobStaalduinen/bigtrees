@@ -5,17 +5,14 @@ class EstimatesController < ApplicationController
   before_action :signed_in_user, except: %i[update]
 
   def index
-    authorize! :query, Estimate
+    authorize Estimate, :index?
+
     if request.format.html?
       redirect_to '/admin/estimates'
       return
     end
 
-    if current_user.admin?
-      @estimates = Estimate.all
-    else
-      @estimates = current_user.estimates
-    end
+    @estimates = policy_scope(Estimate)
 
     @estimates = @estimates.submitted.
       order('estimates.id DESC').
@@ -39,7 +36,7 @@ class EstimatesController < ApplicationController
   end
 
   def new
-    authorize! :manage, Estimate
+    authorize Estimate, :new?
 
     @customer = Customer.find_by(id: params[:customer_id]) || Customer.new
     @arborist = current_user
@@ -47,13 +44,15 @@ class EstimatesController < ApplicationController
   end
 
   def show
-    @estimate = Estimate.find(params[:id])
+    @estimate = policy_scope(Estimate).find(params[:id])
     authorize! :read, @estimate
 
     render json: @estimate
-	end
+  end
 
-	def create
+  def create
+    authorize Estimate, :create?
+
     estimate = Estimate.create(estimate_params)
     estimate.update(arborist: current_user)
 
@@ -69,10 +68,13 @@ class EstimatesController < ApplicationController
     end
 
 		render json: { estimate_id: estimate.id }
-	end
+  end
 
   def update
-    @estimate = Estimate.find(params[:id])
+    authorize Estimate, :update?
+
+    @estimate = policy_scope(Estimate).find(params[:id])
+
 		@estimate.update(estimate_params)
 		@estimate.set_status
 
@@ -83,9 +85,9 @@ class EstimatesController < ApplicationController
   end
 
 	def edit
-		authorize! :manage, Estimate
+		authorize Estimate, :edit?
 
-		@estimate = Estimate.find(params[:id])
+		@estimate = policy_scope(Estimate).find(params[:id])
 
 		if params[:form_option] == 'set_work_date'
 			render template: "estimates/edit/#{params[:form_option]}", layout: 'admin_material'
@@ -95,7 +97,7 @@ class EstimatesController < ApplicationController
 	end
 
 	def cancel
-		authorize! :manage, Estimate
+		authorize Estimate, :update?
 
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(cancelled_at: Date.today)

@@ -4,6 +4,8 @@ class InvoiceMailoutsController < ApplicationController
   before_action :signed_in_user
 
   def create
+    authorize Estimate, :update?
+
     Invoice.transaction do
       invoice.update(invoice_params) if invoice_params
       invoice.assign_number
@@ -19,13 +21,15 @@ class InvoiceMailoutsController < ApplicationController
   private
 
   def send_mailout
+    authorize Estimate, :update?
+
     return if params[:skip_mail]
 
     QuoteMailer.quote_email(estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
   end
 
   def estimate
-    @estimate ||= Estimate.find(params[:estimate_id])
+    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
   end
 
   def invoice

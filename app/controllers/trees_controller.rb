@@ -1,8 +1,9 @@
 class TreesController < ApplicationController
 
   def create
-    @estimate = Estimate.find(params[:estimate_id])
-    @tree = @estimate.trees.create(tree_params)
+    authorize Estimate, :update?
+
+    @tree = estimate.trees.create(tree_params)
 
     work_type = Tree.work_type_for_name(params[:tree][:work_type_string])
 
@@ -12,16 +13,20 @@ class TreesController < ApplicationController
   end
 
   def bulk_create
-    @estimate = Estimate.find(params[:estimate_id])
+    authorize Estimate, :update?
 
     params[:trees].each do |tree|
-      @estimate.trees.create(tree.permit(:description, tree_images_attributes: [:image_url]).merge(work_type: 'other'))
+      estimate.trees.create(tree.permit(:description, tree_images_attributes: [:image_url]).merge(work_type: 'other'))
     end
 
     render json: { status: :ok }
   end
 
   private
+
+    def estimate
+      @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
+    end
 
     def tree_params
       params.require(:tree).permit(

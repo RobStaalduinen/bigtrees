@@ -1,16 +1,5 @@
 class SitesController < ApplicationController
-
-  def edit
-    @estimate = Estimate.find(params[:estimate_id])
-    @site = @estimate.site
-  end
-
   def create
-    puts 'SITE CREATION'
-    puts site_params
-    puts 'END SITE CREATION'
-
-    estimate = Estimate.find(params[:estimate_id])
     site = Site.new(site_params)
     site.estimate_id = estimate.id
     site.save
@@ -21,13 +10,21 @@ class SitesController < ApplicationController
   end
 
   def update
-    @site = Site.find(params[:id])
+    authorize Estimate, :update?
+
+    @site = Site.where(estimate: estimate).find(params[:id])
     @site.update(site_params)
 
     respond_to do |format|
       format.html { redirect_to estimate_path(id: params[:estimate_id]) }
       format.json { render json: @site }
     end
+  end
+
+  private
+
+  def estimate
+    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
   end
 
   def site_params

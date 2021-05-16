@@ -770,6 +770,8 @@ GEM
       byebug (~> 8.0)
       pry (~> 0.10)
     public_suffix (3.0.3)
+    pundit (2.1.0)
+      activesupport (>= 3.0.0)
     rack (1.6.13)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
@@ -960,6 +962,7 @@ DEPENDENCIES
   paperclip
   pry
   pry-byebug
+  pundit
   rack-cors
   rails (= 4.2.9)
   rails-controller-testing

@@ -19,6 +19,10 @@ class Authorization {
     return this.hasPermission(page, 'delete')
   }
 
+  canAdmin(page) {
+    return this.hasPermission(page, 'admin')
+  }
+
   hasPermission(page, permission_type) {
     return this.role_permissions[page] && this.role_permissions[page][permission_type]
   }

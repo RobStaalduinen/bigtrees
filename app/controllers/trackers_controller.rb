@@ -6,6 +6,8 @@ class TrackersController < ApplicationController
   end
 
   def index
+    authorize Estimate, :admin?
+
     master_tracker = GenerateMasterTracker.call(Estimate.submitted.includes(site: [ :address ]))
 
     respond_to do |format|

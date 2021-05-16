@@ -38,6 +38,7 @@ class ArboristsController < ApplicationController
   def create
     authorize! :manage, Arborist
     @arborist = Arborist.new(arborist_params)
+    @arborist.organization = current_user.organization
 
     if @arborist.save
       redirect_to arborist_path(@arborist)

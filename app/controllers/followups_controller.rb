@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class FollowupsController < ApplicationController
+  before_action :signed_in_user
 
   def create
+    authorize Estimate, :update?
+
     should_include_quote = params[:include_quote] == true
     QuoteMailer.quote_email(
         estimate,
@@ -20,7 +23,7 @@ class FollowupsController < ApplicationController
   private
 
   def estimate
-    @estimate ||= Estimate.find(params[:estimate_id])
+    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
   end
 
   def estimate_params

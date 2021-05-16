@@ -169,6 +169,7 @@ router.beforeEach(async (to, from, next) => {
   if(!store.state.user.logged_in) {
     await store.dispatch('authenticate');
 
+    // Still not authenticated, redirect to login
     if(!store.state.user.logged_in) {
       window.location.href = '/login'
     }

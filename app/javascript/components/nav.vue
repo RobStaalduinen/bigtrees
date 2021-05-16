@@ -7,8 +7,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "list")'>Quotes</b-dropdown-item>
         <b-dropdown-item to="/admin/estimates/new" v-if='permissions.canUpdate("estimates")'>Create Quote</b-dropdown-item>
-        <b-dropdown-item href="/vehicles" v-if='permissions.canList("vehicles")'>Vehicles</b-dropdown-item>
-        <b-dropdown-item href="/arborists" v-if='permissions.canList("arborists")'>Arborists</b-dropdown-item>
+        <b-dropdown-item href="/vehicles" v-if='permissions.canAdmin("vehicles")'>Vehicles</b-dropdown-item>
+        <b-dropdown-item href="/arborists" v-if='permissions.canAdmin("arborists")'>Arborists</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='permissions.canList("customers")'>Customers</b-dropdown-item>
         <b-dropdown-item href="/payouts" v-if='permissions.canList("payouts")'>Payouts</b-dropdown-item>
         <b-dropdown-item href="/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>

@@ -4,8 +4,9 @@ class CustomersController < ApplicationController
   before_action :signed_in_user
 
   def index
-    authorize! :manage, Customer
-    @customers = Customer.with_name.order('id DESC').includes(:estimates)
+    authorize Customer, :index?
+
+    @customers = Customer.all.order('customers.id DESC').includes(:estimates)
     if params[:q]
       @customers = @customers.where(
         'LOWER(name) LIKE :value OR LOWER(email) LIKE :value',
@@ -17,26 +18,23 @@ class CustomersController < ApplicationController
   end
 
   def show
-    authorize! :manage, Customer
-    @customer = Customer.includes(:estimates).find(params[:id])
-  end
+    authorize Customer, :show?
 
-  def edit
-    authorize! :manage, Customer
-    @customer = Customer.includes(:estimates).find(params[:id])
-    @redirect_location = params[:redirect_location]
+    @customer = policy_scope(Customer).find(params[:id])
   end
 
   def create
-    authorize! :manage, Customer
+    authorize Customer, :create?
+
     @customer = Customer.create(customer_params)
 
     render json: @customer.serialized
   end
 
   def update
-    authorize! :manage, Customer
-    @customer = Customer.includes(:estimates).find(params[:id])
+    authorize Customer, :update?
+
+    @customer = Customer.find(params[:id])
     @customer.update(customer_params)
 
     # Refactor to some sort of session

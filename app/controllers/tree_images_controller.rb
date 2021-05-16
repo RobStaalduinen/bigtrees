@@ -1,5 +1,4 @@
 class TreeImagesController < ApplicationController
-
   def new
     credentials = Aws::Credentials.new(
       ENV['AWS_ACCESS_KEY_ID'],
@@ -42,6 +41,8 @@ class TreeImagesController < ApplicationController
 
   # Temporary, while supporting two different creation mechanisms
   def create_from_urls
+    authorize Estimate, :update?
+
     if params[:images].present? && params[:images].any?
       params[:images].each do |image|
         TreeImage.create(
@@ -65,7 +66,7 @@ class TreeImagesController < ApplicationController
   end
 
   def estimate
-    @estimate ||= Estimate.find(params[:estimate_id])
+    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
   end
 
   def tree_image_params
