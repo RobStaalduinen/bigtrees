@@ -50,11 +50,6 @@ export default {
     reset() {
       this.costs = [];
     }
-  },
-  watch: {
-    costs() {
-      console.log(this.costs);
-    }
   }
 }
 </script>

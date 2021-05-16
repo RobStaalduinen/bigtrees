@@ -76,10 +76,10 @@ export default {
   }
 
   #cost-row-left{
-    width: 22%;
+    width: 30%;
   }
 
   #cost-row-right{
-    width: 76%;
+    width: 68%;
   }
 </style>

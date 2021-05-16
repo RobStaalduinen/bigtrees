@@ -38,28 +38,17 @@ export default {
         this.reset();
       })
     },
-    addCost(){
-      this.costs.push(this.defaultCost());
-    },
-    setCost(index, payload) {
-        this.costs[index] = { ...payload };
-    },
-    deleteCost(index) {
-      this.costs.splice(index, 1);
-    },
-    defaultCost() {
-      return {
-        key: Math.random().toString(36).substr(2, 9),
-        amount: null,
-        description: null
-      }
-    },
     reset() {
       this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
     }
   },
   mounted() {
     this.reset();
+  },
+  watch: {
+    estimate() {
+      this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
+    }
   }
 }
 </script>
