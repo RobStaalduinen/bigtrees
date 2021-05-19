@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   match '/cheques/xlsx', to: 'receipts#cheque_xlsx', via: :get, as: :cheques_xlsx
   resources :receipts do
     post '/approve', to: 'receipts#approve', as: :approve, param: :id
+    get '/summaries', to: 'receipts#summaries', on: :collection
   end
   resources :vehicles
   resources :expirations

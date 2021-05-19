@@ -1,7 +1,7 @@
 class Receipt < ActiveRecord::Base
   belongs_to :arborist
   belongs_to :vehicle
-  
+
   has_attached_file :photo
 
   scope :cheque, -> { where(category: 'Cheque' )}
@@ -17,5 +17,9 @@ class Receipt < ActiveRecord::Base
   PAYMENT_METHODS = ['Corporate Card', 'Personal Cash'].freeze
   DEFAULT_PAYMENT_METHOD = 'Corporate Card'
 
-  validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  # validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+
+  def image_path
+    self.image_url || self.photo.url
+  end
 end

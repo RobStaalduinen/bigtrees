@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210502154241) do
+ActiveRecord::Schema.define(version: 20210517183142) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 20210502154241) do
     t.datetime "photo_updated_at"
     t.integer  "vehicle_id",         limit: 4
     t.boolean  "approved",                                      default: false
+    t.string   "image_url",          limit: 255
   end
 
   create_table "site_config", force: :cascade do |t|

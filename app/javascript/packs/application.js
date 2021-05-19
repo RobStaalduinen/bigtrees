@@ -132,6 +132,7 @@ import CreateEstimate from '../pages/createEstimate.vue'
 import SingleEstimate from '../pages/singleEstimate.vue'
 import Users from '../pages/users.vue';
 import Equipment from '../pages/equipment.vue';
+import Receipts from '../pages/receipts.vue';
 
 import { store } from '../store/store.js';
 
@@ -146,18 +147,19 @@ const routes = [
       permission: { page: 'estimates', permission_type: 'list' }
     }
   },
+  {
+    path: '/admin/receipts',
+    component: Receipts ,
+    meta: {
+      authRequired: true,
+      permission: { page: 'receipts', permission_type: 'list' }
+    }
+  },
   { path: '/admin/estimates/new', component: CreateEstimate },
   { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
   { path: '/admin/users/:user_id', component: Users, name: 'profile' },
   { path: '/admin/equipment', component: Equipment }
 ]
-
-// BeforeEach
-// Check for token
-// If no token, go to login
-// If token and no auth, await auth
-// If auth, check permissions
-// If no permissions, redirect to 'from'
 
 
 const router = new VueRouter({
