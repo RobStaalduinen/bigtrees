@@ -1,5 +1,4 @@
 class TreesController < ApplicationController
-
   def create
     @tree = estimate.trees.create(tree_params)
 
@@ -21,7 +20,7 @@ class TreesController < ApplicationController
   private
 
     def estimate
-      @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
+      @estimate ||= Estimate.find(params[:estimate_id])
     end
 
     def tree_params

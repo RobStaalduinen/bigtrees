@@ -10,8 +10,6 @@ class SitesController < ApplicationController
   end
 
   def update
-    authorize Estimate, :update?
-
     @site = Site.where(estimate: estimate).find(params[:id])
     @site.update(site_params)
 
@@ -24,7 +22,7 @@ class SitesController < ApplicationController
   private
 
   def estimate
-    @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
+    @estimate ||= Estimate.find(params[:estimate_id])
   end
 
   def site_params
