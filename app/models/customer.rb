@@ -36,6 +36,6 @@ class Customer < ActiveRecord::Base
   end
 
   def downcase_fields
-    self.email.downcase!
+    self.email&.downcase!
   end
 end
