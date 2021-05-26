@@ -7,6 +7,7 @@ class ReceiptSerializer < ApplicationSerializer
   attribute :payment_method
   attribute :description
   attribute :cost
+  attribute :state
 
   attribute :image_path
 

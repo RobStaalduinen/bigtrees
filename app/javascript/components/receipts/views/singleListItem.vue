@@ -1,49 +1,49 @@
 <template>
   <section>
-    <app-collapsable-list-item :id='`equipment-request-${equipmentRequest.id}`' class='equipment-request'>
+    <app-collapsable-list-item :id='`receipt-${receipt.id}`' class='receipt'>
       <template v-slot:content>
         <div class='list-item-header'>
           <div class='list-item-header-left'>
-            {{ equipmentRequest.submitted_at }}
+            {{ receipt.date }}
           </div>
 
           <div class='list-item-header-highlight'>
-            {{ equipmentRequest.category }}
+            {{ receipt.category }}
           </div>
         </div>
 
         <div class='list-item-content'>
-          <div class='list-item-content-row'><b>Vehicle: </b> {{ vehicleName() }}</div>
-          <div class='list-item-content-row'><b>Description: </b> {{ equipmentRequest.description }}</div>
+          <div class='list-item-content-row'><b>Submitter: </b> {{ receipt.arborist.name }}</div>
+          <div class='list-item-content-row'><b>Cost: </b> {{ `$ ${receipt.cost}` }}</div>
+          <div class='list-item-content-row'><b>Description: </b> {{ receipt.description }}</div>
         </div>
       </template>
 
       <template v-slot:collapsed>
         <app-collapsable-action-bar>
           <template v-slot:content>
-            <app-action-bar-item
+            <!-- <app-action-bar-item
               name='Send to Team'
               icon='envelope'
               :onClick='toggleSend'
               v-if='hasPermission("equipment_requests", "update")'
-            />
+            /> -->
             <app-action-bar-item
-              name='Resolve'
+              name='Mark as Repaid'
               icon='check-circle'
-              :onClick='toggleResolve'
-              v-if='equipmentRequest.state == "submitted" && hasPermission("equipment_requests", "update")'
+              v-if='canRepay()'
+              :onClick='approveReceipt'
             />
             <app-action-bar-item
               name='Details'
               icon='clipboard-plus'
-              :onClick='toggleModal'
             />
           </template>
         </app-collapsable-action-bar>
       </template>
     </app-collapsable-list-item>
 
-    <b-modal :id='`eq-modal-${equipmentRequest.id}`' centered title='Details'>
+    <!-- <b-modal :id='`eq-modal-${equipmentRequest.id}`' centered title='Details'>
       <div class='modal-internal'>
         <div class='modal-row'><b>Submitted At:</b> {{ equipmentRequest.submitted_at }}</div>
         <div class='modal-row'><b>Submitter:</b> {{ equipmentRequest.arborist.name }}</div>
@@ -79,71 +79,44 @@
       <template v-slot:modal-footer>
         <b-button block class='submit-button' @click='close()'>Done</b-button>
       </template>
-    </b-modal>
+    </b-modal> -->
 
   </section>
 </template>
 
 <script>
-import ResolveRequest from '@/components/equipment/actions/resolve';
 import EventBus from '@/store/eventBus';
 
 export default {
   props: {
-    'equipmentRequest': {
+    'receipt': {
       required: true,
       type: Object
     }
   },
   methods: {
-    vehicleName() {
-      if(this.equipmentRequest.vehicle == null) {
-        return 'None'
-      }
-
-      return this.equipmentRequest.vehicle.name;
-    },
-    toggleModal() {
-      this.$bvModal.show(`eq-modal-${this.equipmentRequest.id}`);
-    },
     toggleResolve() {
-      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
-      EventBus.$emit('RESOLVE_EQUIPMENT_REQUEST', this.equipmentRequest);
+      // this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      // EventBus.$emit('RESOLVE_EQUIPMENT_REQUEST', this.equipmentRequest);
     },
     toggleSend() {
-      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
-      EventBus.$emit('SEND_EQUIPMENT_REQUEST', this.equipmentRequest);
+      // this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      // EventBus.$emit('SEND_EQUIPMENT_REQUEST', this.equipmentRequest);
     },
-    close() {
-      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+    approveReceipt() {
+      this.axiosPost(`/receipts/${this.receipt.id}/approve`).then(response => {
+        EventBus.$emit('RECEIPT_UPDATED');
+      })
+    },
+    canRepay() {
+      return this.receipt.state == 'pending' && this.hasPermission("receipts", "admin")
     }
   }
 }
 </script>
 
 <style scoped>
-  .equipment-request {
+  .receipt {
     font-size: 12px
-  }
-
-  .modal-internal {
-    max-height: 500px;
-    overflow: scroll;
-    font-size: 14px;
-  }
-
-  .modal-row {
-    margin-top: 4px;
-    width: 100%;
-  }
-
-  .modal-button-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
-  }
-
-  .modal-button {
-    width: 49%;
   }
 </style>

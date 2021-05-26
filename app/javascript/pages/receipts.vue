@@ -8,6 +8,8 @@
       </template>
     </app-header>
 
+    <app-receipt-list></app-receipt-list>
+
     <app-create-equipment-request
       id='create-equipment-request'
       v-if='hasPermission("equipment_requests", "create")'
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import ReceiptList from '@/components/receipts/views/list';
 import CreateEquipmentRequest from '@/components/equipment/actions/create'
 import EventBus from '@/store/eventBus';
 import SendToTeam from '@/components/equipment/actions/sendToTeam';
@@ -23,6 +26,7 @@ import SendToTeam from '@/components/equipment/actions/sendToTeam';
 export default {
   components: {
     'app-create-equipment-request': CreateEquipmentRequest,
+    'app-receipt-list': ReceiptList
   },
   data() {
     return {

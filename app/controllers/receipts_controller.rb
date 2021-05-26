@@ -5,8 +5,10 @@ class ReceiptsController < ApplicationController
   def index
     authorize Receipt, :index?
 
-    # @receipts = current_user.get_receipts.regular.order("date DESC")
     receipts = policy_scope(Receipt).regular.order('date DESC')
+
+    state = params[:state] || 'pending'
+    receipts = receipts.where(state: state)
 
     render json: receipts
   end
@@ -14,10 +16,9 @@ class ReceiptsController < ApplicationController
   def summaries
     authorize Receipt, :index?
 
-    receipts = policy_scope(Receipt).regular.order('date DESC')
+    receipts = policy_scope(Receipt).regular.unapproved.order('date DESC')
 
     report = receipts.
-      unapproved.
       group(:arborist).
       sum(:cost).map do |arborist, cost|
         [arborist.name, cost.to_f]
@@ -42,9 +43,9 @@ class ReceiptsController < ApplicationController
   end
 
   def approve
-    authorize Receipt, :update?
+    authorize Receipt, :admin?
 
-    @receipt.update(approved: true)
+    @receipt.update(state: :approved)
 
     render json: @receipt
   end

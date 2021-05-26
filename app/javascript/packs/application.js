@@ -45,6 +45,7 @@ import "vue-multiselect/dist/vue-multiselect.min.css"
 import '../stylesheets/variables'
 import '../stylesheets/bootstrap_overrides.css'
 import '../stylesheets/common_styles.css'
+import '../stylesheets/ui_styles.css'
 
 import moment from 'moment'
 

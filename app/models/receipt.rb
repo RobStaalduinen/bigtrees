@@ -10,6 +10,12 @@ class Receipt < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :unapproved, -> { where(approved: false) }
 
+  enum state: {
+    pending: 'pending',
+    approved: 'approved',
+    rejected: 'rejected'
+  }
+
   CATEGORIES = ['Fuel', 'Tools', 'Repairs', 'Travel', 'Cheque', 'Other'].freeze
   DEFAULT_CATEGORY = 'Fuel'
   JOBS = ['Big Trees', 'Big Properties', 'Big Stumps'].freeze
