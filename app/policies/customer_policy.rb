@@ -13,11 +13,13 @@ class CustomerPolicy < ApplicationPolicy
     def resolve
       if level == 'organization'
         Customer.from(
-          scope.joins(:estimates).where(estimates: { arborist_id: user.organization.arborists.select(:id) })
+          scope.joins(:estimates).where(estimates: { arborist_id: user.organization.arborists.select(:id) }),
+          :customers
         )
       else
         Customer.from(
-          scope.joins(:estimates).where(estimates: { arborist: user }).uniq
+          scope.joins(:estimates).where(estimates: { arborist: user }).uniq,
+          :customers
         )
       end
     end
