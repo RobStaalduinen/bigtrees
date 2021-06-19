@@ -1,6 +1,6 @@
 class ReceiptsController < ApplicationController
   before_action :signed_in_user
-  before_action :set_receipt, only: %i[show approve]
+  before_action :set_receipt, only: %i[show approve update]
 
   def index
     authorize Receipt, :index?
@@ -16,7 +16,7 @@ class ReceiptsController < ApplicationController
   def summaries
     authorize Receipt, :index?
 
-    receipts = policy_scope(Receipt).regular.unapproved.order('date DESC')
+    receipts = policy_scope(Receipt).pending.order('date DESC')
 
     report = receipts.
       group(:arborist).
@@ -30,10 +30,20 @@ class ReceiptsController < ApplicationController
   def create
     authorize Receipt, :create?
 
-    receipt = current_user.receipts.create(receipt_params)
+    receipt = current_user.receipts.new(receipt_params)
+    receipt.date ||= Date.today
+    receipt.save
     # receipt.update(approved: true) if current_user.admin?
 
     render json: receipt
+  end
+
+  def update
+    authorize Receipt, :update?
+
+    @receipt.update(receipt_params)
+
+    render json: @receipt
   end
 
   def show
@@ -48,6 +58,14 @@ class ReceiptsController < ApplicationController
     @receipt.update(state: :approved)
 
     render json: @receipt
+  end
+
+  def approve_all
+    authorize Receipt, :admin?
+
+    policy_scope(Receipt).pending.update_all(state: :approved)
+
+    render json: {}
   end
 
   def xlsx
@@ -73,13 +91,11 @@ class ReceiptsController < ApplicationController
   private
 
   def receipt_params
-    params.require(:receipt).
-            permit(
-              :date, :arborist_id, :vehicle_id, :category, :job,
-              :payment_method, :cost, :category,
-              :description, :photo
-            )
-
+    params.require(:receipt).permit(
+      :date, :vehicle_id, :category, :job,
+      :payment_method, :cost, :category,
+      :description, :photo, :image_url, :rejection_reason, :state
+    )
   end
 
   def set_receipt

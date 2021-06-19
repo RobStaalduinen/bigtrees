@@ -1,6 +1,6 @@
 class AddStateToReceipt < ActiveRecord::Migration
   def change
-    add_column :receipts, :state, :string
+    add_column :receipts, :state, :string, default: 'pending'
     add_index :receipts, :state
 
     Receipt.all.each do |receipt|

@@ -8,6 +8,7 @@ class ReceiptSerializer < ApplicationSerializer
   attribute :description
   attribute :cost
   attribute :state
+  attribute :rejection_reason
 
   attribute :image_path
 
