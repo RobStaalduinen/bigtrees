@@ -45,6 +45,7 @@ import "vue-multiselect/dist/vue-multiselect.min.css"
 import '../stylesheets/variables'
 import '../stylesheets/bootstrap_overrides.css'
 import '../stylesheets/common_styles.css'
+import '../stylesheets/ui_styles.css'
 
 import moment from 'moment'
 
@@ -63,6 +64,7 @@ import CollapsableListItem from '../components/ui/collapsableListItem.vue';
 import CollapsableActionBar from '../components/ui/collapsableActionBar.vue';
 import ActionBarItem from '../components/ui/actionBarItem.vue';
 import RightSidebar from '../components/ui/rightSidebar.vue';
+import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -75,6 +77,7 @@ Vue.component('app-collapsable-list-item', CollapsableListItem)
 Vue.component('app-collapsable-action-bar', CollapsableActionBar)
 Vue.component('app-action-bar-item', ActionBarItem)
 Vue.component('app-right-sidebar', RightSidebar)
+Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
 
 
 // Form components
@@ -82,6 +85,7 @@ import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
+import NumberField from '../components/form/numberField.vue';
 import SelectField from '../components/form/selectField';
 import SubmitButton from '../components/form/submitButton.vue';
 import Multi from '../components/form/multiSelect.vue';
@@ -90,6 +94,7 @@ Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
+Vue.component('app-number-field', NumberField);
 Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
 Vue.component('app-multi-select', Multi);
@@ -132,6 +137,7 @@ import CreateEstimate from '../pages/createEstimate.vue'
 import SingleEstimate from '../pages/singleEstimate.vue'
 import Users from '../pages/users.vue';
 import Equipment from '../pages/equipment.vue';
+import Receipts from '../pages/receipts.vue';
 
 import { store } from '../store/store.js';
 
@@ -146,18 +152,19 @@ const routes = [
       permission: { page: 'estimates', permission_type: 'list' }
     }
   },
+  {
+    path: '/admin/receipts',
+    component: Receipts ,
+    meta: {
+      authRequired: true,
+      permission: { page: 'receipts', permission_type: 'list' }
+    }
+  },
   { path: '/admin/estimates/new', component: CreateEstimate },
   { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
   { path: '/admin/users/:user_id', component: Users, name: 'profile' },
   { path: '/admin/equipment', component: Equipment }
 ]
-
-// BeforeEach
-// Check for token
-// If no token, go to login
-// If token and no auth, await auth
-// If auth, check permissions
-// If no permissions, redirect to 'from'
 
 
 const router = new VueRouter({

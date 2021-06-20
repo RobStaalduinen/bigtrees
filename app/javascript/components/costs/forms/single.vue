@@ -1,13 +1,12 @@
 <template>
   <div id='cost-row'>
     <div id='cost-row-left'>
-      <app-input-field
+      <app-number-field
         v-model='cost.amount'
         :name='baseName + "_amount"'
         label='Amount'
         validationRules='required'
-        inputType='number'
-      ></app-input-field>
+      ></app-number-field>
     </div>
 
     <div id='cost-row-right'>
@@ -46,7 +45,7 @@ export default {
   watch: {
     costValue: function() {
       this.$emit('input', this.costValue);
-    }
+    },
   },
 }
 </script>
@@ -72,7 +71,7 @@ export default {
   #cost-row{
     display: flex;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 4px;
   }
 
   #cost-row-left{

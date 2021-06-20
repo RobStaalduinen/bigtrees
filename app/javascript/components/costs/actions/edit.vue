@@ -1,9 +1,22 @@
 <template>
-  <app-right-sidebar :id='id' title='Edit Costs' submitText='Save' :onSubmit='updateCosts' @cancelled='reset'>
+  <app-scrollable-sidebar :id='id' title='Edit Costs' submitText='Save' :onSubmit='updateCosts' @cancelled='reset'>
     <template v-slot:content>
-      <app-multi-costs v-model='costs'></app-multi-costs>
+      <div id='edit-cost-box'>
+        <app-multi-costs v-model='costs'></app-multi-costs>
+      </div>
     </template>
-  </app-right-sidebar>
+
+    <template v-slot:extras>
+      <div id='quick-costs-box'>
+        <div><b>Quick Costs</b></div>
+        <div id='quick-cost-actions'>
+          <b-button class='cost-button' size="sm" @click='addCost(0, "Site Cleanup")'>Cleanup</b-button>
+          <b-button class='cost-button' size="sm" @click='addCost(0, "Log Disposal")'>Logs</b-button> <br>
+          <b-button class='cost-button' size="sm" @click='addCost(0, "Chips/Mulch Disposal")'>Mulch</b-button>
+        </div>
+      </div>
+    </template>
+  </app-scrollable-sidebar>
 </template>
 
 <script>
@@ -38,6 +51,16 @@ export default {
         this.reset();
       })
     },
+    addCost(amount, description) {
+
+      this.costs.push(
+        {
+          key: Math.random().toString(36).substr(2, 9),
+          amount: amount,
+          description: description
+        }
+      )
+    },
     reset() {
       this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
     }
@@ -56,6 +79,32 @@ export default {
 <style scoped>
   #info-header {
     font-size: 14px;
+  }
+
+  #edit-cost-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+
+  #cost-select {
+    max-height: 80%;
+    overflow: scroll;
+  }
+
+  #quick-costs-box {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  #quick-cost-actions {
+    display: flex;
+  }
+
+  .cost-button {
+    margin-right: 8px;
   }
 
   .cost-entry {

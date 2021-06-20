@@ -1,3 +1,7 @@
+a {
+  cursor: pointer;
+}
+
 .right-column {
   text-align: right;
 }
@@ -40,6 +44,33 @@
 
   color: var(--main-color);
   cursor: pointer;
+}
+
+.collapsed-action-row{
+  display: flex;
+  justify-content: flex-end;
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  border-color: lightgray;
+  margin-top: 8px;
+}
+
+.collapsed-action-link {
+  display: flex;
+  align-items: center;
+
+  padding: 6px 12px;
+
+  border-width: 0 0 0 1px;
+  border-color: lightgray;
+  border-style: solid;
+
+  color: var(--main-color);
+  cursor: pointer;
+}
+
+.collapsed-action-link-content {
+  margin-right: 4px;
 }
 
 .submit-error {

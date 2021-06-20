@@ -2,19 +2,19 @@
   <section>
     <app-collapsable-list-item :id='`equipment-request-${equipmentRequest.id}`' class='equipment-request'>
       <template v-slot:content>
-        <div class='equipment-request-header'>
-          <div class='equipment-request-time'>
+        <div class='list-item-header'>
+          <div class='list-item-header-left'>
             {{ equipmentRequest.submitted_at }}
           </div>
 
-          <div class='equipment-request-category'>
+          <div class='list-item-header-highlight'>
             {{ equipmentRequest.category }}
           </div>
         </div>
 
-        <div class='equipment-request-content'>
-          <div class='equipment-request-content-row'><b>Vehicle: </b> {{ vehicleName() }}</div>
-          <div class='equipment-request-content-row'><b>Description: </b> {{ equipmentRequest.description }}</div>
+        <div class='list-item-content'>
+          <div class='list-item-content-row'><b>Vehicle: </b> {{ vehicleName() }}</div>
+          <div class='list-item-content-row'><b>Description: </b> {{ equipmentRequest.description }}</div>
         </div>
       </template>
 
@@ -124,40 +124,6 @@ export default {
 <style scoped>
   .equipment-request {
     font-size: 12px
-  }
-
-  .equipment-request-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-
-    border-width: 0 0 1px 0;
-    border-style: solid;
-    border-color: lightgray;
-  }
-
-  .equipment-request-time {
-    padding: 4px;
-  }
-
-  .equipment-request-category{
-    padding: 4px;
-    color: white;
-    background-color: var(--secondary-red);
-    min-width: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .equipment-request-content{
-    display: flex;
-    flex-direction: column;
-    padding: 4px;
-  }
-
-  .equipment-request-content-row {
-    margin-top: 4px;
   }
 
   .modal-internal {

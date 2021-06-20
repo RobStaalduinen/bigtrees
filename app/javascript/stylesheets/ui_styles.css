@@ -1,0 +1,35 @@
+/* List Styles */
+
+.list-item-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgray;
+}
+
+.list-item-header-highlight{
+  padding: 4px;
+  color: white;
+  background-color: var(--secondary-red);
+  min-width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-item-header-left {
+  padding: 4px;
+}
+
+.list-item-content{
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+
+.list-item-content-row {
+  margin-top: 4px;
+}

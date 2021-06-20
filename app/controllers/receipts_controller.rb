@@ -1,81 +1,104 @@
 class ReceiptsController < ApplicationController
-  layout 'admin_boot'
-
   before_action :signed_in_user
-  before_action :set_receipt, only: [ :show, :approve ]
+  before_action :set_receipt, only: %i[show approve update]
 
   def index
-    authorize! :read, Receipt
-    @receipts = current_user.get_receipts.regular.order("date DESC")
-    @unapproved_per_person = @receipts.
-      unapproved.
-      group(:arborist).
-      sum(:cost).map { |arborist, cost| 
-        [arborist.name, cost.to_f] 
-      }.to_h
+    authorize Receipt, :index?
+
+    receipts = policy_scope(Receipt).regular.order('date DESC')
+
+    state = params[:state] || 'pending'
+    receipts = receipts.where(state: state)
+
+    render json: receipts
   end
 
-  def new
-    authorize! :create, Receipt
+  def summaries
+    authorize Receipt, :index?
 
-    @arborist = current_user
-    @vehicles = Vehicle.all
+    receipts = policy_scope(Receipt).pending.order('date DESC')
 
-    @receipt = Receipt.new
+    report = receipts.
+      group(:arborist).
+      sum(:cost).map do |arborist, cost|
+        [arborist.name, cost.to_f]
+      end.to_h
 
-    render 'new'
+    render json: report
   end
 
   def create
-    authorize! :create, Receipt
+    authorize Receipt, :create?
 
-    receipt = current_user.receipts.create(receipt_params)
-    receipt.update(approved: true) if current_user.admin?
+    receipt = current_user.receipts.new(receipt_params)
+    receipt.date ||= Date.today
+    receipt.save
+    # receipt.update(approved: true) if current_user.admin?
 
-    redirect_to receipts_path
+    render json: receipt
+  end
+
+  def update
+    authorize Receipt, :update?
+
+    @receipt.update(receipt_params)
+
+    render json: @receipt
   end
 
   def show
-    authorize! :read, Receipt
+    authorize Receipt, :show?
+
+    render json: @receipt
   end
 
   def approve
-    authorize! :manage, Receipt
+    authorize Receipt, :admin?
 
-    @receipt.update(approved: true)
+    @receipt.update(state: :approved)
 
-    redirect_to receipts_path
+    render json: @receipt
+  end
+
+  def approve_all
+    authorize Receipt, :admin?
+
+    policy_scope(Receipt).pending.update_all(state: :approved)
+
+    render json: {}
   end
 
   def xlsx
-    @receipts = current_user.get_receipts.regular.order("date DESC")
+    authorize Receipt, :admin?
 
-    respond_to do |format| 
-      format.xlsx {render xlsx: 'receipts', filename: "receipts.xlsx"}
+    @receipts = policy_scope(Receipt).regular.order('date DESC')
+
+    respond_to do |format|
+      format.xlsx { render xlsx: 'receipts', filename: 'receipts.xlsx' }
     end
   end
 
   def cheque_xlsx
-    @cheques = current_user.get_receipts.cheque.order("date DESC")
+    authorize Receipt, :admin?
 
-    respond_to do |format| 
-      format.xlsx {render xlsx: 'cheques', filename: "cheques.xlsx"}
+    @cheques = policy_scope(Receipt).cheque.order('date DESC')
+
+    respond_to do |format|
+      format.xlsx { render xlsx: 'cheques', filename: 'cheques.xlsx' }
     end
   end
 
   private
 
-    def receipt_params
-      params.require(:receipt).
-             permit(
-               :date, :arborist_id, :vehicle_id, :category, :job,
-               :payment_method, :cost, :category,
-               :description, :photo
-             )
+  def receipt_params
+    params.require(:receipt).permit(
+      :date, :vehicle_id, :category, :job,
+      :payment_method, :cost, :category,
+      :description, :photo, :image_url, :rejection_reason, :state
+    )
+  end
 
-    end
-
-    def set_receipt
-      @receipt = Receipt.find(params[:id] || params[:receipt_id])
-    end
+  def set_receipt
+    @receipt = policy_scope(Receipt).find(params[:id] || params[:receipt_id])
+  end
 end
