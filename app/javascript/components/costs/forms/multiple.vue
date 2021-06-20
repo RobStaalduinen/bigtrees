@@ -74,6 +74,12 @@ export default {
   },
   mounted() {
     this.reset();
+  },
+  watch: {
+    value() {
+      this.costs = this.value;
+      console.log(this.costs);
+    }
   }
 }
 </script>

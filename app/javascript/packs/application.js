@@ -64,6 +64,7 @@ import CollapsableListItem from '../components/ui/collapsableListItem.vue';
 import CollapsableActionBar from '../components/ui/collapsableActionBar.vue';
 import ActionBarItem from '../components/ui/actionBarItem.vue';
 import RightSidebar from '../components/ui/rightSidebar.vue';
+import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -76,6 +77,7 @@ Vue.component('app-collapsable-list-item', CollapsableListItem)
 Vue.component('app-collapsable-action-bar', CollapsableActionBar)
 Vue.component('app-action-bar-item', ActionBarItem)
 Vue.component('app-right-sidebar', RightSidebar)
+Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
 
 
 // Form components
@@ -83,6 +85,7 @@ import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
+import NumberField from '../components/form/numberField.vue';
 import SelectField from '../components/form/selectField';
 import SubmitButton from '../components/form/submitButton.vue';
 import Multi from '../components/form/multiSelect.vue';
@@ -91,6 +94,7 @@ Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
+Vue.component('app-number-field', NumberField);
 Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
 Vue.component('app-multi-select', Multi);
