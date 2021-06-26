@@ -26,7 +26,13 @@ class Tree < ActiveRecord::Base
 	end
 
 	def work_name
-		self.work_type.capitalize.gsub("_", " ")
+    name = work_type.capitalize.gsub("_", " ")
+
+    if work_type == 'removal' && stump_removal
+      name += " + Stump Removal"
+    end
+
+    name
 	end
 
 	def stump_removal_answer
