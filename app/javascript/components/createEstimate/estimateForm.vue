@@ -99,13 +99,14 @@ export default {
           costs: this.tasks.map(task => { return task.cost })
         }
         this.axiosPost(`/estimates/${estimateId}/costs`, costOptions).then(response => {
+          let trees = this.tasks.map(task => {
+            return {
+              tree_images_attributes: this.getTreeImageAttributes(task)
+            }
+          })
           var treeOptions = {
             estimate_id: estimateId,
-            trees: this.tasks.map(task => {
-              return {
-                tree_images_attributes: this.getTreeImageAttributes(task)
-              }
-            })
+            trees: trees
           }
 
           this.axiosPost('/trees/bulk_create', treeOptions).then(response => {

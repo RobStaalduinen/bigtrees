@@ -6,23 +6,28 @@
         <b-icon icon='trash-fill' v-if="tasks.length > 1" @click='deleteTask(index)'/>
       </div>
       <app-single-image :value='task.image' @input='(payload) => updateImage(index, payload)'></app-single-image>
-      <app-single-cost :value='tasks.cost' @input='(payload) => updateCosts(index, payload)'></app-single-cost>
+      <app-single-cost :value='task.cost' @input='(payload) => updateCosts(index, payload)'></app-single-cost>
     </div>
 
     <a id='add-task-button' @click.prevent='addTask'>
       + Add Task +
     </a>
+
+    <app-quick-costs :addCost='addCustomTask'></app-quick-costs>
   </div>
 </template>
 
 <script>
   import SingleImageForm from '../tree_images/forms/single';
   import SingleCost from '../costs/forms/single';
+  import QuickCosts from '@/components/costs/widgets/quick';
+
 
   export default {
     components: {
       'app-single-image': SingleImageForm,
-      'app-single-cost': SingleCost
+      'app-single-cost': SingleCost,
+      'app-quick-costs': QuickCosts
     },
     data() {
       return {
@@ -31,6 +36,16 @@
       }
     },
     methods: {
+      addCustomTask(amount, description) {
+        this.tasks.push(
+          {
+            key: Math.random().toString(36).substr(2, 9),
+            image: null,
+            cost: { description: description, amount: amount }
+          }
+        )
+        this.$emit('input', this.tasks);
+      },
       addTask() {
         this.tasks.push(this.defaultTask())
         this.$emit('input', this.tasks);

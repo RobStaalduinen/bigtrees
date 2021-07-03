@@ -7,14 +7,7 @@
     </template>
 
     <template v-slot:extras>
-      <div id='quick-costs-box'>
-        <div><b>Quick Costs</b></div>
-        <div id='quick-cost-actions'>
-          <b-button class='cost-button' size="sm" @click='addCost(0, "Site Cleanup")'>Cleanup</b-button>
-          <b-button class='cost-button' size="sm" @click='addCost(0, "Log Disposal")'>Logs</b-button> <br>
-          <b-button class='cost-button' size="sm" @click='addCost(0, "Chips/Mulch Disposal")'>Mulch</b-button>
-        </div>
-      </div>
+      <app-quick-costs :addCost='addCost'></app-quick-costs>
     </template>
   </app-scrollable-sidebar>
 </template>
@@ -23,11 +16,13 @@
 import SingleCost from '../forms/single';
 import EventBus from '@/store/eventBus';
 import MultiCostFrom from '@/components/costs/forms/multiple';
+import QuickCosts from '@/components/costs/widgets/quick';
 
 export default {
   components: {
     'app-single-cost': SingleCost,
-    'app-multi-costs': MultiCostFrom
+    'app-multi-costs': MultiCostFrom,
+    'app-quick-costs': QuickCosts
   },
   props: {
     id: {
@@ -91,20 +86,6 @@ export default {
   #cost-select {
     max-height: 80%;
     overflow: scroll;
-  }
-
-  #quick-costs-box {
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-  }
-
-  #quick-cost-actions {
-    display: flex;
-  }
-
-  .cost-button {
-    margin-right: 8px;
   }
 
   .cost-entry {

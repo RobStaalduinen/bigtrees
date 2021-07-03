@@ -47,6 +47,9 @@ export default {
       this.$emit('input', this.costValue);
     },
   },
+  mounted() {
+    console.log(this.value);
+  }
 }
 </script>
 
