@@ -26,6 +26,9 @@ Rails.application.routes.draw do
     resources :invoice_mailouts, only: [ :create ]
     resources :invoice_receipts, only: [ :create ]
     resources :followups, only: [ :create ]
+    resources :equipment_assignments, only: [ ] do
+      post '/bulk_update', to: 'equipment_assignments#bulk_update', on: :collection
+    end
 
     post '/cancel', to: 'estimates#cancel', on: :member
   end

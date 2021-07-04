@@ -10,13 +10,19 @@ class Estimate < ActiveRecord::Base
 	has_many :trees
 	has_many :tree_images, through: :trees
 	has_many :extra_costs
-	has_many :costs
+  has_many :costs
+
+  has_many :equipment_assignments
+  has_many :vehicles, through: :equipment_assignments
+
 	has_one :invoice
 	has_one :site
 	belongs_to :customer
 	belongs_to :arborist
 
-	accepts_nested_attributes_for :site
+  accepts_nested_attributes_for :site
+  accepts_nested_attributes_for :equipment_assignments
+
 
 	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
 	scope :incomplete, -> { active.where("status < 4") }

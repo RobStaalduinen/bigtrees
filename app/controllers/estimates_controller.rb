@@ -123,7 +123,8 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :tree_quantity, :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date, :submission_completed
+      :tree_quantity, :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date, :submission_completed,
+      equipment_assignments_attributes: [ :vehicle_id ]
     )
     e_params[:is_unknown] ||= false
     e_params
@@ -140,6 +141,12 @@ class EstimatesController < ApplicationController
     params.require(:customer).permit(
       :id, :name, :phone, :email, :preferred_contact,
       address_attributes: [ :id, :street, :city ]
+    )
+  end
+
+  def assignment_params
+    params.require(:estimate).permit(
+      equipment_assignments_attributes: [ :vehicle_id ]
     )
   end
 end

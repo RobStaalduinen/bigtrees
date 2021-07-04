@@ -7,7 +7,7 @@ class VehiclesController < ApplicationController
     @vehicles = Vehicle.all.includes(:expirations)
 
     respond_to do |format|
-      format.json { render json: @vehicles }
+      format.json { render json: @vehicles.order(id: :asc) }
       format.html
     end
   end

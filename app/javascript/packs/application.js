@@ -89,6 +89,7 @@ import NumberField from '../components/form/numberField.vue';
 import SelectField from '../components/form/selectField';
 import SubmitButton from '../components/form/submitButton.vue';
 import Multi from '../components/form/multiSelect.vue';
+import CheckboxHighlight from '../components/form/checkboxHighlight.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
@@ -98,6 +99,7 @@ Vue.component('app-number-field', NumberField);
 Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
 Vue.component('app-multi-select', Multi);
+Vue.component('app-checkbox-highlight', CheckboxHighlight);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';

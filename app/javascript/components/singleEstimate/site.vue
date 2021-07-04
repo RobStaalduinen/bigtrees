@@ -6,50 +6,46 @@
       </template>
 
       <template v-slot:content>
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
-            <b>Wood removal</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.wood_removal) }}
-          </b-col>
-        </b-row>
+        <template v-if='estimate.site.survey_filled_out'>
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Wood removal</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ formatAnswer(estimate.site.wood_removal) }}
+            </b-col>
+          </b-row>
 
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
-            <b>Complete Cleanup</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.cleanup) }}
-          </b-col>
-        </b-row>
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Vehicle Access</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ formatAnswer(estimate.site.vehicle_access) }}
+            </b-col>
+          </b-row>
 
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
-            <b>Vehicle Access</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.vehicle_access) }}
-          </b-col>
-        </b-row>
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Breakables</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ formatAnswer(estimate.site.breakables) }}
+            </b-col>
+          </b-row>
 
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
-            <b>Breakables</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.breakables) }}
-          </b-col>
-        </b-row>
-
-        <b-row class='spaced-row'>
-          <b-col cols='6' class='right-column'>
-            <b>Low Access Width</b>
-          </b-col>
-          <b-col cols='6'>
-            {{ formatAnswer(estimate.site.low_access_width) }}
-          </b-col>
-        </b-row>
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Low Access Width</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ formatAnswer(estimate.site.low_access_width) }}
+            </b-col>
+          </b-row>
+        </template>
+        <template v-else>
+          No Survey Filled out
+        </template>
 
         <div class='single-estimate-link-row'>
           <div class='single-estimate-link' v-b-toggle.site-edit>
@@ -93,6 +89,8 @@ export default {
     },
     updateSite() {
       var params = { tree_site: this.site }
+      params.tree_site.survey_filled_out = true;
+
       this.axiosPut(`/estimates/${this.estimate.id}/sites/${this.estimate.site.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', 'site-edit');
         EventBus.$emit('ESTIMATE_UPDATED',  { site: response.data.site });

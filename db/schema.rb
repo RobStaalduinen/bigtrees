@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210528100525) do
+ActiveRecord::Schema.define(version: 20210703203151) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -95,6 +95,13 @@ ActiveRecord::Schema.define(version: 20210528100525) do
   end
 
   add_index "documents", ["arborist_id"], name: "index_documents_on_arborist_id", using: :btree
+
+  create_table "equipment_assignments", force: :cascade do |t|
+    t.integer  "estimate_id", limit: 4
+    t.integer  "vehicle_id",  limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
   create_table "equipment_requests", force: :cascade do |t|
     t.integer  "arborist_id",        limit: 4
@@ -218,16 +225,17 @@ ActiveRecord::Schema.define(version: 20210528100525) do
   end
 
   create_table "sites", force: :cascade do |t|
-    t.integer "estimate_id",      limit: 4
-    t.string  "street",           limit: 255
-    t.string  "city",             limit: 255
-    t.boolean "wood_removal",                 default: true
-    t.boolean "vehicle_access",               default: false
-    t.boolean "breakables",                   default: false
-    t.string  "access_width",     limit: 255
-    t.boolean "cleanup",                      default: false
-    t.integer "address_id",       limit: 4
-    t.boolean "low_access_width",             default: false
+    t.integer "estimate_id",       limit: 4
+    t.string  "street",            limit: 255
+    t.string  "city",              limit: 255
+    t.boolean "wood_removal",                  default: true
+    t.boolean "vehicle_access",                default: false
+    t.boolean "breakables",                    default: false
+    t.string  "access_width",      limit: 255
+    t.boolean "cleanup",                       default: false
+    t.integer "address_id",        limit: 4
+    t.boolean "low_access_width",              default: false
+    t.boolean "survey_filled_out",             default: false
   end
 
   add_index "sites", ["estimate_id"], name: "index_sites_on_estimate_id", using: :btree

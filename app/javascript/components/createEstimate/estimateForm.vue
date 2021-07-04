@@ -15,8 +15,10 @@
         </app-address-form>
       </estimate-form-section>
 
-      <estimate-form-section header='Site Details'>
-        <estimate-site-questions v-model='site'></estimate-site-questions>
+      <estimate-form-section header='Equipment and Tool Requirements'>
+        <estimate-tool-form
+          v-model='toolSelection'
+        ></estimate-tool-form>
       </estimate-form-section>
 
       <estimate-form-section header='Tasks'>
@@ -35,6 +37,7 @@ import AddressForm from './addressForm';
 import SiteQuestions from './siteQuestions';
 import TaskForm from './taskForm';
 import FormSection from './formSection'
+import ToolForm from '@/components/tools/forms/mutliSelect';
 
 export default {
   components: {
@@ -42,7 +45,8 @@ export default {
     'app-address-form': AddressForm,
     'estimate-site-questions': SiteQuestions,
     'estimate-task-form': TaskForm,
-    'estimate-form-section': FormSection
+    'estimate-form-section': FormSection,
+    'estimate-tool-form': ToolForm
   },
   data() {
     return {
@@ -52,6 +56,7 @@ export default {
       tasks: [],
       costs: [],
       treeImages: [],
+      toolSelection: [],
       validationErrors: false,
       customerId: null,
       siteId: null,
@@ -87,10 +92,21 @@ export default {
 
       let siteAttributes = { ...this.site }
       siteAttributes.address_attributes = this.addresses.siteAddress
+
+      let equipmentAssignments = this.toolSelection.map( selection => {
+        return {
+          vehicle_id: selection
+        }
+      })
+
       let options = {
         customer: customerAttributes,
         site: siteAttributes,
-        estimate: { tree_quantity: 1, submission_completed: true }
+        estimate: {
+          tree_quantity: 1,
+          submission_completed: true,
+          equipment_assignments_attributes: equipmentAssignments
+        }
       }
 
       this.axiosPost('/estimates', options).then(response => {
@@ -151,7 +167,6 @@ export default {
       })
     }
   }
-
 }
 </script>
 

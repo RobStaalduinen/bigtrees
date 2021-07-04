@@ -27,7 +27,7 @@ class SitesController < ApplicationController
 
   def site_params
     params.require(:tree_site).permit(
-      :wood_removal, :breakables, :vehicle_access, :low_access_width, :cleanup,
+      :wood_removal, :breakables, :vehicle_access, :low_access_width, :cleanup, :survey_filled_out,
       address_attributes: [ :id, :street, :city ]
     )
   end

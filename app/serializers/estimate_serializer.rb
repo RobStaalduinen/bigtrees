@@ -28,4 +28,5 @@ class EstimateSerializer < ApplicationSerializer
   has_one :invoice
   has_many :costs
   has_many :trees
+  has_many :vehicles
 end
