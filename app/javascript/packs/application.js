@@ -49,8 +49,11 @@ import '../stylesheets/ui_styles.css'
 
 import moment from 'moment'
 
-import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect';
+import { ToggleButton } from 'vue-js-toggle-button';
+
 Vue.component('multiselect', Multiselect)
+Vue.component('toggle-button', ToggleButton)
 
 // Global components
 import Header from '../components/ui/header.vue'

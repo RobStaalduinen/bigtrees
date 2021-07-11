@@ -8,6 +8,7 @@
     "vee-validate": "^3.4.1",
     "vue": "^2.6.12",
     "vue-image-markup": "^3.2.0",
+    "vue-js-toggle-button": "^1.3.3",
     "vue-loader": "^15.9.3",
     "vue-moment": "^4.1.0",
     "vue-multiselect": "^2.1.6",

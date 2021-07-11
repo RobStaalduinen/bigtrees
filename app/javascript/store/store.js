@@ -12,6 +12,9 @@ export const store = new Vuex.Store({
     user: { logged_in: false, user_id: null },
     authorization: null,
     estimates: [],
+    estimateSettings: {
+      mySchedule: false
+    },
     arborists: []
   },
   mutations: {
@@ -25,6 +28,12 @@ export const store = new Vuex.Store({
     setArborists(state, payload) {
       state.arborists = payload;
     },
+    setEstimateSettings(state, payload) {
+      state.estimateSettings = {
+        ...state.estimateSettings,
+        ...payload
+      }
+    }
   },
   actions: {
     refreshArborists({ commit }) {

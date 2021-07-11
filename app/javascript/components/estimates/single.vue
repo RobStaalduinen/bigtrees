@@ -7,6 +7,10 @@
     </div>
 
     <div class='estimate-body'>
+      <div class='estimate-body-row' v-if='mySchedule'>
+        <b-icon icon='clock' class='contact-icon'></b-icon>
+        {{ estimate.work_date | localizeDate }}
+      </div>
 
       <div class='contact-row'>
         <div class='estimate-body-row' v-if='estimate.site && estimate.site.address'>
@@ -49,6 +53,7 @@ import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
 import ImageGallery from '@/components/tree_images/views/galleryModal';
 import EventBus from '@/store/eventBus'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -62,6 +67,9 @@ export default {
     'app-estimate-actions-list': ActionsList,
     'app-image-gallery': ImageGallery
   },
+  computed: mapState({
+    mySchedule: state => state.estimateSettings.mySchedule
+  }),
   methods:
   {
     openImages() {

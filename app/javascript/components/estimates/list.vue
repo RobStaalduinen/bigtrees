@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <div id='estimate-search-controls'>
+  <div id='estimate-search-controls' v-if='!mySchedule'>
     <div id='search-container'>
       <div id='search-field-container'>
         <app-search-field v-model='searchTerm'></app-search-field>
@@ -16,8 +16,6 @@
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
   </div>
-
-  <!-- <app-image-gallery></app-image-gallery> -->
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
   <app-list-action-handler></app-list-action-handler>
@@ -53,16 +51,28 @@ export default {
   },
   computed: mapState({
     estimates: state => state.estimates,
+    mySchedule: state => state.estimateSettings.mySchedule
   }),
   methods: {
     retrieveEstimates() {
       this.loadingEstimates = true;
 
-      var params = {
-        page: this.page,
-        per_page: this.perPage,
-        created_after: this.filters.createdAfter,
-        status: this.filters.status
+      var params = {}
+      if(!this.mySchedule) {
+        params = {
+          page: this.page,
+          per_page: this.perPage,
+          created_after: this.filters.createdAfter,
+          status: this.filters.status
+        }
+      }
+      else {
+        var params = {
+          page: 1,
+          per_page: 1000,
+          only_mine: true,
+          status: 'scheduled'
+        }
       }
 
       if(this.searchTerm != null) {
@@ -129,6 +139,9 @@ export default {
     filters: function() {
       this.page = 1;
       this.saveFiltering();
+      this.retrieveEstimates();
+    },
+    mySchedule() {
       this.retrieveEstimates();
     }
   }

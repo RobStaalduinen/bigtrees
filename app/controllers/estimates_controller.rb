@@ -15,11 +15,11 @@ class EstimatesController < ApplicationController
     @estimates = policy_scope(Estimate)
 
     @estimates = @estimates.submitted.
-      order('estimates.id DESC').
       joins(:customer).
       joins("LEFT OUTER JOIN sites ON sites.estimate_id = estimates.id").
       joins("LEFT OUTER JOIN addresses ON sites.address_id = addresses.id").
       includes(customer: [:address]).
+      includes(equipment_assignments: [ :vehicle ]).
       includes(site: [:address]).
       includes(:invoice).
       includes(:arborist).
@@ -28,10 +28,14 @@ class EstimatesController < ApplicationController
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
+    if params[:only_mine]
+      @estimates = @estimates.where(arborist: current_user).order('work_date ASC')
+    else
+      @estimates = @estimates.order('estimates.id DESC')
+    end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
-
     render json: @estimates, meta: { total_entries: @estimates.total_entries }
   end
 

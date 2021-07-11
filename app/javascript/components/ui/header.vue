@@ -10,6 +10,7 @@
         <h5 id='title-text'>{{ title }}</h5>
       </slot>
     </div>
+    <slot name='header-center'></slot>
     <slot name='header-right'></slot>
   </div>
 </template>
