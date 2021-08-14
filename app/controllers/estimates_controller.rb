@@ -105,7 +105,8 @@ class EstimatesController < ApplicationController
 
 		@estimate = Estimate.find(params[:id])
 		@estimate.update(cancelled_at: Date.today)
-		redirect_to estimate_path(@estimate)
+
+    render json: {}
 	end
 
   private

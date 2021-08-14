@@ -35,6 +35,10 @@
     <b-dropdown-item @click='triggerAction("send_to_team")'>
       Send to Team
     </b-dropdown-item>
+
+    <b-dropdown-item @click='triggerAction("cancel")'>
+      Cancel
+    </b-dropdown-item>
   </b-nav-item-dropdown>
 </template>
 
@@ -62,7 +66,14 @@ export default {
       });
     },
     triggerAction(name) {
-      EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
+      if(name == 'cancel') {
+        confirm(`Are you sure you want to cancel the estimate for ${this.estimate.customer.name}?`);
+        this.axiosPost(`/estimates/${this.estimate.id}/cancel`).then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', {});
+        });
+      } else {
+        EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
+      }
     }
   },
   watch: {
