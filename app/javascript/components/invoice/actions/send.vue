@@ -1,15 +1,19 @@
 <template>
   <app-right-sidebar :id='id' title='Send Invoice' submitText='Send' :onSubmit='sendInvoice' :alternateAction='skipSend'>
     <template v-slot:content>
-      <app-input-field
-        v-model='invoiceNumber'
-        name='number'
-        label='Invoice Number'
-        validationRules='required'
-      >
+      <validation-observer ref="observer">
+        <app-datepicker
+          v-model='workCompletionDate'
+          locale='en-CA'
+          id='work-date'
+          name='work-date'
+          label='Work Completed Date'
+          validationRules='required'
+        >
+        </app-datepicker>
 
-      </app-input-field>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+        <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      </validation-observer>
     </template>
   </app-right-sidebar>
 </template>
@@ -36,7 +40,7 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      invoiceNumber: null
+      workCompletionDate: null
     }
   },
   methods: {
@@ -45,29 +49,44 @@ export default {
     },
     sendInvoice() {
       var params = {
-        invoice: { number: this.invoiceNumber },
+        estimate: { work_completion_date: this.workCompletionDate },
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject
       }
 
-      invoiceSent(this.estimate, params).then(response => {
-        EventBus.$emit('ESTIMATE_UPDATED', response.data);
-        this.$root.$emit('bv::toggle::collapse', this.id);
+      this.$refs.observer.validate().then(success => {
+        if (!success) {
+          EventBus.$emit('FORM_VALIDATION_FAILED');
+          return;
+        }
+
+        invoiceSent(this.estimate, params).then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+          this.$root.$emit('bv::toggle::collapse', this.id);
+        })
       })
     },
     skipSend() {
-      var params = { invoice: {}, skip_mail: true }
-      invoiceSent(this.estimate, params).then(response => {
-        EventBus.$emit('ESTIMATE_UPDATED', response.data);
-        this.$root.$emit('bv::toggle::collapse', this.id);
+      var params = {
+        estimate: { work_completion_date: this.workCompletionDate },
+        skip_mail: true
+      }
+
+
+      this.$refs.observer.validate().then(success => {
+        if (!success) {
+          EventBus.$emit('FORM_VALIDATION_FAILED');
+          return;
+        }
+
+        invoiceSent(this.estimate, params).then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+          this.$root.$emit('bv::toggle::collapse', this.id);
+        })
       })
+
     }
-  },
-  mounted() {
-    this.axiosGet(`/invoices/${this.estimate.invoice.id}`).then(response => {
-      this.invoiceNumber = response.data.invoice.potential_number;
-    })
   },
   watch: {
     estimate: {

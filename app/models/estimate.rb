@@ -37,7 +37,7 @@ class Estimate < ActiveRecord::Base
   scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
-	scope :today, -> { incomplete.where(work_date: Date.today) }
+	scope :today, -> { incomplete.where(work_start_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
@@ -113,7 +113,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def work_scheduled?
-		self.work_date.present?
+		self.work_start_date.present?
 	end
 
 	def contact_methods

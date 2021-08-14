@@ -90,6 +90,7 @@ import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
 import NumberField from '../components/form/numberField.vue';
 import SelectField from '../components/form/selectField';
+import DatePicker from '../components/form/datePicker.vue';
 import SubmitButton from '../components/form/submitButton.vue';
 import Multi from '../components/form/multiSelect.vue';
 import CheckboxHighlight from '../components/form/checkboxHighlight.vue';
@@ -103,6 +104,7 @@ Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
 Vue.component('app-multi-select', Multi);
 Vue.component('app-checkbox-highlight', CheckboxHighlight);
+Vue.component('app-datepicker', DatePicker);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';

@@ -7,6 +7,7 @@ class InvoiceMailoutsController < ApplicationController
     authorize Estimate, :update?
 
     Invoice.transaction do
+      estimate.update(estimate_params) if estimate_params
       invoice.update(invoice_params) if invoice_params
       invoice.assign_number
       invoice.save
@@ -38,5 +39,9 @@ class InvoiceMailoutsController < ApplicationController
 
   def invoice_params
     params.fetch(:invoice, {}).permit(:number).merge(sent_at: Date.today)
+  end
+
+  def estimate_params
+    params.fetch(:estimate, {}).permit(:work_completion_date)
   end
 end

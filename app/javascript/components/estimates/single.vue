@@ -9,7 +9,7 @@
     <div class='estimate-body'>
       <div class='estimate-body-row' v-if='mySchedule'>
         <b-icon icon='clock' class='contact-icon'></b-icon>
-        {{ estimate.work_date | localizeDate }}
+        {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
       </div>
 
       <div class='contact-row'>

@@ -15,12 +15,12 @@
           </b-col>
         </b-row>
 
-        <b-row class='spaced-row' v-if='estimate.work_date'>
+        <b-row class='spaced-row' v-if='estimate.work_start_date'>
           <b-col cols='4' class='right-column'>
             <b>Work Date</b>
           </b-col>
           <b-col cols='8'>
-            {{ estimate.work_date }}
+            {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
           </b-col>
         </b-row>
 
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     quoteStatus() {
-      if(this.estimate.work_date) {
+      if(this.estimate.work_start_date) {
         return 'Accepted'
       }
       else if(this.estimate.quote_sent_date) {

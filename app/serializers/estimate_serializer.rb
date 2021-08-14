@@ -5,7 +5,8 @@ class EstimateSerializer < ApplicationSerializer
   attribute :status
   attribute :quote_sent_date
   attribute :quote_accepted_date
-  attribute :work_date
+  attribute :work_start_date
+  attribute :work_end_date
   attribute :is_unknown
 
   attribute :picture_request_sent_at

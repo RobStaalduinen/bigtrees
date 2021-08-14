@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210703203151) do
+ActiveRecord::Schema.define(version: 20210813174616) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20210703203151) do
     t.boolean  "submission_completed",                               default: false
     t.date     "quote_sent_date"
     t.date     "quote_accepted_date"
-    t.date     "work_date"
+    t.date     "work_start_date"
     t.decimal  "extra_cost",                          precision: 10
     t.string   "extra_cost_notes",        limit: 255
     t.integer  "arborist_id",             limit: 4
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(version: 20210703203151) do
     t.integer  "customer_id",             limit: 4
     t.date     "picture_request_sent_at"
     t.datetime "followup_sent_at"
+    t.date     "work_end_date"
+    t.date     "work_completion_date"
   end
 
   create_table "expirations", force: :cascade do |t|

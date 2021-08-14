@@ -12,9 +12,9 @@
           {{ localizeDate(estimate.quote_sent_date) }}
         </div>
 
-        <div class='timeline-row' v-if='estimate.work_date != null'>
+        <div class='timeline-row' v-if='estimate.work_start_date != null'>
           <b>Scheduled</b>
-          {{ localizeDate(estimate.work_date) }}
+          {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
         </div>
 
         <div class='timeline-row' v-if='estimate.invoice.sent_at != null'>

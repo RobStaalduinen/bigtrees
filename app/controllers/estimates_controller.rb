@@ -29,7 +29,7 @@ class EstimatesController < ApplicationController
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
     if params[:only_mine]
-      @estimates = @estimates.where(arborist: current_user).order('work_date ASC')
+      @estimates = @estimates.where(arborist: current_user).order('work_start_date ASC')
     else
       @estimates = @estimates.order('estimates.id DESC')
     end
@@ -127,7 +127,7 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :tree_quantity, :status, :arborist_id, :is_unknown, :work_date, :quote_sent_date, :submission_completed,
+      :tree_quantity, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed,
       equipment_assignments_attributes: [ :vehicle_id ]
     )
     e_params[:is_unknown] ||= false

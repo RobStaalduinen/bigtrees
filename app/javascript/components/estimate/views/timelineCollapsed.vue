@@ -2,7 +2,10 @@
   <div>
     <app-collapsable id='timeline-collapse'>
       <template v-slot:title>
-        <b>Timeline</b> &nbsp; - {{ topMessage() }}
+        <b-icon icon='clock' class='header-icon'></b-icon>
+        <div style='word-wrap: wrap; margin-left: 16px;'>
+           {{ topMessage() }}
+        </div>
       </template>
 
       <template v-slot:content>
@@ -24,13 +27,13 @@
           </b-col>
         </b-row>
 
-        <b-row class='spaced-row' v-if='estimate.work_date'>
+        <b-row class='spaced-row' v-if='estimate.work_start_date'>
           <b-col cols='4' class='right-column'>
             <b>Scheduled</b>
+            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work></b-icon>
           </b-col>
           <b-col cols='8'>
-            {{ estimate.work_date | localizeDate }}
-            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work></b-icon>
+            {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
           </b-col>
         </b-row>
 
@@ -81,8 +84,8 @@ export default {
       else if(estimate.invoice.send_at != null) {
         return `Invoice Sent: ${localizeDate(estimate.invoice.send_at)}`
       }
-      else if(estimate.work_date != null) {
-        return `Scheduled: ${localizeDate(estimate.invoice.work_date)}`
+      else if(estimate.work_start_date != null) {
+        return `Scheduled: ${localizeDate(estimate.work_start_date)} - ${ localizeDate(estimate.work_end_date) }`
       }
       else if(estimate.quote_sent_date != null) {
         return `Quote Sent: ${localizeDate(estimate.quote_sent_date)}`
@@ -96,5 +99,8 @@ export default {
 </script>
 
 <style>
-
+  .header-icon {
+    color: var(--main-color);
+    margin-right: 4px;
+  }
 </style>

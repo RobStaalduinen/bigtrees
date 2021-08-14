@@ -20,8 +20,8 @@ class Invoice < ActiveRecord::Base
   end
 
   def potential_number
-		already_completed_count = Estimate.where(work_date: estimate.work_date).joins(:invoice).count
-		date_string = estimate.work_date.strftime("%y%m%d")
+		already_completed_count = Estimate.joins(:invoice).where.not(invoices: { number: nil }).where(work_completion_date: estimate.work_completion_date).count
+		date_string = estimate.work_completion_date.strftime("%y%m%d")
 
 		return "#{date_string}#{already_completed_count + 1}"
   end
