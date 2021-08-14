@@ -52,6 +52,20 @@ export default {
           })
         }
       })
+    },
+    subject() {
+      var address = null;
+      var customer = null
+
+      if(this.estimate.site && this.estimate.site.address) {
+        address = this.estimate.site.address.full_address
+      }
+
+      if(this.estimate.customer) {
+        customer = this.estimate.customer.name;
+      }
+
+      return `Quote - ${customer} - ${address}`
     }
   },
   watch: {
@@ -60,7 +74,7 @@ export default {
       handler() {
         this.emailDefinition = new EmailDefinition(
           null,
-          'Quote from Big Tree',
+          this.subject(),
           'Take a look at this quote'
         )
       }
