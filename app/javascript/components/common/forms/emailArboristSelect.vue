@@ -61,6 +61,7 @@ export default {
 
       initial.push({ value: 'tanishahearn@outlook.com', text: 'Tanisha Hearn' })
       initial.push({ value: 'shutteredimages@yahoo.com', text: 'Dave Cerasani' })
+      initial.push({ value: 'rob.staalduinen@gmail.com', text: 'Rob van Staalduinen' })
 
       return initial;
     },
