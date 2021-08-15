@@ -8,12 +8,11 @@ class QuoteMailer < ApplicationMailer
 	def quote_email(estimate, email, subject, content, include_quote = true)
 		@content = content
 
-		cost = estimate.total_cost rescue 0
-		if cost > 0 && include_quote
+		if include_quote
 			file = estimate.pdf_quote
 			attachments[estimate.pdf_file_name] = File.read(file)
-		end
-		# mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
+    end
+
 		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
 	end
 
