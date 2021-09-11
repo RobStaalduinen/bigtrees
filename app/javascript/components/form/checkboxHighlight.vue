@@ -57,9 +57,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.status);
-    console.log(this.checkedValue);
-    console.log(this.status == this.checkedValue);
+
   }
 
 }
