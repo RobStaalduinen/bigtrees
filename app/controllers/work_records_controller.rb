@@ -71,7 +71,7 @@ class WorkRecordsController < AdminBaseController
         @work_records = @work_records.except(lowest_key)
       end
     elsif params[:summary_type] == 'months'
-      @work_records = @work_records.where('date >= ?', Date.today - 1.year).order('date DESC').group_by { |w| w.date.strftime("%m - %B") }
+      @work_records = @work_records.where('date >= ?', (Date.today - 1.year).next_month.beginning_of_month).order('date DESC').group_by { |w| w.date.strftime("%m - %B") }
       if @work_records.keys.count > 12
         lowest_key = @work_records.keys.sort.first
         @work_records = @work_records.except(lowest_key)

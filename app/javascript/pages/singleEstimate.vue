@@ -105,20 +105,18 @@ export default {
   data() {
     return {
       estimate_id: this.$route.params.estimate_id,
-      estimate: null
+      estimate: null,
+      updateHandler: null
     }
   },
   mounted() {
     this.retrieveEstimate();
-
-    EventBus.$on('ESTIMATE_UPDATED', (payload) => {
-      if(payload.estimate) {
-        this.estimate = payload.estimate
-      }
-      else{
-        this.estimate = Object.assign({}, this.estimate, payload);
-      }
-    })
+    this.updateHandler = (payload) => this.handleUpdate(payload);
+    EventBus.$on('ESTIMATE_UPDATED', this.updateHandler)
+  },
+  beforeDestroy() {
+    console.log("REMOVE");
+    EventBus.$off('ESTIMATE_UPDATED', this.updateHandler)
   },
   methods: {
     retrieveEstimate() {

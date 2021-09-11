@@ -121,10 +121,10 @@ export default {
   },
   mounted() {
     this.retrieveEstimates();
-
-    EventBus.$on('ESTIMATE_UPDATED', (payload) => {
-      this.retrieveEstimates();
-    })
+    EventBus.$on('ESTIMATE_UPDATED', this.retrieveEstimates)
+  },
+  beforeDestroy() {
+    EventBus.$off('ESTIMATE_UPDATED', this.retrieveEstimates)
   },
   watch: {
     searchTerm: function(){
