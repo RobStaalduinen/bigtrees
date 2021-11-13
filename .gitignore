@@ -26,6 +26,7 @@ config/sitemap.xml.gz
 public/system
 .byebug_history
 .ruby-gemset
+.nvmrc
 
 /public/packs
 /public/packs-test
