@@ -139,6 +139,9 @@ export default {
       this.displayedReceipt = this.receipts.filter(receipt => receipt.id == receipt_id)[0];
       this.$bvModal.hide(`receipt-modal`);
       this.$root.$emit('bv::toggle::collapse', 'reject-receipt');
+    },
+    close() {
+      this.$bvModal.hide(`receipt-modal`);
     }
   },
   computed: {

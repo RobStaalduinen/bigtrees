@@ -57,8 +57,9 @@ class EstimatesController < ApplicationController
   def create
     authorize Estimate, :create?
 
-    estimate = Estimate.create(estimate_params)
-    estimate.update(arborist: current_user)
+    estimate = Estimate.new(estimate_params)
+    estimate.arborist = current_user
+    estimate.save
 
     if params[:site].present?
       site = estimate.site || Site.new(estimate: estimate)
@@ -129,7 +130,11 @@ class EstimatesController < ApplicationController
   def estimate_params
     e_params = params.require(:estimate).permit(
       :tree_quantity, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed,
-      equipment_assignments_attributes: [ :vehicle_id ]
+      equipment_assignments_attributes: [ :vehicle_id ],
+      notes_attributes: [
+        :content,
+        image_attributes: [ :image_url, :edited_url ]
+      ]
     )
     e_params[:is_unknown] ||= false
     e_params

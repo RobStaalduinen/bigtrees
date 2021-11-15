@@ -30,4 +30,5 @@ class EstimateSerializer < ApplicationSerializer
   has_many :costs
   has_many :trees
   has_many :vehicles
+  has_many :notes
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210813174616) do
+ActiveRecord::Schema.define(version: 20210821152616) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -168,6 +168,15 @@ ActiveRecord::Schema.define(version: 20210813174616) do
 
   add_index "extra_costs", ["estimate_id"], name: "index_extra_costs_on_estimate_id", using: :btree
 
+  create_table "images", force: :cascade do |t|
+    t.integer  "imageable_id",     limit: 4
+    t.string   "imageable_type",   limit: 255
+    t.string   "image_url",        limit: 255
+    t.string   "edited_image_url", limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
   create_table "invoices", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
     t.string  "number",         limit: 255
@@ -180,6 +189,17 @@ ActiveRecord::Schema.define(version: 20210813174616) do
 
   add_index "invoices", ["estimate_id"], name: "index_invoices_on_estimate_id", using: :btree
   add_index "invoices", ["number"], name: "index_invoices_on_number", using: :btree
+
+  create_table "notes", force: :cascade do |t|
+    t.integer  "estimate_id", limit: 4
+    t.integer  "arborist_id", limit: 4
+    t.string   "content",     limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "notes", ["arborist_id"], name: "index_notes_on_arborist_id", using: :btree
+  add_index "notes", ["estimate_id"], name: "index_notes_on_estimate_id", using: :btree
 
   create_table "organizations", force: :cascade do |t|
     t.string   "name",       limit: 255

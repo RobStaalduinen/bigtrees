@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :arborist do
+    association               :organization
     name                      { 'Test User' }
     email                     { 'test@user.com' }
     password                  { 'abc123' }
@@ -19,6 +20,7 @@ FactoryBot.define do
 
     factory :admin do
       admin                   { true }
+      role                    { 'admin' }
     end
 
   end

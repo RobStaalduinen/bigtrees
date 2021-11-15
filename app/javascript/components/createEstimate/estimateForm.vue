@@ -25,6 +25,10 @@
         <estimate-task-form :value='tasks' @input='(payload) => { this.tasks = [...payload] }'></estimate-task-form>
       </estimate-form-section>
 
+      <estimate-form-section header='Notes'>
+        <estimate-notes-form v-model='notes'></estimate-notes-form>
+      </estimate-form-section>
+
       <span class='submit-error' v-if='validationErrors'>{{ validationErrorMessage }}</span>
       <b-button type='submit' block class='submit-button'>Submit</b-button>
     </b-form>
@@ -38,6 +42,7 @@ import SiteQuestions from './siteQuestions';
 import TaskForm from './taskForm';
 import FormSection from './formSection'
 import ToolForm from '@/components/tools/forms/mutliSelect';
+import NotesForm from './notesForm';
 
 export default {
   components: {
@@ -46,7 +51,8 @@ export default {
     'estimate-site-questions': SiteQuestions,
     'estimate-task-form': TaskForm,
     'estimate-form-section': FormSection,
-    'estimate-tool-form': ToolForm
+    'estimate-tool-form': ToolForm,
+    'estimate-notes-form': NotesForm
   },
   data() {
     return {
@@ -57,6 +63,7 @@ export default {
       costs: [],
       treeImages: [],
       toolSelection: [],
+      notes: [],
       validationErrors: false,
       customerId: null,
       siteId: null,
@@ -107,6 +114,19 @@ export default {
           submission_completed: true,
           equipment_assignments_attributes: equipmentAssignments
         }
+      }
+
+      if (this.notes.length > 0) {
+        options.estimate.notes_attributes = this.notes.map( note => {
+          let note_attr = {}
+          note_attr.content = note.content
+
+          if (note.fileUrl != null) {
+            note_attr.image_attributes = { image_url: note.fileUrl }
+          }
+
+          return note_attr
+        })
       }
 
       this.axiosPost('/estimates', options).then(response => {
@@ -165,6 +185,12 @@ export default {
           this.initialAddresses = addresses;
         }
       })
+    }
+  },
+  watch: {
+    notes() {
+      console.log('NOTES');
+      console.log(this.notes);
     }
   }
 }

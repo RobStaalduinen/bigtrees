@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :equipment_assignments, only: [ ] do
       post '/bulk_update', to: 'equipment_assignments#bulk_update', on: :collection
     end
+    resources :notes, only: [ :create ]
 
     post '/cancel', to: 'estimates#cancel', on: :member
   end

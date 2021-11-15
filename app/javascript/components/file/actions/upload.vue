@@ -11,6 +11,8 @@
 
     <div v-if='!url && !uploading'>
       <b-form-file
+        :id='id'
+        :name='name'
         v-model="imageToUpload"
         placeholder="Choose a file..."
         :accept="accept"
@@ -25,6 +27,10 @@ import { fileNameFromPath } from '@/utils/fileUtils';
 
 export default {
   props: {
+    'id': {
+      required: false,
+      type: String
+    },
     'value': {
       required: true
     },
