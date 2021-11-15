@@ -113,5 +113,6 @@ export default {
 
   .delete-icon {
     color: var(--main-color);
+    cursor: pointer;
   }
 </style>

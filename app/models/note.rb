@@ -11,4 +11,8 @@ class Note < ActiveRecord::Base
   def set_default_author
     self.author ||= estimate.arborist
   end
+
+  def author_name
+    self.author&.name
+  end
 end

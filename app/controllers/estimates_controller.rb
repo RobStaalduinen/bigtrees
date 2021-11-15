@@ -57,8 +57,9 @@ class EstimatesController < ApplicationController
   def create
     authorize Estimate, :create?
 
-    estimate = Estimate.create(estimate_params)
-    estimate.update(arborist: current_user)
+    estimate = Estimate.new(estimate_params)
+    estimate.arborist = current_user
+    estimate.save
 
     if params[:site].present?
       site = estimate.site || Site.new(estimate: estimate)

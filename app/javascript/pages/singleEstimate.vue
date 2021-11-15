@@ -62,6 +62,10 @@
           <single-estimate-equipment :estimate='estimate'></single-estimate-equipment>
         </section>
 
+        <section class ='estimate-section'>
+          <single-estimate-notes :estimate='estimate'></single-estimate-notes>
+        </section>
+
         <section class ='estimate-section' id='status-container'>
           <single-estimate-actions :estimate='estimate'></single-estimate-actions>
         </section>
@@ -84,6 +88,7 @@ import Costs from '../components/costs/views/collapsed';
 import Trees from '../components/trees/views/collapsed';
 import Followups from '../components/followups/views/collapsed';
 import EquipmentRequirements from '@/components/tools/views/collapsed';
+import Notes from '@/components/notes/views/collapsed';
 
 import EventBus from '@/store/eventBus';
 
@@ -100,7 +105,8 @@ export default {
     'single-estimate-costs': Costs,
     'single-estimate-trees': Trees,
     'single-estimate-followups': Followups,
-    'single-estimate-equipment': EquipmentRequirements
+    'single-estimate-equipment': EquipmentRequirements,
+    'single-estimate-notes': Notes
   },
   data() {
     return {

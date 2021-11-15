@@ -4,6 +4,7 @@
       v-model='content'
       name='content'
       label='Content'
+      validationRules='required'
     />
 
     <b-form-group
@@ -15,6 +16,7 @@
         name='image-file'
         id='image-file'
         accept=".jpg, .jpeg, .png"
+        @upload-status-changed='(status) => trackUpload(status)'
       ></app-file-upload>
     </b-form-group>
   </div>
@@ -35,6 +37,7 @@ export default {
   data() {
     return {
       fileUrl: this.value ? this.value.fileUrl : null,
+      fileUploading: false,
       content: this.value ? this.value.content : null
     }
   },
@@ -42,8 +45,14 @@ export default {
     noteDefinition() {
       return {
         fileUrl: this.fileUrl,
-        content: this.content
+        content: this.content,
+        uploading: this.fileUploading
       }
+    }
+  },
+  methods: {
+    trackUpload(status) {
+      this.fileUploading = status;
     }
   },
   watch: {
