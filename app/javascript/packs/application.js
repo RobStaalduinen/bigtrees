@@ -67,6 +67,7 @@ import CollapsableListItem from '../components/ui/collapsableListItem.vue';
 import CollapsableActionBar from '../components/ui/collapsableActionBar.vue';
 import ActionBarItem from '../components/ui/actionBarItem.vue';
 import RightSidebar from '../components/ui/rightSidebar.vue';
+import RightSidebarForm from '../components/ui/rightSidebarForm.vue';
 import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue';
 
 Vue.component('app-header', Header)
@@ -80,6 +81,7 @@ Vue.component('app-collapsable-list-item', CollapsableListItem)
 Vue.component('app-collapsable-action-bar', CollapsableActionBar)
 Vue.component('app-action-bar-item', ActionBarItem)
 Vue.component('app-right-sidebar', RightSidebar)
+Vue.component('app-right-sidebar-form', RightSidebarForm)
 Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
 
 
@@ -145,6 +147,7 @@ import SingleEstimate from '../pages/singleEstimate.vue'
 import Users from '../pages/users.vue';
 import Equipment from '../pages/equipment.vue';
 import Receipts from '../pages/receipts.vue';
+import Vehicles from '../pages/vehicles.vue'
 
 import { store } from '../store/store.js';
 
@@ -162,6 +165,14 @@ const routes = [
   {
     path: '/admin/receipts',
     component: Receipts ,
+    meta: {
+      authRequired: true,
+      permission: { page: 'receipts', permission_type: 'list' }
+    }
+  },
+  {
+    path: '/admin/vehicles',
+    component: Vehicles,
     meta: {
       authRequired: true,
       permission: { page: 'receipts', permission_type: 'list' }

@@ -68,6 +68,8 @@ export default {
     border-left-style: solid;
     padding: 4px;
     max-width: 40px;
+
+    cursor: pointer;
   }
 
   .collapsable-icon {

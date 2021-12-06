@@ -24,7 +24,7 @@ class VehiclesController < ApplicationController
   def create
     vehicle = Vehicle.create(vehicle_params)
 
-    redirect_to vehicle_path(vehicle)
+    render json: vehicle
   end
 
   def edit

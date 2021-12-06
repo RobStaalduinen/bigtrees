@@ -9,7 +9,7 @@ class ExpirationsController < ApplicationController
     @expiration = Expiration.new
     @vehicle = Vehicle.find(params[:vehicle_id]) if params[:vehicle_id].present?
   end
-  
+
   def edit
     authorize! :manage, Vehicle
     @expiration = Expiration.find(params[:id])
@@ -17,20 +17,23 @@ class ExpirationsController < ApplicationController
   end
 
   def create
-    @expiration = Expiration.new(expiration_params)
+    @expiration = Expiration.create(expiration_params)
 
-    if @expiration.save
-      redirect_to vehicles_path
-    else
-      flash.now[:error] = "There was a problem creating the expiration."
-      render :new
-    end
+    render json: @expiration
+
+    # if @expiration.save
+    #   redirect_to vehicles_path
+    # else
+    #   flash.now[:error] = "There was a problem creating the expiration."
+    #   render :new
+    # end
   end
 
   def update
     @expiration = Expiration.find(params[:id])
     @expiration.update(expiration_params)
-    redirect_to vehicles_path
+
+    render json: @expiration
   end
 
   private

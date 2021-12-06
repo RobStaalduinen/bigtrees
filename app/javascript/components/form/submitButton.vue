@@ -31,6 +31,11 @@ export default {
       required: false,
       type: String,
       default: 'submit-button'
+    },
+    displaySpinner: {
+      required: false,
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -40,7 +45,10 @@ export default {
   },
   methods: {
     onClick() {
-      this.submitting = true;
+      if (this.displaySpinner) {
+        this.submitting = true;
+      }
+
       if(this.onSubmit != null) {
         var validationPassed = this.onSubmit();
 
