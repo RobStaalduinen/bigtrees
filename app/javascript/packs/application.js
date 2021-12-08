@@ -148,6 +148,7 @@ import Users from '../pages/users.vue';
 import Equipment from '../pages/equipment.vue';
 import Receipts from '../pages/receipts.vue';
 import Vehicles from '../pages/vehicles.vue'
+import Employees from '../pages/employees.vue';
 
 import { store } from '../store/store.js';
 
@@ -176,6 +177,14 @@ const routes = [
     meta: {
       authRequired: true,
       permission: { page: 'receipts', permission_type: 'list' }
+    }
+  },
+  {
+    path: '/admin/employees',
+    component: Employees,
+    meta: {
+      authRequired: true,
+      permission: { page: 'arborists', permission_type: 'list' }
     }
   },
   { path: '/admin/estimates/new', component: CreateEstimate },

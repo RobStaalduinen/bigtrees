@@ -5,4 +5,6 @@ class ArboristSerializer < ApplicationSerializer
   attribute :email
   attribute :phone_number
   attribute :role
+  attribute :certification
+  attribute :hourly_rate
 end
