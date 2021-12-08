@@ -1,38 +1,17 @@
 class ArboristsController < ApplicationController
   before_action :signed_in_admin, except: [ :index, :show ]
-  layout 'admin_material'
 
   def index
     @arborists = Arborist.real
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @arborists }
-    end
+    render json: @arborists
   end
 
   def show
     @arborist = Arborist.find(params[:id])
     authorize! :read, @arborist
 
-    respond_to do |format|
-      format.html do
-        redirect_to "/admin/users/#{@arborist.id}"
-      end
-      format.json do
-        render json: @arborist
-      end
-    end
-  end
-
-  def new
-    authorize! :manage, Arborist
-    @arborist = Arborist.new
-  end
-
-  def edit
-    authorize! :manage, Arborist
-    @arborist = Arborist.find(params[:id])
+    render json: @arborist
   end
 
   def create
@@ -55,7 +34,8 @@ class ArboristsController < ApplicationController
   def destroy
     @arborist = Arborist.find(params[:id])
     @arborist.destroy
-    redirect_to arborists_path
+
+    render json: @arborist
   end
 
   private

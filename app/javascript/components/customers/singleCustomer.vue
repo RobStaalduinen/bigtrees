@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class='contact-actions'>
-      <b-button class='main-color-button button-small' :href='`/estimates/${customer.recent_estimate_id}`'>Recent Estimate</b-button>
+      <b-button class='main-color-button button-small' :to='`/admin/estimates/${customer.recent_estimate_id}`'>Recent Estimate</b-button>
       <b-button class='main-color-button button-small' id='new-estimate-button' :to='`/admin/estimates/new?customer_id=${customer.id}`'>New Estimate</b-button>
     </div>
   </div>

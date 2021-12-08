@@ -1,9 +1,0 @@
-<section id='admin-container'>
-  <%= render 'estimates/show/customer', customer: @customer, location: customer_path(@customer) %>
-
-  <h3>Jobs</h3>
-  <%= 
-    render 'admin/partials/estimate_list', 
-    estimates: @customer.estimates.submitted
-  %>
-</section>
