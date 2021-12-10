@@ -26,11 +26,25 @@
       <template v-slot:collapsed>
         <app-collapsable-action-bar>
           <template v-slot:content>
+          <app-action-bar-item
+              name='Delete'
+              icon='x-circle'
+              v-if='hasPermission("vehicles", "update")'
+              :onClick='deleteVehicle'
+            />
+
             <app-action-bar-item
               name='Add Expiration'
               icon='stopwatch'
-              v-if='hasPermission("equipment_requests", "update")'
+              v-if='hasPermission("vehicles", "update")'
               :onClick='addExpiration'
+            />
+
+            <app-action-bar-item
+              name='Edit'
+              icon='pencil-square'
+              v-if='hasPermission("vehicles", "update")'
+              :onClick='editVehicle'
             />
           </template>
         </app-collapsable-action-bar>
@@ -57,6 +71,18 @@ export default {
     },
     editExpiration(expiration_id) {
       EventBus.$emit('EDIT_VEHICLE_EXPIRATION', expiration_id)
+    },
+    editVehicle() {
+      EventBus.$emit('EDIT_VEHICLE', this.vehicle)
+    },
+    deleteVehicle() {
+      let confirmed = confirm("Are you sure you want to permanently delete this equipment?");
+
+      if(!confirmed) { return }
+
+      this.axiosDelete(`/vehicles/${this.vehicle.id}`).then((response) => {
+        EventBus.$emit('VEHICLE_UPDATED')
+      })
     }
   }
 }

@@ -12,10 +12,6 @@ class VehiclesController < ApplicationController
     end
   end
 
-  def new
-    @vehicle = Vehicle.new
-  end
-
   def show
     @vehicle = Vehicle.find(params[:id])
     @equipment_requests = @vehicle.equipment_requests
@@ -27,15 +23,19 @@ class VehiclesController < ApplicationController
     render json: vehicle
   end
 
-  def edit
-    @vehicle = Vehicle.find(params[:id])
-    @is_edit = true
-  end
 
   def update
     vehicle = Vehicle.find(params[:id])
     vehicle.update(vehicle_params)
-    redirect_to vehicle_path(vehicle)
+
+    render json: vehicle
+  end
+
+  def destroy
+    vehicle = Vehicle.find(params[:id])
+    vehicle.destroy
+
+    render json: {}
   end
 
   private
