@@ -8,6 +8,13 @@ def show
   end
 end
 
+def image
+  @image_path = params[:image_path]
+
+  render layout: false
+end
+
+
 def health
   render json: { status: :ok }
 end

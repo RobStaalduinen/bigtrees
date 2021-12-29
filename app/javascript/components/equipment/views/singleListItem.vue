@@ -13,6 +13,9 @@
         </div>
 
         <div class='list-item-content'>
+          <div v-if='equipmentRequest.mechanic' class='list-item-content-row'>
+            <b>Mechanic: </b> {{ equipmentRequest.mechanic.name }}
+          </div>
           <div class='list-item-content-row'><b>Vehicle: </b> {{ vehicleName() }}</div>
           <div class='list-item-content-row'><b>Description: </b> {{ equipmentRequest.description }}</div>
         </div>
@@ -31,7 +34,19 @@
               name='Resolve'
               icon='check-circle'
               :onClick='toggleResolve'
+              v-if='canResolve() && hasPermission("equipment_requests", "update")'
+            />
+            <app-action-bar-item
+              name='Assign'
+              icon='person-badge'
+              :onClick='toggleAssign'
               v-if='equipmentRequest.state == "submitted" && hasPermission("equipment_requests", "update")'
+            />
+            <app-action-bar-item
+              name='Edit'
+              icon='pencil-square'
+              :onClick='toggleEdit'
+              v-if='hasPermission("equipment_requests", "create")'
             />
             <app-action-bar-item
               name='Details'
@@ -68,8 +83,16 @@
 
           <b-button
             class='inverse-button modal-button'
-            @click='toggleResolve'
+            @click='toggleAssign'
             v-if='equipmentRequest.state == "submitted" && hasPermission("equipment_requests", "update")'
+          >
+            Assign
+          </b-button>
+
+          <b-button
+            class='inverse-button modal-button'
+            @click='toggleResolve'
+            v-if='equipmentRequest.state == "assigned" && hasPermission("equipment_requests", "update")'
           >
             Resolve
           </b-button>
@@ -110,9 +133,20 @@ export default {
       this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
       EventBus.$emit('RESOLVE_EQUIPMENT_REQUEST', this.equipmentRequest);
     },
+    toggleAssign() {
+      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      EventBus.$emit('ASSIGN_EQUIPMENT_REQUEST', this.equipmentRequest);
+    },
+    toggleEdit() {
+      this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
+      EventBus.$emit('EDIT_EQUIPMENT_REQUEST', this.equipmentRequest);
+    },
     toggleSend() {
       this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);
       EventBus.$emit('SEND_EQUIPMENT_REQUEST', this.equipmentRequest);
+    },
+    canResolve() {
+      return this.equipmentRequest.state == "submitted" || this.equipmentRequest.state == 'assigned'
     },
     close() {
       this.$bvModal.hide(`eq-modal-${this.equipmentRequest.id}`);

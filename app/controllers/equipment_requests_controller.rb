@@ -8,13 +8,11 @@ class EquipmentRequestsController < ApplicationController
 
     @equipment_requests = @equipment_requests.includes(:vehicle).includes(:arborist).order('created_at DESC')
 
-    if params[:state] == 'resolved'
-      @equipment_requests = @equipment_requests.resolved
-    else
-      @equipment_requests = @equipment_requests.submitted
+    if params[:state]
+      @equipment_requests = @equipment_requests.where(state: params[:state])
     end
 
-    render json: @equipment_requests, include: [:vehicle, :arborist]
+    render json: @equipment_requests, include: [:vehicle, :arborist, :mechanic]
   end
 
   def show
@@ -33,6 +31,28 @@ class EquipmentRequestsController < ApplicationController
     @equipment_request.save
 
     render json: @equipment_request
+  end
+
+  def update
+    authorize EquipmentRequest, :update?
+
+    @equipment_request = policy_scope(EquipmentRequest).find(params[:id])
+    @equipment_request.update(equipment_request_parameters)
+
+    render json: @equipment_request
+  end
+
+  def assign
+    authorize EquipmentRequest, :create?
+
+    equiment_request = EquipmentRequest.find(params[:equipment_request_id])
+
+    EquipmentRequest.transaction do
+      equiment_request.update(mechanic_id: params[:mechanic_id])
+      equiment_request.assign!
+    end
+
+    render json: equiment_request
   end
 
   def resolve
@@ -59,6 +79,18 @@ class EquipmentRequestsController < ApplicationController
 
     render json: {}, status: 200
   end
+
+  def tracker
+    repair_tracker = Trackers::RepairRequests.new.generate
+
+    respond_to do |format|
+      format.xlsx {
+        send_file repair_tracker, filename: "RepairRequestTracker.xlsx"
+      }
+    end
+  end
+
+
 
 
   private

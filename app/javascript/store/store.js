@@ -53,6 +53,9 @@ export const store = new Vuex.Store({
   getters: {
     hasPermission: (state) => (page, permission_type) => {
       return state.authorization.hasPermission(page, permission_type);
+    },
+    userRole: (state) => () => {
+      return state.user.role;
     }
   }
 })

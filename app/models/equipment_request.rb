@@ -3,15 +3,21 @@ class EquipmentRequest < ActiveRecord::Base
 
   aasm(column: :state) do
     state :submitted, initial: true
+    state :assigned
     state :resolved
 
     event :resolve do
-      transitions from: :submitted, to: :resolved
+      transitions from: [:submitted, :assigned], to: :resolved
+    end
+
+    event :assign do
+      transitions from: :submitted, to: :assigned
     end
   end
 
   belongs_to :arborist
   belongs_to :vehicle
+  belongs_to :mechanic, class_name: 'Arborist'
 
   has_attached_file :image
 

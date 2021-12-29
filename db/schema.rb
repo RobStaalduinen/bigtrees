@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210821152616) do
+ActiveRecord::Schema.define(version: 20211210193135) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 20210821152616) do
     t.string   "image_url",          limit: 255
     t.integer  "resolver_id",        limit: 4
     t.string   "resolution_notes",   limit: 255
+    t.integer  "mechanic_id",        limit: 4
   end
 
   add_index "equipment_requests", ["resolver_id"], name: "index_equipment_requests_on_resolver_id", using: :btree

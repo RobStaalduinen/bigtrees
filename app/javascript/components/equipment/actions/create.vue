@@ -1,5 +1,12 @@
 <template>
-    <app-right-sidebar :id='id' title='Create Equipment Request' submitText='Submit' :onSubmit='createEquipmentRequest' @cancelled='reset'>
+    <app-right-sidebar-form
+      :id='id'
+      title='Create Equipment Request'
+      submitText='Submit'
+      :onSubmit='createEquipmentRequest'
+      @cancelled='reset'
+      :submitting='submitting'
+    >
       <template v-slot:content>
         <validation-observer ref="observer">
           <app-select-field
@@ -39,7 +46,7 @@
           </div>
         </validation-observer>
       </template>
-  </app-right-sidebar>
+  </app-right-sidebar-form>
 </template>
 
 <script>
@@ -48,7 +55,15 @@ import EventBus from '@/store/eventBus';
 import moment from 'moment';
 
 export default {
-  props: ['id'],
+  props: {
+    id: {
+      required: true
+    },
+    equipmentRequest: {
+      required: false,
+      type: Object
+    }
+  },
   components: {
     'app-file-upload': FileUpload
   },
@@ -60,7 +75,8 @@ export default {
       image_url: null,
       errorMessage: null,
       vehicles: [],
-      uploading: false
+      uploading: false,
+      submitting: false
     }
   },
   computed: {
@@ -85,15 +101,12 @@ export default {
   methods: {
     createEquipmentRequest() {
       this.errorMessage = null;
+      this.submitting = true;
       this.$refs.observer.validate().then(success => {
-        if (!success) {
-          EventBus.$emit('FORM_VALIDATION_FAILED');
-          return;
-        }
+        if (!success) { return; }
 
         if(this.uploading && !this.image_url) {
           this.errorMessage = 'Please wait for upload to finish before submitting';
-          EventBus.$emit('FORM_VALIDATION_FAILED');
           return
         }
 
@@ -104,7 +117,15 @@ export default {
           image_url: this.image_url
         }}
 
-        this.axiosPost('/equipment_requests', params).then(response => {
+        let promise = null;
+        if(this.equipmentRequest) {
+          promise = this.axiosPut(`/equipment_requests/${this.equipmentRequest.id}`, params)
+        }
+        else {
+          promise = this.axiosPost('/equipment_requests', params)
+        }
+
+        promise.then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);
           EventBus.$emit('EQUIPMENT_REQUEST_UPDATED');
           setTimeout(() => {
@@ -112,11 +133,26 @@ export default {
           }, 500);
         })
       })
+
+      this.submitting = false;
     },
     populateVehicles() {
       this.axiosGet('/vehicles').then(response => {
         this.vehicles = response.data.vehicles;
       })
+    },
+    setInitialData() {
+      if(!this.equipmentRequest) {
+        return
+      }
+
+      this.description = this.equipmentRequest.description;
+      this.image_url = this.equipmentRequest.image_path;
+      this.category = this.equipmentRequest.category;
+
+      if(this.equipmentRequest.vehicle){
+        this.vehicle_id = this.equipmentRequest.vehicle.id;
+      }
     },
     reset() {
       this.description = null;
@@ -130,6 +166,12 @@ export default {
   },
   mounted() {
     this.populateVehicles();
+    this.setInitialData();
+  },
+  watch: {
+    equipmentRequest() {
+      this.setInitialData();
+    }
   }
 }
 </script>

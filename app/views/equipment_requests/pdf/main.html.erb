@@ -1,0 +1,38 @@
+<% equipment_requests ||= @equipment_requests %>
+
+<%= render 'pdf/header'%>
+
+<% i = 0 %>
+<% equipment_requests.group_by { |r| r.vehicle&.name || 'None' }.sort.each do |vehicle_name, requests| %>
+  <% next unless requests.any? %>
+  <div class="vehicle-box <%= i > 0 ? 'alwaysbreak' : nil %>">
+    <% i += 1 %>
+    <div class='vehicle-header'>
+      Vehicle: <%= vehicle_name %>
+    </div>
+
+    <% requests.each do |request| %>
+      <div class='content-row'>
+        <div class='content-element category-element'>
+          <b><%= request.category.capitalize %></b>
+        </div>
+
+        <div class='content-element description-element'>
+          <%= request.description %>
+        </div>
+
+        <div class='content-element image-element'>
+          <% if request.image_path %>
+            <img src="<%= request.image_path %>" class='request-image'>
+          <% else %>
+            No Image
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<style>
+
+</style>

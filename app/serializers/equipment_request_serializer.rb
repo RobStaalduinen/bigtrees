@@ -10,4 +10,5 @@ class EquipmentRequestSerializer < ApplicationSerializer
 
   belongs_to :vehicle
   belongs_to :arborist
+  belongs_to :mechanic
 end

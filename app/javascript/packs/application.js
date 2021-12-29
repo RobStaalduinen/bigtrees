@@ -96,6 +96,8 @@ import DatePicker from '../components/form/datePicker.vue';
 import SubmitButton from '../components/form/submitButton.vue';
 import Multi from '../components/form/multiSelect.vue';
 import CheckboxHighlight from '../components/form/checkboxHighlight.vue';
+import CheckboxRightLabel from '../components/form/checkboxRightLabel.vue';
+import EmailContent from '../components/form/emailContent.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
@@ -107,6 +109,8 @@ Vue.component('app-submit-button', SubmitButton);
 Vue.component('app-multi-select', Multi);
 Vue.component('app-checkbox-highlight', CheckboxHighlight);
 Vue.component('app-datepicker', DatePicker);
+Vue.component('app-checkbox-right-label', CheckboxRightLabel);
+Vue.component('app-email-content', EmailContent)
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';

@@ -4,6 +4,8 @@ class ArboristsController < ApplicationController
   def index
     @arborists = Arborist.real
 
+    @arborists = filter_arborists(@arborists)
+
     render json: @arborists
   end
 
@@ -36,6 +38,14 @@ class ArboristsController < ApplicationController
     @arborist.destroy
 
     render json: @arborist
+  end
+
+  def filter_arborists(arborists)
+    if params[:role]
+      arborists = arborists.where(role: params[:role])
+    end
+
+    arborists
   end
 
   private

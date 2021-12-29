@@ -95,6 +95,10 @@ a {
   color: white;
 }
 
+a:not([href]):not([class]) {
+  color: var(--main-color) !important;
+}
+
 @media (min-width: 200px) and (max-width: 759px){
   .dropdown-item{
     padding: 12px 0 12px 32px;

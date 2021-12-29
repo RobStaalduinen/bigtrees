@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   root 'main#show', page: "home"
 
+  get "/main/image" => 'main#image', as: :images
   get "/main/:page" => "main#show", as: :pages
   get 'health' => 'main#health'
 
@@ -76,8 +77,10 @@ Rails.application.routes.draw do
   resources :hours, only: [ :index ]
 
   resources :equipment_requests do
+    get '/tracker', to: 'equipment_requests#tracker', on: :collection
     post '/resolve', to: 'equipment_requests#resolve', as: :resolve
     post '/send_mailout', to: 'equipment_requests#send_mailout'
+    post '/assign', to: 'equipment_requests#assign'
   end
 
   resources :files, only: [ :new ]

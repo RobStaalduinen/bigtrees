@@ -182,3 +182,56 @@
   min-width: 250px;
   margin-right: 16px;
 }
+
+/* REPAIR TRACKER */
+
+.vehicle-box {
+  border: 1px solid gray;
+  margin-bottom: 8px;
+}
+
+.vehicle-header {
+  font-weight: 600;
+  padding: 4px;
+  background-color: #eeeeee;
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-color: gray;
+  border-style: solid;
+}
+
+.content-row {
+  display: flex;
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-color: gray;
+  border-style: solid;
+
+  page-break-inside: avoid;
+}
+
+.content-element {
+  margin-right: 4px;
+  padding: 4px;
+  border-width: 0px;
+  border-right-width: 1px;
+  border-color: gray;
+  border-style: solid;
+}
+
+.category-element {
+  width: 10%;
+}
+
+.description-element {
+  width: 40%;
+}
+
+.image-element {
+  width: 50%;
+}
+
+.request-image {
+  max-width: 95%;
+  max-height: 400px;
+}

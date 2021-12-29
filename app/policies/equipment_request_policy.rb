@@ -14,5 +14,15 @@ class EquipmentRequestPolicy < ApplicationPolicy
     attr_reader :user, :scope, :role
 
     role_resource :equipment_requests
+
+    def resolve
+      if user.role == 'mechanic'
+        scope.where(mechanic: user)
+      elsif level == 'organization'
+        scope.where(arborist: user.organization.arborists)
+      else
+        scope.where(arborist: user)
+      end
+    end
   end
 end
