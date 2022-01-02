@@ -39,11 +39,6 @@ export default {
         { text: 'Resolved', value: 'resolved' }
       ];
 
-      if(this.userRole() == 'mechanic'){
-        options.shift();
-        this.status = 'assigned'
-      }
-
       return options;
     }
   },
