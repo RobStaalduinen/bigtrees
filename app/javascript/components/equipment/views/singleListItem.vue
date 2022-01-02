@@ -40,7 +40,7 @@
               name='Assign'
               icon='person-badge'
               :onClick='toggleAssign'
-              v-if='equipmentRequest.state == "submitted" && hasPermission("equipment_requests", "update")'
+              v-if='canAssign() &&  hasPermission("equipment_requests", "update")'
             />
             <app-action-bar-item
               name='Edit'
@@ -146,6 +146,9 @@ export default {
       EventBus.$emit('SEND_EQUIPMENT_REQUEST', this.equipmentRequest);
     },
     canResolve() {
+      return this.equipmentRequest.state == "submitted" || this.equipmentRequest.state == 'assigned'
+    },
+    canAssign() {
       return this.equipmentRequest.state == "submitted" || this.equipmentRequest.state == 'assigned'
     },
     close() {

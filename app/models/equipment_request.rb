@@ -12,6 +12,7 @@ class EquipmentRequest < ActiveRecord::Base
 
     event :assign do
       transitions from: :submitted, to: :assigned
+      transitions from: :assigned, to: :assigned
     end
   end
 

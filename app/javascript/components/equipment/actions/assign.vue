@@ -102,7 +102,7 @@ export default {
       this.mechanic_id = null;
     },
     retreiveMechanics() {
-      this.axiosGet('/arborists?role=mechanic').then(response => {
+      this.axiosGet('/arborists').then(response => {
         this.mechanics = response.data.arborists;
         this.setMechanicOptions();
       })
