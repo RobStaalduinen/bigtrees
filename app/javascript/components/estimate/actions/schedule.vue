@@ -113,6 +113,8 @@ export default {
           params.estimate.work_end_date = this.work_end_date;
         }
         else {
+          params.estimate.work_start_date = null;
+          params.estimate.work_end_date = null;
           params.estimate.skip_schedule = true;
         }
 
