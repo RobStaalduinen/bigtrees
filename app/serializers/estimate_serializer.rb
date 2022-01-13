@@ -11,6 +11,7 @@ class EstimateSerializer < ApplicationSerializer
 
   attribute :picture_request_sent_at
   attribute :followup_sent_at
+  attribute :skip_schedule
 
   attribute :created_at
   attribute :updated_at

@@ -60,7 +60,7 @@ export default {
   },
   watch: {
     input: function() {
-      this.$emit('input', this.input)
+      this.$emit('input', this.input);
     },
     value: function(){
       this.input = this.value;
@@ -70,6 +70,9 @@ export default {
     getValidationState({ dirty, validated, valid = null }) {
       return !valid && (dirty || validated) ? valid : null;
     }
+  },
+  mounted() {
+    this.input = this.value;
   }
 
 }

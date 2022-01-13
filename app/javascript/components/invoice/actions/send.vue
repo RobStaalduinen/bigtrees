@@ -24,6 +24,7 @@ import { invoiceContent } from '../../../content/emailContent';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
+import moment from 'moment';
 
 export default {
   components: {
@@ -40,7 +41,7 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      workCompletionDate: null
+      workCompletionDate: moment().format('YYYY-MM-DD')
     }
   },
   methods: {

@@ -98,6 +98,7 @@ import Multi from '../components/form/multiSelect.vue';
 import CheckboxHighlight from '../components/form/checkboxHighlight.vue';
 import CheckboxRightLabel from '../components/form/checkboxRightLabel.vue';
 import EmailContent from '../components/form/emailContent.vue';
+import ConditionalBox from '../components/form/conditionalBox.vue';
 
 Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
@@ -110,7 +111,8 @@ Vue.component('app-multi-select', Multi);
 Vue.component('app-checkbox-highlight', CheckboxHighlight);
 Vue.component('app-datepicker', DatePicker);
 Vue.component('app-checkbox-right-label', CheckboxRightLabel);
-Vue.component('app-email-content', EmailContent)
+Vue.component('app-email-content', EmailContent);
+Vue.component('app-conditional-box', ConditionalBox);
 
 //Mixins
 import AxiosMixin from '../mixins/axiosMixin';

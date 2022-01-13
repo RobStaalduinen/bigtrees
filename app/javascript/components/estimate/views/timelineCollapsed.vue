@@ -37,6 +37,16 @@
           </b-col>
         </b-row>
 
+        <b-row class='spaced-row' v-if='estimate.skip_schedule'>
+          <b-col cols='4' class='right-column'>
+            <b>Not Scheduled</b>
+            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work></b-icon>
+          </b-col>
+          <!-- <b-col cols='8'>
+            {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
+          </b-col> -->
+        </b-row>
+
         <b-row class='spaced-row' v-if='estimate.invoice.sent_at'>
           <b-col cols='4' class='right-column'>
             <b>Invoice Sent</b>

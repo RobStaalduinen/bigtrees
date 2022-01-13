@@ -114,7 +114,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def work_scheduled?
-		self.work_start_date.present?
+		self.work_start_date.present? || self.skip_schedule
 	end
 
 	def contact_methods

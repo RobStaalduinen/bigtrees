@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20211210193135) do
+ActiveRecord::Schema.define(version: 20220109214653) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",     limit: 255
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20211210193135) do
     t.datetime "followup_sent_at"
     t.date     "work_end_date"
     t.date     "work_completion_date"
+    t.boolean  "skip_schedule"
   end
 
   create_table "expirations", force: :cascade do |t|
