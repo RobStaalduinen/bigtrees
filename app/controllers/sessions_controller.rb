@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       if @arborist.admin?
         redirect_to '/admin/estimates'
       else
-        redirect_to arborist_path(@arborist)
+        redirect_to "/admin/users/#{@arborist.id}"
       end
     else
       flash[:error] = "Invalid email/password"
