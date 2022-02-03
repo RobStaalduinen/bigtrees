@@ -20,7 +20,6 @@
       currentStep = "trees";
     }
     else if(currentStep == 'trees'){
-      setupQuestions();
       fadeOut = "#tree-container";
       fadeIn = "#site-container";
       currentStep = "site";
@@ -43,15 +42,15 @@
 <div class='estimate-container'>
 
   <div id="estimate-form__info">
-    <%= 
+    <%=
       render 'estimate_forms/common/info',
-      content: "Getting an estimate for a tree removal job couldn't be simpler! All we need is a few details about the trees and your site, and we'll have your estimate ready in minutes!" 
+      content: "Getting an estimate for a tree removal job couldn't be simpler! All we need is a few details about the trees and your site, and we'll have your estimate ready in minutes!"
     %>
   </div>
 
   <div id="estimate-form__inputs">
     <div id="quantity-container">
-      <%= 
+      <%=
         render 'estimate_forms/common/quantity',
         question: 'How many trees need to be removed?'
       %>
