@@ -99,7 +99,7 @@ export default {
       return objectOptionList(this.vehicles, [{ value: null, text: 'None'}])
     },
     categoryOptions() {
-      return stringOptionList(['fuel', 'tools', 'repairs', 'travel', 'cheque', 'other']);
+      return stringOptionList(['fuel', 'tools', 'repairs', 'travel', 'cheque', 'other', 'benefits']);
     },
     jobOptions() {
       return stringOptionList(this.jobs);
