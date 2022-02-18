@@ -10,7 +10,6 @@
 
 <script>
 import EmailForm from '../../common/forms/emailArboristSelect';
-import { quoteContent } from '../../../content/emailContent';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
 

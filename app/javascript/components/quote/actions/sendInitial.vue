@@ -1,6 +1,13 @@
 <template>
   <app-right-sidebar :id='id' title='Send Quote' submitText='Send' :onSubmit='sendQuote' :alternateAction='skipSend'>
     <template v-slot:content>
+        <app-select-field
+          label='Add Schedule Text'
+          v-model='scheduleText'
+          name='scheduleText'
+          :options="scheduleTextOptions"
+          validationRules='required'
+        />
       <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
     </template>
   </app-right-sidebar>
@@ -8,7 +15,7 @@
 
 <script>
 import EmailForm from '../../common/forms/email';
-import { quoteContent } from '../../../content/emailContent';
+import { quoteContent, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
@@ -27,7 +34,15 @@ export default {
   },
   data() {
     return {
-      emailDefinition: null
+      emailDefinition: null,
+      scheduleText: 'none',
+      scheduleTextOptions: [
+        { value: 'none', text: 'No schedule'},
+        { value: 'next_few_days', text: 'Next few days'},
+        { value: 'next_week', text: 'Within 1 week'},
+        { value: 'next_two_weeks', text: 'Within 2 weeks'},
+        { value: 'more_than_two_weeks', text: 'More than 2 weeks'}
+      ]
     }
   },
   methods: {
@@ -57,6 +72,21 @@ export default {
       })
     }
   },
+  computed: {
+    quoteContentOptions() {
+      if(this.scheduleText != 'none') {
+        var contentMapper = {
+          next_few_days: nextFewDays,
+          next_week: nextWeek,
+          next_two_weeks: nextTwoWeeks,
+          more_than_two_weeks: moreThanTwoWeeks
+        }
+        return { afterList: contentMapper[this.scheduleText] }
+      }
+
+      return {}
+    }
+  },
   watch: {
     estimate: {
       immediate: true,
@@ -64,7 +94,17 @@ export default {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer.email,
           'Quote from Big Tree',
-          quoteContent
+          quoteContent(this.quoteContentOptions)
+        )
+      }
+    },
+    scheduleText: {
+      immediate: false,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          this.estimate.customer.email,
+          'Quote from Big Tree',
+          quoteContent(this.quoteContentOptions)
         )
       }
     }

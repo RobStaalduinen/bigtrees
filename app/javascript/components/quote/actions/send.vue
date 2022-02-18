@@ -1,7 +1,8 @@
 <template>
   <app-right-sidebar :id='id' title='Send Quote' submitText='Send' :onSubmit='sendQuote'>
     <template v-slot:content>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'>
+      </app-email-form>
     </template>
   </app-right-sidebar>
 </template>
@@ -51,7 +52,7 @@ export default {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer.email,
           'Quote from Big Tree',
-          quoteContent
+          quoteContent()
         )
       }
     }

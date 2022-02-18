@@ -64,7 +64,6 @@
 <script>
 import EventBus from '@/store/eventBus'
 import EmailForm from '../../common/forms/emailArboristSelect';
-import { quoteContent } from '../../../content/emailContent';
 import { EmailDefinition } from '@/models';
 
 export default {
