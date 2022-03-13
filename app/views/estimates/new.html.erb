@@ -1,71 +1,62 @@
 <script>
-	var estimateId = null;
-	var currentStep = 'basics';
-	var needAccess = false;
-	var arboristId = <%== @arborist.id.to_json %>;
+// 	var estimateId = null;
+// 	var currentStep = 'basics';
+// 	var needAccess = false;
+// 	var arboristId = <%== @arborist.id.to_json %>;
 
-	function setId(id){
-		estimateId = id;
-	}
+// 	function setId(id){
+// 		estimateId = id;
+// 	}
 
-	function askAccess(){
-		needAccess = true
-	}
+// 	function askAccess(){
+// 		needAccess = true
+// 	}
 
- function nextForm(){
-    if(currentStep == 'basics'){
-      fadeOut = "#basics-container";
-      fadeIn = "#tree-container";
-      currentStep = "trees";
-    }
-    else if(currentStep == 'trees'){
-			fadeOut = "#tree-container";
-      fadeIn = "#site-container";
-      currentStep = "site";
-    }
-		else if(currentStep == 'site'){
-			completeSubmission();
-		}
+//  function nextForm(){
+//     if(currentStep == 'basics'){
+//       fadeOut = "#basics-container";
+//       fadeIn = "#tree-container";
+//       currentStep = "trees";
+//     }
+//     else if(currentStep == 'trees'){
+// 			fadeOut = "#tree-container";
+//       fadeIn = "#site-container";
+//       currentStep = "site";
+//     }
+// 		else if(currentStep == 'site'){
+// 			completeSubmission();
+// 		}
 
-    $(fadeOut).fadeOut(600, function(){
-      $(fadeIn).fadeIn(600);
-    });
-  }
+//     $(fadeOut).fadeOut(600, function(){
+//       $(fadeIn).fadeIn(600);
+//     });
+//   }
 
-	function completeSubmission(){
-		let params = {
-			estimate:{
-				submission_completed: true,
-				supress_email: true
-			}
-		}
+// 	function completeSubmission(){
+// 		let params = {
+// 			estimate:{
+// 				submission_completed: true,
+// 				supress_email: true
+// 			}
+// 		}
 
-		var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("PATCH", `/requests/${estimateId}`);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify(params));
-		
-		var parsedHost = window.location.hostname.includes("localhost") ? "localhost:3000" : window.location.hostname
+// 		var xmlhttp = new XMLHttpRequest();
+//     xmlhttp.open("PATCH", `/requests/${estimateId}`);
+//     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+//     xmlhttp.send(JSON.stringify(params));
 
-    xmlhttp.onload = function(){ 
-			window.location.href = `${window.location.protocol}//${parsedHost}/estimates/${estimateId}`;
-		}
-	}
+// 		var parsedHost = window.location.hostname.includes("localhost") ? "localhost:3000" : window.location.hostname
+
+//     xmlhttp.onload = function(){
+// 			window.location.href = `${window.location.protocol}//${parsedHost}/estimates/${estimateId}`;
+// 		}
+// 	}
 
 </script>
 
 <div class='container'>
-  <h3>Create a new Quote</h3>
-    
-   <div id='basics-container' style="display: block;">
-		<%= render 'estimates/admin_form/basics', customer: @customer %>
-	 </div>
+  <%= javascript_pack_tag 'onboarding' %>
+  <%= stylesheet_pack_tag 'onboarding' %>
 
-	 <div id='tree-container' style="display: none;">
-		<%= render 'estimates/admin_form/trees' %>
-	 </div>
-
-	 <div id='site-container' style="display: none;">
-		<%= render 'estimates/admin_form/site' %>
-	 </div>
+  <div id='onboarding'>
 </div>
