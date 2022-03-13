@@ -159,9 +159,7 @@ export default {
         subject: this.emailDefinition.subject
       }
 
-      return this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
-        this.$root.$emit('bv::toggle::collapse', this.id);
-      })
+      return this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params);
     }
   },
   computed: {
