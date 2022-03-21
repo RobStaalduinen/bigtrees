@@ -118,7 +118,11 @@ export default {
       // this.$refs.editor.set(this.editMode, { stroke: this.selectedColor });
     },
     undo(){
-      // this.$refs.editor.clear();
+      let isEmpty = this.$refs.editor.invoke('isEmptyUndoStack');
+
+      if(!isEmpty) {
+        this.$refs.editor.invoke('undo');
+      }
       // this.$refs.editor.setBackgroundImage(this.imageUrl);
     },
     redo(){
@@ -141,9 +145,12 @@ export default {
       console.log(this.canvasHeight);
 
       this.$refs.editor.invoke('loadImageFromURL', this.urlToEdit, 'Test.png').then(() => {
-        this.$refs.editor.invoke('resizeCanvasDimension', { width: this.canvasWidth, height: this.canvasHeight })
+        this.$refs.editor.invoke('resizeCanvasDimension', { width: this.canvasWidth, height: this.canvasHeight }).then(() => {
+          this.$refs.editor.invoke('clearUndoStack');
+        });
       });
       this.renderCanvas = true;
+
 
       // this.$nextTick(() => {
       //   this.renderCanvas = true;
