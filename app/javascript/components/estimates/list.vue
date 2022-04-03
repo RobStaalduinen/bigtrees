@@ -42,7 +42,7 @@ export default {
     return {
       loadingEstimates: true,
       searchTerm: null,
-      perPage: 20,
+      perPage: 60,
       page: 1,
       totalEntries: 1,
       status: 'all',
