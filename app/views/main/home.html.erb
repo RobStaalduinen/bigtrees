@@ -80,6 +80,10 @@
 	function rotateReviews() {
 	    var i;
 	    var x = document.getElementsByClassName("testimonial-box");
+
+      if (x[i] == undefined) {
+        return;
+      }
 	    for (i = 0; i < x.length; i++) {
 	      if(x[i]){ x[i].style.display = "none" }
 	    }

@@ -12,13 +12,7 @@ Vue.use(IconsPlugin)
 Vue.use(require('vue-moment'));
 
 import Onboarding from '../onboarding.vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import "vue-multiselect/dist/vue-multiselect.min.css"
-import '../stylesheets/variables'
-import '../stylesheets/bootstrap_overrides.css'
-import '../stylesheets/common_styles.css'
-import '../stylesheets/ui_styles.css'
 
 import ShadowBox from '../components/ui/shadowBox.vue'
 import Loader from '../components/ui/loader.vue';
@@ -63,10 +57,39 @@ import PermissionMixin from '../mixins/permissionMixin';
 Vue.mixin(AxiosMixin)
 Vue.mixin(PermissionMixin)
 
-document.addEventListener('DOMContentLoaded', () => {
+import TurbolinksAdapter from 'vue-turbolinks';
+Vue.use(TurbolinksAdapter);
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const app = new Vue({
+//     el: '#onboarding',
+//     render: h => h(Onboarding)
+//   })
+// })
+
+document.addEventListener("turbolinks:load", () => {
+  if(!document.getElementById('onboarding')) {
+    return;
+  }
   const app = new Vue({
     el: '#onboarding',
     render: h => h(Onboarding)
   })
-  console.log(app)
 })
+
+// document.addEventListener('turbolinks:load', () => {
+//   console.log("LOAD");
+//   new Vue({
+//     el: '#onboarding',
+//     beforeMount() {
+//         if (this.$el.parentNode) {
+//             document.addEventListener('turbolinks:visit', () => this.$destroy(), { once: true });
+
+//             this.$originalEl = this.$el.outerHTML;
+//         }
+//     },
+//     destroyed() {
+//         this.$el.outerHTML = this.$originalEl;
+//     }
+//   });
+// });
