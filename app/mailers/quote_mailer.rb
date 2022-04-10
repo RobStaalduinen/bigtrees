@@ -19,6 +19,6 @@ class QuoteMailer < ApplicationMailer
 	def picture_request(estimate, email, subject, content)
 		estimate.update(picture_request_sent_at: Date.today)
 		@content = content
-		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'tbrewer@bigislandgroup.ca', 'thearn@bigislandgroup.ca'])
+		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'tbrewer@bigislandgroup.ca'])
 	end
 end
