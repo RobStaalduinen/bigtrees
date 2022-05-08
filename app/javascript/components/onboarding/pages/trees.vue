@@ -1,10 +1,34 @@
 <template>
-    <app-pane>
+    <app-pane  :rightTitle="`Tell us about Tree #${treeNumber}`">
       <template v-slot:left-side>
         We need some info
       </template>
       <template v-slot:right-side>
-        Tell us about Tree #{{treeNumber}}
+        <div>
+          <app-tree-form
+            :treeNumber='treeNumber'
+            :value='trees[0]'
+            @input="(tree) => updateTree(0, tree)"
+            v-if='treeNumber == 1'
+            :key='1'
+          />
+
+          <app-tree-form
+            :treeNumber='treeNumber'
+            :value='trees[1]'
+            v-if='treeNumber == 2'
+            @input="(tree) => updateTree(1, tree)"
+            :key='2'
+          />
+
+          <app-tree-form
+            :treeNumber='treeNumber'
+            :value='trees[2]'
+            v-if='treeNumber == 3'
+            @input="(tree) => updateTree(2, tree)"
+            :key='3'
+          />
+        </div>
       </template>
       <template v-slot:controls>
         <app-buttons></app-buttons>
@@ -15,12 +39,38 @@
 <script>
 import Pane from '@/components/onboarding/pane';
 import FormButtons from '@/components/onboarding/widgets/formButtons';
+import TreeForm from '@/components/onboarding/widgets/treeForm';
 
 export default {
   components: {
     'app-pane' : Pane,
-    'app-buttons': FormButtons
+    'app-buttons': FormButtons,
+    'app-tree-form': TreeForm
   },
-  props: ['treeNumber']
+  props: ['treeNumber', 'value'],
+  data() {
+    return {
+      trees: this.value
+    }
+  },
+  computed: {
+    currentTree() {
+      return this.trees[this.treeNumber - 1];
+    }
+  },
+  methods: {
+    updateTree(index, tree){
+      this.trees[index] = tree;
+      this.$emit('input', this.trees);
+    }
+  },
+  watch: {
+    treeNumber() {
+      console.log(this.trees);
+    },
+    trees() {
+
+    }
+  }
 }
 </script>

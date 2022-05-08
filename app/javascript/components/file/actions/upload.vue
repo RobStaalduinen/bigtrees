@@ -32,7 +32,7 @@ export default {
       type: String
     },
     'value': {
-      required: true
+      required: false
     },
     'accept': {
       type: String

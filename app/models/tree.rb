@@ -12,17 +12,14 @@ class Tree < ActiveRecord::Base
     broken_limbs: 2,
     stump_removal: 3,
     other: 4,
-    tree_services: 5
+    tree_services: 5,
+    other_services: 6
   }
 
-	WORK_TYPES = ['Tree Removal', 'Trim', 'Broken Limbs', 'Stump Removal', 'Other', 'Tree Services'].freeze
+	WORK_TYPES = ['Tree Removal', 'Trim', 'Broken Limbs', 'Stump Removal', 'Other', 'Tree Services', 'Other Tree Services'].freeze
 
 	def self.work_type_for_name(name)
 		Tree::WORK_TYPES.index(name)
-	end
-
-	def formatted_work_name(identifier)
-		[WORK_TYPES[self[:work_type]], identifier].compact.join(" ")
 	end
 
 	def work_name

@@ -12,18 +12,21 @@
       <app-onboarding-trees
         v-if='onTreePage() && !changing'
         :treeNumber='currentPage - 1'
+        v-model='trees'
       ></app-onboarding-trees>
      </transition>
 
      <transition name="fade">
         <app-onboarding-site
           v-if='currentPage == (parseInt(treeQuantity) + 2) && !changing'
+          v-model='site'
         ></app-onboarding-site>
       </transition>
 
       <transition name='fade'>
         <app-onboarding-contact
           v-if='currentPage == (parseInt(treeQuantity) + 3) && !changing'
+          v-model='customer'
         ></app-onboarding-contact>
       </transition>
   </div>
@@ -51,7 +54,10 @@ export default {
       context: null,
       currentPage: 1,
       changing: false,
-      treeQuantity: 1
+      treeQuantity: 1,
+      trees: [{}, {}, {}],
+      site: {},
+      customer: {}
     }
   },
   mounted() {
@@ -67,7 +73,6 @@ export default {
   },
   methods: {
     advance() {
-
       if(!this.stopTransition(this.currentPage, this.currentPage + 1)) {
         this.changing = true;
 
@@ -79,6 +84,10 @@ export default {
       this.currentPage += 1;
     },
     goBack() {
+      if(this.currentPage == 1) {
+        return;
+      };
+
       if(!this.stopTransition(this.currentPage, this.currentPage - 1)) {
         this.changing = true;
 
@@ -109,7 +118,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
@@ -119,5 +128,41 @@ export default {
 
 #onboarding-container {
   min-height: 600px;
+}
+
+.form-label {
+  margin-bottom: 8px;
+
+  font-weight: 600;
+}
+
+.form-group {
+  border-width: 0 0 1px 0;
+  border-color: #efefef;
+  border-style: solid;
+  padding-bottom: 8px;
+}
+
+.onboarding-form-radios {
+  display: flex
+}
+
+
+.onboarding-form-radio-single {
+  width: auto;
+  display: flex;
+  align-items: center;
+  margin-right: 32px
+}
+
+.onboarding-form-radio-single > label{
+  margin-left: 8px;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 4px;
+}
+
+.onboarding-form-radio-single > input {
+  margin: 0;
 }
 </style>
