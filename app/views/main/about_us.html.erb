@@ -1,54 +1,81 @@
+<% content_for :title, "About Us" %>
+<% content_for :description, "Details on the many removal and tree care options available from Big Tree Services." %>
+
 <div class = "row header-image sub-page-header">
-	<div class = "col-lg-6 col-lg-offset-3 sub-header-column">
-		<div class = "sub-page-header-title">
-			<div class = "sub-page-header-text">
-				About Us
-			</div>
+	<div class = "sub-page-header-title">
+		<div class = "sub-page-header-text">
+			<h1>About Us</h1>
 		</div>
 	</div>
 </div>
 
 <div class = "row white-row">
-	<div id = 'about-us' class = "col-lg-6 col-lg-offset-3">
-		<div id = 'about-us-image-container'>
-			<%= image_tag 'WorkCrew.JPG', :id => 'about-us-image' %>
-		</div>
-		
-		
-		<div id = 'about-us-text'>
-		We are a team of arborists, forestry technicians, utility line trimmers, and pesticide applicators with a common passion for tree care, chainsaws, and spending our days in the great outdoors. We are dedicated to providing tree removal, trimming and lot clearing services to Southern Ontario, including Toronto and the GTA, Kingston, Ottawa and more.
-		<br /><br />
-		Our promise is simple: safety first, an honest day's work, and happy customers.
-		<br /><br />
-		ThatsABigTree.ca is a locally owned business with roots in Southern Ontario. 
-		<br />
-		</div>
-	</div>
-</div>
-
-<div class = "row grey-row">
 	<div class = "col-lg-6 col-lg-offset-3">
-		<div id = "services-box" class = "shadow-box">
-			<div id = "services-title">
-				Our Services
-			</div>
-			<div id = "services-description">
-				We offer a full range of tree care services to ensure your needs are met.
-			</div>
-			<ul id = "services-list">
-				<li class>Tree Removal</li>
-				<li class>Tree and Bush Trimming</li>
-				<li>Lot Clearing</li>
-				
-				<li class>Storm Damage</li>
-				<li class>Chipping and Cleanup</li>
-				<li>Cabling and Bracing</li>
-				
-				<li class>Stump Removal</li>
-				<li class>Right of Way Management</li>
-				<li>Tree Injections</li>
-			</ul>
+		<div>
+      <div id='about-us-title-container'>
+        Our mission is simple: Quality work at competitive prices and excellent customer service.
+      </div>
+      <div id='about-us-content'>
+        <div style='' id='about-us-image-container'>
+          <%= image_tag 'WorkCrew.JPG', :id => 'about-us-image' %>
+        </div>
+
+          Big Tree Serives, Inc. is a full-service tree service specializing in removals, pruning, stumping and more! We’ve been serving the GTA and Cottage Country since 2015.
+          <br /><br/>
+          Our team includes Certified, Licenced and Insured Utility Arborists and we strive to exceed your expectations from your first phone call to our office to the professionals that complete your project. Our customers are at the center of what we do and are our top priority. We work for 100% satisfaction from everyone.
+          <br /><br />
+          Give us a call to get your free quote today! <br />
+          <a href="tel:1-877-542-5551">1-877-542-5551</a>
+          <br />
+          Would rather shoot us an email? Please contact us at <a href="mailto:thearn@bigislandgroup.ca">thearn@bigislandgroup.ca</a>
+          <br />
+          We look forward to working with you.
+      </div>
 		</div>
 	</div>
 </div>
 
+<style>
+    #about-us-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #about-us-image-container {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      margin: 0;
+      float: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #about-us-title-container {
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 22px;
+    }
+
+    #about-us-content {
+      margin: 0;
+    }
+
+  @media(min-width: 760px) {
+    #about-us-content {
+      display: block
+    }
+
+    #about-us-image-container {
+      float: right;
+      width: 300px;
+      height: auto;
+      margin-left: 16px;
+    }
+
+    #about-us-title-container {
+      margin-top: 16px;
+    }
+  }
+</style>
