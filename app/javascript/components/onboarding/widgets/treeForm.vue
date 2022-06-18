@@ -41,12 +41,17 @@
       <b-form-group>
         <div class='form-label'>
           Images
+
+          <div class='form-subtext'>
+            Pictures of your trees or stumps will help us accurately assess your job
+          </div>
         </div>
-        <div v-for="(image, index) in images" :key='`tree_${treeNumber}_image_${index}`'>
+        <div v-for="(image, index) in images" :key='`tree_${treeNumber}_image_${index}`' class='tree-image-uploader'>
           <app-file-upload
             :value='image'
             @input='(url) => updateImage(index, url)'
             accept=".jpg, .jpeg, .png"
+            :label="`Picture ${index + 1}`"
           ></app-file-upload>
         </div>
       </b-form-group>
@@ -54,7 +59,7 @@
 </template>
 
 <script>
-import Uploader from '@/components/file/actions/upload';
+import Uploader from '@/components/file/actions/imageUpload';
 
 export default {
   components: {
@@ -140,5 +145,9 @@ export default {
 <style>
 .custom-file-label {
   display: none;
+}
+
+.tree-image-uploader {
+  margin-bottom: 8px;
 }
 </style>

@@ -136,6 +136,12 @@ export default {
   font-weight: 600;
 }
 
+.form-subtext {
+  color: grey;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .form-group {
   border-width: 0 0 1px 0;
   border-color: #efefef;
@@ -156,10 +162,10 @@ export default {
 }
 
 .onboarding-form-radio-single > label{
-  margin-left: 8px;
   width: 100%;
   margin-bottom: 0;
   padding: 4px;
+  padding-left: 12px;
 }
 
 .onboarding-form-radio-single > input {

@@ -50,7 +50,6 @@ export default {
 
 <style>
 .quantity-radio {
-  color: var(--main-color);
   margin-bottom: 8px;
 
   border: 1px solid var(--main-color);
@@ -64,11 +63,10 @@ export default {
 }
 
 .quantity-radio > label{
-  color: var(--main-color);
-  margin-left: 8px;
   width: 100%;
   margin-bottom: 0;
   padding: 4px;
+  padding-left: 12px;
 }
 
 .quantity-radio > input {
@@ -88,5 +86,7 @@ input[type='radio']:checked:after {
   display: inline-block;
   visibility: visible;
   border: 2px solid white;
+
+  padding: 4px;
 }
 </style>
