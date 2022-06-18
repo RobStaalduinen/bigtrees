@@ -7,29 +7,33 @@
 
       <template v-slot:content>
         <b-row class='spaced-row'>
-          <b-col cols='4' class='right-column'>
+          <b-col cols='3' class='right-column'>
             <b>Name</b>
           </b-col>
-          <b-col cols='8'>
+          <b-col cols='9'>
             {{ estimate.customer.name }}
           </b-col>
         </b-row>
 
         <b-row class='spaced-row'>
-          <b-col cols='4' class='right-column'>
+          <b-col cols='3' class='right-column'>
             <b>Email</b>
           </b-col>
-          <b-col cols='8'>
-            <a :href='"mailto:" + estimate.customer.email'>{{ estimate.customer.email }}</a>
+          <b-col cols='9'>
+            <div style='overflow-x: scroll'>
+              <a :href='"mailto:" + estimate.customer.email'>{{ estimate.customer.email }}</a>
+            </div>
           </b-col>
         </b-row>
 
         <b-row class='spaced-row'>
-          <b-col cols='4' class='right-column'>
+          <b-col cols='3' class='right-column'>
             <b>Phone</b>
           </b-col>
-          <b-col cols='8'>
-            <a :href='"tel:" + estimate.customer.phone'>{{ estimate.customer.phone }}</a>
+          <b-col cols='9'>
+            <div style='overflow-x: scroll'>
+              <a :href='"tel:" + estimate.customer.phone'>{{ estimate.customer.phone }}</a>
+            </div>
           </b-col>
         </b-row>
 

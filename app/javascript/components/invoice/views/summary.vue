@@ -38,7 +38,7 @@
             Receipt
           </a>
 
-          <a :href='`/invoices/${estimate.invoice.id}/pdf`' class='single-estimate-link'>
+          <a :href='`/invoices/${estimate.invoice.id}/pdf?estimate_id=${estimate.id}`' class='single-estimate-link'>
             Download
           </a>
           <div class='single-estimate-link' v-b-toggle.invoice-send>
