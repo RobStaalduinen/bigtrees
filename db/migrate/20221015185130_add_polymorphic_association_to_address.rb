@@ -1,15 +1,15 @@
 class AddPolymorphicAssociationToAddress < ActiveRecord::Migration
   def self.up
-    add_column :addresses, :addressable_id, :integer, index: true
-    add_column :addresses, :addressable_type, :string, index: true
+    add_column :addresses, :addressable_id, :integer, index: true unless Address.column_names.include?('addressable_id')
+    add_column :addresses, :addressable_type, :string, index: true unless Address.column_names.include?('addressable_type')
 
     Customer.find_each do |c|
-      next if c.address_id.blank?
+      next if c.address.blank?
       c.address.update(addressable_id: c.id, addressable_type: 'Customer')
     end
 
     Site.find_each do |s|
-      next if s.address_id.blank?
+      next if s.address.blank?
       s.address.update(addressable_id: s.id, addressable_type: 'Site')
     end
   end
