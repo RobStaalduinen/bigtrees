@@ -67,9 +67,11 @@ class EstimatesController < ApplicationController
     end
 
     if params[:customer].present?
-      customer = Customer.find_by(id: customer_params[:id]) || Customer.new
-      customer.update(customer_params)
+      customer = Customer.find_by(id: customer_params[:id]) || Customer.create(customer_params)
       estimate.update(customer: customer)
+
+      customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)
+      customer_detail.update(customer_detail_params)
     end
 
 		render json: { estimate_id: estimate.id }
@@ -157,6 +159,12 @@ class EstimatesController < ApplicationController
   def assignment_params
     params.require(:estimate).permit(
       equipment_assignments_attributes: [ :vehicle_id ]
+    )
+  end
+
+  def customer_detail_params
+    params.require(:customer).permit(
+     :name, :phone, :email
     )
   end
 end

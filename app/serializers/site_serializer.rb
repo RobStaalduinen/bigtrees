@@ -8,5 +8,5 @@ class SiteSerializer < ApplicationSerializer
   attribute :low_access_width
   attribute :survey_filled_out
 
-  belongs_to :address
+  has_one :address
 end

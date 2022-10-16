@@ -28,6 +28,7 @@ class EstimateSerializer < ApplicationSerializer
   belongs_to :customer
   has_one :site, include_nested_associations: true
   has_one :invoice
+  has_one :customer_detail
   has_many :costs
   has_many :trees
   has_many :vehicles

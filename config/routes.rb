@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :documents
   end
   resources :customers
+  resources :customer_details, only: [ :update ]
   resources :requests
   resources :trees do
     post '/bulk_create', to: 'trees#bulk_create', on: :collection

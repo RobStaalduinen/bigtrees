@@ -33,7 +33,7 @@
     </div>
 
     <div class='entry-column'>
-      <%= estimate.customer.name %>
+      <%= estimate.customer_detail.name %>
     </div>
 
     <div class='title-column'>
@@ -41,7 +41,7 @@
     </div>
 
     <div class='entry-column'>
-      <%= estimate.customer.email %>
+      <%= estimate.customer_detail.email %>
     </div>
   </div>
 
@@ -51,7 +51,7 @@
     </div>
 
     <div class='entry-column'>
-      <%= estimate.customer.phone %>
+      <%= estimate.customer_detail.phone %>
     </div>
 
     <div class='title-column'>
@@ -59,7 +59,7 @@
     </div>
 
     <div class='entry-column'>
-      <%= estimate.customer&.address&.full_address || estimate.site.full_address %>
+      <%= estimate.customer_detail&.address&.full_address || estimate.site.full_address %>
     </div>
   </div>
 

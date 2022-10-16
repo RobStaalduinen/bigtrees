@@ -9,7 +9,7 @@
 
     <div v-if='billingAddressRequired'>
       <div id='business-header-row'>
-        <span>Billing Address</span>
+        <span>Invoice Address</span>
         <a @click.prevent='billingAddressRequired=false' class='toggle-link'>Remove</a>
       </div>
       <app-single-address-form
@@ -19,7 +19,7 @@
       ></app-single-address-form>
     </div>
     <div v-else id='business-toggle' class='toggle-link'>
-      <a @click.prevent='billingAddressRequired = true'>+ Add Billing Address +</a>
+      <a @click.prevent='billingAddressRequired = true'>+ Add Invoice Address +</a>
     </div>
   </div>
 </template>

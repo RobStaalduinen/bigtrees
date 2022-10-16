@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CustomerSerializer < ApplicationSerializer
+class CustomerDetailSerializer < ApplicationSerializer
   attribute :name
   attribute :email
   attribute :phone

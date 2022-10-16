@@ -17,7 +17,9 @@ class Estimate < ActiveRecord::Base
   has_many :vehicles, through: :equipment_assignments
 
 	has_one :invoice
-	has_one :site
+  has_one :site
+  has_one :customer_detail
+
 	belongs_to :customer
 	belongs_to :arborist
 

@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220109214653) do
+ActiveRecord::Schema.define(version: 20221015185130) do
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "street",     limit: 255
-    t.string   "city",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "street",           limit: 255
+    t.string   "city",             limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "addressable_id",   limit: 4
+    t.string   "addressable_type", limit: 255
   end
 
   create_table "appointments", force: :cascade do |t|
@@ -55,6 +57,15 @@ ActiveRecord::Schema.define(version: 20220109214653) do
     t.decimal "amount",                  precision: 10
     t.string  "description", limit: 255
     t.boolean "discount",                               default: false
+  end
+
+  create_table "customer_details", force: :cascade do |t|
+    t.integer  "estimate_id", limit: 4
+    t.string   "name",        limit: 255
+    t.string   "email",       limit: 255
+    t.string   "phone",       limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "customers", force: :cascade do |t|

@@ -1,7 +1,7 @@
 class Customer < ActiveRecord::Base
+  include SingleAddressable
+
   has_many :estimates
-  belongs_to :address
-  accepts_nested_attributes_for :address, allow_destroy: true
 
   before_save :downcase_fields
 
@@ -10,8 +10,10 @@ class Customer < ActiveRecord::Base
   def self.find_or_create_by_params(params)
     customer = Customer.find_by(email: params[:email]) if params[:email].present?
     customer = Customer.find_by(email: params[:phone]) if customer.blank? && params[:phone].present?
-    customer = Customer.new if customer.blank?
-    customer.update(params)
+    if customer.blank?
+      customer = Customer.create(params)
+    end
+
     customer
   end
 

@@ -15,12 +15,12 @@
           </b-col>
         </b-row>
 
-        <b-row v-if='estimate.customer.address' class='spaced-row'>
+        <b-row v-if='estimate.customer_detail.address' class='spaced-row'>
           <b-col cols='4' class='right-column'>
             <b>Billing Addr.</b>
           </b-col>
           <b-col cols='8'>
-            {{ getFullAddress(estimate.customer.address) }}
+            {{ getFullAddress(estimate.customer_detail.address) }}
           </b-col>
         </b-row>
 
@@ -97,7 +97,7 @@ export default {
     },
     updateBillingAddress() {
       var params = {
-        customer: {
+        customer_detail: {
           address_attributes: {}
         }
       }
@@ -106,13 +106,12 @@ export default {
         return new Promise((resolve, reject) => { resolve(true) });
       }
 
-      if(this.estimate.customer.address) {
-        params.customer.address_attributes.id = this.estimate.customer.address.id
-      }
+      // if(this.estimate.customer.address) {
+      //   params.customer.address_attributes.id = this.estimate.customer.address.id
+      // }
 
       if(this.addresses.billingAddress) {
-        params.customer.address_attributes = {
-          ...params.customer.address_attributes,
+        params.customer_detail.address_attributes = {
           ...this.addresses.billingAddress
         }
       }
@@ -120,8 +119,8 @@ export default {
         params.customer.address_attributes._destroy = true
       }
 
-      return this.axiosPut(`/customers/${this.estimate.customer.id}`, params).then(response => {
-        EventBus.$emit('ESTIMATE_UPDATED', { customer: response.data.customer });
+      return this.axiosPut(`/customer_details/${this.estimate.customer_detail.id}`, params).then(response => {
+        EventBus.$emit('ESTIMATE_UPDATED', { customer_detail: response.data.customer_detail });
       })
     },
     initialSite() {

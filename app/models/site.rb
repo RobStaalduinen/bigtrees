@@ -1,9 +1,8 @@
 class Site < ActiveRecord::Base
+  include SingleAddressable
+
   belongs_to :estimate
   has_many :trees, through: :estimate
-
-  belongs_to :address
-  accepts_nested_attributes_for :address, allow_destroy: true
 
   def serialized
     slice(:street, :city, :wood_removal, :vehicle_access, :breakables, :cleanup).merge(

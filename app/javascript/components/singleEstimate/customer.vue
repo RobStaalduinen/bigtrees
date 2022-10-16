@@ -2,16 +2,25 @@
   <div>
     <app-collapsable id='customer-collapse'>
       <template v-slot:title>
-        <b>Customer:</b> &nbsp; {{ estimate.customer.name }}
+        <b>Parent Customer:</b> &nbsp; {{ estimate.customer.name }}
       </template>
 
       <template v-slot:content>
         <b-row class='spaced-row'>
           <b-col cols='3' class='right-column'>
+
+          </b-col>
+          <b-col cols='9'>
+            <b>Quote Details</b>
+          </b-col>
+        </b-row>
+
+        <b-row class='spaced-row'>
+          <b-col cols='3' class='right-column'>
             <b>Name</b>
           </b-col>
           <b-col cols='9'>
-            {{ estimate.customer.name }}
+            {{ customerDetails.name }}
           </b-col>
         </b-row>
 
@@ -21,7 +30,7 @@
           </b-col>
           <b-col cols='9'>
             <div style='overflow-x: scroll'>
-              <a :href='"mailto:" + estimate.customer.email'>{{ estimate.customer.email }}</a>
+              <a :href='"mailto:" + customerDetails.email'>{{ customerDetails.email }}</a>
             </div>
           </b-col>
         </b-row>
@@ -32,7 +41,7 @@
           </b-col>
           <b-col cols='9'>
             <div style='overflow-x: scroll'>
-              <a :href='"tel:" + estimate.customer.phone'>{{ estimate.customer.phone }}</a>
+              <a :href='"tel:" + customerDetails.phone'>{{ customerDetails.phone }}</a>
             </div>
           </b-col>
         </b-row>
@@ -49,7 +58,7 @@
 
     <app-right-sidebar id='customer-edit' title='Edit Customer' submitText='Save' :onSubmit='updateCustomer'>
       <template v-slot:content>
-        <app-customer-form v-model='customer'> </app-customer-form>
+        <app-customer-form v-model='customerDetails'> </app-customer-form>
       </template>
     </app-right-sidebar>
   </div>
@@ -70,15 +79,15 @@ export default {
   },
   data() {
     return {
-      customer: this.estimate.customer
+      customerDetails: this.estimate.customer_detail
     }
   },
   methods: {
     updateCustomer() {
-      var params = { customer: this.customer }
-      this.axiosPut(`/customers/${this.customer.id}`, params).then(response => {
+      var params = { customer_detail: this.customerDetails }
+      this.axiosPut(`/customer_details/${this.customerDetails.id}`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', 'customer-edit');
-        EventBus.$emit('ESTIMATE_UPDATED', { customer: response.data.customer });
+        EventBus.$emit('ESTIMATE_UPDATED', { customer_detail: response.data.customer_detail });
       });
     }
   }
