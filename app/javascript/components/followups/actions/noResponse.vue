@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Send Followup' submitText='Send' :onSubmit='sendImageRequest'>
+  <app-right-sidebar :id='id' title='Send Followup' submitText='Send' :onSubmit='sendImageRequest' :alternateAction='skipSend'>
     <template v-slot:content>
       <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
     </template>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       emailDefinition: {
-        email: this.estimate.customer.email,
+        email: [this.estimate.customer.email],
         content: noResponseFollowup,
         subject: 'Your Big Tree Services Job'
       }
@@ -37,13 +37,17 @@ export default {
     handleChange(new_email) {
       this.emailDefinition = { ...new_email }
     },
-    sendImageRequest() {
+    skipSend(){
+      this.sendImageRequest(true);
+    },
+    sendImageRequest(skip = false) {
       var params = {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject,
         followup_sent_at: moment().format('YYYY-MM-DD'),
-        include_quote: true
+        include_quote: true,
+        skip: skip
       }
       this.axiosPost(`/estimates/${this.estimate.id}/followups`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);

@@ -2,7 +2,7 @@ var invoiceContent = 'Hi, \n\n\
 The tree work is complete. Thank you very much for your business. \n\n\
 Attached is your final invoice. We accept all forms of payment but prefer e-transfers or cheques. Credit card payments over the phone work as well but we do lose a percentage of the sale.\n\n\
 E-transfers can be sent to tbrewer@bigislandgroup.ca\n\n\
-Cheques can be made out to Big Tree and arrangements can be made for pickup.\n\n\
+Cheques can be made out to Big Tree Inc. and arrangements can be made for pickup.\n\n\
 Call me anytime on my cell at 705 943 7374 for card payments or if you have any questions.\n\n\
 Thanks, \n\
 Tyler\n\

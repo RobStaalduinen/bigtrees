@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       emailDefinition: {
-        email: this.estimate.customer.email,
+        email: [this.estimate.customer.email],
         content: imageRequest,
         subject: 'Your Big Tree Services Job'
       }
