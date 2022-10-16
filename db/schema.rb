@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221015185130) do
+ActiveRecord::Schema.define(version: 20221016143702) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",           limit: 255
@@ -54,9 +54,9 @@ ActiveRecord::Schema.define(version: 20221015185130) do
 
   create_table "costs", force: :cascade do |t|
     t.integer "estimate_id", limit: 4
-    t.decimal "amount",                  precision: 10
+    t.float   "amount",      limit: 24
     t.string  "description", limit: 255
-    t.boolean "discount",                               default: false
+    t.boolean "discount",                default: false
   end
 
   create_table "customer_details", force: :cascade do |t|
