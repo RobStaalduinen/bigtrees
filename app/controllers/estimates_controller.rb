@@ -48,8 +48,9 @@ class EstimatesController < ApplicationController
   end
 
   def show
+    authorize Customer, :show?
+
     @estimate = policy_scope(Estimate).find(params[:id])
-    authorize! :read, @estimate
 
     render json: @estimate
   end
