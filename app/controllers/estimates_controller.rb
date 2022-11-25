@@ -17,14 +17,17 @@ class EstimatesController < ApplicationController
     @estimates = @estimates.submitted.
       joins(:customer).
       joins("LEFT OUTER JOIN sites ON sites.estimate_id = estimates.id").
-      joins("LEFT OUTER JOIN addresses ON sites.address_id = addresses.id").
+      joins("LEFT OUTER JOIN customer_details ON customer_details.estimate_id = estimates.id").
+      joins("LEFT OUTER JOIN addresses ON addresses.addressable_id = sites.id OR addresses.addressable_id = customer_details.id").
+      joins("LEFT OUTER JOIN invoices ON invoices.estimate_id = estimates.id").
       includes(customer: [:address]).
       includes(equipment_assignments: [ :vehicle ]).
       includes(site: [:address]).
       includes(:invoice).
       includes(:arborist).
       includes(:costs).
-      includes(trees: [:tree_images])
+      includes(trees: [:tree_images]).
+      uniq
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
@@ -124,7 +127,8 @@ class EstimatesController < ApplicationController
         LOWER(sites.street) LIKE :search OR
         LOWER(sites.city) LIKE :search OR
         LOWER(addresses.street) LIKE :search OR
-        LOWER(addresses.city) LIKE :search
+        LOWER(addresses.city) LIKE :search OR
+        LOWER(invoices.number) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )
