@@ -126,6 +126,7 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-rvm'
   gem 'cap-ec2'
+  gem 'rbnacl'
 
   # gem 'rubocop'
   # gem 'rubocop-performance'

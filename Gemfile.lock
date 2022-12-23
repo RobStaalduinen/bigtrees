@@ -811,6 +811,8 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    rbnacl (7.1.1)
+      ffi
     rdoc (4.2.0)
       json (~> 1.4)
     responders (2.4.0)
@@ -969,6 +971,7 @@ DEPENDENCIES
   rails (= 4.2.9)
   rails-controller-testing
   rake
+  rbnacl
   responders (~> 2.0)
   rspec-mocks
   rspec-rails (~> 3.0)
