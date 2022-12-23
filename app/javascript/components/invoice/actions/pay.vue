@@ -90,7 +90,7 @@ export default {
         this.payment_method = this.estimate.invoice.payment_method;
 
         this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
+          this.estimate.customer_detail.email,
           'Big Tree Services Receipt',
           receiptContent
         )

@@ -94,7 +94,7 @@ export default {
       immediate: true,
       handler() {
         this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
+          this.estimate.customer_detail.email,
           'Big Tree Services Final Invoice',
           invoiceContent
         )

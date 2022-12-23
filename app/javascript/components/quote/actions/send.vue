@@ -50,7 +50,7 @@ export default {
       immediate: true,
       handler() {
         this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
+          this.estimate.customer_detail.email,
           'Quote from Big Tree',
           quoteContent()
         )
