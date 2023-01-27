@@ -11,6 +11,7 @@ import EmailForm from '../../common/forms/email';
 import { noResponseFollowup } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -26,11 +27,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: [this.estimate.customer.email],
-        content: noResponseFollowup,
-        subject: 'Your Big Tree Services Job'
-      }
+      emailDefinition: null
     }
   },
   methods: {
@@ -53,6 +50,18 @@ export default {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
+    }
+  },
+  watch: {
+    estimate: {
+      immediate: true,
+      handler() {
+        this.emailDefinition = new EmailDefinition(
+          [this.estimate.customer_detail.email],
+          'Your Big Tree Services Job',
+          noResponseFollowup(this.estimate)
+        )
+      }
     }
   }
 }

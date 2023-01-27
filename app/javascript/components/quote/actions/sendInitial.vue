@@ -74,6 +74,8 @@ export default {
   },
   computed: {
     quoteContentOptions() {
+      var options = {}
+
       if(this.scheduleText != 'none') {
         var contentMapper = {
           next_few_days: nextFewDays,
@@ -81,10 +83,9 @@ export default {
           next_two_weeks: nextTwoWeeks,
           more_than_two_weeks: moreThanTwoWeeks
         }
-        return { afterList: contentMapper[this.scheduleText] }
+        options.afterList =  contentMapper[this.scheduleText]
       }
-
-      return {}
+      return options;
     }
   },
   watch: {
@@ -92,9 +93,9 @@ export default {
       immediate: true,
       handler() {
         this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
-          'Quote from Big Tree',
-          quoteContent(this.quoteContentOptions)
+          this.estimate.customer_detail.email,
+          'Yout Quote from Big Tree Services',
+          quoteContent(this.estimate, this.quoteContentOptions)
         )
       }
     },
@@ -102,9 +103,9 @@ export default {
       immediate: false,
       handler() {
         this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
-          'Quote from Big Tree',
-          quoteContent(this.quoteContentOptions)
+          this.estimate.customer_detail.email,
+          'Your Quote from Big Tree Services',
+          quoteContent(this.estimate, this.quoteContentOptions)
         )
       }
     }

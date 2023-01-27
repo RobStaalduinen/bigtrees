@@ -21,6 +21,7 @@ class EstimatesController < ApplicationController
       joins("LEFT OUTER JOIN addresses ON addresses.addressable_id = sites.id OR addresses.addressable_id = customer_details.id").
       joins("LEFT OUTER JOIN invoices ON invoices.estimate_id = estimates.id").
       includes(customer: [:address]).
+      includes(customer_detail: [:address]).
       includes(equipment_assignments: [ :vehicle ]).
       includes(site: [:address]).
       includes(:invoice).
@@ -39,7 +40,7 @@ class EstimatesController < ApplicationController
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
-    render json: @estimates, meta: { total_entries: @estimates.total_entries }
+    render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
   end
 
   def new

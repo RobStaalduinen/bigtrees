@@ -91,8 +91,8 @@ export default {
 
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer_detail.email,
-          'Big Tree Services Receipt',
-          receiptContent
+          'Your Big Tree Services Receipt',
+          receiptContent(this.estimate)
         )
       }
     }

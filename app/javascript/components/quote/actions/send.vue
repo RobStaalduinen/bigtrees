@@ -51,8 +51,8 @@ export default {
       handler() {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer_detail.email,
-          'Quote from Big Tree',
-          quoteContent()
+          'Your Quote from Big Tree Services',
+          quoteContent(this.estimate)
         )
       }
     }

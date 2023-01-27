@@ -1,5 +1,5 @@
 class InvoiceMailer < ApplicationMailer
-	default from: 'Big Tree Services <tbrewer@bigislandgroup.ca>'
+	default from: 'Tyler, Big Tree Services <tbrewer@bigislandgroup.ca>'
 	add_template_helper(ApplicationHelper)
 	include Rails.application.routes.url_helpers
 	include ActionView::Helpers::UrlHelper
