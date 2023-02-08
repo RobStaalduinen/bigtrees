@@ -41,6 +41,7 @@ export default {
     return {
       statusOptions: [
         { value: 'all', text: 'All' },
+        { value: 'active', text: 'Active' },
         { value: 'needs_pricing', text: 'Needs Pricing' },
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },

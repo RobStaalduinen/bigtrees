@@ -62,14 +62,16 @@ class Estimate < ActiveRecord::Base
 
   scope :for_status, -> (filter_string) do
     case filter_string
+    when 'active'
+      all.active
     when 'needs_pricing'
-      price_required
+      price_required.active
     when 'awaiting_response'
-      sent
+      sent.active
     when 'to_pay'
-      pending_payment
+      pending_payment.active
     when 'scheduled'
-      scheduled
+      scheduled.active
     when 'unknown'
       unknown
     else

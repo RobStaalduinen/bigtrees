@@ -6,7 +6,9 @@
       <b-button class='cost-button' size="sm" @click='addCost(0, "Stump Removal")'>Stump</b-button>
       <b-button class='cost-button' size="sm" @click='addCost(0, "Site Cleanup")'>Cleanup</b-button>
       <b-button class='cost-button' size="sm" @click='addCost(0, "Log Disposal")'>Logs</b-button>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Chips/Mulch Disposal")'>Mulch</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Stump Grindings and Root Debris Disposal")'>Grindings</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Tree Trim")'>Trim</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Arborist Report (City Fees and Replanting Costs extra if necessary)")'>Report</b-button>
     </div>
   </div>
 </template>
