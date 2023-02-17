@@ -128,8 +128,7 @@ class EstimatesController < ApplicationController
         LOWER(sites.street) LIKE :search OR
         LOWER(sites.city) LIKE :search OR
         LOWER(addresses.street) LIKE :search OR
-        LOWER(addresses.city) LIKE :search OR
-        LOWER(invoices.number) LIKE :search
+        LOWER(addresses.city) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )
