@@ -31,7 +31,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          status: 'all',
+          status: 'active',
           createdAfter: 'forever'
         }
       }

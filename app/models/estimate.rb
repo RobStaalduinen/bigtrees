@@ -42,6 +42,7 @@ class Estimate < ActiveRecord::Base
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
 	scope :active, -> { where(is_unknown: false) }
+  scope :no_followup, -> { where(followup_sent_at: nil) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
   scope :with_customer, -> { where.not(customer: nil) }
@@ -63,7 +64,7 @@ class Estimate < ActiveRecord::Base
   scope :for_status, -> (filter_string) do
     case filter_string
     when 'active'
-      all.active
+      all.active.no_followup
     when 'needs_pricing'
       price_required.active
     when 'awaiting_response'
@@ -194,6 +195,10 @@ class Estimate < ActiveRecord::Base
     end
 
     # self.is_unknown = false if new_status != self.status
+    if new_status != self.status && new_status != :cancelled
+      self.picture_request_sent_at = nil
+      self.followup_sent_at = nil
+    end
 		self.status = new_status
 
 		self.save! if save

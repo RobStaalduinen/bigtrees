@@ -45,8 +45,8 @@ export default {
       perPage: 60,
       page: 1,
       totalEntries: 1,
-      status: 'all',
-      filters: { createdAfter: 'six_months', status: 'all' }
+      status: 'active',
+      filters: { createdAfter: 'six_months', status: 'active' }
     }
   },
   computed: mapState({
@@ -106,13 +106,13 @@ export default {
       if(oldFilters != null) {
         this.page = (oldFilters.page || 1);
         this.searchTerm = oldFilters.searchTerm;
-        this.filters = (oldFilters.filters || { createdAfter: 'six_months', status: 'all' });
+        this.filters = (oldFilters.filters || { createdAfter: 'six_months', status: 'active' });
       }
     },
     resetFiltering() {
       this.searchTerm = null;
       this.page = 1;
-      this.filters = { createdAfter: 'six_months', status: 'all' };
+      this.filters = { createdAfter: 'six_months', status: 'active' };
       this.retrieveEstimates();
     }
   },
