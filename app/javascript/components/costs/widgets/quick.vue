@@ -2,12 +2,12 @@
   <div id='quick-costs-box'>
     <div><b>Quick Costs</b></div>
     <div id='quick-cost-actions'>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Tree Removal")'>Tree</b-button>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Stump Removal")'>Stump</b-button>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Site Cleanup")'>Cleanup</b-button>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Log Disposal")'>Logs</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Tree cut down and dispose of the branches")'>Tree</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Grind stump and any visible surface roots")'>Stump</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Site Cleanup incl. Rake the lawn and sweep the street")'>Cleanup</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, `Disposal of Log/Trunk Wood over 6" diameter`)'>Logs</b-button>
       <b-button class='cost-button' size="sm" @click='addCost(0, "Stump Grindings and Root Debris Disposal")'>Grindings</b-button>
-      <b-button class='cost-button' size="sm" @click='addCost(0, "Tree Trim")'>Trim</b-button>
+      <b-button class='cost-button' size="sm" @click='addCost(0, "Tree trim and dispose of the branches")'>Trim</b-button>
       <b-button class='cost-button' size="sm" @click='addCost(0, "Arborist Report (City Fees and Replanting Costs extra if necessary)")'>Report</b-button>
     </div>
   </div>
