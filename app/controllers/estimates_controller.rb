@@ -125,6 +125,9 @@ class EstimatesController < ApplicationController
         LOWER(customers.name) LIKE :search OR
         LOWER(customers.email) LIKE :search OR
         LOWER(customers.phone) LIKE :search OR
+        LOWER(customer_details.name) LIKE :search OR
+        LOWER(customer_details.email) LIKE :search OR
+        LOWER(customer_details.phone) LIKE :search OR
         LOWER(sites.street) LIKE :search OR
         LOWER(sites.city) LIKE :search OR
         LOWER(addresses.street) LIKE :search OR
