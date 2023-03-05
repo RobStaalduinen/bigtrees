@@ -41,7 +41,7 @@ class Estimate < ActiveRecord::Base
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
-	scope :active, -> { where(is_unknown: false) }
+	scope :active, -> { where(is_unknown: false).where("status < 8") }
   scope :no_followup, -> { where(followup_sent_at: nil) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
