@@ -195,7 +195,7 @@ class Estimate < ActiveRecord::Base
     end
 
     # self.is_unknown = false if new_status != self.status
-    if new_status != self.status && new_status != :cancelled
+    if new_status.to_sym != self.status.to_sym && new_status.to_sym != :cancelled
       self.picture_request_sent_at = nil
       self.followup_sent_at = nil
     end
