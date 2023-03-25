@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221016143702) do
+ActiveRecord::Schema.define(version: 20230325185042) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street",           limit: 255
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20221016143702) do
     t.integer  "addressable_id",   limit: 4
     t.string   "addressable_type", limit: 255
   end
+
+  add_index "addresses", ["city"], name: "index_addresses_on_city", using: :btree
+  add_index "addresses", ["street"], name: "index_addresses_on_street", using: :btree
 
   create_table "appointments", force: :cascade do |t|
     t.integer "estimate_id",    limit: 4
@@ -68,6 +71,10 @@ ActiveRecord::Schema.define(version: 20221016143702) do
     t.datetime "updated_at",              null: false
   end
 
+  add_index "customer_details", ["email"], name: "index_customer_details_on_email", using: :btree
+  add_index "customer_details", ["name"], name: "index_customer_details_on_name", using: :btree
+  add_index "customer_details", ["phone"], name: "index_customer_details_on_phone", using: :btree
+
   create_table "customers", force: :cascade do |t|
     t.string  "name",              limit: 255
     t.string  "email",             limit: 255
@@ -75,6 +82,10 @@ ActiveRecord::Schema.define(version: 20221016143702) do
     t.string  "preferred_contact", limit: 255
     t.integer "address_id",        limit: 4
   end
+
+  add_index "customers", ["email"], name: "index_customers_on_email", using: :btree
+  add_index "customers", ["name"], name: "index_customers_on_name", using: :btree
+  add_index "customers", ["phone"], name: "index_customers_on_phone", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -164,6 +175,12 @@ ActiveRecord::Schema.define(version: 20221016143702) do
     t.date     "work_completion_date"
     t.boolean  "skip_schedule"
   end
+
+  add_index "estimates", ["created_at"], name: "index_estimates_on_created_at", using: :btree
+  add_index "estimates", ["followup_sent_at"], name: "index_estimates_on_followup_sent_at", using: :btree
+  add_index "estimates", ["is_unknown"], name: "index_estimates_on_is_unknown", using: :btree
+  add_index "estimates", ["picture_request_sent_at"], name: "index_estimates_on_picture_request_sent_at", using: :btree
+  add_index "estimates", ["status"], name: "index_estimates_on_status", using: :btree
 
   create_table "expirations", force: :cascade do |t|
     t.integer  "vehicle_id", limit: 4
@@ -273,7 +290,9 @@ ActiveRecord::Schema.define(version: 20221016143702) do
     t.boolean "survey_filled_out",             default: false
   end
 
+  add_index "sites", ["city"], name: "index_sites_on_city", using: :btree
   add_index "sites", ["estimate_id"], name: "index_sites_on_estimate_id", using: :btree
+  add_index "sites", ["street"], name: "index_sites_on_street", using: :btree
 
   create_table "tree_images", force: :cascade do |t|
     t.string   "asset_file_name",    limit: 255
