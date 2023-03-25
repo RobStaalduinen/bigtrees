@@ -186,12 +186,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    notes() {
-      console.log('NOTES');
-      console.log(this.notes);
-    }
   }
 }
 </script>

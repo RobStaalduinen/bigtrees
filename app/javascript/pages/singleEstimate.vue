@@ -19,6 +19,10 @@
         </section>
 
         <section class='estimate-section'>
+          <single-estimate-customer :estimate='estimate' :isParentCustomer='true'></single-estimate-customer>
+        </section>
+
+         <section class='estimate-section'>
           <single-estimate-customer :estimate='estimate'></single-estimate-customer>
         </section>
 
