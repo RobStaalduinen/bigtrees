@@ -29,7 +29,8 @@ gem "font-awesome-rails"
 gem "sitemap_generator"
 
 # File storage
-gem 'aws-sdk'
+gem 'aws-sdk-s3'
+gem 'aws-sdk-ec2'
 gem 'fog-aws'
 gem 'paperclip'
 
@@ -60,7 +61,7 @@ gem 'pundit'
 
 gem 'spreadsheet'
 
-gem 'exception_handler'
+# gem 'exception_handler'
 gem 'bcrypt'
 gem 'sprockets', '3.6.3'
 gem 'aasm'
@@ -79,7 +80,10 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
 # Serialization
-gem 'active_model_serializers', '~> 0.10.2'
+gem 'active_model_serializers'
+
+# gem "sentry-ruby"
+# gem 'sentry-rails', '4.3.3'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -108,8 +112,6 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
