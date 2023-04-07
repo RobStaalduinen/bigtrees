@@ -9,7 +9,7 @@ set :branch, 'master'
 set :deploy_to, '/var/www/bigtrees'
 set :rvm_map_bins, %w{gem rake ruby rails bundle}
 
-set :rbenv_ruby, '2.6.1'
+set :rbenv_ruby, '2.7.3'
 
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies
