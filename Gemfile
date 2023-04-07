@@ -47,7 +47,7 @@ gem 'caxlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-gem 'mini_racer'
+gem 'mini_racer', '=0.4.0'
 gem 'mysql2'
 gem 'jquery-ui-rails'
 # gem 'jquery-modal-rails'
