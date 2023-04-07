@@ -22,9 +22,7 @@ class EstimateListSerializer < ApplicationSerializer
 
   # Associations
   belongs_to :arborist
-  belongs_to :customer
+  belongs_to :customer, serializer: CustomerListSerializer
   has_one :site, include_nested_associations: true
-  has_one :invoice
-  has_one :customer_detail
-  has_many :trees
+  has_one :customer_detail, serializer: CustomerDetailListSerializer
 end

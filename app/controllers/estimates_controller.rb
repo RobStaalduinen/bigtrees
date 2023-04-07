@@ -16,19 +16,14 @@ class EstimatesController < ApplicationController
 
     @estimates = @estimates.submitted.
       joins(:customer).
-      joins("LEFT OUTER JOIN sites ON sites.estimate_id = estimates.id").
-      joins("LEFT OUTER JOIN customer_details ON customer_details.estimate_id = estimates.id").
-      joins("LEFT OUTER JOIN addresses ON addresses.addressable_id = sites.id OR addresses.addressable_id = customer_details.id").
-      joins("LEFT OUTER JOIN invoices ON invoices.estimate_id = estimates.id").
-      includes(customer: [:address]).
-      includes(customer_detail: [:address]).
-      includes(equipment_assignments: [ :vehicle ]).
+      joins(:site).
+      joins(:customer_detail).
+      joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
+      joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
       includes(site: [:address]).
-      includes(:invoice).
-      includes(:arborist).
-      includes(:costs).
-      includes(trees: [:tree_images]).
-      uniq
+      includes(:customer_detail).
+      includes(:customer).
+      includes(:arborist)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
@@ -38,6 +33,8 @@ class EstimatesController < ApplicationController
       @estimates = @estimates.order('estimates.id DESC')
     end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
+
+    @estimates = @estimates.distinct
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
     render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
@@ -128,10 +125,10 @@ class EstimatesController < ApplicationController
         LOWER(customer_details.name) LIKE :search OR
         LOWER(customer_details.email) LIKE :search OR
         LOWER(customer_details.phone) LIKE :search OR
-        LOWER(sites.street) LIKE :search OR
-        LOWER(sites.city) LIKE :search OR
-        LOWER(addresses.street) LIKE :search OR
-        LOWER(addresses.city) LIKE :search
+        LOWER(site_addresses.street) LIKE :search OR
+        LOWER(site_addresses.city) LIKE :search OR
+        LOWER(customer_addresses.street) LIKE :search OR
+        LOWER(customer_addresses.city) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )

@@ -106,8 +106,8 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def additional_message
-    return 'Picture Request Sent' if read_attribute(:status) < 4 && picture_request_sent_at.present?
-    return 'No Response Followup Sent' if read_attribute(:status) < 4 && followup_sent_at.present?
+    return 'Picture Request Sent' if read_attribute(:status).to_i < 4 && picture_request_sent_at.present?
+    return 'No Response Followup Sent' if read_attribute(:status).to_i < 4 && followup_sent_at.present?
 	end
 
 	def quote_sent?

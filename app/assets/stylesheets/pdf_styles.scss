@@ -4,21 +4,38 @@
 
 .page {
   padding: 16px 48px;
+  font-family: 'Source Sans Pro'
 }
 
 .pdf_header {
-  display: flex;
-  justify-content: space-between;
+  // display: -webkit-box;
+  // -webkit-box-pack: justify;
+  // display: flex;
+  // justify-content: space-between;
+  //display: table;
+  width: 100%;
 }
 
 .pdf_header-image {
-  max-width: 400px;
+  width: 400px;
 }
 
-.address {
+.header-table {
+  width: 100%;
+}
+
+.header-row{
+  //display: table-row;
+  width: 100%;
+}
+
+.address-cell {
   font-size: 15px;
   color: gray;
-  margin-top: 40px;
+  // margin-top: 40px;
+  //display: table-cell;
+  vertical-align: bottom;
+  width: 22%;
 }
 
 .company-name {
@@ -26,9 +43,8 @@
   color: #4d4d4d;
 }
 
-.logo-box {
-  display: flex;
-  flex-direction: column;
+.logo-cell {
+  width: 78%;
 }
 
 .contact-details {
@@ -49,10 +65,8 @@
   font-size: 18px;
 }
 
-.info-box {
+.info-table {
   width: 100%;
-  display: flex;
-  flex-direction: column;
   padding: 8px 0px;
   border: 1px solid lightgray;
   margin-top: 16px;
@@ -60,9 +74,9 @@
 }
 
 .info-row {
-  display: flex;
   width: 100%;
-  margin-top: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .title-column {
@@ -88,60 +102,68 @@
 
 .cost-summary {
   border: 1px solid lightgray;
-  display: flex;
-  flex-direction: column;
+  // display: -webkit-box;
+  // -webkit-box-orient: vertical;
+  // display: flex;
+  // flex-direction: column;
+  display: table;
   margin-top: 32px;
+  width: 100%;
 }
 
 .cost-summary-row {
   width: 100%;
-  display: flex;
-  border-width: 0 0 1px 0;
-  border-style: solid;
-  border-color: lightgray;
+  // display: -webkit-box;
+  // display: flex;
+  display: table-row;
+  // border-width: 0 0 1px 0;
+  // border-style: solid;
+  // border-color: lightgray;
 }
 
 .cost-summary-row-left {
   width: 75%;
-  border-width: 0 1px 0 0;
+  border-width: 0;
+  border-bottom-width: 1px;
   border-style: solid;
   border-color: lightgray;
   padding: 4px;
   padding-top: 6px;
-  min-height: 24px;
+  height: 24px;
+  display: table-cell;
 }
 
 .cost-summary-row-right {
+  display: table-cell;
   width: 25%;
+  height: 24px;
   padding: 6px;
-}
 
-.cost-amount {
-  width: 100%;
-
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: lightgray;
 }
 
 .totals {
-  display: flex;
-  justify-content: flex-end;
+  // display: -webkit-box;
+  // -webkit-box-pack: end;
+  // display: flex;
+  // justify-content: flex-end;
+  text-align: right;
 }
 
 .signature-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
   margin-top: 32px;
 }
 
 .signature-left {
-  width: 55%;
   font-size: 14px;
+  padding-right: 32px;
 }
 
 .signature-box {
-  width: 35%;
-  display: flex;
-  flex-direction: column;
+  width: 300px;
 }
 
 .signature-field {
@@ -158,12 +180,11 @@
 .liability-row {
   border: 1px solid lightgray;
   padding: 8px;
-  display: flex;
   margin-top: 64px;
+  width: 100%;
 }
 
 .liability-column {
-  width: 50%;
   line-height: 30px;
 }
 
@@ -174,6 +195,7 @@
 
 .image-row {
   width: 100%;
+  display: -webkit-box;
   display: flex;
 }
 
@@ -201,6 +223,7 @@
 }
 
 .content-row {
+  display: -webkit-box;
   display: flex;
   border-width: 0px;
   border-bottom-width: 1px;

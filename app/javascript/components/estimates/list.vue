@@ -15,6 +15,7 @@
   <div id='estimates-container'>
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
+    <div v-if='error'>Something bad happened</div>
   </div>
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
@@ -40,7 +41,8 @@ export default {
   },
   data() {
     return {
-      loadingEstimates: true,
+      error: false,
+      loadingEstimates: false,
       searchTerm: null,
       perPage: 60,
       page: 1,
@@ -55,7 +57,11 @@ export default {
   }),
   methods: {
     retrieveEstimates() {
+      if(this.loadingEstimates == true) {
+        return
+      }
       this.loadingEstimates = true;
+      this.error = false;
 
       var params = {}
       if(!this.mySchedule) {
@@ -85,7 +91,8 @@ export default {
           this.loadingEstimates = false;
         }).catch(
           (error) => {
-            location.pathname = `/arborists/${this.$store.state.user.user_id}`
+            this.loadingEstimates = false;
+            this.error = true;
           }
         )
     },
@@ -113,11 +120,11 @@ export default {
       this.searchTerm = null;
       this.page = 1;
       this.filters = { createdAfter: 'six_months', status: 'active' };
-      this.retrieveEstimates();
+      // this.retrieveEstimates();
     }
   },
   created() {
-    this.refreshFiltering();
+    // this.refreshFiltering();
   },
   mounted() {
     this.retrieveEstimates();

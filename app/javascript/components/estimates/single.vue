@@ -37,13 +37,13 @@
     <div class='estimate-footer'>
       <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
 
-      <a class='estimate-link' v-b-modal='"timelineModal" + estimate.id'>
+      <!-- <a class='estimate-link' v-b-modal='"timelineModal" + estimate.id'>
         Timeline
-      </a>
+      </a> -->
 
-      <a class='estimate-link' @click='openImages' v-if='hasImages()'>
+      <!-- <a class='estimate-link' @click='openImages' v-if='hasImages()'>
         Images
-      </a>
+      </a> -->
 
       <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
         Details
@@ -81,12 +81,12 @@ export default {
   {
     openImages() {
       EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id })
-    },
-    hasImages() {
-      return this.estimate.trees.map(tree => {
-        return tree.tree_images.length > 0
-      }).some(img => img === true);
     }
+    // hasImages() {
+    //   return this.estimate.trees.map(tree => {
+    //     return tree.tree_images.length > 0
+    //   }).some(img => img === true);
+    // }
   }
 }
 </script>

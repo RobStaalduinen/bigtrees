@@ -1,17 +1,19 @@
 <% estimate ||= @estimate %>
+<% is_receipt ||= false %>
 
 <div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/quote', estimate: estimate %>
+  <%= render 'quotes/pdf/quote', estimate: estimate, is_receipt: is_receipt %>
 </div>
 
+<% unless is_receipt %>
+  <%= render 'quotes/pdf/images', estimate: estimate %>
 
-<%= render 'quotes/pdf/images', estimate: estimate %>
 
+  <div class='alwaysbreak page'>
+    <%= render 'quotes/pdf/details' %>
+  </div>
 
-<div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/details' %>
-</div>
-
-<div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/terms' %>
-</div>
+  <div class='alwaysbreak page'>
+    <%= render 'quotes/pdf/terms' %>
+  </div>
+<% end %>
