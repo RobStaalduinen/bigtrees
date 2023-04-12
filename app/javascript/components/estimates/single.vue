@@ -50,8 +50,8 @@
       </router-link>
     </div>
 
-    <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal>
-    <app-image-gallery :estimate='estimate'></app-image-gallery>
+    <!-- <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal> -->
+    <!-- <app-image-gallery :estimate='estimate'></app-image-gallery> -->
   </div>
 </template>
 

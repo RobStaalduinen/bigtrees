@@ -16,7 +16,7 @@
       Send Followup
     </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
+    <!-- <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
       Send Quote
     </b-dropdown-item>
 
@@ -30,7 +30,7 @@
 
     <b-dropdown-item @click='triggerAction("pay_invoice")' v-if='estimateHelper.canPayInvoice()'>
       Pay Invoice
-    </b-dropdown-item>
+    </b-dropdown-item> -->
 
     <b-dropdown-item @click='triggerAction("send_to_team")'>
       Send to Team
