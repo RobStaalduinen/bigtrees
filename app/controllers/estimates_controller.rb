@@ -37,7 +37,7 @@ class EstimatesController < ApplicationController
     # @estimates = @estimates.distinct
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
-    render json: @estimates.uniq, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
+    render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
   end
 
   def new
