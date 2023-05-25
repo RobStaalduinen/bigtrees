@@ -1,0 +1,67 @@
+<script>
+  function submitIssue() {
+
+  }
+</script>
+
+<div class = "row header-image sub-page-header">
+	<div class = "sub-page-header-title">
+		<div class = "sub-page-header-text">
+			<h1>Issue Submission</h1>
+		</div>
+	</div>
+</div>
+
+<div class='page-container'>
+  <p>Welcome to issue submission for <%= @customer.name %> <br>
+  <%= [@customer.address.street, @customer.address.city].compact.join(', ') %>
+  </p>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      Your Name
+    </div>
+    <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group'>
+    <div class='estimate-form__label'>
+      Address
+    </div>
+    <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group' id="email-group">
+    <div class='estimate-form__label'>
+      Email
+    </div>
+    <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
+  </div>
+
+  <div class='estimate-form__field-group' id="phone-group">
+    <div class='estimate-form__label' id='phone-label'>
+      Phone Number
+    </div>
+    <%= text_field_tag('phone', '' , id: 'estimate-form__field') %>
+  </div>
+
+  <div class='estimate-form__field-group' id='description'>
+    <div class='estimate-form__label'>
+      Picture of Issue
+    </div>
+
+    <%= file_field_tag 'issue-image', class: 'form__image-upload-field' %>
+  </div>
+
+  <div class='estimate-form__field-group' id='description'>
+    <div class='estimate-form__label'>
+      Can you describe what needs to be done?
+    </div>
+
+    <%= text_area_tag 'description', '', id: 'estimate-form__desc-field' %>
+  </div>
+
+  <div id='estimate-form__submit' onClick="submitIssue();" >
+    Submit
+  </div>
+</div>

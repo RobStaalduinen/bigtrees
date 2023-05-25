@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_07_165949) do
+ActiveRecord::Schema.define(version: 2023_04_19_191003) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2023_04_07_165949) do
     t.string "phone"
     t.string "preferred_contact"
     t.integer "address_id"
+    t.string "short_name"
     t.index ["email"], name: "index_customers_on_email"
     t.index ["name"], name: "index_customers_on_name"
     t.index ["phone"], name: "index_customers_on_phone"
