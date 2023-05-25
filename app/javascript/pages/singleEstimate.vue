@@ -46,7 +46,7 @@
           <single-estimate-costs :estimate='estimate'></single-estimate-costs>
         </section>
 
-        <section class ='estimate-section' v-if='estimate.trees && estimate.trees.length > 0'>
+        <section class ='estimate-section'>
           <single-estimate-trees :estimate='estimate'></single-estimate-trees>
         </section>
       </div>
