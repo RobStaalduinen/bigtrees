@@ -45,8 +45,14 @@
               No Edited version
             </div>
           </div>
-          <div class='modal-edits-icon'>
-            <b-icon icon='pencil-square' @click='toggleEdit(displayedImageDefinition.treeImage.id)'></b-icon>
+
+          <div class='modal-actions-box'>
+            <div class='modal-edits-icon'>
+              <b-icon icon='pencil-square' @click='toggleEdit(displayedImageDefinition.treeImage.id)'></b-icon>
+            </div>
+            <div class='modal-edits-icon'>
+              <b-icon icon='trash' @click='deleteImage(displayedImageDefinition.treeImage.id)'></b-icon>
+            </div>
           </div>
         </div>
 
@@ -172,6 +178,14 @@ export default {
     },
     findImageById(imageId) {
       return this.imageDefinitions.findIndex(imageDef => imageDef.treeImage.id === imageId) + 1;
+    },
+    deleteImage(imageId) {
+      if(confirm("Are you sure you want to delete this image?")){
+        this.axiosDelete(`/tree_images/${imageId}?estimate_id=${this.estimate.id}`).then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+          this.closeModal();
+        })
+      }
     }
   },
   mounted() {
@@ -249,6 +263,10 @@ export default {
   .modal-edits-link-active {
     background-color: var(--main-color);
     color: white;
+  }
+
+  .modal-actions-box {
+    display: flex;
   }
 
   .modal-edits-icon {

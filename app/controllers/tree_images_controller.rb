@@ -39,6 +39,13 @@ class TreeImagesController < ApplicationController
     render json: estimate
   end
 
+  def destroy
+    tree_image = TreeImage.find(params[:id])
+    tree_image.destroy
+
+    render json: estimate
+  end
+
   # Temporary, while supporting two different creation mechanisms
   def create_from_urls
     authorize Estimate, :update?
