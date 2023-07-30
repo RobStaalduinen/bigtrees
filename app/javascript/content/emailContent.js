@@ -49,6 +49,7 @@ function replaceGreeting(content, estimate) {
   return newContent;
 }
 
+var reducedCosts = "We will reduce the cost by 7% if we receive approval within 24 hours. Further, we guarantee completion within 10 business days.";
 var nextFewDays = "We could take care of your job as early as the next few days.";
 var nextWeek = "We could take care of your job within the following week.";
 var nextTwoWeeks = "We could take care of your job within the following two weeks.";
@@ -108,6 +109,7 @@ export {
   noResponseFollowup,
   imageRequest,
   repairRequest,
+  reducedCosts,
   nextFewDays,
   nextWeek,
   nextTwoWeeks,

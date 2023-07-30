@@ -15,7 +15,7 @@
 
 <script>
 import EmailForm from '../../common/forms/email';
-import { quoteContent, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
+import { quoteContent, reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
@@ -38,6 +38,7 @@ export default {
       scheduleText: 'none',
       scheduleTextOptions: [
         { value: 'none', text: 'No schedule'},
+        { value: 'reduced_costs', text: 'Reduced Costs'},
         { value: 'next_few_days', text: 'Next few days'},
         { value: 'next_week', text: 'Within 1 week'},
         { value: 'next_two_weeks', text: 'Within 2 weeks'},
@@ -78,6 +79,7 @@ export default {
 
       if(this.scheduleText != 'none') {
         var contentMapper = {
+          reduced_costs: reducedCosts,
           next_few_days: nextFewDays,
           next_week: nextWeek,
           next_two_weeks: nextTwoWeeks,
