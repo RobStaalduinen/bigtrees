@@ -46,7 +46,7 @@ class Estimate < ActiveRecord::Base
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
   scope :with_customer, -> { where.not(customer: nil) }
-  scope :pre_quote, -> { (price_required.or(pending_quote)).active.no_followup }
+  scope :pre_quote, -> { (price_required.or(pending_quote)).active }
 
   # Filters
   scope :created_after, -> (filter_string) do
