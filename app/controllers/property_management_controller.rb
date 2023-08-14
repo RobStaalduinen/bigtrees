@@ -5,7 +5,7 @@ class PropertyManagementController < ApplicationController
   def show
     redirect_to '/' unless customer
 
-
+    render 'show', layout: 'property_management'
   end
 
   def customer

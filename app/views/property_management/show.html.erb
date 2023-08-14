@@ -7,14 +7,14 @@
 <div class = "row header-image sub-page-header">
 	<div class = "sub-page-header-title">
 		<div class = "sub-page-header-text">
-			<h1>Issue Submission</h1>
+			Issue Submission
 		</div>
 	</div>
 </div>
 
 <div class='page-container'>
-  <p>Welcome to issue submission for <%= @customer.name %> <br>
-  <%= [@customer.address.street, @customer.address.city].compact.join(', ') %>
+  <p>Welcome to issue submission portal for <%= @customer.name %> <br>
+  <%= [@customer.address&.street, @customer.address&.city].compact.join(', ') %>
   </p>
 
   <div class='estimate-form__field-group'>
@@ -45,12 +45,21 @@
     <%= text_field_tag('phone', '' , id: 'estimate-form__field') %>
   </div>
 
-  <div class='estimate-form__field-group' id='description'>
+  <div class='estimate-form__field-group' id='picture'>
     <div class='estimate-form__label'>
       Picture of Issue
     </div>
 
     <%= file_field_tag 'issue-image', class: 'form__image-upload-field' %>
+  </div>
+
+  <div class='estimate-form__field-group' id='issue-select'>
+    <div class='estimate-form__label'>
+      What kind of issue do you have?
+    </div>
+    <%= select_tag "issue_select",
+      options_for_select(['Tree Trim', 'Other'])
+    %>
   </div>
 
   <div class='estimate-form__field-group' id='description'>
