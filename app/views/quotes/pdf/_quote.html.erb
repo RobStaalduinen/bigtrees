@@ -13,7 +13,7 @@
 <table class='info-table'>
   <tr class='info-row'>
     <td class='title-column'><b>Date Tendered:</b></td>
-    <td class='entry-column'><%= Date.today.strftime("%d/%m/%Y") %></td>
+    <td class='entry-column'><%= estimate&.invoice&.sent_at.present? ? estimate.invoice.sent_at : Date.today.strftime("%d/%m/%Y") %></td>
     <td class='title-column'><b>Completion Date:</b></td>
     <td class='entry-column'><%= estimate.work_completion_date&.strftime("%d/%m/%Y") %></td>
   </tr>
