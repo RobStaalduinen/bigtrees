@@ -1,5 +1,78 @@
 <script>
+  let customer_id = "<%= @customer.short_name %>"
+
+  function testSubmit() {
+    console.log('Testing Submit');
+    document.getElementById('estimate-form__submit').style.display = 'none'
+    document.getElementById('estimate-form__loading').style.display = 'flex'
+
+  }
+
   function submitIssue() {
+    document.getElementById('estimate-form__submit').style.display = 'none'
+    document.getElementById('estimate-form__loading').style.display = 'flex'
+
+    let personName = document.querySelector('input[name="person_name"]').value;
+    let address = document.querySelector('input[name="address"]').value;
+    let email = document.querySelector('input[name="email"]').value;
+    let phone = document.querySelector('input[name="phone"]').value;
+    let description = document.querySelector('textarea[name="description"]').value;
+    let workType = document.querySelector('select[name="issue_select"]').value;
+
+    var treeImages = document.querySelectorAll('input[name^="issue-image"]');
+    var sendImage = false;
+    const formData = new FormData();
+
+    for(i=0; i<treeImages.length; i++){
+      var file = treeImages[i].files[0];
+      if(file != null){
+        sendImage = true;
+        formData.append('images[]', file, file.name);
+      }
+    }
+
+  let params = {
+    customer_detail: {
+      name: personName,
+      email: email,
+      phone: phone,
+      address_attributes: {
+        street: address
+      }
+    },
+    job: {
+      work_type: workType,
+      description: description
+    },
+    site: {
+      address_attributes: {
+        street: address
+      }
+    }
+  }
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", `/p/${customer_id}`);
+  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xmlhttp.send(JSON.stringify(params));
+
+  xmlhttp.onload = function(){
+      let response = JSON.parse(xmlhttp.response);
+      console.log(sendImage);
+      if(sendImage){
+        var imageHttp = new XMLHttpRequest();
+
+        imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
+        imageHttp.send(formData);
+
+        imageHttp.onload = function(){
+          console.log("images uploaded");
+          document.getElementById('issue-submission__form').style.display = 'none'
+          document.getElementById('issue-submission__success').style.display = 'flex'
+        }
+      }
+  }
+
 
   }
 </script>
@@ -17,60 +90,71 @@
   <%= [@customer.address&.street, @customer.address&.city].compact.join(', ') %>
   </p>
 
-  <div class='estimate-form__field-group'>
-    <div class='estimate-form__label'>
-      Your Name
-    </div>
-    <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
-  </div>
+  <div id='issue-submission__form'>
 
-  <div class='estimate-form__field-group'>
-    <div class='estimate-form__label'>
-      Address
-    </div>
-    <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
-  </div>
-
-  <div class='estimate-form__field-group' id="email-group">
-    <div class='estimate-form__label'>
-      Email
-    </div>
-    <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
-  </div>
-
-  <div class='estimate-form__field-group' id="phone-group">
-    <div class='estimate-form__label' id='phone-label'>
-      Phone Number
-    </div>
-    <%= text_field_tag('phone', '' , id: 'estimate-form__field') %>
-  </div>
-
-  <div class='estimate-form__field-group' id='picture'>
-    <div class='estimate-form__label'>
-      Picture of Issue
+    <div class='estimate-form__field-group'>
+      <div class='estimate-form__label'>
+        Your Name
+      </div>
+      <%= text_field_tag('person_name', '' , id: 'estimate-form__field', required: true) %>
     </div>
 
-    <%= file_field_tag 'issue-image', class: 'form__image-upload-field' %>
-  </div>
-
-  <div class='estimate-form__field-group' id='issue-select'>
-    <div class='estimate-form__label'>
-      What kind of issue do you have?
-    </div>
-    <%= select_tag "issue_select",
-      options_for_select(['Tree Trim', 'Other'])
-    %>
-  </div>
-
-  <div class='estimate-form__field-group' id='description'>
-    <div class='estimate-form__label'>
-      Can you describe what needs to be done?
+    <div class='estimate-form__field-group'>
+      <div class='estimate-form__label'>
+        Street Address
+      </div>
+      <%= text_field_tag('address', '' , id: 'estimate-form__field', required: true) %>
     </div>
 
-    <%= text_area_tag 'description', '', id: 'estimate-form__desc-field' %>
+    <div class='estimate-form__field-group' id="email-group">
+      <div class='estimate-form__label'>
+        Email
+      </div>
+      <%= text_field_tag('email', '' , id: 'estimate-form__field', required: true) %>
+    </div>
+
+    <div class='estimate-form__field-group' id="phone-group">
+      <div class='estimate-form__label' id='phone-label'>
+        Phone Number
+      </div>
+      <%= text_field_tag('phone', '' , id: 'estimate-form__field') %>
+    </div>
+
+    <div class='estimate-form__field-group' id='picture'>
+      <div class='estimate-form__label'>
+        Picture of Issue
+      </div>
+
+      <%= file_field_tag 'issue-image', class: 'form__image-upload-field' %>
+    </div>
+
+    <div class='estimate-form__field-group' id='issue-select'>
+      <div class='estimate-form__label'>
+        What kind of issue do you have?
+      </div>
+      <%= select_tag "issue_select",
+        options_for_select([['Tree Trim', 'trim'], ['Other', 'other']])
+      %>
+    </div>
+
+    <div class='estimate-form__field-group' id='description'>
+      <div class='estimate-form__label'>
+        Can you describe what needs to be done?
+      </div>
+
+      <%= text_area_tag 'description', '', id: 'estimate-form__desc-field' %>
+    </div>
+
+    <div id='estimate-form__submit' onClick="submitIssue();" >
+      Submit
+    </div>
+
+    <div id="estimate-form__loading" style="display: none; justify-content: center; margin-top: 16px;">
+      <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
+    </div>
   </div>
 
-  <div id='estimate-form__submit' onClick="submitIssue();" >
-    Submit
+  <div id='issue-submission__success' style='display: none;'>
+    Thank you for submitting your issue. We'll get back to you as soon as we can.
   </div>
 </div>

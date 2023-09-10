@@ -26,7 +26,7 @@ class TreeImage < ActiveRecord::Base
   end
 
   def generate_image_name
-    e_id = self.tree.try(:estiamte_id) || "-"
+    e_id = self.tree.try(:estimate_id) || "-"
     t_id = self.tree_id || "-"
     "Estimate_#{e_id}_Tree_#{t_id}_Image_#{self.id}"
   end
