@@ -88,6 +88,9 @@ Rails.application.routes.draw do
 
   resources :vue_test, only: [ :new ]
 
+  get '/p/:customer_name', to: 'property_management#show'
+  post '/p/:customer_name', to: 'property_management#create'
+
   get '/admin/*path', to: 'admin#index'
 
   get ':controller/:action'
