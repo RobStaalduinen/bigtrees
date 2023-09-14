@@ -13,7 +13,7 @@ class QuoteMailer < ApplicationMailer
 			attachments[estimate.pdf_file_name] = File.read(file)
     end
 
-		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])
+		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'admin@bigislandgroup.ca'])
 	end
 
 	def picture_request(estimate, email, subject, content)
