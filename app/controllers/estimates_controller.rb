@@ -20,6 +20,7 @@ class EstimatesController < ApplicationController
       joins(:customer_detail).
       joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
       joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
+      joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id").
       includes(site: [:address]).
       includes(:customer_detail).
       includes(:customer).
@@ -128,7 +129,8 @@ class EstimatesController < ApplicationController
         LOWER(site_addresses.street) LIKE :search OR
         LOWER(site_addresses.city) LIKE :search OR
         LOWER(customer_addresses.street) LIKE :search OR
-        LOWER(customer_addresses.city) LIKE :search
+        LOWER(customer_addresses.city) LIKE :search OR
+        LOWER(invoices.number) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )
