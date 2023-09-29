@@ -41,7 +41,7 @@
       }
     },
     job: {
-      work_type: workType,
+      job_type: workType,
       description: description
     },
     site: {
@@ -124,8 +124,13 @@
       <div class='estimate-form__label'>
         Picture of Issue
       </div>
+      <div class='estimate-form__label-desc'>
+        Please upload up to three images of your issue.
+      </div>
 
-      <%= file_field_tag 'issue-image', class: 'form__image-upload-field' %>
+      <%= file_field_tag 'issue-image', class: 'form__image-upload-field estimate-form__multi-image-uploader' %>
+      <%= file_field_tag 'issue-image', class: 'form__image-upload-field estimate-form__multi-image-uploader' %>
+      <%= file_field_tag 'issue-image', class: 'form__image-upload-field estimate-form__multi-image-uploader' %>
     </div>
 
     <div class='estimate-form__field-group' id='issue-select'>
@@ -133,7 +138,7 @@
         What kind of issue do you have?
       </div>
       <%= select_tag "issue_select",
-        options_for_select([['Tree Trim', 'trim'], ['Other', 'other']])
+        options_for_select([['Trees', 'tree_services'], ['Plumbing and Water', 'plumbing_and_water'], ['Electrical and Lighting', 'electrical_and_lighting']])
       %>
     </div>
 

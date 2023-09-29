@@ -31,7 +31,7 @@ class PropertyManagementController < ApplicationController
   end
 
   def tree_params
-    params.require(:job).permit(:work_type, :description, tree_image: [ :image_url ])
+    params.require(:job).permit(:job_type, :description, tree_image: [ :image_url ])
   end
 
   def site_params
