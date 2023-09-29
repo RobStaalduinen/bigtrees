@@ -9,7 +9,7 @@
         v-model="input"
         :name='name'
         type='text'
-        pattern="^\d*(\.\d{0,2})?$"
+        pattern="^[-]+\d*(\.\d{0,2})?$"
         oninvalid="this.setCustomValidity('Only numbers with up to two decimal places')"
         oninput="this.setCustomValidity('')"
         :state="getValidationState(valContext)"
