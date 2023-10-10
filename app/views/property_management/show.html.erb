@@ -71,6 +71,10 @@
           document.getElementById('issue-submission__success').style.display = 'flex'
         }
       }
+      else {
+        document.getElementById('issue-submission__form').style.display = 'none'
+        document.getElementById('issue-submission__success').style.display = 'flex'
+      }
   }
 
 
@@ -138,7 +142,7 @@
         What kind of issue do you have?
       </div>
       <%= select_tag "issue_select",
-        options_for_select([['Trees', 'tree_services'], ['Plumbing and Water', 'plumbing_and_water'], ['Electrical and Lighting', 'electrical_and_lighting']])
+        options_for_select(Tree::PROPERTY_JOB_TYPES.map {|key, value| [value, key] })
       %>
     </div>
 
