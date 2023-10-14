@@ -1,10 +1,7 @@
 class TreesController < ApplicationController
   def create
-    @tree = estimate.trees.create(tree_params)
-
     work_type = Tree.work_type_for_name(params[:tree][:work_type_string])
-
-    @tree.update(work_type: work_type)
+    @tree = estimate.trees.create(tree_params.merge(work_type: work_type))
 
     render json: { status: :ok, tree_id: @tree.id }
   end

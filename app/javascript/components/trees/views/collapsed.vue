@@ -8,7 +8,7 @@
       <template v-slot:content>
         <div v-for='(tree, index) in estimate.trees' :key='baseKey + " _ " + index' class='tree-section'>
           <div class='tree-header'>
-            Task #{{ index + 1 }} {{ tree.work_name != "Other" ? `(${tree.work_name})` : '' }}
+            Task #{{ index + 1 }} {{ tree.formatted_job_type != undefined ? `(${tree.formatted_job_type})` : '' }}
           </div>
 
           <div v-if='tree.description'>
