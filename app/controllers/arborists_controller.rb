@@ -2,7 +2,7 @@ class ArboristsController < ApplicationController
   before_action :signed_in_admin, except: [ :index, :show ]
 
   def index
-    @arborists = Arborist.real
+    @arborists = current_organization.arborists.real
 
     @arborists = filter_arborists(@arborists)
 
@@ -18,8 +18,7 @@ class ArboristsController < ApplicationController
 
   def create
     authorize! :manage, Arborist
-    @arborist = Arborist.new(arborist_params)
-    @arborist.organization = current_user.organization
+    @arborist = current_organization.arborists.new(arborist_params)
     @arborist.save
 
     render json: @arborist

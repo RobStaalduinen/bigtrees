@@ -26,5 +26,9 @@ class ApplicationController < ActionController::Base
     redirect_to arborist_path(current_user)
   end
 
+  def current_organization
+    current_user.organization
+  end
+
 
 end
