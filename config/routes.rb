@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
+  resources :organizations, only: [ :index ]
 
   resources :vue_test, only: [ :new ]
 

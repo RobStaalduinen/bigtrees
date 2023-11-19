@@ -16,9 +16,8 @@ class VehiclePolicy < ApplicationPolicy
     role_resource :vehicles
 
     def resolve
-      puts level
       if level == 'all'
-        scope.where(organization: Organization.find(1))
+        scope.where(organization: OrganizationContext.get_current_organization)
       else
         scope.where(organization: user.organization)
       end

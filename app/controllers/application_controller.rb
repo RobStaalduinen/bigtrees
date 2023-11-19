@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_action :redirect_if_old
+  before_action :set_organization
 
   def redirect_if_old
     return unless Rails.env.production?
@@ -30,5 +31,7 @@ class ApplicationController < ActionController::Base
     current_user.organization
   end
 
-
+  def set_organization
+    OrganizationContext.set_current_organization(request, current_user)
+  end
 end

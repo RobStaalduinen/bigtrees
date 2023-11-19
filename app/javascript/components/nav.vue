@@ -13,14 +13,23 @@
         <b-dropdown-item to="/admin/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
+        <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>Change Organization</b-dropdown-item>
         <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
       </b-collapse>
     </b-navbar>
+    <b-modal id='organization-modal' v-if='permissions.canAdmin("organizations")' title='Change Organization' ok-title="Cancel" ok-only>
+      <app-change-organization></app-change-organization>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import ChangeOrganization from '@/components/organizations/actions/change.vue'
+
 export default {
+  components: {
+    'app-change-organization': ChangeOrganization
+  },
   computed: {
     userId() {
       return this.$store.state.user.user_id;
@@ -34,6 +43,14 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.user);
+  },
+  methods: {
+    changeOrganization() {
+      this.$bvModal.show('organization-modal')
+    },
+    organizationChanged() {
+      console.log("Done");
+    }
   }
 }
 </script>
