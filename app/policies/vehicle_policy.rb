@@ -17,7 +17,7 @@ class VehiclePolicy < ApplicationPolicy
 
     def resolve
       if level == 'all'
-        scope.where(organization: OrganizationContext.get_current_organization)
+        scope.where(organization: OrganizationContext.current_organization)
       else
         scope.where(organization: user.organization)
       end

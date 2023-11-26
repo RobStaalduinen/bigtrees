@@ -9,6 +9,7 @@ module Roles
     def role_permissions
       {
         hours: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level),
+        work_records: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level),
         estimates: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         receipts: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         equipment_requests: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),

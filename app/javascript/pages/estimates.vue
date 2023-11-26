@@ -14,7 +14,7 @@
       </template>
 
       <template v-slot:header-right>
-        <a href='/trackers.xlsx' v-if='hasPermission("estimates", "admin")'>
+        <a @click='downloadTracker' v-if='hasPermission("estimates", "admin")'>
           <b-icon icon='download'></b-icon>
           Tracker
         </a>
@@ -37,6 +37,12 @@ export default {
   data() {
     return {
       mySchedule: false
+    }
+  },
+  methods: {
+    downloadTracker() {
+      console.log("Downloading");
+      this.axiosDownload('/trackers.xlsx', 'MasterTracker.xlsx')
     }
   },
   watch: {

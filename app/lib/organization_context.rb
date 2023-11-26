@@ -12,7 +12,7 @@ class OrganizationContext
     end
   end
 
-  def self.get_current_organization
+  def self.current_organization
     @@current_organization
   end
 end

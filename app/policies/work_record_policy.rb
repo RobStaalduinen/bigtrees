@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ReceiptPolicy < ApplicationPolicy
+class WorkRecordPolicy < ApplicationPolicy
   attr_reader :user, :receipt
 
-  role_resource :receipts
+  role_resource :work_records
 
   def initialize(user, receipt)
     @user = user
@@ -13,7 +13,7 @@ class ReceiptPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     attr_reader :user, :scope, :role
 
-    role_resource :receipts
+    role_resource :work_records
 
     def resolve
       if level = 'all' || level = 'organization'

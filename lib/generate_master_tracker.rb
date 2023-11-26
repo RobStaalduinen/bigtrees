@@ -16,7 +16,7 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees, :arborist, :invoice, :customer, :site, :costs).order("created_at ASC, status DESC")
+    estimates = estimates.includes(:trees, :arborist, :invoice, :customer, :site, :costs).order("estimates.created_at ASC, status DESC")
 
     estimates.each_with_index do |estimate, i|
       row = 1 + i

@@ -1,11 +1,12 @@
 module Reports
   class Hours
 
-    def initialize(spreadsheet_writer:, work_records: WorkRecord.all)
+    def initialize(spreadsheet_writer:, work_records: WorkRecord.all, arborists: Arborist.all)
       raise ArgumentError unless spreadsheet_writer.present?
 
       @spreadsheet_writer = spreadsheet_writer
       @work_records = work_records
+      @arborists = arborists
     end
 
     def create_spreadsheet
@@ -53,10 +54,10 @@ module Reports
       end
 
       def write_arborist_rows
-        Arborist.real.order('id ASC').each_with_index do |arborist, row|
+        @arborists.real.order('id ASC').each_with_index do |arborist, row|
           @spreadsheet_writer[row+1, 0] = arborist.name
           yield(arborist, row)
-        end 
+        end
       end
 
       def write_arborist_daily_hours(dates)
@@ -76,7 +77,7 @@ module Reports
           write_arborist_row_for_metric(arborist.work_records.by_month, months, row)
         end
       end
-      
+
       def write_arborist_yearly_hours(years)
         write_arborist_rows do |arborist, row|
           write_arborist_row_for_metric(arborist.work_records.by_year, years, row)

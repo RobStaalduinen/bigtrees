@@ -2,9 +2,9 @@
 
 module Trackers
   class RepairRequests < Base
-    def generate
+    def generate(equipment_requests)
       setup_worksheet("repair_request_template.xlsx", "RepairRequests.xlsx")
-      requests = EquipmentRequest.submitted.includes(:vehicle, :arborist).order('equipment_requests.created_at DESC')
+      requests = equipment_requests.submitted.includes(:vehicle, :arborist).order('equipment_requests.created_at DESC')
 
       requests.each_with_index do |request, i|
         row = i + 1

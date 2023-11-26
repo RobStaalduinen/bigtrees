@@ -61,7 +61,9 @@ class EstimatesController < ApplicationController
     authorize Estimate, :create?
 
     estimate = Estimate.new(estimate_params)
-    estimate.arborist = current_user
+    org = OrganizationContext.current_organization
+
+    estimate.arborist = current_user.organization_id == org.id ? current_user : org.default_arborist
     estimate.save
 
     if params[:site].present?
@@ -70,7 +72,7 @@ class EstimatesController < ApplicationController
     end
 
     if params[:customer].present?
-      customer = Customer.find_by(id: customer_params[:id]) || Customer.create(customer_params)
+      customer = policy_scope(Customer).find_by(id: customer_params[:id]) || Customer.create(customer_params)
       estimate.update(customer: customer)
 
       customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)

@@ -81,7 +81,8 @@ class EquipmentRequestsController < ApplicationController
   end
 
   def tracker
-    repair_tracker = Trackers::RepairRequests.new.generate
+    equipment_requests = policy_scope(EquipmentRequest)
+    repair_tracker = Trackers::RepairRequests.new.generate(equipment_requests)
 
     respond_to do |format|
       format.xlsx {

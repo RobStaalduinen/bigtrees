@@ -2,7 +2,7 @@
   <page-template>
     <app-header title='Hours'>
       <template v-slot:header-right>
-        <a href='/work_records/report' v-if='hasPermission("hours", "admin")'>
+        <a @click='downloadTracker' v-if='hasPermission("hours", "admin")'>
           <b-icon icon='download'></b-icon>
           Tracker
         </a>
@@ -36,6 +36,11 @@ export default {
     'hours-table': HoursTable,
     'summaries': Summaries,
     'app-update-hours': UpdateHours
+  },
+  methods: {
+    downloadTracker() {
+      this.axiosDownload('/work_records/report', 'HoursTracker.xlsx')
+    }
   }
 }
 </script>

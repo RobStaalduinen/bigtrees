@@ -11,16 +11,10 @@ class CustomerPolicy < ApplicationPolicy
     role_resource :estimates
 
     def resolve
-      if level == 'organization'
-        Customer.from(
-          scope.joins(:estimates).where(estimates: { arborist_id: user.organization.arborists.select(:id) }),
-          :customers
-        )
+      if level == 'organization' || level == 'all'
+          scope.joins(:estimates).where(estimates: { arborist_id: OrganizationContext.current_organization.arborists.select(:id) }).distinct
       else
-        Customer.from(
-          scope.joins(:estimates).where(estimates: { arborist: user }).uniq,
-          :customers
-        )
+          scope.joins(:estimates).where(estimates: { arborist: user }).distinct
       end
     end
   end

@@ -1,6 +1,6 @@
 <template>
   <app-select-field
-    label='Choose Org'
+    label='Choose the organization to view'
     v-model='selectedOrganization'
     name='selectedOrganization'
     :options="organizationOptions"
