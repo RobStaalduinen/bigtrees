@@ -28,6 +28,9 @@ export const store = new Vuex.Store({
     setArborists(state, payload) {
       state.arborists = payload;
     },
+    setOrganization(state, payload) {
+      state.organization = payload
+    },
     setEstimateSettings(state, payload) {
       state.estimateSettings = {
         ...state.estimateSettings,
@@ -46,6 +49,15 @@ export const store = new Vuex.Store({
         if(response.status == 200 && response.data.logged_in){
           commit('setUser', response.data);
         }
+
+        let organization_id = response.data.organization_id;
+        if(localStorage.getItem('selectedOrganizationId')) {
+          organization_id = localStorage.getItem('selectedOrganizationId');
+        }
+
+        axiosFunc.get(`/organizations/${organization_id}`).then(response => {
+          commit('setOrganization', response.data.organization)
+        })
 
       })
     }

@@ -14,7 +14,7 @@ Certified Utility Arborist"
   return content;
 }
 
-function quoteContent(estimate, extraContent = {}) {
+function quoteContent(estimate, signature, extraContent = {}) {
 
 let content = "\
 Hi, \n\n\
@@ -30,9 +30,9 @@ if(extraContent.afterList != null) {
 content += "We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\n\
 If you have any questions, you can call us toll free at 1 877 542 5551 or directly on my cell by calling or texting 705 943 7374. If I don't answer, I am probably up a tree but I will return your message as soon as I have a moment.\n\n\
 Thanks,\n\n\
-Tyler Brewer\n\
-Certified Utility Arborist\
 "
+
+content += `${signature}`
 
 return content
 }

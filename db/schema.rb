@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_15_203833) do
+ActiveRecord::Schema.define(version: 2023_12_07_182906) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2023_11_15_203833) do
     t.datetime "updated_at", null: false
     t.integer "addressable_id"
     t.string "addressable_type"
+    t.string "postal_code"
     t.index ["addressable_id"], name: "index_addresses_on_addressable_id"
     t.index ["addressable_type"], name: "index_addresses_on_addressable_type"
     t.index ["city"], name: "index_addresses_on_city"
@@ -114,6 +115,17 @@ ActiveRecord::Schema.define(version: 2023_11_15_203833) do
     t.date "expires_at"
     t.string "url"
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
+  end
+
+  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "key"
+    t.string "subject"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_email_templates_on_key"
+    t.index ["organization_id"], name: "index_email_templates_on_organization_id"
   end
 
   create_table "equipment_assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -232,6 +244,18 @@ ActiveRecord::Schema.define(version: 2023_11_15_203833) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.string "website"
+    t.string "email"
+    t.string "email_author"
+    t.string "outgoing_quote_email"
+    t.string "quote_bcc"
+    t.string "email_signature"
+    t.string "insurance_provider"
+    t.string "insurance_policy_number"
+    t.string "insurance_description"
+    t.string "hst_number"
+    t.integer "address_id"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

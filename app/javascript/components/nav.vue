@@ -41,9 +41,6 @@ export default {
       return this.$store.state.authorization;
     },
   },
-  mounted() {
-    console.log(this.$store.state.user);
-  },
   methods: {
     changeOrganization() {
       this.$bvModal.show('organization-modal')

@@ -19,9 +19,11 @@ class EstimateListSerializer < ApplicationSerializer
   # Virtual
   attribute :formatted_status
   attribute :additional_message
+  attribute :organization_name
 
   # Associations
   belongs_to :arborist
+
   belongs_to :customer, serializer: CustomerListSerializer
   has_one :site, include_nested_associations: true
   has_one :customer_detail, serializer: CustomerDetailListSerializer

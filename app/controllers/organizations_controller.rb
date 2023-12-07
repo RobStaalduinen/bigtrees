@@ -8,4 +8,12 @@ class OrganizationsController < ApplicationController
 
     render json: @organizations
   end
+
+  def show
+    authorize Organization, :show?
+
+    @organization = policy_scope(Organization).find(params[:id])
+
+    render json: @organization
+  end
 end

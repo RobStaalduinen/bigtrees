@@ -19,6 +19,7 @@ import { quoteContent, reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreTh
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
+import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer'
 
 export default {
   components: {
@@ -36,6 +37,8 @@ export default {
     return {
       emailDefinition: null,
       scheduleText: 'none',
+      baseContent: '',
+      estimateMailer: new OrganizationEstimateMailer(this.$store.state.organization, this.estimate),
       scheduleTextOptions: [
         { value: 'none', text: 'No schedule'},
         { value: 'reduced_costs', text: 'Reduced Costs'},
@@ -76,7 +79,6 @@ export default {
   computed: {
     quoteContentOptions() {
       var options = {}
-
       if(this.scheduleText != 'none') {
         var contentMapper = {
           reduced_costs: reducedCosts,
@@ -96,8 +98,8 @@ export default {
       handler() {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer_detail.email,
-          'Your Quote from Big Tree Services',
-          quoteContent(this.estimate, this.quoteContentOptions)
+          "",
+          this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
         )
       }
     },
@@ -106,11 +108,22 @@ export default {
       handler() {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer_detail.email,
-          'Your Quote from Big Tree Services',
-          quoteContent(this.estimate, this.quoteContentOptions)
+          this.emailDefinition.subject,
+          this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
         )
       }
     }
+  },
+  mounted(){
+    this.axiosGet('/email_templates/quote_mailout').then (response => {
+      this.baseContent = response.data.email_template.content
+      console.log(this.baseContent);
+      this.emailDefinition = new EmailDefinition(
+        this.estimate.customer_detail.email,
+        response.data.email_template.parsed_subject,
+        this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
+      )
+    })
   }
 }
 </script>

@@ -22,6 +22,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :total_cost
   attribute :hst
   attribute :total_cost_with_tax
+  attribute :organization_name
 
   # Associations
   belongs_to :arborist

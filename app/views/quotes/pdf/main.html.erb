@@ -1,8 +1,9 @@
 <% estimate ||= @estimate %>
+<% organization ||= estimate.organization %>
 <% is_receipt ||= false %>
 
 <div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/quote', estimate: estimate, is_receipt: is_receipt %>
+  <%= render 'quotes/pdf/quote', estimate: estimate, organization: organization, is_receipt: is_receipt %>
 </div>
 
 <% unless is_receipt %>
@@ -10,10 +11,10 @@
 
 
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/details' %>
+    <%= render 'quotes/pdf/details', organization: organization %>
   </div>
 
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/terms' %>
+    <%= render 'quotes/pdf/terms', organization: organization %>
   </div>
 <% end %>

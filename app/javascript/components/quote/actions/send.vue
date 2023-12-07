@@ -9,8 +9,7 @@
 
 <script>
 import EmailForm from '../../common/forms/email';
-import { quoteContent } from '../../../content/emailContent';
-import moment from 'moment';
+import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer'
 import { EmailDefinition } from '@/models';
 
 export default {
@@ -27,7 +26,8 @@ export default {
   },
   data() {
     return {
-      emailDefinition: null
+      emailDefinition: null,
+      estimateMailer: new OrganizationEstimateMailer(this.$store.state.organization, this.estimate)
     }
   },
   methods: {
@@ -45,14 +45,22 @@ export default {
       })
     }
   },
+  computed: {
+    subject() {
+      return `Your Quote from ${this.$store.state.organization.name}`
+    }
+  },
+  mounted(){
+    console.log(this.$store.state.organization)
+  },
   watch: {
     estimate: {
       immediate: true,
       handler() {
         this.emailDefinition = new EmailDefinition(
           this.estimate.customer_detail.email,
-          'Your Quote from Big Tree Services',
-          quoteContent(this.estimate)
+          this.subject,
+          this.estimateMailer.quoteContent()
         )
       }
     }

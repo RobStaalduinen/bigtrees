@@ -24,7 +24,7 @@ class EstimatesController < ApplicationController
       includes(site: [:address]).
       includes(:customer_detail).
       includes(:customer).
-      includes(:arborist)
+      includes(arborist: :organization)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]

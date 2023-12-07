@@ -7,4 +7,5 @@ class ArboristSerializer < ApplicationSerializer
   attribute :role
   attribute :certification
   attribute :hourly_rate
+  attribute :organization_id
 end
