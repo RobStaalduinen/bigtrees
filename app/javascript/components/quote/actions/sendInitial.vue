@@ -8,18 +8,22 @@
           :options="scheduleTextOptions"
           validationRules='required'
         />
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template='quote_mailout'
+        :estimate='estimate'
+        :contentOptions='quoteContentOptions'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
-import { quoteContent, reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
+import EmailForm from '../../common/forms/templatedEmail';
+import { reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
-import { EmailDefinition } from '@/models';
-import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer'
 
 export default {
   components: {
@@ -37,8 +41,6 @@ export default {
     return {
       emailDefinition: null,
       scheduleText: 'none',
-      baseContent: '',
-      estimateMailer: new OrganizationEstimateMailer(this.$store.state.organization, this.estimate),
       scheduleTextOptions: [
         { value: 'none', text: 'No schedule'},
         { value: 'reduced_costs', text: 'Reduced Costs'},
@@ -91,39 +93,6 @@ export default {
       }
       return options;
     }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          "",
-          this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
-        )
-      }
-    },
-    scheduleText: {
-      immediate: false,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          this.emailDefinition.subject,
-          this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
-        )
-      }
-    }
-  },
-  mounted(){
-    this.axiosGet('/email_templates/quote_mailout').then (response => {
-      this.baseContent = response.data.email_template.content
-      console.log(this.baseContent);
-      this.emailDefinition = new EmailDefinition(
-        this.estimate.customer_detail.email,
-        response.data.email_template.parsed_subject,
-        this.estimateMailer.quoteContent(this.baseContent, this.quoteContentOptions)
-      )
-    })
   }
 }
 </script>

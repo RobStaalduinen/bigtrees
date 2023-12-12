@@ -23,6 +23,8 @@
             v-if='sendReceipt'
             :value='emailDefinition'
             @changed='payload => updateEmailContent(payload)'
+            template='receipt_mailout'
+            :estimate='estimate'
           ></app-email-form>
         </b-form-group>
       </validation-observer>
@@ -32,12 +34,10 @@
 
 <script>
 import InvoiceForm from '../forms/full';
-import EmailForm from '../../common/forms/email';
+import EmailForm from '../../common/forms/templatedEmail';
 import EventBus from '@/store/eventBus'
-import { receiptContent } from '../../../content/emailContent';
 import { paymentReceived } from '@/components/estimate/utils/stateTransitions.js';
 import { PAYMENT_METHODS } from '@/constants';
-import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -57,7 +57,7 @@ export default {
       payment_method: null,
       sendReceipt: true,
       options: PAYMENT_METHODS,
-      emailDefinition: null
+      emailDefinition: null,
     }
   },
   methods: {
@@ -81,20 +81,6 @@ export default {
     },
     updateEmailContent(new_email) {
       this.emailDefinition = { ...new_email }
-    },
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.payment_method = this.estimate.invoice.payment_method;
-
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          'Your Big Tree Services Receipt',
-          receiptContent(this.estimate)
-        )
-      }
     }
   }
 }

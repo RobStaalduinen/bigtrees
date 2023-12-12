@@ -12,15 +12,19 @@
         >
         </app-datepicker>
 
-        <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+        <app-email-form
+          :value='emailDefinition'
+          @changed='payload => handleChange(payload)'
+          template='invoice_mailout'
+          :estimate='estimate'
+        ></app-email-form>
       </validation-observer>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
-import { invoiceContent } from '../../../content/emailContent';
+import EmailForm from '../../common/forms/templatedEmail';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
@@ -41,7 +45,7 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      workCompletionDate: moment().format('YYYY-MM-DD')
+      workCompletionDate: moment().format('YYYY-MM-DD'),
     }
   },
   methods: {
@@ -88,20 +92,7 @@ export default {
       })
 
     }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          'Your Big Tree Services Final Invoice',
-          invoiceContent(this.estimate)
-        )
-      }
-    }
   }
-
 }
 </script>
 

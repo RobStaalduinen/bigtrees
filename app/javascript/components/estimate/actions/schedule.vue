@@ -17,8 +17,6 @@
         validationRules='required'
       />
 
-      <!-- <b-form-select v-model="lead_arborist" :options="arboristOptions" id='arborist-select'></b-form-select> -->
-
       <app-conditional-box
         v-model='scheduleWork'
         conditionName='Add Date Range'
@@ -165,7 +163,7 @@ export default {
   computed: {
     arboristOptions() {
       return this.$store.state.arborists.map(arborist => {
-        if(arborist.role == 'admin' || arborist.role == 'team_lead') {
+        if(arborist.role == 'super_admin' || arborist.role == 'admin' || arborist.role == 'team_lead') {
           return this.arboristValue(arborist);
         }
       }).filter(arborist => !!arborist);;

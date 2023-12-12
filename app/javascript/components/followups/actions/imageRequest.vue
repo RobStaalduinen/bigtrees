@@ -1,13 +1,18 @@
 <template>
   <app-right-sidebar :id='id' title='Send Image Request' submitText='Send' :onSubmit='sendImageRequest'>
     <template v-slot:content>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template='image_request'
+        :estimate='estimate'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
+import EmailForm from '../../common/forms/templatedEmail';
 import { imageRequest } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
@@ -46,18 +51,6 @@ export default {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
-    }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          [this.estimate.customer_detail.email],
-          'Your Big Tree Services Job',
-          imageRequest(this.estimate)
-        )
-      }
     }
   }
 }

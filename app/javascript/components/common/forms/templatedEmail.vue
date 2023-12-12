@@ -44,14 +44,18 @@
 </template>
 
 <script>
+import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer';
+
 export default {
-  props: ['value'],
+  props: ['value', 'initial_recipient', 'template', 'estimate', 'contentOptions'],
   data() {
     return {
-      recipients: this.value.email,
-      emailSubject: this.value.subject,
-      emailBody: this.value.content,
-      editBody: false
+      recipients: [this.initial_recipient],
+      emailSubject: '',
+      emailBody: '',
+      editBody: false,
+      baseContent: "",
+      estimateMailer: new OrganizationEstimateMailer(this.$store.state.organization, this.estimate)
     }
   },
   computed: {
@@ -72,6 +76,18 @@ export default {
     },
     deleteRecipient(index){
       this.recipients.splice(index, 1);
+    },
+    updateEmailDefinition(subject = "") {
+      let email = this.email != null ? this.email : this.estimate.customer_detail.email
+
+      this.recipients = [email]
+      this.emailSubject = subject
+      if(this.template=='quote_mailout') {
+        this.emailBody = this.estimateMailer.quoteContent(this.baseContent, this.contentOptions)
+      }
+      else {
+        this.emailBody = this.estimateMailer.defaultContent(this.baseContent)
+      }
     }
   },
   watch: {
@@ -80,7 +96,17 @@ export default {
     },
     value() {
       this.emailBody = this.value.content
+    },
+    contentOptions() {
+      this.updateEmailDefinition(this.emailSubject);
     }
+  },
+  mounted(){
+    this.axiosGet(`/email_templates/${this.template}`).then (response => {
+      console.log(response);
+      this.baseContent = response.data.email_template.content;
+      this.updateEmailDefinition(response.data.email_template.parsed_subject);
+    })
   }
 }
 </script>
