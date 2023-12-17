@@ -34,7 +34,11 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out
-    redirect_to login_path
+
+    respond_to do |format|
+      format.html { redirect_to login_path }
+      format.json { render json: {}, status: :ok }
+    end
   end
 
 end

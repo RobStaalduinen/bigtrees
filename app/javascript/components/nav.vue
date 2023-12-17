@@ -14,8 +14,15 @@
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
         <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>Change Organization</b-dropdown-item>
-        <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
+
+
+          <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
+              <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
+              <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
+              <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>
+            </b-nav-item-dropdown>
       </b-collapse>
+
     </b-navbar>
     <b-modal id='organization-modal' v-if='permissions.canAdmin("organizations")' title='Change Organization' ok-title="Cancel" ok-only>
       <app-change-organization></app-change-organization>
@@ -45,8 +52,10 @@ export default {
     changeOrganization() {
       this.$bvModal.show('organization-modal')
     },
-    organizationChanged() {
-      console.log("Done");
+    logout() {
+      this.axiosGet('/logout').then(response => {
+        window.location.href='/login'
+      })
     }
   }
 }
@@ -63,15 +72,32 @@ export default {
     max-width: 250px;
   }
 
+  .text-dark {
+    color: black;
+  }
+
+
   @media (min-width: 200px) and (max-width: 759px){
     .navbar {
       padding: 0 8px;
+    }
+
+    .interior-dropdown {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 16px;
     }
   }
 
   @media (min-width: 760px){
     .navbar {
       padding: 0 0 0 32px;
+    }
+
+    .interior-dropdown {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-left: 8px;
     }
   }
 </style>

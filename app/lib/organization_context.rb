@@ -3,6 +3,9 @@
 class OrganizationContext
   def self.set_current_organization(request, current_user)
     header_org_id = request.headers['HTTP_ORGANIZATION_ID']
+
+    return unless current_user
+
     if(current_user.role == 'super_admin')
       header_org = Organization.find(header_org_id) if header_org_id
 
