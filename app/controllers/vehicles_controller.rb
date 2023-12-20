@@ -18,7 +18,7 @@ class VehiclesController < ApplicationController
   end
 
   def create
-    vehicle = Vehicle.create(vehicle_params.merge({ organization_id: current_user.organization_id }))
+    vehicle = Vehicle.create(vehicle_params.merge({ organization_id: OrganizationContext.current_organization.id }))
 
     render json: vehicle
   end

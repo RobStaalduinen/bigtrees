@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_07_182906) do
+ActiveRecord::Schema.define(version: 2023_12_17_210124) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 2023_12_07_182906) do
     t.integer "resolver_id"
     t.string "resolution_notes"
     t.integer "mechanic_id"
+    t.integer "organization_id"
     t.index ["resolver_id"], name: "index_equipment_requests_on_resolver_id"
   end
 
@@ -240,6 +241,15 @@ ActiveRecord::Schema.define(version: 2023_12_07_182906) do
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
+  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.bigint "arborist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["arborist_id"], name: "index_organization_memberships_on_arborist_id"
+    t.index ["organization_id"], name: "index_organization_memberships_on_organization_id"
+  end
+
   create_table "organizations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -281,6 +291,7 @@ ActiveRecord::Schema.define(version: 2023_12_07_182906) do
     t.string "image_url"
     t.string "state", default: "pending"
     t.string "rejection_reason"
+    t.integer "organization_id"
     t.index ["state"], name: "index_receipts_on_state"
   end
 
@@ -367,6 +378,7 @@ ActiveRecord::Schema.define(version: 2023_12_07_182906) do
     t.float "unpaid_hours"
     t.float "hourly_rate"
     t.integer "payout_id"
+    t.integer "organization_id"
     t.index ["arborist_id"], name: "index_work_records_on_arborist_id"
   end
 

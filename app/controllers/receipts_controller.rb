@@ -16,7 +16,7 @@ class ReceiptsController < ApplicationController
   def summaries
     authorize Receipt, :index?
 
-    receipts = policy_scope(Receipt).pending.order('date DESC')
+    receipts = policy_scope(Receipt).pending
 
     report = receipts.
       group(:arborist).
@@ -95,7 +95,7 @@ class ReceiptsController < ApplicationController
       :date, :vehicle_id, :category, :job,
       :payment_method, :cost, :category,
       :description, :photo, :image_url, :rejection_reason, :state
-    )
+    ).merge({ organization_id: OrganizationContext.current_organization.id })
   end
 
   def set_receipt

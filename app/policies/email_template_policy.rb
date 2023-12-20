@@ -16,7 +16,7 @@ class EmailTemplatePolicy < ApplicationPolicy
     role_resource :email_templates
 
     def resolve
-      if level = 'all' || level = 'organization'
+      if level == 'all' || level == 'organization'
         scope.where(organization: OrganizationContext.current_organization)
       else
         scope.where(organization: user.organization)

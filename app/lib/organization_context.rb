@@ -6,13 +6,8 @@ class OrganizationContext
 
     return unless current_user
 
-    if(current_user.role == 'super_admin')
-      header_org = Organization.find(header_org_id) if header_org_id
-
-      @@current_organization = header_org.present? ? header_org : current_user.organization
-    else
-      @@current_organization = current_user.organization
-    end
+    header_org = Organization.find(header_org_id) if header_org_id
+    @@current_organization = header_org.present? ? header_org : current_user.organizations.first
   end
 
   def self.current_organization

@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_organization
-    current_user.organization
+    current_user.organizations.first
   end
 
   def set_organization

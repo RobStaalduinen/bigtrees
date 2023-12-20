@@ -3,7 +3,8 @@ class Arborist < ActiveRecord::Base
 
   has_secure_password
 
-  belongs_to :organization
+  has_many :organization_memberships
+  has_many :organizations, through: :organization_memberships
 
   has_many :estimates
   has_many :receipts

@@ -17,7 +17,7 @@ class EstimatePolicy < ApplicationPolicy
 
     def resolve
       if level == 'organization' || level == 'all'
-        scope.joins(:arborist).where(arborists: { organization_id: OrganizationContext.current_organization.id })
+        scope.where(arborist_id: OrganizationContext.current_organization.arborists.pluck(:id))
       else
         scope.joins(:arborist).where(arborist: user)
       end

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def authenticate
     if current_user
       response = AuthSerializer.new(current_user).serializable_hash.merge(
-        { logged_in: true, admin: current_user.admin?, user_id: current_user.id, organization_name: current_user.organization.name, organization_id: current_user.organization_id }
+        { logged_in: true, admin: current_user.admin?, user_id: current_user.id, default_organization_id: current_user.organizations.first.id }
       )
       render json: response
     else

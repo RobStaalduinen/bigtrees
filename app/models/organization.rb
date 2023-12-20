@@ -3,7 +3,8 @@
 class Organization < ActiveRecord::Base
   include SingleAddressable
 
-  has_many :arborists
+  has_many :organization_memberships
+  has_many :arborists, through: :organization_memberships
   has_many :email_templates
 
   def default_arborist

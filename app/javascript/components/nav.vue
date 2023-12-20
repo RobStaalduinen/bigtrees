@@ -1,8 +1,15 @@
 <template>
   <div>
     <b-navbar toggleable="true" class='nav' id='app-nav'>
-      <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <div id='navbar-fixed'>
+        <div id='navbar-fixed-top'>
+          <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
+          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        </div>
+        <div id='navbar-fixed-bottom'>
+          <span>Current Org: {{ organizationName() }} <a @click='changeOrganization' id='change-org-button'>(Change)</a></span>
+        </div>
+      </div>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "list")'>Quotes</b-dropdown-item>
@@ -13,18 +20,15 @@
         <b-dropdown-item to="/admin/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
-        <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>Change Organization</b-dropdown-item>
-
-
-          <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
-              <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
-              <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
-              <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>
-            </b-nav-item-dropdown>
+        <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
+            <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
+            <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
+            <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>
+          </b-nav-item-dropdown>
       </b-collapse>
 
     </b-navbar>
-    <b-modal id='organization-modal' v-if='permissions.canAdmin("organizations")' title='Change Organization' ok-title="Cancel" ok-only>
+    <b-modal id='organization-modal' title='Change Organization' ok-title="Cancel" ok-only>
       <app-change-organization></app-change-organization>
     </b-modal>
   </div>
@@ -46,7 +50,7 @@ export default {
     },
     permissions() {
       return this.$store.state.authorization;
-    },
+    }
   },
   methods: {
     changeOrganization() {
@@ -56,6 +60,12 @@ export default {
       this.axiosGet('/logout').then(response => {
         window.location.href='/login'
       })
+    },
+    organizationName() {
+      console.log(this.$store.state)
+      if(this.$store.state.organization != null) {
+        return this.$store.state.organization.name;
+      }
     }
   }
 }
@@ -74,6 +84,26 @@ export default {
 
   .text-dark {
     color: black;
+  }
+
+  #navbar-fixed {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  #navbar-fixed-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #navbar-fixed-bottom {
+    display: flex;
+    justify-content: center;
+    margin-top: -16px;
+  }
+
+  #change-org-button {
+    font-size: 12px;
   }
 
 

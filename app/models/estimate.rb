@@ -103,14 +103,6 @@ class Estimate < ActiveRecord::Base
 		get_invoice || Invoice.new(estimate: self)
 	end
 
-  def organization
-    arborist.organization
-  end
-
-  def organization_name
-    organization.name
-  end
-
 	def formatted_status
 		return "Invoice Sent" if status == 'final_invoice_sent'
 		self.status.gsub('_', ' ').capitalize

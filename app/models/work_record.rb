@@ -1,6 +1,7 @@
 class WorkRecord < ActiveRecord::Base
   belongs_to :arborist
   belongs_to :payout
+  belongs_to :organization
 
   before_save :set_hourly_rate
 

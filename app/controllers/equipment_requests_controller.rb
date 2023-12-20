@@ -97,6 +97,9 @@ class EquipmentRequestsController < ApplicationController
   private
 
   def equipment_request_parameters
-    params.require(:equipment_request).permit(:category, :description, :image_url, :vehicle_id, :submitted_at, :resolution_notes)
+    params
+    .require(:equipment_request)
+    .permit(:category, :description, :image_url, :vehicle_id, :submitted_at, :resolution_notes)
+    .merge({ organization_id: OrganizationContext.current_organization.id })
   end
 end

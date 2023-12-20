@@ -16,10 +16,10 @@ class ReceiptPolicy < ApplicationPolicy
     role_resource :receipts
 
     def resolve
-      if level = 'all' || level = 'organization'
-        scope.joins(:arborist).where(arborists: { organization_id: OrganizationContext.current_organization.id })
+      if level == 'all' || level == 'organization'
+        scope.where(arborist_id: OrganizationContext.current_organization.arborists.pluck(:id))
       else
-        scope.joins(:arborist).where(arborist: user)
+        scope.where(arborist_id: user.id).where(organization: OrganizationContext.current_organization)
       end
     end
   end

@@ -24,7 +24,7 @@ class EstimatesController < ApplicationController
       includes(site: [:address]).
       includes(:customer_detail).
       includes(:customer).
-      includes(arborist: :organization)
+      includes(:arborist)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
@@ -35,7 +35,7 @@ class EstimatesController < ApplicationController
     end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
-    # @estimates = @estimates.distinct
+
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
     render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }

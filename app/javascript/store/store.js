@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
     estimateSettings: {
       mySchedule: false
     },
-    arborists: []
+    arborists: [],
+    organization: {}
   },
   mutations: {
     setUser (state, user) {
@@ -50,7 +51,7 @@ export const store = new Vuex.Store({
           commit('setUser', response.data);
         }
 
-        let organization_id = response.data.organization_id;
+        let organization_id = response.data.default_organization_id;
         if(localStorage.getItem('selectedOrganizationId')) {
           organization_id = localStorage.getItem('selectedOrganizationId');
         }

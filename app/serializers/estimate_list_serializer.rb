@@ -19,7 +19,6 @@ class EstimateListSerializer < ApplicationSerializer
   # Virtual
   attribute :formatted_status
   attribute :additional_message
-  attribute :organization_name
 
   # Associations
   belongs_to :arborist

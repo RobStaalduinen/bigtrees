@@ -21,7 +21,7 @@ class EquipmentRequestPolicy < ApplicationPolicy
       elsif level == 'organization' || level == 'all'
         scope.where(arborist: OrganizationContext.current_organization.arborists)
       else
-        scope.where('arborist_id = ? OR mechanic_id = ?', user.id, user.id)
+        scope.where('arborist_id = ? OR mechanic_id = ?', user.id, user.id).where(organization: OrganizationContext.current_organization)
       end
     end
   end

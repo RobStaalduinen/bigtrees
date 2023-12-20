@@ -19,7 +19,7 @@ class VehiclePolicy < ApplicationPolicy
       if level == 'all'
         scope.where(organization: OrganizationContext.current_organization)
       else
-        scope.where(organization: user.organization)
+        scope.where(organization: OrganizationContext.current_organization)
       end
     end
   end

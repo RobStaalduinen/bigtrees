@@ -16,10 +16,10 @@ class WorkRecordPolicy < ApplicationPolicy
     role_resource :work_records
 
     def resolve
-      if level = 'all' || level = 'organization'
-        scope.joins(:arborist).where(arborists: { organization_id: OrganizationContext.current_organization.id })
+      if level == 'all' || level == 'organization'
+        scope.where(organization: OrganizationContext.current_organization)
       else
-        scope.joins(:arborist).where(arborist: user)
+        scope.joins(:arborist).where(organization: OrganizationContext.current_organization).where(arborist: user)
       end
     end
   end

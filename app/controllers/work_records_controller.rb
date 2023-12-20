@@ -86,6 +86,8 @@ class WorkRecordsController < AdminBaseController
   private
 
     def work_record_params
-      params.require(:work_record).permit(:date, :hours, :unpaid_hours, :start_at, :end_at)
+      params
+      .require(:work_record).permit(:date, :hours, :unpaid_hours, :start_at, :end_at)
+      .merge({ organization_id: OrganizationContext.current_organization.id })
     end
 end
