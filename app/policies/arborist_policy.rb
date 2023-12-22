@@ -12,7 +12,7 @@ class ArboristPolicy < ApplicationPolicy
 
     def resolve
       if level == 'organization' || level == 'all'
-        scope.where(organization: OrganizationContext.current_organization)
+        scope.joins(:organization_memberships).where(organization_memberships: { organization_id: OrganizationContext.current_organization.id })
       else
         scope.where(id: user.id)
       end

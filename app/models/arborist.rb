@@ -3,7 +3,7 @@ class Arborist < ActiveRecord::Base
 
   has_secure_password
 
-  has_many :organization_memberships
+  has_many :organization_memberships, dependent: :destroy
   has_many :organizations, through: :organization_memberships
 
   has_many :estimates
@@ -24,6 +24,14 @@ class Arborist < ActiveRecord::Base
 
   def get_receipts
     self.admin ? Receipt.all : self.receipts
+  end
+
+  def current_membership
+    organization_memberships.find_by(organization_id: OrganizationContext.current_organization.id)
+  end
+
+  def current_hourly_rate
+    current_membership.hourly_rate
   end
 
   def recent_work

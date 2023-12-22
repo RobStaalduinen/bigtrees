@@ -13,6 +13,7 @@
           <app-employee-form
             v-if='employeeDefinition'
             v-model='employeeDefinition'
+            :lockEmail='true'
           ></app-employee-form>
 
 

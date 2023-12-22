@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_17_210124) do
+ActiveRecord::Schema.define(version: 2023_12_20_163220) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 2023_12_17_210124) do
     t.bigint "arborist_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "hourly_rate", default: 0.0
     t.index ["arborist_id"], name: "index_organization_memberships_on_arborist_id"
     t.index ["organization_id"], name: "index_organization_memberships_on_organization_id"
   end

@@ -23,21 +23,6 @@
       :employee='selectedEmployee'
     >
    </app-update-employee>
-
-    <app-update-employee-password
-      id='update-employee-password'
-      v-if='hasPermission("arborists", "create")'
-      :employee='selectedEmployee'
-    >
-   </app-update-employee-password>
-
-     <!-- <app-add-vehicle-expiration
-        id='add-vehicle-expiration'
-        v-if='hasPermission("arborists", "create")'
-        :vehicle_id='selectedVehicle'
-        :expiration='selectedExpiration'
-      ></app-add-vehicle-expiration>
-     -->
   </page-template>
 </template>
 

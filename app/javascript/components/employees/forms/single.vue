@@ -1,6 +1,14 @@
 <template>
   <div>
     <app-input-field
+      v-model='email'
+      name="email"
+      label='Email'
+      :disabled='lockEmail'
+      validationRules='required'
+    ></app-input-field>
+
+    <app-input-field
       v-model='name'
       name="name"
       label='Name'
@@ -8,22 +16,9 @@
     ></app-input-field>
 
     <app-input-field
-      v-model='certification'
-      name="cerficiation"
-      label='Certification'
-    ></app-input-field>
-
-    <app-input-field
       v-model='phone_number'
       name="phone_number"
       label='Phone Number'
-      validationRules='required'
-    ></app-input-field>
-
-    <app-input-field
-      v-model='email'
-      name="email"
-      label='Email'
       validationRules='required'
     ></app-input-field>
 
@@ -50,14 +45,14 @@ export default {
       default: () => {
         return {
           name: null,
-          certification: null,
           phone_number: null,
           email: null,
           hourly_rate: null,
           role: 'arborist'
         }
       }
-    }
+    },
+    lockEmail: false
   },
   data() {
     return {
@@ -65,7 +60,7 @@ export default {
       certification: this.value.certification,
       phone_number: this.value.phone_number,
       email: this.value.email,
-      hourly_rate: this.value.hourly_rate,
+      hourly_rate: this.value.current_hourly_rate,
       role: this.value.role || 'arborist'
     }
   },

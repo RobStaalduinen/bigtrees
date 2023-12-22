@@ -18,16 +18,35 @@ class ArboristsController < ApplicationController
 
   def create
     authorize! :manage, Arborist
-    @arborist = OrganizationContext.current_organization.arborists.new(arborist_params)
-    @arborist.save
+    # @arborist = OrganizationContext.current_organization.arborists.new(arborist_params)
+    @arborist = Arborist.find_or_initialize_by(email: params[:arborist][:email])
 
-    render json: @arborist
+    is_existing = @arborist.persisted?
+
+    if is_existing
+      @arborist.update(arborist_update_params)
+    else
+      @arborist.update(arborist_create_params)
+    end
+
+    OrganizationMembership.create(
+      organization: OrganizationContext.current_organization,
+      arborist: @arborist,
+      hourly_rate: params[:arborist][:hourly_rate]
+    )
+
+    if is_existing
+      render json: @arborist, status: 201
+    else
+      render json: @arborist, status: 200
+    end
   end
 
   def update
     authorize! :manage, Arborist
     @arborist = Arborist.find(params[:id])
-    @arborist.update(arborist_params)
+    @arborist.update(arborist_update_params)
+    @arborist.current_membership.update(hourly_rate: params[:arborist][:hourly_rate])
 
     render json: @arborist
   end
@@ -49,9 +68,15 @@ class ArboristsController < ApplicationController
 
   private
 
-    def arborist_params
+    def arborist_create_params
       params.require(:arborist).permit(
-        :name, :certification, :email, :phone_number, :hourly_rate, :password, :password_confirmation, :role
+        :name, :email, :phone_number, :password, :password_confirmation, :role
+      )
+    end
+
+    def arborist_update_params
+      params.require(:arborist).permit(
+        :name, :email, :phone_number
       )
     end
 

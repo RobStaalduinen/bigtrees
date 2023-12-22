@@ -3,7 +3,7 @@
 class Organization < ActiveRecord::Base
   include SingleAddressable
 
-  has_many :organization_memberships
+  has_many :organization_memberships, dependent: :destroy
   has_many :arborists, through: :organization_memberships
   has_many :email_templates
 

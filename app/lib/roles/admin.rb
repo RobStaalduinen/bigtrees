@@ -15,7 +15,8 @@ module Roles
         equipment_requests: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         arborists: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         customers: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
-        vehicles: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level)
+        vehicles: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
+        organizations: permission_set(list: true, show: true, create: false, update: false, delete: false, admin: false)
       }
     end
   end

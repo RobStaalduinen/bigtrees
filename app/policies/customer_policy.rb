@@ -12,7 +12,7 @@ class CustomerPolicy < ApplicationPolicy
 
     def resolve
       if level == 'organization' || level == 'all'
-          scope.joins(:estimates).where(arborist_id: OrganizationContext.current_organization.arborists.pluck(:id)).distinct
+          scope.joins(:estimates).where(estimates: { arborist_id: OrganizationContext.current_organization.arborists.pluck(:id) }).distinct
       else
           scope.joins(:estimates).where(estimates: { arborist: user }).distinct
       end

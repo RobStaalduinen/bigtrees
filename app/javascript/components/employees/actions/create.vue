@@ -76,6 +76,7 @@ export default {
         }
 
         this.axiosPost('/arborists', params).then(response => {
+          console.log(response);
           this.$root.$emit('bv::toggle::collapse', this.id);
           EventBus.$emit('EMPLOYEE_UPDATED');
           setTimeout(() => {

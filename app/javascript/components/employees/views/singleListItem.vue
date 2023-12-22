@@ -11,7 +11,7 @@
         <div class='list-item-content'>
           <div class='contact-row'>
             <b>Hourly Rate: </b>
-            <span v-if='employee.hourly_rate'>{{ `$${employee.hourly_rate}` }}</span>
+            <span v-if='employee.current_hourly_rate'>{{ `$${employee.current_hourly_rate}` }}</span>
             <span v-else>Not Entered</span>
           </div>
 
@@ -34,11 +34,6 @@
               name='View Profile'
               icon='binoculars'
               :onClick='viewProfile'
-            />
-            <app-action-bar-item
-              name='Change Password'
-              icon='lock'
-              :onClick='editPassword'
             />
             <app-action-bar-item
               name='Edit'
@@ -69,9 +64,6 @@ export default {
     },
     editEmployee() {
       EventBus.$emit('EDIT_EMPLOYEE', this.employee);
-    },
-    editPassword() {
-      EventBus.$emit('EDIT_EMPLOYEE_PASSWORD', this.employee);
     }
   }
 }

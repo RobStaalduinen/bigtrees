@@ -19,7 +19,7 @@ class WorkRecord < ActiveRecord::Base
   end
 
   def set_hourly_rate
-    self.hourly_rate = self.arborist.hourly_rate
+    self.hourly_rate = self.arborist.current_hourly_rate
   end
 
   def range_string
