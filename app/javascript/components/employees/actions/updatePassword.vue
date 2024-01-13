@@ -1,7 +1,7 @@
 <template>
     <app-right-sidebar-form
       :id='id'
-      title='UpdatePassword'
+      title='Update Password'
       submitText='Submit'
       :onSubmit='updatePassword'
       @cancelled='reset'
@@ -63,7 +63,7 @@ export default {
           }
         }
 
-        this.axiosPut(`/arborists/${this.employee.id}`, params).then(response => {
+        this.axiosPut(`/arborists/${this.employee.id}/update_password`, params).then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);
           EventBus.$emit('DISPLAY_MESSAGE', 'Password has been successfully updated');
           setTimeout(() => {

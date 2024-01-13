@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 
   resources :trackers, only: [ :new, :index ]
   resources :arborists do
+    put '/update_password', to: 'arborists#update_password'
     resources :documents
   end
   resources :customers
@@ -89,6 +90,8 @@ Rails.application.routes.draw do
   resources :email_templates, only: [ :show ]
 
   resources :vue_test, only: [ :new ]
+
+  devise_for :users, class_name: 'Arborist'
 
   get '/p/:customer_name', to: 'property_management#show'
   post '/p/:customer_name', to: 'property_management#create'

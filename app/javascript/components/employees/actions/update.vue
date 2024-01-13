@@ -74,7 +74,7 @@ export default {
     },
     reset() {
       this.submitting = false;
-      this.employeeDefinition = {};
+      this.employeeDefinition = { ...this.employee };
     }
   },
   watch: {

@@ -26,6 +26,7 @@
       v-model='hourly_rate'
       name="hourly_rate"
       label='Hourly Rate'
+      v-if='hasPermission("arborists", "create")'
     ></app-number-field>
 
     <app-select-field
@@ -34,6 +35,7 @@
       name='role'
       :options="roleOptions"
       validationRules='required'
+      v-if='hasPermission("arborists", "create")'
     />
   </div>
 </template>

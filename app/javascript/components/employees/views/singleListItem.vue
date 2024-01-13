@@ -40,6 +40,12 @@
               icon='pencil-square'
               :onClick='editEmployee'
             />
+
+            <app-action-bar-item
+              name='Remove'
+              icon='trash-fill'
+              :onClick='removeEmployee'
+            />
           </template>
         </app-collapsable-action-bar>
       </template>
@@ -64,6 +70,10 @@ export default {
     },
     editEmployee() {
       EventBus.$emit('EDIT_EMPLOYEE', this.employee);
+    },
+    removeEmployee() {
+      confirm("Are you sure you want to remove this employee from your company?")
+      EventBus.$emit('REMOVE_EMPLOYEE', this.employee);
     }
   }
 }

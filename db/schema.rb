@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_20_163220) do
+ActiveRecord::Schema.define(version: 2023_12_29_142638) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2023_12_20_163220) do
 
   create_table "arborists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
-    t.string "certification", null: false
+    t.string "certification"
     t.string "phone_number"
     t.string "email"
     t.string "password"
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2023_12_20_163220) do
     t.boolean "can_manage_estimates", default: false
     t.integer "organization_id"
     t.string "role", default: "arborist"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
   end
 
   create_table "costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

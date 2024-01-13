@@ -6,8 +6,8 @@
           <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         </div>
-        <div id='navbar-fixed-bottom'>
-          <span>Current Org: {{ organizationName() }} <a @click='changeOrganization' id='change-org-button'>(Change)</a></span>
+        <div id='navbar-fixed-bottom' v-if='hasMultipleCompanies()'>
+          <span>Current Company: {{ organizationName() }} <a @click='changeOrganization' id='change-org-button'>(Change)</a></span>
         </div>
       </div>
 
@@ -66,6 +66,9 @@ export default {
       if(this.$store.state.organization != null) {
         return this.$store.state.organization.name;
       }
+    },
+    hasMultipleCompanies() {
+      return this.$store.state.user.organization_count > 1
     }
   }
 }

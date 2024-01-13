@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def authenticate
     if current_user
       response = AuthSerializer.new(current_user).serializable_hash.merge(
-        { logged_in: true, admin: current_user.admin?, user_id: current_user.id, default_organization_id: current_user.organizations.first.id }
+        { logged_in: true, admin: current_user.admin?, user_id: current_user.id, default_organization_id: current_user.organizations.first.id, organization_count: policy_scope(Organization).count }
       )
       render json: response
     else
@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
   def create
     @arborist = Arborist.find_by(email: params[:email])
 
-    if @arborist && @arborist.authenticate(params[:password]) && @arborist.active
+    if @arborist && @arborist.authenticate(params[:password]) && @arborist.has_memberships?
       sign_in(@arborist)
       if @arborist.admin?
         redirect_to '/admin/estimates'

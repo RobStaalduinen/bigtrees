@@ -16,7 +16,11 @@ class OrganizationPolicy < ApplicationPolicy
     role_resource :organizations
 
     def resolve
-      scope.all
+      if level == 'self' || level == 'organization'
+        scope.joins(:organization_memberships).where(organization_memberships: { arborist_id: user.id })
+      elsif level == 'all'
+        scope.all
+      end
     end
   end
 end

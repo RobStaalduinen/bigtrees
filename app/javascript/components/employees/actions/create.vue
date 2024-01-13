@@ -14,11 +14,6 @@
             v-model='employee'
           ></app-employee-form>
 
-          <app-employee-password-form
-            v-model='passwordDetails'
-          ></app-employee-password-form>
-
-
           <div class='error-box' v-if='errorMessage'>
             {{ errorMessage }}
           </div>
@@ -28,39 +23,26 @@
 </template>
 
 <script>
-import FileUpload from '@/components/file/actions/upload';
 import EventBus from '@/store/eventBus';
-import moment from 'moment';
 import EmployeeForm from '../forms/single';
-import PasswordForm from '../forms/password';
-
-import { stringOptionList, objectOptionList } from '@/utils/formUtils';
 
 export default {
   props: ['id'],
   components: {
-    'app-employee-form': EmployeeForm,
-    'app-employee-password-form': PasswordForm
+    'app-employee-form': EmployeeForm
   },
   data() {
     return {
       name: null,
       submitting: false,
       errorMessage: null,
-      employee: {},
-      passwordDetails: {}
+      employee: {}
     }
   },
   methods: {
     createEmployee() {
       this.errorMessage = null;
       this.submitting = true;
-
-      if(this.passwordDetails.password != this.passwordDetails.password_confirmation) {
-        this.errorMessage = 'Password and confirmation do not match';
-        this.submitting = false;
-        return;
-      }
 
       this.$refs.observer.validate().then(success => {
         if (!success) {
@@ -70,18 +52,27 @@ export default {
 
         let params = {
           arborist: {
-            ...this.employee,
-            ...this.passwordDetails
+            ...this.employee
           }
         }
 
         this.axiosPost('/arborists', params).then(response => {
-          console.log(response);
-          this.$root.$emit('bv::toggle::collapse', this.id);
-          EventBus.$emit('EMPLOYEE_UPDATED');
-          setTimeout(() => {
-            this.reset();
-          }, 500);
+
+          if(response.status == 200) {
+            if(response.data.meta.existing_user == true) {
+              EventBus.$emit('DISPLAY_MESSAGE', 'Employee has been successfully added. As they are an existing employee of another organization, their login details will remain the same.');
+            }
+            this.$root.$emit('bv::toggle::collapse', this.id);
+            EventBus.$emit('EMPLOYEE_UPDATED');
+            setTimeout(() => {
+              this.reset();
+            }, 500);
+          }
+        }).catch(error => {
+          if(error.response.data.code == 'existing-arborist') {
+            this.errorMessage = "An employee for the given email already exists as part of your company"
+          }
+          this.submitting = false;
         })
       })
     },

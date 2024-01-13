@@ -1,8 +1,8 @@
 class ArboristsController < ApplicationController
-  before_action :signed_in_admin, except: [ :index, :show ]
+  before_action :signed_in_user
 
   def index
-    @arborists = OrganizationContext.current_organization.arborists.real
+    @arborists = OrganizationContext.current_organization.arborists.real.active
 
     @arborists = filter_arborists(@arborists)
 
@@ -18,32 +18,48 @@ class ArboristsController < ApplicationController
 
   def create
     authorize! :manage, Arborist
-    # @arborist = OrganizationContext.current_organization.arborists.new(arborist_params)
-    @arborist = Arborist.find_or_initialize_by(email: params[:arborist][:email])
 
-    is_existing = @arborist.persisted?
+    arborist = Arborist.find_or_initialize_by(email: params[:arborist][:email])
 
-    if is_existing
-      @arborist.update(arborist_update_params)
-    else
-      @arborist.update(arborist_create_params)
-    end
-
-    OrganizationMembership.create(
-      organization: OrganizationContext.current_organization,
-      arborist: @arborist,
-      hourly_rate: params[:arborist][:hourly_rate]
-    )
+    is_existing = arborist.persisted? && arborist.has_memberships?
 
     if is_existing
-      render json: @arborist, status: 201
+      if OrganizationMembership.where(organization: OrganizationContext.current_organization, arborist: arborist).any?
+        render json: { code: 'existing-arborist' }, status: 400
+        return
+      end
+
+      arborist.update(arborist_update_params)
+
+      membership = OrganizationMembership.create(
+        organization: OrganizationContext.current_organization,
+        arborist: arborist,
+        hourly_rate: params[:arborist][:hourly_rate]
+      )
+
+      ArboristMailer.existing_arborist_mailout(arborist, membership).deliver_now
+
+      render json: arborist, status: :ok, meta: { existing_user: true }
     else
-      render json: @arborist, status: 200
+      arborist.update(arborist_create_params)
+
+      initial_password = arborist.generate_initial_password
+
+      membership = OrganizationMembership.create(
+        organization: OrganizationContext.current_organization,
+        arborist: arborist,
+        hourly_rate: params[:arborist][:hourly_rate]
+      )
+
+      ArboristMailer.new_arborist_mailout(arborist, membership, initial_password).deliver_now
+
+      render json: arborist, status: :ok, meta: { existing_user: false }
     end
+
   end
 
   def update
-    authorize! :manage, Arborist
+    authorize Arborist, :update?
     @arborist = Arborist.find(params[:id])
     @arborist.update(arborist_update_params)
     @arborist.current_membership.update(hourly_rate: params[:arborist][:hourly_rate])
@@ -51,11 +67,23 @@ class ArboristsController < ApplicationController
     render json: @arborist
   end
 
-  def destroy
-    @arborist = Arborist.find(params[:id])
-    @arborist.destroy
+  def update_password
+    authorize Arborist, :update?
+
+    @arborist = policy_scope(Arborist).find(params[:arborist_id])
+    @arborist.update(arborist_password_params)
 
     render json: @arborist
+  end
+
+  def destroy
+    @arborist = Arborist.find(params[:id])
+
+    membership = OrganizationMembership.find_by(arborist_id: @arborist.id, organization_id: OrganizationContext.current_organization.id)
+
+    membership.destroy
+
+    render json: {}, status: :ok
   end
 
   def filter_arborists(arborists)
@@ -78,6 +106,10 @@ class ArboristsController < ApplicationController
       params.require(:arborist).permit(
         :name, :email, :phone_number
       )
+    end
+
+    def arborist_password_params
+      params.require(:arborist).permit(:password, :password_confirmation)
     end
 
 

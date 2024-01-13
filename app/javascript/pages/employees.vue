@@ -66,10 +66,14 @@ export default {
       this.$root.$emit('bv::toggle::collapse', 'update-employee');
     })
 
-    EventBus.$on('EDIT_EMPLOYEE_PASSWORD', (employee) => {
-      this.selectedEmployee = employee;
-      this.$root.$emit('bv::toggle::collapse', 'update-employee-password');
+    EventBus.$on('REMOVE_EMPLOYEE', (employee) => {
+      this.axiosDelete(`/arborists/${employee.id}`).then(response => {
+        if(response.status == 200) {
+          this.retriveEmployees();
+        }
+      })
     })
+
 
     // EventBus.$on('EDIT_VEHICLE_EXPIRATION', (expiration) => {
     //   this.editExpiration(expiration);
