@@ -35,10 +35,10 @@
   </tr>
 
   <tr class='info-row'>
-    <td class='title-column'><b>Cell Number:</b></td>
-    <td class='entry-column'>705-943-7374</td>
+    <td class='title-column'><b>Company Number:</b></td>
+    <td class='entry-column'><%= organization.phone_number %></td>
     <td class='title-column'><b>Email:</b></td>
-    <td class='entry-column'>tbrewer@bigislandgroup.ca</td>
+    <td class='entry-column'><%= organization.email %></td>
   </tr>
 </table>
 
@@ -77,10 +77,12 @@
       <b><%= organization.insurance_provider %></b><br>
       <b>Policy # <%= organization.insurance_policy_number %></b><br>
       <b><%= organization.insurance_description %></b><br>
-      <% if date_tendered >= "2022-01-01".to_date %>
-        <b>HST # <%= organization.hst_number %></b>
-      <% else %>
-        <b>HST # <%= organization.hst_number %></b>
+      <% if organization.hst_number %>
+        <% if date_tendered >= "2022-01-01".to_date %>
+          <b>HST # <%= organization.hst_number %></b>
+        <% else %>
+          <b>HST # <%= organization.hst_number %></b>
+        <% end %>
       <% end %>
     </td>
   </tr>

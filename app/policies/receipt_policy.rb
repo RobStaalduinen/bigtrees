@@ -17,7 +17,7 @@ class ReceiptPolicy < ApplicationPolicy
 
     def resolve
       if level == 'all' || level == 'organization'
-        scope.where(arborist_id: OrganizationContext.current_organization.arborists.pluck(:id))
+        scope.where(organization_id: OrganizationContext.current_organization.id)
       else
         scope.where(arborist_id: user.id).where(organization: OrganizationContext.current_organization)
       end

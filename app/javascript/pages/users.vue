@@ -103,7 +103,6 @@ export default {
       let params = { arborist_id: this.user_id}
       this.axiosGet('/work_records/for_arborist', params).then(response => {
         this.hours = response.data.work_records;
-        console.log(this.hours);
       })
     }
   },

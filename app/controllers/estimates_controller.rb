@@ -38,6 +38,7 @@ class EstimatesController < ApplicationController
 
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
+
     render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
   end
 
@@ -64,6 +65,7 @@ class EstimatesController < ApplicationController
     org = OrganizationContext.current_organization
 
     estimate.arborist = current_user.organization_id == org.id ? current_user : org.default_arborist
+    estimate.organization = org
     estimate.save
 
     if params[:site].present?

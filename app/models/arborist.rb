@@ -41,7 +41,7 @@ class Arborist < ActiveRecord::Base
   end
 
   def current_hourly_rate
-    current_membership.hourly_rate
+    current_membership&.hourly_rate || 0
   end
 
   def recent_work

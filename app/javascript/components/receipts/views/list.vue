@@ -121,7 +121,6 @@ export default {
     },
     retrieveSummaries() {
       this.axiosGet(`/receipts/summaries`).then(response => {
-        console.log(response.data);
         this.summaries = response.data;
       })
     },

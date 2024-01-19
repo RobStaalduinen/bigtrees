@@ -103,7 +103,6 @@ export default {
   },
   mounted(){
     this.axiosGet(`/email_templates/${this.template}`).then (response => {
-      console.log(response);
       this.baseContent = response.data.email_template.content;
       this.updateEmailDefinition(response.data.email_template.parsed_subject);
     })

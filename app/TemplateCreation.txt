@@ -5,6 +5,25 @@ If you have any questions, you can call us toll free at 1 877 542 5551 or direct
 Thanks,\n\n
 "
 
+Organization.create(
+  name: "Shadow River Tree Services",
+  phone_number: '416-557-8318',
+  email: 'shadowriverts@gmail.com',
+  outgoing_quote_email: 'shadowriverts@gmail.com',
+  email_author: 'Kjell, Shadow River',
+  insurance_provider: 'Economical Insurance',
+  insurance_policy_number: '040328020P',
+  insurance_description: "$2,000,000 Commercial General Liability"
+)
+
+Address.create(
+  addressable_id: 2,
+  addressable_type: 'Organization',
+  street: '301 Wawa Ave.',
+  city: 'Wawa, ON',
+  postal_code: 'P0S1K9'
+)
+
 Tylers:
 
 EmailTemplate.create(
@@ -18,7 +37,7 @@ EmailTemplate.create(
   key: 'invoice_mailout',
   organization: Organization.first,
   subject: "Your [ORGANIZATION_NAME] Invoice",
-  content: "Hi,\n\n Your tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to tbrewer@bigislandgroup.ca\n\nCheques can be made out to Big Tree Inc. Arrangements can be made for pickup.\n\nCall me anytime on my cell at 705 943 7374 for card payments or if you have any questions.\n\nThanks,\n"
+  content: "Hi,\n\nYour tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to tbrewer@bigislandgroup.ca\n\nCheques can be made out to Big Tree Inc. Arrangements can be made for pickup.\n\nCall me anytime on my cell at 705 943 7374 for card payments or if you have any questions.\n\nThanks,\n"
 )
 
 EmailTemplate.create(
@@ -30,14 +49,14 @@ EmailTemplate.create(
 
 EmailTemplate.create(
   key: 'no_response',
-  organization: Organization.last,
+  organization: Organization.first,
   subject: "Your [ORGANIZATION_NAME] Job",
   content: "Hi,\n\nI didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. My cell is 705 943 7374 or you can reach me toll free at 1 877 542 5551. \n\nIf you have any concerns about the timing or price of your job, I would be more than happy to discuss them with you. \n\nOnce again, thanks for your time and consideration. \n\nHave a great day."
 )
 
 EmailTemplate.create(
   key: 'image_request',
-  organization: Organization.last,
+  organization: Organization.first,
   subject: "Your [ORGANIZATION_NAME] Job",
   content: "Hi,\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call/text me on my cell at 705 943 7374 or call me toll free at 1 877 542 5551. We have arborists across the GTA that can make sure we expedite this quote for you.\n\nThanks,\n"
 )

@@ -30,7 +30,7 @@
     if(backyardField == 'true'){
       displayAccess = true;
     }
-  
+
     let params = {
       estimate_id: estimateId,
       tree:{
@@ -46,7 +46,7 @@
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(params));
 
-    xmlhttp.onload = function(){ 
+    xmlhttp.onload = function(){
       let response = JSON.parse(xmlhttp.response)
       if(sendImage){
         var imageHttp = new XMLHttpRequest();
@@ -54,8 +54,7 @@
         imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
         imageHttp.send(formData);
 
-        imageHttp.onload = function(){ 
-          console.log("images uploaded");
+        imageHttp.onload = function(){
           advanceTree();
         }
       }
@@ -63,7 +62,7 @@
         advanceTree();
       }
 
-    } 
+    }
   }
 
   function setTreePageTitle(){
@@ -109,7 +108,7 @@
     }
   }
 
-  
+
 </script>
 
 <%= form_tag('/', method: 'post', id: 'tree-form') do %>
@@ -124,7 +123,7 @@
         Do you need the stump removed?
       </div>
       <div id='estimate-form__radio-question'>
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'No',
           name: 'stump_removal',
@@ -132,7 +131,7 @@
           checked: true
         %>
 
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'Yes',
           name: 'stump_removal',
@@ -147,7 +146,7 @@
         Is the tree in your back yard?
       </div>
       <div id='estimate-form__radio-question'>
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'No',
           name: 'in_backyard',
@@ -155,7 +154,7 @@
           checked: true
         %>
 
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'Yes',
           name: 'in_backyard',
@@ -174,19 +173,19 @@
         //document.getElementById('image-label').innerHTML = `Upload a few images of ${getPageTitle()} (optional)`;
         setLabels();
       </script>
-      <%= 
+      <%=
         render 'form_components/image_uploader',
         name: 'tree_images[0]',
         number: 1
       %>
 
-      <%= 
+      <%=
         render 'form_components/image_uploader',
         name: 'tree_images[1]',
         number: 2
       %>
 
-      <%= 
+      <%=
         render 'form_components/image_uploader',
         name: 'tree_images[2]',
         number: 3
@@ -202,5 +201,5 @@
       <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
     </div>
 
-  </div>  
+  </div>
 <% end %>

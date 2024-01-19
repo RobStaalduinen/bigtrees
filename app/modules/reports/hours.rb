@@ -62,25 +62,25 @@ module Reports
 
       def write_arborist_daily_hours(dates)
         write_arborist_rows do |arborist, row|
-          write_arborist_row_for_metric(arborist.work_records.by_date, dates, row)
+          write_arborist_row_for_metric(@work_records.where(arborist: arborist).by_date, dates, row)
         end
       end
 
       def write_arborist_weekly_hours(weeks)
         write_arborist_rows do |arborist, row|
-          write_arborist_row_for_metric(arborist.work_records.by_week, weeks, row)
+          write_arborist_row_for_metric(@work_records.where(arborist: arborist).by_week, weeks, row)
         end
       end
 
       def write_arborist_monthly_hours(months)
         write_arborist_rows do |arborist, row|
-          write_arborist_row_for_metric(arborist.work_records.by_month, months, row)
+          write_arborist_row_for_metric(@work_records.where(arborist: arborist).by_month, months, row)
         end
       end
 
       def write_arborist_yearly_hours(years)
         write_arborist_rows do |arborist, row|
-          write_arborist_row_for_metric(arborist.work_records.by_year, years, row)
+          write_arborist_row_for_metric(@work_records.where(arborist: arborist).by_year, years, row)
         end
       end
 

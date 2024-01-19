@@ -1,13 +1,13 @@
 <template>
 
-  <b-form-input 
+  <b-form-input
     v-bind:value="value"
     v-model='searchTerm'
     type="text"
     debounce="500"
     class='search-field'
     placeholder='Search...'>
-  </b-form-input>  
+  </b-form-input>
 
 </template>
 
@@ -26,9 +26,6 @@ export default {
     value: function() {
       this.searchTerm = this.value;
     }
-  },
-  mounted(){
-    console.log(this.searchTerm);
   }
 }
 </script>

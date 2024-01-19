@@ -78,7 +78,6 @@ export default {
   watch: {
     value() {
       this.costs = this.value;
-      console.log(this.costs);
     }
   }
 }

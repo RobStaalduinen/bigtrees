@@ -220,7 +220,6 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
     else{
-      console.log(from);
       next({ name: 'hours' })
     }
   }
@@ -237,5 +236,4 @@ document.addEventListener('DOMContentLoaded', () => {
     render: h => h(App),
     store: store
   })
-  console.log(app)
 })

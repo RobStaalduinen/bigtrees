@@ -22,6 +22,7 @@ class Estimate < ActiveRecord::Base
 
 	belongs_to :customer
 	belongs_to :arborist
+  belongs_to :organization
 
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments

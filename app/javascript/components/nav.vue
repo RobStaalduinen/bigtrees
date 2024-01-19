@@ -62,7 +62,6 @@ export default {
       })
     },
     organizationName() {
-      console.log(this.$store.state)
       if(this.$store.state.organization != null) {
         return this.$store.state.organization.name;
       }

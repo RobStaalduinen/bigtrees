@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     downloadTracker() {
-      console.log("Downloading");
       this.axiosDownload('/trackers.xlsx', 'MasterTracker.xlsx')
     }
   },
