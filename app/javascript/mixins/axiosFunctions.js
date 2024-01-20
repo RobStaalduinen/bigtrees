@@ -19,7 +19,7 @@ export default {
     axios.defaults.headers.common['Content-Type'] = 'application/json'
 
     if(localStorage.getItem('selectedOrganizationId') != null) {
-      axios.defaults.headers.common['organization_id'] = localStorage.getItem('selectedOrganizationId');
+      axios.defaults.headers.common['X-ORGANIZATION-ID'] = localStorage.getItem('selectedOrganizationId');
     }
   }
 }

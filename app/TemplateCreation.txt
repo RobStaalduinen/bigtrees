@@ -117,5 +117,5 @@ EmailTemplate.create(
   key: 'image_request',
   organization: Organization.last,
   subject: "Your [ORGANIZATION_NAME] Job",
-  content: "Hi,\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call me  at 1-416-557-8318. We have arborists across the GTA that can make sure we expedite this quote for you.\n\nThanks,\n"
+  content: "Hi,\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call me at 1-416-557-8318.\n\nThanks,\n"
 )

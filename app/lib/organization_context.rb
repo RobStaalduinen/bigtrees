@@ -2,7 +2,7 @@
 
 class OrganizationContext
   def self.set_current_organization(request, current_user)
-    header_org_id = request.headers['HTTP_ORGANIZATION_ID']
+    header_org_id = request.headers['HTTP_X_ORGANIZATION_ID']
 
     return unless current_user
 
