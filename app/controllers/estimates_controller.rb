@@ -35,9 +35,10 @@ class EstimatesController < ApplicationController
     end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
-    # @estimates = @estimates.distinct
+
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
+
     render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
   end
 
@@ -61,7 +62,10 @@ class EstimatesController < ApplicationController
     authorize Estimate, :create?
 
     estimate = Estimate.new(estimate_params)
-    estimate.arborist = current_user
+    org = OrganizationContext.current_organization
+
+    estimate.arborist = current_user.organization_id == org.id ? current_user : org.default_arborist
+    estimate.organization = org
     estimate.save
 
     if params[:site].present?
@@ -70,7 +74,7 @@ class EstimatesController < ApplicationController
     end
 
     if params[:customer].present?
-      customer = Customer.find_by(id: customer_params[:id]) || Customer.create(customer_params)
+      customer = policy_scope(Customer).find_by(id: customer_params[:id]) || Customer.create(customer_params)
       estimate.update(customer: customer)
 
       customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)

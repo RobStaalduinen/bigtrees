@@ -1,4 +1,5 @@
 class Receipt < ActiveRecord::Base
+  belongs_to :organization
   belongs_to :arborist
   belongs_to :vehicle
 

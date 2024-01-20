@@ -5,7 +5,8 @@ module Roles
     arborist: 'Roles::Arborist',
     team_lead: 'Roles::TeamLead',
     admin: 'Roles::Admin',
-    mechanic: 'Roles::Mechanic'
+    mechanic: 'Roles::Mechanic',
+    super_admin: 'Roles::SuperAdmin'
   }.freeze
 
   def self.for_name(name)

@@ -22,6 +22,7 @@ class Estimate < ActiveRecord::Base
 
 	belongs_to :customer
 	belongs_to :arborist
+  belongs_to :organization
 
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments
@@ -146,10 +147,6 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_quote
-		# destination = Rails.root.join("tmp", "Quote__Estimate_#{self.id}__PDF.pdf")
-		# Libreconv.convert(estimate_file.to_s, destination.to_s)
-    # return destination.to_s
-
     GenerateQuote.call(self)
 	end
 

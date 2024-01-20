@@ -13,6 +13,7 @@
           <app-employee-form
             v-if='employeeDefinition'
             v-model='employeeDefinition'
+            :lockEmail='true'
           ></app-employee-form>
 
 
@@ -73,7 +74,7 @@ export default {
     },
     reset() {
       this.submitting = false;
-      this.employeeDefinition = {};
+      this.employeeDefinition = { ...this.employee };
     }
   },
   watch: {

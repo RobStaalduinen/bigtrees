@@ -52,7 +52,7 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :submission_completed, :stumping_only,
-      ).merge({ arborist_id: Arborist::DEFAULT_ID })
+      ).merge({ arborist_id: Arborist::DEFAULT_ID, organization_id: 1 }) # TODO: Change this when having whitelabed request page
     end
 
     def site_params

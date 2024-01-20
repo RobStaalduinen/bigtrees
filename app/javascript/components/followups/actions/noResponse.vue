@@ -1,21 +1,24 @@
 <template>
-  <app-right-sidebar :id='id' title='Send Followup' submitText='Send' :onSubmit='sendImageRequest' :alternateAction='skipSend'>
+  <app-right-sidebar :id='id' title='Send Followup' submitText='Send' :onSubmit='sendNoResponseRequest' :alternateAction='skipSend'>
     <template v-slot:content>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template="no_response"
+        :estimate='estimate'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
-import { noResponseFollowup } from '../../../content/emailContent';
+import TemplatedEmailForm from '../../common/forms/templatedEmail.vue';
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
 import { EmailDefinition } from '@/models';
-
 export default {
   components: {
-    'app-email-form': EmailForm
+    'app-email-form': TemplatedEmailForm
   },
   props: {
     id: {
@@ -35,9 +38,9 @@ export default {
       this.emailDefinition = { ...new_email }
     },
     skipSend(){
-      this.sendImageRequest(true);
+      this.sendNoResponseRequest(true);
     },
-    sendImageRequest(skip = false) {
+    sendNoResponseRequest(skip = false) {
       var params = {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
@@ -50,18 +53,6 @@ export default {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       })
-    }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          [this.estimate.customer_detail.email],
-          'Your Big Tree Services Job',
-          noResponseFollowup(this.estimate)
-        )
-      }
     }
   }
 }

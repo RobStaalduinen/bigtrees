@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     signedIn() {
-      return this.$store.state.user.logged_in;
+      return this.$store.state.user.logged_in && this.$store.state.organization.id != null;
     }
   },
   mounted() {

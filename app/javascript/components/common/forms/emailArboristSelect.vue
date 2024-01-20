@@ -59,8 +59,10 @@ export default {
         }
       })
 
-      initial.push({ value: 'shutteredimages@yahoo.com', text: 'Dave Cerasani' })
-      initial.push({ value: 'rob.staalduinen@gmail.com', text: 'Rob van Staalduinen' })
+      if(this.$store.state.organization.id == 1) {
+        initial.push({ value: 'shutteredimages@yahoo.com', text: 'Dave Cerasani' })
+        initial.push({ value: 'rob.staalduinen@gmail.com', text: 'Rob van Staalduinen' })
+      }
 
       return initial;
     },

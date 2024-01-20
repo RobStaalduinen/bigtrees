@@ -1,6 +1,6 @@
 <% estimate.tree_images.each_slice(9).each_with_index do |images, i| %>
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/header' %>
+    <%= render 'quotes/pdf/header', organization: organization %>
 
     <div class='estimate-header'>
       <% if i == 0 %>

@@ -4,7 +4,7 @@
       <template v-slot:header-right>
         <div class='header-container'>
           <template v-if='hasPermission("equipment_requests", "admin")'>
-            <a href='/equipment_requests/tracker.xlsx'>
+            <a @click='downloadTracker'>
               <b-icon icon='download'></b-icon>
               Tracker
             </a>
@@ -92,6 +92,9 @@ export default {
     toggleCreate() {
       this.selectedRequest = null;
       this.$root.$emit('bv::toggle::collapse', 'create-equipment-request');
+    },
+    downloadTracker() {
+      this.axiosDownload('/equipment_requests/tracker.xlsx', 'RepairRequestTracker.xlsx')
     }
   }
 }

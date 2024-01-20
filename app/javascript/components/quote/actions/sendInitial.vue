@@ -8,17 +8,22 @@
           :options="scheduleTextOptions"
           validationRules='required'
         />
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template='quote_mailout'
+        :estimate='estimate'
+        :contentOptions='quoteContentOptions'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
-import { quoteContent, reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
+import EmailForm from '../../common/forms/templatedEmail';
+import { reducedCosts, nextFewDays, nextWeek, nextTwoWeeks, moreThanTwoWeeks } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
-import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -76,7 +81,6 @@ export default {
   computed: {
     quoteContentOptions() {
       var options = {}
-
       if(this.scheduleText != 'none') {
         var contentMapper = {
           reduced_costs: reducedCosts,
@@ -88,28 +92,6 @@ export default {
         options.afterList =  contentMapper[this.scheduleText]
       }
       return options;
-    }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          'Your Quote from Big Tree Services',
-          quoteContent(this.estimate, this.quoteContentOptions)
-        )
-      }
-    },
-    scheduleText: {
-      immediate: false,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer_detail.email,
-          'Your Quote from Big Tree Services',
-          quoteContent(this.estimate, this.quoteContentOptions)
-        )
-      }
     }
   }
 }

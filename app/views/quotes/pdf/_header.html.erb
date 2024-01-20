@@ -2,17 +2,21 @@
   <tr>
     <td class='logo-cell'>
       <div class='logo-box'>
-        <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
-        <div class='contact-details'>
-          1-877-542-5551 | www.BigTreeServices.ca
-        </div>
+        <% if organization.id == 2%>
+          <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
+        <% else %>
+          <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
+        <% end %>
       </div>
     </td>
     <td class='address-cell'>
+      <div stlye='width: 100%; display: flex; justify-content: end;'>
       <div>
-        <span class='company-name'>Big Tree Inc.</span> <br>
-        43 Farmington Dr. <br>
-        Brampton, ON, L6W 2V4<br>
+        <span class='company-name'><%= organization.name %></span> <br>
+        <%= organization.address.street %> <br>
+        <%= [organization.address.city, organization.address.postal_code].join(", ") %><br>
+        <%= organization.phone_number %>
+      </div>
       </div>
     </td>
   </tr>

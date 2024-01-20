@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_201143) do
+ActiveRecord::Schema.define(version: 2024_01_13_164119) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.datetime "updated_at", null: false
     t.integer "addressable_id"
     t.string "addressable_type"
+    t.string "postal_code"
     t.index ["addressable_id"], name: "index_addresses_on_addressable_id"
     t.index ["addressable_type"], name: "index_addresses_on_addressable_type"
     t.index ["city"], name: "index_addresses_on_city"
@@ -39,7 +40,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
 
   create_table "arborists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
-    t.string "certification", null: false
+    t.string "certification"
     t.string "phone_number"
     t.string "email"
     t.string "password"
@@ -53,6 +54,8 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.boolean "can_manage_estimates", default: false
     t.integer "organization_id"
     t.string "role", default: "arborist"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
   end
 
   create_table "costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -116,6 +119,17 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
   end
 
+  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "key"
+    t.string "subject"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_email_templates_on_key"
+    t.index ["organization_id"], name: "index_email_templates_on_organization_id"
+  end
+
   create_table "equipment_assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "vehicle_id"
@@ -140,6 +154,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.integer "resolver_id"
     t.string "resolution_notes"
     t.integer "mechanic_id"
+    t.integer "organization_id"
     t.index ["resolver_id"], name: "index_equipment_requests_on_resolver_id"
   end
 
@@ -171,6 +186,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.date "work_end_date"
     t.date "work_completion_date"
     t.boolean "skip_schedule"
+    t.integer "organization_id"
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
@@ -228,10 +244,32 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
+  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.bigint "arborist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "hourly_rate", default: 0.0
+    t.index ["arborist_id"], name: "index_organization_memberships_on_arborist_id"
+    t.index ["organization_id"], name: "index_organization_memberships_on_organization_id"
+  end
+
   create_table "organizations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.string "website"
+    t.string "email"
+    t.string "email_author"
+    t.string "outgoing_quote_email"
+    t.string "quote_bcc"
+    t.string "email_signature"
+    t.string "insurance_provider"
+    t.string "insurance_policy_number"
+    t.string "insurance_description"
+    t.string "hst_number"
+    t.integer "address_id"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -257,6 +295,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.string "image_url"
     t.string "state", default: "pending"
     t.string "rejection_reason"
+    t.integer "organization_id"
     t.index ["state"], name: "index_receipts_on_state"
   end
 
@@ -320,6 +359,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
 
   create_table "vehicles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
+    t.integer "organization_id"
     t.index ["name"], name: "index_vehicles_on_name"
   end
 
@@ -342,6 +382,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_201143) do
     t.float "unpaid_hours"
     t.float "hourly_rate"
     t.integer "payout_id"
+    t.integer "organization_id"
     t.index ["arborist_id"], name: "index_work_records_on_arborist_id"
   end
 

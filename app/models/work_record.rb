@@ -1,6 +1,7 @@
 class WorkRecord < ActiveRecord::Base
   belongs_to :arborist
   belongs_to :payout
+  belongs_to :organization
 
   before_save :set_hourly_rate
 
@@ -18,7 +19,7 @@ class WorkRecord < ActiveRecord::Base
   end
 
   def set_hourly_rate
-    self.hourly_rate = self.arborist.hourly_rate
+    self.hourly_rate = self.arborist.current_hourly_rate
   end
 
   def range_string

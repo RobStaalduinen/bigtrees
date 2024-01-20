@@ -33,7 +33,6 @@ export default {
     retrieveSummary() {
       this.axiosGet(`/work_records/summaries?summary_type=${this.summaryType}`)
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.hours = response.data;
             this.loadingSummary = false;

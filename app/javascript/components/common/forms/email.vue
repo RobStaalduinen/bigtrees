@@ -79,12 +79,8 @@ export default {
       this.$emit('changed', this.emailDefinition)
     },
     value() {
-      console.log("VAL CHANGED");
       this.emailBody = this.value.content
     }
-  },
-  mounted() {
-    console.log(this.recipients)
   }
 }
 </script>

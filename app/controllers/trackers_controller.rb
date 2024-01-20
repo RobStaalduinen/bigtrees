@@ -8,7 +8,9 @@ class TrackersController < ApplicationController
   def index
     authorize Estimate, :admin?
 
-    master_tracker = GenerateMasterTracker.call(Estimate.submitted.includes(site: [ :address ]))
+    @estimates = policy_scope(Estimate)
+
+    master_tracker = GenerateMasterTracker.call(@estimates.submitted.includes(site: [ :address ]))
 
     respond_to do |format|
       format.xlsx {

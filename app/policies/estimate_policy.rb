@@ -14,5 +14,13 @@ class EstimatePolicy < ApplicationPolicy
     attr_reader :user, :scope, :role
 
     role_resource :estimates
+
+    def resolve
+      if level == 'organization' || level == 'all'
+        scope.where(organization_id: OrganizationContext.current_organization.id)
+      else
+        scope.joins(:arborist).where(arborist: user)
+      end
+    end
   end
 end

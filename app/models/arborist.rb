@@ -3,7 +3,10 @@ class Arborist < ActiveRecord::Base
 
   has_secure_password
 
-  belongs_to :organization
+  devise :recoverable
+
+  has_many :organization_memberships, dependent: :destroy
+  has_many :organizations, through: :organization_memberships
 
   has_many :estimates
   has_many :receipts
@@ -13,8 +16,16 @@ class Arborist < ActiveRecord::Base
 
   before_create :set_session_token
 
+  def after_database_authentication
+    redirect_to('/login')
+  end
+
   def serialized
     slice(:id, :name)
+  end
+
+  def has_memberships?
+    organization_memberships.any?
   end
 
   def set_session_token
@@ -23,6 +34,14 @@ class Arborist < ActiveRecord::Base
 
   def get_receipts
     self.admin ? Receipt.all : self.receipts
+  end
+
+  def current_membership
+    organization_memberships.find_by(organization_id: OrganizationContext.current_organization.id)
+  end
+
+  def current_hourly_rate
+    current_membership&.hourly_rate || 0
   end
 
   def recent_work
@@ -34,6 +53,19 @@ class Arborist < ActiveRecord::Base
 
   def role_permissions
     Roles.for_name(self.role)
+  end
+
+  def generate_initial_password
+    return nil unless password.blank?
+
+    new_password = SecureRandom.hex(6)
+
+    self.update(
+      password: new_password,
+      password_confirmation: new_password
+    )
+
+    new_password
   end
 
   scope :real, -> { where.not(hidden: true) }

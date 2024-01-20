@@ -4,7 +4,7 @@ class WorkRecordsController < AdminBaseController
   layout 'admin_material'
 
   def index
-    @work_records = current_user.admin? ? WorkRecord.all : current_user.work_records
+    @work_records = policy_scope(WorkRecord)
     if params[:arborist_id]
       @work_records = @work_records.where(arborist_id: params[:arborist_id])
     end
@@ -47,6 +47,8 @@ class WorkRecordsController < AdminBaseController
     authorize! :manage, Arborist
 
     report = Reports::Hours.new(
+      work_records: policy_scope(WorkRecord),
+      arborists: policy_scope(Arborist),
       spreadsheet_writer: Excel::Writer.new('hours_template.xlsx', 'big_tree_hours.xlsx')
     ).create_spreadsheet
 
@@ -54,7 +56,7 @@ class WorkRecordsController < AdminBaseController
   end
 
   def summaries
-    @work_records = current_user.admin? ? WorkRecord.all : current_user.work_records
+    @work_records = policy_scope(WorkRecord) # current_user.admin? ? WorkRecord.all : current_user.work_records
 
     if params[:arborist_id]
       @work_records = @work_records.where(arborist_id: params[:arborist_id])
@@ -84,6 +86,8 @@ class WorkRecordsController < AdminBaseController
   private
 
     def work_record_params
-      params.require(:work_record).permit(:date, :hours, :unpaid_hours, :start_at, :end_at)
+      params
+      .require(:work_record).permit(:date, :hours, :unpaid_hours, :start_at, :end_at)
+      .merge({ organization_id: OrganizationContext.current_organization.id })
     end
 end

@@ -1,4 +1,4 @@
-<%= render 'quotes/pdf/header'%>
+<%= render 'quotes/pdf/header', organization: organization %>
 
 <div class='estimate-header'>
   <% if estimate.invoice&.number&.present? && !is_receipt %>
@@ -35,17 +35,10 @@
   </tr>
 
   <tr class='info-row'>
-    <td class='title-column'><b>Arborist Name:</b></td>
-    <td class='entry-column'>Tyler Brewer</td>
-    <td class='title-column'><b>Arborist Cert:</b></td>
-    <td class='entry-column'>400184807</td>
-  </tr>
-
-  <tr class='info-row'>
-    <td class='title-column'><b>Cell Number:</b></td>
-    <td class='entry-column'>705-943-7374</td>
+    <td class='title-column'><b>Company Number:</b></td>
+    <td class='entry-column'><%= organization.phone_number %></td>
     <td class='title-column'><b>Email:</b></td>
-    <td class='entry-column'>tbrewer@bigislandgroup.ca</td>
+    <td class='entry-column'><%= organization.email %></td>
   </tr>
 </table>
 
@@ -55,7 +48,7 @@
   <tr>
     <td>
       <div class='signature-left'>
-        We propose to furnish material and labor, complete in accordance with the above specifications for the total. This proposal may be withdrawn by us if not accepted within 10 days. Acceptance of Proposal - the above prices, specifications and conditions included on Pages 1 and 3 are satisfactory and are hereby accepted. Big Trees is authorized to do the work as specified.  Payment will be made within 14 days of completion.
+        We propose to furnish material and labor, complete in accordance with the above specifications for the total. This proposal may be withdrawn by us if not accepted within 10 days. Acceptance of Proposal - the above prices, specifications and conditions included on Pages 1 and 3 are satisfactory and are hereby accepted. <%= organization.name %> is authorized to do the work as specified.  Payment will be made within 14 days of completion.
       </div>
     </td>
     <td>
@@ -74,19 +67,22 @@
 <table class='liability-row'>
   <tr>
     <td class='liability-column'>
-      <b>Big Tree - Brampton, ON</b><br>
-      <b>43 Farmington Dr.</b><br>
-      <b>tbrewer@bigislandgroup.ca</b><br>
-      <b>1 877 542 5551</b>
+      <b><%= organization.name %></b><br>
+      <b><%= organization.address.street %></b><br>
+      <b><%= organization.address.city %></b><br>
+      <b><%= organization.email %></b><br>
+      <b><%= organization.phone_number %></b>
     </td>
     <td class='liability-column'>
-      <b>Intact Insurance</b><br>
-      <b>Policy # 501381704</b><br>
-      <b>$2,000,000 Commercial General Liability</b><br>
-      <% if date_tendered >= "2022-01-01".to_date %>
-        <b>HST # 752547802RT0001</b>
-      <% else %>
-        <b>HST # 720295724RT0001</b>
+      <b><%= organization.insurance_provider %></b><br>
+      <b>Policy # <%= organization.insurance_policy_number %></b><br>
+      <b><%= organization.insurance_description %></b><br>
+      <% if organization.hst_number %>
+        <% if date_tendered >= "2022-01-01".to_date %>
+          <b>HST # <%= organization.hst_number %></b>
+        <% else %>
+          <b>HST # <%= organization.hst_number %></b>
+        <% end %>
       <% end %>
     </td>
   </tr>

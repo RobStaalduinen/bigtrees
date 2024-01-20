@@ -38,7 +38,7 @@
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(params));
 
-    xmlhttp.onload = function(){  
+    xmlhttp.onload = function(){
       let response = JSON.parse(xmlhttp.response)
       if(sendImage){
         var imageHttp = new XMLHttpRequest();
@@ -46,8 +46,7 @@
         imageHttp.open("POST", `/tree_images?tree_id=${response.tree_id}`);
         imageHttp.send(formData);
 
-        imageHttp.onload = function(){ 
-          console.log("images uploaded");
+        imageHttp.onload = function(){
           advanceTree();
         }
       }
@@ -100,7 +99,7 @@
     }
   }
 
-  
+
 </script>
 
 <%= form_tag('/', method: 'post', id: 'tree-form') do %>
@@ -115,7 +114,7 @@
         Is this stump in your back yard?
       </div>
       <div id='estimate-form__radio-question'>
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'No',
           name: 'in_backyard',
@@ -123,7 +122,7 @@
           checked: true
         %>
 
-        <%= 
+        <%=
           render 'form_components/radio_field',
           label: 'Yes',
           name: 'in_backyard',
@@ -138,7 +137,7 @@
         Upload a picture of Stump #1 (optional)
       </div>
 
-      <%= 
+      <%=
         render 'form_components/image_uploader',
         name: 'tree_images[0]',
         number: 1
@@ -154,5 +153,5 @@
       <%= image_tag "/loading_spinner.gif", id: 'loading', style: 'width: 50px; height: 50px; margin: 0 auto;' %>
     </div>
 
-  </div>  
+  </div>
 <% end %>

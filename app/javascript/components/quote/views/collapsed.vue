@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import QuoteSend from '../actions/send';
+import QuoteSend from '../actions/sendInitial';
 import QuoteSendTeam from '../actions/sendToTeam';
 
 export default {
