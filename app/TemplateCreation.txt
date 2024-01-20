@@ -24,6 +24,8 @@ Address.create(
   postal_code: 'L6W 2V4'
 )
 
+xa54829bc
+
 Organization.create(
   name: "Shadow River Tree Services",
   phone_number: '1-416-557-8318',
@@ -96,7 +98,7 @@ EmailTemplate.create(
   key: 'invoice_mailout',
   organization: Organization.last,
   subject: "Your [ORGANIZATION_NAME] Invoice",
-  content: "Hi,\n\n Your tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to shadowriverts@gmail.com\n\nCheques can be made out to Shadow River Tree Services. Arrangements can be made for pickup.\n\nCall me anytime at 1-416-557-8318 for card payments or if you have any questions.\n\nThanks,\n"
+  content: "Hi,\n\nYour tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to shadowriverts@gmail.com\n\nCheques can be made out to Shadow River Tree Services. Arrangements can be made for pickup.\n\nCall me anytime at 1-416-557-8318 for card payments or if you have any questions.\n\nThanks,\n"
 )
 
 EmailTemplate.create(

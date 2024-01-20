@@ -45,6 +45,7 @@
               name='Remove'
               icon='trash-fill'
               :onClick='removeEmployee'
+              v-if="employee.role != 'admin' && employee.role != 'super_admin'"
             />
           </template>
         </app-collapsable-action-bar>
