@@ -9,6 +9,6 @@ class InvoiceMailer < ApplicationMailer
 		@content = content
 		file = invoice.pdf_receipt
 		attachments[invoice.pdf_receipt_fle_name] = File.read(file)
-		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com', 'tbrewer@bigislandgroup.ca'])
+		mail(to: email, from: estimate.organization.quote_author, subject: subject, bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc])
   end
 end
