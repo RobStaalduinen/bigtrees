@@ -10,6 +10,7 @@ Organization.first.update(
   email: 'tbrewer@bigislandgroup.ca',
   outgoing_quote_email: 'tbrewer@bigislandgroup.ca',
   email_author: 'Tyler, Big Tree Services',
+  email_signature: 'Tyler Brewer\nCertified Utility Arborist',
   insurance_provider: 'Intact Insurance',
   insurance_policy_number: '501381704',
   insurance_description: "$2,000,000 Commercial General Liability"
@@ -26,9 +27,12 @@ Address.create(
 Organization.create(
   name: "Shadow River Tree Services",
   phone_number: '1-416-557-8318',
+  website: 'www.bigtreeservices.ca',
   email: 'shadowriverts@gmail.com',
   outgoing_quote_email: 'shadowriverts@gmail.com',
+  quote_bcc: 'office@bigislandgroup.ca',
   email_author: 'Kjell, Shadow River',
+  email_signature: 'Kjell Klockars',
   insurance_provider: 'Economical Insurance',
   insurance_policy_number: '040328020P',
   insurance_description: "$2,000,000 Commercial General Liability"
