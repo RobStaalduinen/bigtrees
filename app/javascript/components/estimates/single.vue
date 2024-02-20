@@ -22,7 +22,9 @@
       <div class='contact-row'>
         <div class='estimate-body-row' v-if='estimate.site && estimate.site.address'>
           <b-icon icon='globe' class='contact-icon'></b-icon>
-          {{ estimate.site.address.full_address }}
+          <a :href="'http://maps.google.com/?q=' + encodeURIComponent(estimate.site.address.full_address)" target='_blank'>
+            {{ estimate.site.address.full_address }}
+          </a>
         </div>
         <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
       </div>

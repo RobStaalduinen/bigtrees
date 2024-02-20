@@ -11,7 +11,9 @@
             <b>Site Addr.</b>
           </b-col>
           <b-col cols='8'>
-            {{ getFullAddress(estimate.site.address) }}
+            <a :href="'http://maps.google.com/?q=' + encodeAddress(estimate.site.address)" target='_blank'>
+              {{ getFullAddress(estimate.site.address) }}
+            </a>
           </b-col>
         </b-row>
 
@@ -20,7 +22,9 @@
             <b>Billing Addr.</b>
           </b-col>
           <b-col cols='8'>
-            {{ getFullAddress(estimate.customer_detail.address) }}
+            <a :href="'http://maps.google.com/?q=' + encodeAddress(estimate.customer_detail.address)" target='_blank'>
+              {{ getFullAddress(estimate.customer_detail.address) }}
+            </a>
           </b-col>
         </b-row>
 
@@ -72,6 +76,9 @@ export default {
     }
   },
   methods: {
+    encodeAddress(address) {
+      return encodeURIComponent(this.getFullAddress(address));
+    },
     getFullAddress(address) {
       return address != null ? address.full_address : ''
     },
