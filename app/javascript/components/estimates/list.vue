@@ -45,10 +45,11 @@ export default {
       loadingEstimates: false,
       searchTerm: null,
       perPage: 60,
-      page: 1,
+      page: null,
       totalEntries: 1,
       status: 'active',
-      filters: { createdAfter: 'six_months', status: 'active' }
+      filters: { status: 'active', createdAfter: 'one_year' },
+      filteringLoaded: false
     }
   },
   computed: mapState({
@@ -57,7 +58,7 @@ export default {
   }),
   methods: {
     retrieveEstimates() {
-      if(this.loadingEstimates == true) {
+      if(this.loadingEstimates == true || this.filteringLoaded == false) {
         return
       }
       this.loadingEstimates = true;
@@ -106,28 +107,31 @@ export default {
         searchTerm: this.searchTerm,
         filters: this.filters
       };
-      localStorage.setItem('estimate-filtering-params', JSON.stringify(allFiltering));
+      localStorage.setItem('estimateSearchParams', JSON.stringify(allFiltering));
     },
-    refreshFiltering() {
-      var oldFilters = JSON.parse(localStorage.getItem('estimate-filtering-params'))
-      if(oldFilters != null) {
-        this.page = (oldFilters.page || 1);
-        this.searchTerm = oldFilters.searchTerm;
-        this.filters = (oldFilters.filters || { createdAfter: 'six_months', status: 'active' });
+    loadFiltering() {
+      let presetFilters = JSON.parse(localStorage.getItem('estimateSearchParams'));
+      if(presetFilters != null) {
+        this.page = presetFilters.page || 1;
+        this.searchTerm = presetFilters.searchTerm;
+        this.filters = presetFilters.filters || { status: 'active', createdAfter: 'one_year' };
       }
+      else {
+        this.page = 1;
+        this.searchTerm = null;
+        this.filters = { status: 'active', createdAfter: 'one_year' }
+      }
+
+      setTimeout(() => { this.filteringLoaded = true }, 1)
     },
     resetFiltering() {
       this.searchTerm = null;
       this.page = 1;
-      this.filters = { createdAfter: 'six_months', status: 'active' };
-      // this.retrieveEstimates();
+      this.filters = { createdAfter: 'one_year', status: 'active' };
     }
   },
-  created() {
-    // this.refreshFiltering();
-  },
   mounted() {
-    this.retrieveEstimates();
+    this.loadFiltering();
     EventBus.$on('ESTIMATE_UPDATED', this.retrieveEstimates)
   },
   beforeDestroy() {
@@ -135,17 +139,23 @@ export default {
   },
   watch: {
     searchTerm: function(){
+      if(!this.filteringLoaded) { return }
       this.page = 1;
       this.saveFiltering();
       this.retrieveEstimates();
     },
     page: function() {
+      if(!this.filteringLoaded) { return }
       this.saveFiltering();
       this.retrieveEstimates();
     },
     filters: function() {
+      if(!this.filteringLoaded) { return }
       this.page = 1;
       this.saveFiltering();
+      this.retrieveEstimates();
+    },
+    filteringLoaded() {
       this.retrieveEstimates();
     },
     mySchedule() {

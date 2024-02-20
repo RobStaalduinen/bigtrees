@@ -58,6 +58,8 @@ class Estimate < ActiveRecord::Base
       where('estimates.created_at >= ?', Date.today - 1.month)
     when 'six_months'
       where('estimates.created_at >= ?', Date.today - 6.months)
+    when 'one_year'
+      where('estimates.created_at >= ?', Date.today - 1.year)
     else
       all
     end
