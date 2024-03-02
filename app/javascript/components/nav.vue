@@ -22,7 +22,6 @@
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
         <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
             <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
-            <b-dropdown-item @click='changeOrganization' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
             <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>
           </b-nav-item-dropdown>
       </b-collapse>

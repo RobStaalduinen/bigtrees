@@ -82,7 +82,7 @@ export default {
       work_end_date: this.estimate.work_end_date,
       lead_arborist: null,
       emailTeam: false,
-      scheduleWork: true,
+      scheduleWork: false,
       submitting: false,
       emailDefinition: null
     }
