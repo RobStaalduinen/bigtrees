@@ -104,7 +104,7 @@ class ArboristsController < ApplicationController
 
     def arborist_update_params
       params.require(:arborist).permit(
-        :name, :email, :phone_number
+        :name, :email, :phone_number, :role
       )
     end
 
