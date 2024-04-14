@@ -15,7 +15,7 @@
 <script>
 import SingleCost from '../forms/single';
 import EventBus from '@/store/eventBus';
-import MultiCostFrom from '@/components/costs/forms/multiple';
+import MultiCostFrom from '@/components/costs/forms/multipleExpanded';
 import QuickCosts from '@/components/costs/widgets/quick';
 
 export default {
