@@ -1,7 +1,7 @@
 <template>
   <app-right-sidebar-form
     :id='id'
-    title='Schedule Work'
+    title='Approve and Schedule'
     submitText='Submit'
     :onSubmit='updateWorkDate'
     :submitting='submitting'
@@ -16,7 +16,15 @@
         :options="arboristOptions"
         validationRules='required'
       />
-
+      <b-form-group label="Waiting for permit?">
+        <b-form-checkbox
+          id="permit-required"
+          v-model="permitRequired"
+          name="permit-required"
+          :value='true'
+          :unchecked-value='false'
+        />
+      </b-form-group>
       <app-conditional-box
         v-model='scheduleWork'
         conditionName='Add Date Range'
@@ -84,7 +92,8 @@ export default {
       emailTeam: false,
       scheduleWork: false,
       submitting: false,
-      emailDefinition: null
+      emailDefinition: null,
+      permitRequired: false
     }
   },
   methods: {
@@ -98,10 +107,11 @@ export default {
 
         var params = {
           estimate: {
-             work_start_date: null,
-             work_end_date: null,
-             skip_schedule: false,
-            arborist_id: this.lead_arborist
+            work_start_date: null,
+            work_end_date: null,
+            skip_schedule: false,
+            arborist_id: this.lead_arborist,
+            pending_permit: this.permitRequired
           }
         }
 
@@ -113,6 +123,12 @@ export default {
           params.estimate.work_start_date = null;
           params.estimate.work_end_date = null;
           params.estimate.skip_schedule = true;
+        }
+
+        if(this.permitRequired) {
+          params.estimate.work_start_date = null;
+          params.estimate.work_end_date = null;
+          params.estimate.skip_schedule = false;
         }
 
         this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {

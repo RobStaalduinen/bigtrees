@@ -8,7 +8,7 @@ class EstimateHelper {
   }
 
   canSchedule() {
-    return this.estimate.status == 'quote_sent';
+    return this.estimate.status == 'quote_sent' || this.estimate.status == 'pending_permit';
   }
 
   canSendInvoice() {

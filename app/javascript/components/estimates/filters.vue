@@ -46,7 +46,8 @@ export default {
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },
         { value: 'scheduled', text: 'Approved and Scheduled' },
-        { value: 'unknown', text: 'Unknown' }
+        { value: 'unknown', text: 'Unknown' },
+        { value: 'cancelled', text: 'Cancelled' }
       ],
       createdOptions: [
         { value: 'one_week', text: 'One Week' },

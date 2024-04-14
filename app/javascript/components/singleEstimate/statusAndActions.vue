@@ -55,6 +55,10 @@ const STEPS = {
     actionLabel: 'Schedule',
     inputComponent: 'estimate-schedule-quote'
   },
+  'pending_permit': {
+    actionLabel: 'Schedule',
+    inputComponent: 'estimate-schedule-quote'
+  },
   'work_scheduled': {
     actionLabel: 'Send Invoice',
     inputComponent: 'estimate-send-invoice',

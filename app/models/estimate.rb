@@ -39,6 +39,7 @@ class Estimate < ActiveRecord::Base
     ")
   end
   scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
+  scope :cancelled, -> { where(cancelled_at: nil) }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
@@ -65,22 +66,26 @@ class Estimate < ActiveRecord::Base
     end
   end
 
+
+
   scope :for_status, -> (filter_string) do
     case filter_string
     when 'active'
-      all.active.no_followup
+      submitted.all.active.no_followup
     when 'needs_pricing'
-      price_required.active
+      submitted.price_required.active
     when 'pre_quote'
-      pre_quote
+      submitted.pre_quote
     when 'awaiting_response'
-      sent.active
+      submitted.sent.active
     when 'to_pay'
-      pending_payment.active
+      submitted.pending_payment.active
     when 'scheduled'
-      scheduled.active
+      submitted.scheduled.active
     when 'unknown'
-      unknown
+      submitted.unknown
+    when 'cancelled'
+      cancelled
     else
       all
     end
@@ -92,7 +97,7 @@ class Estimate < ActiveRecord::Base
 		needs_arborist: 1,
 		pending_quote: 2,
 		quote_sent: 3,
-		quote_accepted: 4,
+		pending_permit: 4,
 		work_scheduled: 5,
 		work_completed: 6,
 		final_invoice_sent: 7,
@@ -186,8 +191,10 @@ class Estimate < ActiveRecord::Base
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
-		elsif(self.quote_sent? && !self.work_scheduled?)
+		elsif(self.quote_sent? && !self.work_scheduled? && !self.pending_permit)
 			:quote_sent
+    elsif(self.quote_sent? && self.pending_permit)
+      :pending_permit
 		elsif(self.work_scheduled? && !self.invoice.sent?)
 			:work_scheduled
 		elsif(self.invoice.sent? && !self.invoice.paid?)

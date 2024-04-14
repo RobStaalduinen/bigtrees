@@ -8,7 +8,7 @@
       Move to Unknown
     </b-dropdown-item>
 
-    <b-dropdown-item v-if="estimate.is_unknown" @click='updateStatus(false)'>
+    <b-dropdown-item v-if="estimate.is_unknown || estimate.status == 'cancelled'" @click='updateStatus(false)'>
       Reactivate
     </b-dropdown-item>
 
@@ -36,7 +36,7 @@
       Send to Team
     </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("cancel")'>
+    <b-dropdown-item v-if='estimate.status != "cancelled"' @click='triggerAction("cancel")'>
       Cancel
     </b-dropdown-item>
   </b-nav-item-dropdown>
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     updateStatus(unknownStatus) {
-      var params = { estimate: { is_unknown: unknownStatus } };
+      var params = { estimate: { is_unknown: unknownStatus, cancelled_at: null } };
       this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
       });
@@ -71,6 +71,9 @@ export default {
         this.axiosPost(`/estimates/${this.estimate.id}/cancel`).then(response => {
           EventBus.$emit('ESTIMATE_UPDATED', {});
         });
+      } else if(name == 'restore'){
+        confirm(`Are you sure you want to restore the estimate for ${this.estimate.customer.name}?`);
+        this.updateStatus(false);
       } else {
         EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
       }
