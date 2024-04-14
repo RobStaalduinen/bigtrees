@@ -74,22 +74,31 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.validationErrors = false;
-      this.$refs.observer.validate().then(success => {
-        if (!success) {
-          this.validationErrorMessage = 'Please check all fields and try again'
+      var allUploadsComplete = this.tasks.every(task => { return task.image == undefined || task.image.uploadCompleted == true })
+      if(!allUploadsComplete) {
+          this.validationErrorMessage = 'Wait for image uploads to finish and try again'
           this.validationErrors = true;
           return;
-        }
-        var allUploadsComplete = this.tasks.every(task => { return task.image == undefined || task.image.uploadCompleted == true })
-        if(!allUploadsComplete) {
-            this.validationErrorMessage = 'Wait for image uploads to finish and try again'
-            this.validationErrors = true;
-            return;
-        }
+      }
 
-        this.submitForm();
-      })
+      this.submitForm();
+
+      // this.validationErrors = false;
+      // this.$refs.observer.validate().then(success => {
+      //   if (!success) {
+      //     this.validationErrorMessage = 'Please check all fields and try again'
+      //     this.validationErrors = true;
+      //     return;
+      //   }
+      //   var allUploadsComplete = this.tasks.every(task => { return task.image == undefined || task.image.uploadCompleted == true })
+      //   if(!allUploadsComplete) {
+      //       this.validationErrorMessage = 'Wait for image uploads to finish and try again'
+      //       this.validationErrors = true;
+      //       return;
+      //   }
+
+      //   this.submitForm();
+      // })
     },
     submitForm() {
       let customerAttributes = { ...this.customer }
