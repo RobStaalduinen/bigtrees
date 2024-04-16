@@ -2,7 +2,7 @@
   <div id='cost-row'>
     <div id='cost-row-top'>
       <app-number-field
-        v-model='cost.amount'
+        v-model='amount'
         :name='baseName + "_amount"'
         label='Amount'
         validationRules='required'
@@ -11,7 +11,7 @@
 
     <div id='cost-row-botton'>
       <app-text-area
-        v-model='cost.description'
+        v-model='description'
         :name='baseName + "_description"'
         label='Invoice Description'
         validationRules='required'
@@ -35,12 +35,13 @@ export default {
   },
   data() {
     return {
-      cost: this.value
+      amount: this.value.amount,
+      description: this.value.description
     }
   },
   computed: {
     costValue() {
-      return { ...this.cost }
+      return { amount: this.amount, description: this.description }
     }
   },
   watch: {

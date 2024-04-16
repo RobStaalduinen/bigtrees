@@ -2,15 +2,13 @@
     <b-form-group
         :label="label"
         :label-for="name"
-        :class='groupClass'
       >
       <b-form-textarea
         :id="id"
         :name="name"
-        :value="value"
+        v-model='text'
         :no-resize='noResize'
         class="form-control"
-        @input="updateValue"
       ></b-form-textarea>
     </b-form-group>
 </template>
@@ -20,11 +18,11 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
+      required: false
     },
     name: {
       type: String,
-      required: true
+      required: false
     },
     label: {
       type: String,
@@ -39,9 +37,14 @@ export default {
       default: false
     }
   },
-  methods: {
-    updateValue(event) {
-      this.$emit('input', event.target.value);
+  data() {
+    return {
+      text: this.value
+    }
+  },
+  watch: {
+    text() {
+      this.$emit('input', this.text);
     }
   }
 }

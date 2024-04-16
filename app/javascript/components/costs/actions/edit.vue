@@ -40,6 +40,7 @@ export default {
   methods: {
     updateCosts() {
       var params = { costs: this.costs }
+
       this.axiosPost(`/estimates/${this.estimate.id}/costs/update`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);
