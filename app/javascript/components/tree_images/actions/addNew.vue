@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Add Image' submitText='Save' :onSubmit='saveImage' :validate='validate'>
+  <app-right-sidebar :id='id' title='Add Images' submitText='Save' :onSubmit='saveImage' :validate='validate'>
     <template v-slot:content>
       <validation-observer ref="observer">
         <b-form-group
@@ -12,7 +12,12 @@
             :options="options"
           />
         </b-form-group>
-        <app-single-image v-model='image'></app-single-image>
+        <!-- <app-single-image v-model='image'></app-single-image> -->
+        <app-multi-image v-model='image'
+          accepts=".jpg, .jpeg, .png"
+          bucketName='tree_images'
+          name='image'
+        ></app-multi-image>
 
         <span class='submit-error' v-if='validationErrorMessage'>{{ validationErrorMessage }}</span>
       </validation-observer>
@@ -22,11 +27,13 @@
 
 <script>
 import SingleImage from '../forms/single';
+import MultiImage from '@/components/file/actions/multiUpload';
 import EventBus from '@/store/eventBus';
 
 export default {
   components: {
-    'app-single-image': SingleImage
+    'app-single-image': SingleImage,
+    'app-multi-image': MultiImage
   },
   props: {
     id: {
