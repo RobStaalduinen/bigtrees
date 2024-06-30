@@ -13,10 +13,12 @@
           />
         </b-form-group>
         <!-- <app-single-image v-model='image'></app-single-image> -->
-        <app-multi-image v-model='image'
-          accepts=".jpg, .jpeg, .png"
+        <app-multi-image
+          v-model='images'
+          accept=".jpg, .jpeg, .png"
           bucketName='tree_images'
           name='image'
+
         ></app-multi-image>
 
         <span class='submit-error' v-if='validationErrorMessage'>{{ validationErrorMessage }}</span>
@@ -46,6 +48,7 @@ export default {
   data() {
     return {
       image: {},
+      images: [],
       taskNumber: 'new',
       validationErrorMessage: null
     }
@@ -64,7 +67,7 @@ export default {
     saveImage() {
       var params = {
         estimate_id: this.estimate.id,
-        images: [this.image.url]
+        images: this.images.map(image => image.url)
       }
 
       if(this.taskNumber != 'new') {
@@ -83,6 +86,23 @@ export default {
       }
     },
     validate() {
+      if(this.images.length == 0){
+        this.validationErrorMessage = 'Please add at least one image';
+        EventBus.$emit('FORM_VALIDATION_FAILED');
+        return false;
+      }
+
+      console.log('validate', this.images);
+      for(var i = 0; i < this.images.length; i++){
+        if(this.images[i].uploading == true){
+          this.validationErrorMessage = 'Wait for image uploads to finish and try again';
+          EventBus.$emit('FORM_VALIDATION_FAILED');
+          return false;
+        }
+      }
+
+      return true;
+
       var image = this.image;
 
       if(image.uploadCompleted == null){

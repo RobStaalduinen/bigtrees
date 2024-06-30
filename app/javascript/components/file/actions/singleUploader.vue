@@ -66,11 +66,12 @@ export default {
     }
   },
   watch: {
-    url() {
-      this.$emit('input', { id: this.id, url: this.url} );
-    },
     uploading() {
-      this.$emit('upload-status-changed', { id: this.id, status: this.uploading })
+      this.$emit('upload-status-changed', { id: this.id, uploading: this.uploading, url: this.url })
+    },
+    imageToUpload() {
+      this.uploading = true
+      this.uploadFile();
     }
   },
   mounted() {

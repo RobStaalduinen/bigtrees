@@ -11,12 +11,13 @@
       class="text-nowrap text-truncate"
     ></b-form-file>
 
-    <div v-for='(image, index) in images' :key='index'>
+    <div v-for='(image, index) in images' :key='index' class='file-upload-container'>
       <app-single-uploader
         :id='index'
         :imageToUpload='image'
         :bucketName='bucketName'
-        @deleted='removeFile'
+        @upload-status-changed='(event) => handleUpload(index, event)'
+        @deleted='removeFile(index)'
       ></app-single-uploader>
     </div>
   </div>
@@ -58,6 +59,11 @@ export default {
   methods: {
     removeFile(id) {
       this.images.splice(id, 1);
+    },
+    handleUpload(id, uploadData) {
+      console.log('handleUpload', id, uploadData);
+      this.images[id] = uploadData;
+      this.$emit('input', this.images);
     }
   },
   computed: {
@@ -77,6 +83,10 @@ export default {
 
     padding: 8px;
     border: 1px lightgray solid;
+  }
+
+  .file-upload-container {
+    margin-top: 8px;
   }
 
   .file-name-field {
