@@ -31,6 +31,7 @@ class EstimateSerializer < ApplicationSerializer
   has_one :customer_detail
   has_many :costs
   has_many :trees
+  has_many :tree_images
   has_many :vehicles
   has_many :notes
 end

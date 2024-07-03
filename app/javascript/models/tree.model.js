@@ -4,6 +4,13 @@ class Tree {
   }
 
   galleryDisplay(current_display_index) {
+    if(this.tree === null) {
+      return {
+        workType: 'No Task',
+        treeName: 'Uncategorized'
+      };
+    }
+
     return {
       id:           this.tree.id,
       workType:     this.tree.work_name,

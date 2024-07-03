@@ -54,6 +54,7 @@ class TreeImagesController < ApplicationController
       params[:images].each do |image|
         TreeImage.create(
           tree: tree,
+          estimate_id: params[:estimate_id],
           image_url: image
         )
       end
@@ -67,8 +68,10 @@ class TreeImagesController < ApplicationController
   def tree
     @tree ||= if params[:tree_id].present?
                 Tree.find(params[:tree_id])
-              else
+              elsif params[:new_tree] == true
                 Tree.create(estimate_id: params[:estimate_id], work_type: 4)
+              else
+                nil
               end
   end
 

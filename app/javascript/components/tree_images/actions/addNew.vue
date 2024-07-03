@@ -12,7 +12,7 @@
             :options="options"
           />
         </b-form-group>
-        <!-- <app-single-image v-model='image'></app-single-image> -->
+
         <app-multi-image
           v-model='images'
           accept=".jpg, .jpeg, .png"
@@ -49,7 +49,7 @@ export default {
     return {
       image: {},
       images: [],
-      taskNumber: 'new',
+      taskNumber: null,
       validationErrorMessage: null
     }
   },
@@ -59,6 +59,7 @@ export default {
         return this.optionForTree(tree, index);
       })
       arr.unshift({value: 'new', text: 'New Task'});
+      arr.unshift({value: null, text: 'Uncategorized'});
 
       return arr;
     }

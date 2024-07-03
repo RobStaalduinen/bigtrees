@@ -108,13 +108,11 @@ export default {
   },
   computed: {
     imageDefinitions() {
-      var allUrls = this.estimate.trees.map((tree, index) => {
-        return tree.tree_images.map((image, imageIndex) => {
-          return {
-            tree: new Tree(tree).galleryDisplay(index),
-            treeImage: new TreeImage(image).galleryDisplay(imageIndex)
-          }
-        })
+      var allUrls = this.estimate.tree_images.map((image, imageIndex) => {
+        return {
+          tree: new Tree(image.tree).galleryDisplay(imageIndex),
+          treeImage: new TreeImage(image).galleryDisplay(imageIndex)
+        }
       })
 
       return [].concat.apply([], allUrls);

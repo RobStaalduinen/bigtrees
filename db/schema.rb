@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_13_184801) do
+ActiveRecord::Schema.define(version: 2024_06_30_114924) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -338,6 +338,7 @@ ActiveRecord::Schema.define(version: 2024_04_13_184801) do
     t.string "image_url"
     t.string "image_small_url"
     t.string "edited_image_url"
+    t.integer "estimate_id"
   end
 
   create_table "trees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

@@ -6,24 +6,14 @@
       </template>
 
       <template v-slot:content>
-        <div v-for='(tree, index) in estimate.trees' :key='baseKey + " _ " + index' class='tree-section'>
-          <div class='tree-header'>
-            Task #{{ index + 1 }} {{ tree.formatted_job_type != undefined ? `(${tree.formatted_job_type})` : '' }}
-          </div>
+        <div v-for='(tree_id, index) in sortedKeys' :key='baseKey + " _ " + index'>
+          <app-single-row
+            :index='index + 1'
+            :tree='treeForId(tree_id)'
+            :images='sortedImages[tree_id]'
+            @edit='(image_id) => toggleModal(image_id)'
+          ></app-single-row>
 
-          <div v-if='tree.description'>
-            <b>Customer Description: </b> {{ tree.description }}
-          </div>
-
-          <div class='image-row'>
-            <img
-              v-for='(image, imageIndex) in tree.tree_images'
-              :key='index + "_" + imageIndex'
-              :src='image.edited_image_url_sm || image.image_url_sm'
-              class='tree-image'
-              @click='toggleModal(image.id)'
-            />
-          </div>
         </div>
 
         <div class='single-estimate-link-row'>
@@ -44,11 +34,13 @@
 import TreeImageForm from '../../tree_images/actions/addNew';
 import ImageGallery from '@/components/tree_images/views/galleryModal';
 import EventBus from '@/store/eventBus'
+import SingleRow from './singleRow';
 
 export default {
   components: {
     'app-add-image': TreeImageForm,
-    'app-image-gallery-modal': ImageGallery
+    'app-image-gallery-modal': ImageGallery,
+    'app-single-row': SingleRow
   },
   props: {
     estimate: {
@@ -61,9 +53,34 @@ export default {
       baseKey: 1000
     }
   },
+  computed: {
+    sortedImages() {
+      var sortedImages = this.estimate.tree_images.reduce((acc, image) => {
+        if (acc[image.tree_id] == undefined) {
+          acc[image.tree_id] = [];
+        }
+        acc[image.tree_id].push(image);
+        return acc;
+      }, {});
+
+      return sortedImages;
+    },
+    sortedKeys() {
+      let initialKeys = Object.keys(this.sortedImages).filter(x => x != 'null');
+      initialKeys = initialKeys.sort()
+      console.log(initialKeys);
+      initialKeys.unshift(null);
+      return initialKeys;
+    }
+  },
   methods: {
     toggleModal(image_id) {
       EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id, image_id: image_id });
+    },
+    treeForId(treeId) {
+      console.log(this.estimate.trees);
+      console.log(treeId);
+      return this.estimate.trees.find(tree => tree.id == treeId);
     }
   },
   updated(){
@@ -73,22 +90,5 @@ export default {
 </script>
 
 <style scoped>
-  .tree-section {
-    margin-bottom: 8px;
-  }
 
-  .tree-header {
-    font-weight: 600;
-  }
-
-  .image-row {
-    display: flex;
-    width: 100%;
-    overflow: scroll;
-  }
-
-  .tree-image {
-    max-width: 30%;
-    margin-right: 8px;
-  }
 </style>
