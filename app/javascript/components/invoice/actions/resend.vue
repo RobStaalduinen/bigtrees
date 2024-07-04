@@ -1,15 +1,18 @@
 <template>
   <app-right-sidebar :id='id' title='Resend Invoice' submitText='Send' :onSubmit='sendInvoice'>
     <template v-slot:content>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template='invoice_mailout'
+        :estimate='estimate'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
-import { invoiceContent } from '../../../content/emailContent';
-import { EmailDefinition } from '@/models';
+import EmailForm from '../../common/forms/templatedEmail';
 
 export default {
   components: {
@@ -41,18 +44,6 @@ export default {
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
       })
-    }
-  },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          this.estimate.customer.email,
-          'Your Big Tree Services Final Invoice',
-          invoiceContent(this.estimate)
-        )
-      }
     }
   }
 }
