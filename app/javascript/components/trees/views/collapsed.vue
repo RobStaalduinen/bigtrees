@@ -8,7 +8,7 @@
       <template v-slot:content>
         <div v-for='(tree_id, index) in sortedKeys' :key='baseKey + " _ " + index'>
           <app-single-row
-            :index='index + 1'
+            :index='index'
             :tree='treeForId(tree_id)'
             :images='sortedImages[tree_id]'
             @edit='(image_id) => toggleModal(image_id)'
@@ -17,6 +17,9 @@
         </div>
 
         <div class='single-estimate-link-row'>
+          <div class='single-estimate-link' v-b-toggle.add-task>
+            Add Task
+          </div>
           <div class='single-estimate-link' v-b-toggle.add-image>
             Add Image
           </div>
@@ -27,11 +30,13 @@
     <app-image-gallery-modal :estimate='estimate'></app-image-gallery-modal>
 
     <app-add-image :estimate='estimate' id='add-image'></app-add-image>
+    <app-create-task :estimate='estimate' id='add-task'></app-create-task>
   </div>
 </template>
 
 <script>
 import TreeImageForm from '../../tree_images/actions/addNew';
+import CreateTask from '@/components/trees/actions/create';
 import ImageGallery from '@/components/tree_images/views/galleryModal';
 import EventBus from '@/store/eventBus'
 import SingleRow from './singleRow';
@@ -40,7 +45,8 @@ export default {
   components: {
     'app-add-image': TreeImageForm,
     'app-image-gallery-modal': ImageGallery,
-    'app-single-row': SingleRow
+    'app-single-row': SingleRow,
+    'app-create-task': CreateTask
   },
   props: {
     estimate: {
@@ -55,13 +61,16 @@ export default {
   },
   computed: {
     sortedImages() {
-      var sortedImages = this.estimate.tree_images.reduce((acc, image) => {
-        if (acc[image.tree_id] == undefined) {
-          acc[image.tree_id] = [];
-        }
-        acc[image.tree_id].push(image);
+      var sortedImages = this.estimate.trees.reduce((acc, tree) => {
+        acc[tree.id] = [];
         return acc;
       }, {});
+
+      sortedImages['null'] = [];
+
+       this.estimate.tree_images.map((image) => {
+        sortedImages[image.tree_id].push(image);
+      },);
 
       return sortedImages;
     },

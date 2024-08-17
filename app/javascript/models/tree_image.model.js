@@ -8,6 +8,7 @@ class TreeImage {
       id:             this.tree_image.id,
       url:            this.tree_image.image_url_md,
       edited_url:     this.tree_image.edited_image_url_md,
+      tree_id:        this.tree_image.tree_id,
       imageName:      `Image #${current_display_index + 1}`
     }
   }

@@ -7,15 +7,10 @@
 
       <div id='image-gallery-bottom' @click.stop>
         <div id='modal-image-info'>
-          <b>{{ displayedImageDefinition.tree.treeName + ', ' + displayedImageDefinition.treeImage.imageName }}</b>
-          <div v-if='displayedImageDefinition.tree.workType != "Other"'>
-            <b>Work Type: </b>{{ displayedImageDefinition.tree.workType }}
-          </div>
-          <div v-if='displayedImageDefinition.tree.description'>
-            <b>Customer Description: </b> {{ displayedImageDefinition.tree.description }}
-          </div>
-          <div v-if='displayedImageDefinition.tree.workType == "Removal"'>
-            <b>Stump Removal: </b> {{ displayedImageDefinition.tree.stumpRemoval }}
+          <div>
+            <b>Task: </b>
+            {{ displayedImageDefinition.tree.treeName }}
+            <b-icon icon='pencil-square' @click='toggleEditTask(displayedImageDefinition)'></b-icon>
           </div>
         </div>
 
@@ -79,6 +74,17 @@
       @cancel='editedId = null'
       :onSave='onEditSave'
     ></app-image-markup>
+
+    <b-modal
+      id='edit-task-modal'
+      title='Edit Task'
+    >
+      <app-edit-task
+        :estimate='estimate'
+        :treeImage='editTaskImage'
+        @updated='handleTaskUpdate'
+      />
+    </b-modal>
   </div>
 </template>
 
@@ -88,10 +94,12 @@ import Markup from './markup';
 import { base64ToBlob } from '@/utils/fileUtils';
 import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
 import { Tree, TreeImage } from '@/models';
+import EditTask from '@/components/tree_images/actions/editTask'
 
 export default {
   components: {
-    'app-image-markup': Markup
+    'app-image-markup': Markup,
+    'app-edit-task': EditTask
   },
   props: {
     estimate: {
@@ -103,7 +111,8 @@ export default {
       displayedImage: 1,
       display: false,
       imageVersion: null,
-      editedId: null
+      editedId: null,
+      editTaskImage: null
     }
   },
   computed: {
@@ -155,6 +164,17 @@ export default {
     },
     toggleEdit(imageId) {
       this.editedId = imageId;
+    },
+    toggleEditTask(imageDefinition) {
+      this.editTaskImage = this.estimate.tree_images.find(
+        image => image.id == imageDefinition.treeImage.id
+        )
+      this.$bvModal.show('edit-task-modal');
+    },
+    handleTaskUpdate(updatedImage) {
+      this.$bvModal.hide('edit-task-modal');
+      console.log('UPDATED', updatedImage);
+      EventBus.$emit('ESTIMATE_UPDATED', updatedImage);
     },
     onEditSave(image_base64) {
       this.axiosGet('/tree_images/new', { filename: 'edited' }).then(response => {

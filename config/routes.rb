@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   resources :customer_details, only: [ :update ]
   resources :requests
   resources :trees do
+    post '/admin_create', to: 'trees#admin_create', on: :collection, as: 'admin_create'
     post '/bulk_create', to: 'trees#bulk_create', on: :collection
   end
   resources :tree_images, only: [ :new, :create, :update, :destroy ] do

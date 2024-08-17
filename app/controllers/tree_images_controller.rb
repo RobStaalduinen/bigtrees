@@ -80,6 +80,6 @@ class TreeImagesController < ApplicationController
   end
 
   def tree_image_params
-    params.permit(:image_url, :edited_image_url)
+  params.permit(:tree_id, :image_url, :edited_image_url)
   end
 end

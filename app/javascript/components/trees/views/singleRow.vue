@@ -1,11 +1,13 @@
 <template>
   <div class='tree-section'>
-    <div class='tree-header'>
-      {{ taskHeader(index, tree)}}
-    </div>
+    <div class='tree-header-section'>
+      <div class='tree-header'>
+        {{ taskHeader(index, tree)}}
+      </div>
 
-    <div v-if='tree && tree.description'>
-      <b>Customer Description: </b> {{ tree.description }}
+      <div v-if='tree' class='tree-description'>
+        {{ tree.description || 'No Description' }}
+      </div>
     </div>
 
     <div class='image-row'>
@@ -59,10 +61,27 @@ export default {
     font-weight: 600;
   }
 
+  .tree-header-section {
+    margin-bottom: 8px;
+  }
+
+  .tree-description {
+
+    font-size: 14px;
+  }
+
+  .description-header {
+    font-size: 16px;
+  }
+
   .image-row {
     display: flex;
     width: 100%;
     overflow: scroll;
+    padding-bottom: 8px;
+    border-width: 0 0 1px 0;
+    border-color: grey;
+    border-style: solid;
   }
 
   .tree-image {
