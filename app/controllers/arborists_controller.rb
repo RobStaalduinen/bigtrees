@@ -17,7 +17,7 @@ class ArboristsController < ApplicationController
   end
 
   def create
-    authorize! :manage, Arborist
+    authorize Arborist, :create?
 
     arborist = Arborist.find_or_initialize_by(email: params[:arborist][:email])
 
@@ -55,7 +55,6 @@ class ArboristsController < ApplicationController
 
       render json: arborist, status: :ok, meta: { existing_user: false }
     end
-
   end
 
   def update

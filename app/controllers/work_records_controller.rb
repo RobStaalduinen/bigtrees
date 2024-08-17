@@ -44,7 +44,7 @@ class WorkRecordsController < AdminBaseController
   end
 
   def report
-    authorize! :manage, Arborist
+    authorize Arborist, :admin?
 
     report = Reports::Hours.new(
       work_records: policy_scope(WorkRecord),

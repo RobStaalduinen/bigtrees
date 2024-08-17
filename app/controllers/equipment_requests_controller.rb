@@ -18,7 +18,6 @@ class EquipmentRequestsController < ApplicationController
   def show
     authorize EquipmentRequest, :show?
 
-    authorize! :manage, EquipmentRequest
     @equipment_request = policy_scope(EquipmentRequest).find(params[:id])
   end
 

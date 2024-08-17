@@ -3,15 +3,14 @@ class ExpirationsController < ApplicationController
 
   before_action :signed_in_user
 
-
   def new
-    authorize! :manage, Vehicle
+    authorize Vehicle, :admin?
     @expiration = Expiration.new
     @vehicle = Vehicle.find(params[:vehicle_id]) if params[:vehicle_id].present?
   end
 
   def edit
-    authorize! :manage, Vehicle
+    authorize Vehicle, :admin?
     @expiration = Expiration.find(params[:id])
     @is_edit = true
   end
