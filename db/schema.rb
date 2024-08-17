@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 2024_06_30_114924) do
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
   end
 
-  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "key"
     t.string "subject"
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 2024_06_30_114924) do
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
-  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.bigint "arborist_id"
     t.datetime "created_at", null: false

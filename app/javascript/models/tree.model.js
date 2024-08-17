@@ -16,7 +16,7 @@ class Tree {
       workType:     this.tree.work_name,
       description:  this.tree.description,
       stumpRemoval: this.tree.stumpRemoval ? 'Yes' : 'No',
-      treeName: `Task #${current_display_index + 1}`
+      treeName: `Task #${current_display_index}`
     }
   }
 }
