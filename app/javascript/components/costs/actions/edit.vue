@@ -15,7 +15,7 @@
 <script>
 import SingleCost from '../forms/single';
 import EventBus from '@/store/eventBus';
-import MultiCostFrom from '@/components/costs/forms/multiple';
+import MultiCostFrom from '@/components/costs/forms/multipleExpanded';
 import QuickCosts from '@/components/costs/widgets/quick';
 
 export default {
@@ -40,6 +40,7 @@ export default {
   methods: {
     updateCosts() {
       var params = { costs: this.costs }
+
       this.axiosPost(`/estimates/${this.estimate.id}/costs/update`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('ESTIMATE_UPDATED', response.data);

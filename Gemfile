@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.9'
+gem 'rails', '~> 5.0'
 gem 'responders', '~> 2.0'
 
 # Use SCSS for stylesheets
@@ -10,7 +10,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 
 
@@ -29,8 +29,9 @@ gem "font-awesome-rails"
 gem "sitemap_generator"
 
 # File storage
-gem 'aws-sdk'
 gem 'fog-aws'
+gem 'aws-sdk-s3'
+gem 'aws-sdk-ec2'
 gem 'paperclip'
 
 # Secret management
@@ -39,17 +40,19 @@ gem 'figaro'
 gem 'daemons'
 gem 'delayed_job_active_record'
 
-gem 'axlsx'
-gem 'axlsx_rails'
+# gem 'axlsx'
+# gem 'axlsx_rails'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-gem 'mini_racer'
+gem 'mini_racer', '=0.4.0'
 gem 'mysql2'
 gem 'jquery-ui-rails'
-gem 'jquery-modal-rails'
-gem 'rubyXL'
-gem 'libreconv'
+# gem 'jquery-modal-rails'
+gem 'rubyXL', '=3.4.15'
+gem 'libreconv', '=0.9.1'
 gem 'letter_opener'
 # gem 'less-rails', '~> 2.7.1'
 gem 'materialize-sass', '~> 1.0.0'
@@ -60,9 +63,8 @@ gem 'pundit'
 
 gem 'spreadsheet'
 
-gem 'exception_handler'
+# gem 'exception_handler'
 gem 'bcrypt'
-gem 'sprockets', '3.6.3'
 gem 'aasm'
 gem 'nokogiri'
 
@@ -75,11 +77,16 @@ gem 'rack-cors'
 gem 'will_paginate'
 
 # PDF Generation
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf', '=2.1.0'
+gem 'wkhtmltopdf-binary', '=0.12.6.5'
 
 # Serialization
-gem 'active_model_serializers', '~> 0.10.2'
+gem 'active_model_serializers'
+
+gem "sentry-ruby"
+gem 'sentry-rails'
+
+gem 'devise'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -98,7 +105,7 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.10'
 
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails'
   gem 'rspec-mocks'
   gem 'rspec-retry'
   gem 'rails-controller-testing'
@@ -108,8 +115,6 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
@@ -126,9 +131,10 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-rvm'
   gem 'cap-ec2'
+  gem 'rbnacl'
 
   # gem 'rubocop'
   # gem 'rubocop-performance'
   # gem 'rubocop-rails'
   # gem 'rubocop-rspec'
-end
+ end

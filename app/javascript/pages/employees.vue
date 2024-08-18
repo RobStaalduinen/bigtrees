@@ -23,21 +23,6 @@
       :employee='selectedEmployee'
     >
    </app-update-employee>
-
-    <app-update-employee-password
-      id='update-employee-password'
-      v-if='hasPermission("arborists", "create")'
-      :employee='selectedEmployee'
-    >
-   </app-update-employee-password>
-
-     <!-- <app-add-vehicle-expiration
-        id='add-vehicle-expiration'
-        v-if='hasPermission("arborists", "create")'
-        :vehicle_id='selectedVehicle'
-        :expiration='selectedExpiration'
-      ></app-add-vehicle-expiration>
-     -->
   </page-template>
 </template>
 
@@ -81,10 +66,14 @@ export default {
       this.$root.$emit('bv::toggle::collapse', 'update-employee');
     })
 
-    EventBus.$on('EDIT_EMPLOYEE_PASSWORD', (employee) => {
-      this.selectedEmployee = employee;
-      this.$root.$emit('bv::toggle::collapse', 'update-employee-password');
+    EventBus.$on('REMOVE_EMPLOYEE', (employee) => {
+      this.axiosDelete(`/arborists/${employee.id}`).then(response => {
+        if(response.status == 200) {
+          this.retriveEmployees();
+        }
+      })
     })
+
 
     // EventBus.$on('EDIT_VEHICLE_EXPIRATION', (expiration) => {
     //   this.editExpiration(expiration);

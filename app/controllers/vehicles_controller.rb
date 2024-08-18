@@ -4,7 +4,7 @@ class VehiclesController < ApplicationController
   before_action :signed_in_user
 
   def index
-    @vehicles = Vehicle.all.includes(:expirations)
+    @vehicles = policy_scope(Vehicle).includes(:expirations)
 
     respond_to do |format|
       format.json { render json: @vehicles.order(id: :asc) }
@@ -13,19 +13,19 @@ class VehiclesController < ApplicationController
   end
 
   def show
-    @vehicle = Vehicle.find(params[:id])
+    @vehicle = policy_scope(Vehicle).find(params[:id])
     @equipment_requests = @vehicle.equipment_requests
   end
 
   def create
-    vehicle = Vehicle.create(vehicle_params)
+    vehicle = Vehicle.create(vehicle_params.merge({ organization_id: OrganizationContext.current_organization.id }))
 
     render json: vehicle
   end
 
 
   def update
-    vehicle = Vehicle.find(params[:id])
+    vehicle = policy_scope(Vehicle).find(params[:id])
     vehicle.update(vehicle_params)
 
     render json: vehicle

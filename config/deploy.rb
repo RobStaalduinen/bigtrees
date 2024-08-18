@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.10.1"
+lock "~> 3.17.2"
 
 server '50.17.61.15', port: 22, user: 'ubuntu', roles: [:web, :app, :db], primary: true
 
@@ -9,7 +9,7 @@ set :branch, 'master'
 set :deploy_to, '/var/www/bigtrees'
 set :rvm_map_bins, %w{gem rake ruby rails bundle}
 
-set :rbenv_ruby, '2.6.1'
+set :rbenv_ruby, '2.7.3'
 
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies

@@ -1,16 +1,18 @@
 <template>
   <div>
     <app-input-field
-      v-model='name'
-      name="name"
-      label='Name'
+      v-model='email'
+      name="email"
+      label='Email'
+      :disabled='lockEmail'
       validationRules='required'
     ></app-input-field>
 
     <app-input-field
-      v-model='certification'
-      name="cerficiation"
-      label='Certification'
+      v-model='name'
+      name="name"
+      label='Name'
+      validationRules='required'
     ></app-input-field>
 
     <app-input-field
@@ -20,17 +22,11 @@
       validationRules='required'
     ></app-input-field>
 
-    <app-input-field
-      v-model='email'
-      name="email"
-      label='Email'
-      validationRules='required'
-    ></app-input-field>
-
     <app-number-field
       v-model='hourly_rate'
       name="hourly_rate"
       label='Hourly Rate'
+      v-if='hasPermission("arborists", "create")'
     ></app-number-field>
 
     <app-select-field
@@ -39,6 +35,7 @@
       name='role'
       :options="roleOptions"
       validationRules='required'
+      v-if='hasPermission("arborists", "create")'
     />
   </div>
 </template>
@@ -50,14 +47,14 @@ export default {
       default: () => {
         return {
           name: null,
-          certification: null,
           phone_number: null,
           email: null,
           hourly_rate: null,
           role: 'arborist'
         }
       }
-    }
+    },
+    lockEmail: false
   },
   data() {
     return {
@@ -65,7 +62,7 @@ export default {
       certification: this.value.certification,
       phone_number: this.value.phone_number,
       email: this.value.email,
-      hourly_rate: this.value.hourly_rate,
+      hourly_rate: this.value.current_hourly_rate,
       role: this.value.role || 'arborist'
     }
   },

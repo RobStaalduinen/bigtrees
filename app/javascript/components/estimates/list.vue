@@ -15,6 +15,7 @@
   <div id='estimates-container'>
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
+    <div v-if='error'>Something bad happened</div>
   </div>
 
   <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
@@ -40,13 +41,15 @@ export default {
   },
   data() {
     return {
-      loadingEstimates: true,
+      error: false,
+      loadingEstimates: false,
       searchTerm: null,
-      perPage: 20,
-      page: 1,
+      perPage: 60,
+      page: null,
       totalEntries: 1,
-      status: 'all',
-      filters: { createdAfter: 'six_months', status: 'all' }
+      status: 'active',
+      filters: { status: 'active', createdAfter: 'one_year' },
+      filteringLoaded: false
     }
   },
   computed: mapState({
@@ -55,7 +58,11 @@ export default {
   }),
   methods: {
     retrieveEstimates() {
+      if(this.loadingEstimates == true || this.filteringLoaded == false) {
+        return
+      }
       this.loadingEstimates = true;
+      this.error = false;
 
       var params = {}
       if(!this.mySchedule) {
@@ -85,7 +92,8 @@ export default {
           this.loadingEstimates = false;
         }).catch(
           (error) => {
-            location.pathname = `/arborists/${this.$store.state.user.user_id}`
+            this.loadingEstimates = false;
+            this.error = true;
           }
         )
     },
@@ -99,28 +107,31 @@ export default {
         searchTerm: this.searchTerm,
         filters: this.filters
       };
-      localStorage.setItem('estimate-filtering-params', JSON.stringify(allFiltering));
+      localStorage.setItem('estimateSearchParams', JSON.stringify(allFiltering));
     },
-    refreshFiltering() {
-      var oldFilters = JSON.parse(localStorage.getItem('estimate-filtering-params'))
-      if(oldFilters != null) {
-        this.page = (oldFilters.page || 1);
-        this.searchTerm = oldFilters.searchTerm;
-        this.filters = (oldFilters.filters || { createdAfter: 'six_months', status: 'all' });
+    loadFiltering() {
+      let presetFilters = JSON.parse(localStorage.getItem('estimateSearchParams'));
+      if(presetFilters != null) {
+        this.page = presetFilters.page || 1;
+        this.searchTerm = presetFilters.searchTerm;
+        this.filters = presetFilters.filters || { status: 'active', createdAfter: 'one_year' };
       }
+      else {
+        this.page = 1;
+        this.searchTerm = null;
+        this.filters = { status: 'active', createdAfter: 'one_year' }
+      }
+
+      setTimeout(() => { this.filteringLoaded = true }, 1)
     },
     resetFiltering() {
       this.searchTerm = null;
       this.page = 1;
-      this.filters = { createdAfter: 'six_months', status: 'all' };
-      this.retrieveEstimates();
+      this.filters = { createdAfter: 'one_year', status: 'active' };
     }
   },
-  created() {
-    this.refreshFiltering();
-  },
   mounted() {
-    this.retrieveEstimates();
+    this.loadFiltering();
     EventBus.$on('ESTIMATE_UPDATED', this.retrieveEstimates)
   },
   beforeDestroy() {
@@ -128,17 +139,23 @@ export default {
   },
   watch: {
     searchTerm: function(){
+      if(!this.filteringLoaded) { return }
       this.page = 1;
       this.saveFiltering();
       this.retrieveEstimates();
     },
     page: function() {
+      if(!this.filteringLoaded) { return }
       this.saveFiltering();
       this.retrieveEstimates();
     },
     filters: function() {
+      if(!this.filteringLoaded) { return }
       this.page = 1;
       this.saveFiltering();
+      this.retrieveEstimates();
+    },
+    filteringLoaded() {
       this.retrieveEstimates();
     },
     mySchedule() {

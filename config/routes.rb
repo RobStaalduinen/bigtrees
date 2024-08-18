@@ -42,14 +42,17 @@ Rails.application.routes.draw do
 
   resources :trackers, only: [ :new, :index ]
   resources :arborists do
+    put '/update_password', to: 'arborists#update_password'
     resources :documents
   end
   resources :customers
+  resources :customer_details, only: [ :update ]
   resources :requests
   resources :trees do
+    post '/admin_create', to: 'trees#admin_create', on: :collection, as: 'admin_create'
     post '/bulk_create', to: 'trees#bulk_create', on: :collection
   end
-  resources :tree_images, only: [ :new, :create, :update ] do
+  resources :tree_images, only: [ :new, :create, :update, :destroy ] do
     post '/create_from_urls', to: 'tree_images#create_from_urls', on: :collection
   end
   resources :extra_costs, only: [ :create, :destroy ]
@@ -84,8 +87,15 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
+  resources :organizations, only: [ :index, :show ]
+  resources :email_templates, only: [ :show ]
 
   resources :vue_test, only: [ :new ]
+
+  devise_for :users, class_name: 'Arborist'
+
+  get '/p/:customer_name', to: 'property_management#show'
+  post '/p/:customer_name', to: 'property_management#create'
 
   get '/admin/*path', to: 'admin#index'
 

@@ -5,7 +5,7 @@
     let allLists = document.querySelectorAll("div[class='estimate-list']");
 
     for(i = 0; i < allLists.length; i++){
-      allLists[i].style.display = 'none'; 
+      allLists[i].style.display = 'none';
     }
 
     let activeList = document.getElementById(listName);
@@ -14,13 +14,12 @@
 
   function selectTab() {
     var tabSelect = document.getElementById('estimate-selection').value;
-    console.log(tabSelect)
     localStorage.setItem("lastCategory", tabSelect);
     switch(tabSelect) {
       case "Needs Pricing":
         changeTab('pricing-list');
         break;
-      case "Awaiting Customer Response": 
+      case "Awaiting Customer Response":
         changeTab('active-list');
         break;
       case 'To Pay':
@@ -40,7 +39,7 @@
 
   function autoscroll(){
     var lastCategory = localStorage.getItem("lastCategory");
-    
+
     if(lastCategory != null){
       $('#estimate-selection').val(lastCategory);
       selectTab();
@@ -53,7 +52,7 @@
   }
 </script>
 
-<%= 
+<%=
   select_tag "estimate-selection",
   options_for_select([ "All", "Needs Pricing", "Awaiting Customer Response", "To Pay", "Approved and Scheduled"]),
   onchange: "selectTab();",
@@ -75,36 +74,36 @@
 
 <div id ="admin__estimate-table">
   <div id='all-list' class='estimate-list'>
-    <%= 
-      render 'admin/partials/estimate_list', 
+    <%=
+      render 'admin/partials/estimate_list',
       estimates: estimates
     %>
   </div>
 
   <div id="pricing-list" class='estimate-list'>
-    <%= 
+    <%=
       render 'admin/partials/estimate_list',
       estimates: estimates.price_required
     %>
   </div>
 
   <div id='active-list' class='estimate-list' style="display: none;">
-    <%= 
-      render 'admin/partials/estimate_list', 
+    <%=
+      render 'admin/partials/estimate_list',
       estimates: estimates.sent
     %>
   </div>
 
   <div id='pending-list' class='estimate-list' style="display: none;">
-    <%= 
-      render 'admin/partials/estimate_list', 
+    <%=
+      render 'admin/partials/estimate_list',
       estimates: estimates.pending_payment
     %>
   </div>
 
   <div id='scheduled-list' class='estimate-list' style="display: none;">
-    <%= 
-      render 'admin/partials/estimate_list', 
+    <%=
+      render 'admin/partials/estimate_list',
       estimates: estimates.scheduled
     %>
   </div>

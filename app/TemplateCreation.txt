@@ -1,0 +1,123 @@
+"Hi, \n\n
+Your quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n
+We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\n
+If you have any questions, you can call us toll free at 1 877 542 5551 or directly on my cell by calling or texting 705 943 7374. If I don't answer, I am probably up a tree but I will return your message as soon as I have a moment.\n\n
+Thanks,\n\n
+"
+
+Organization.first.update(
+  phone_number: '1-877-542-5551',
+  email: 'tbrewer@bigislandgroup.ca',
+  outgoing_quote_email: 'tbrewer@bigislandgroup.ca',
+  email_author: 'Tyler, Big Tree Services',
+  email_signature: 'Tyler Brewer\nCertified Utility Arborist',
+  insurance_provider: 'Intact Insurance',
+  insurance_policy_number: '501381704',
+  insurance_description: "$2,000,000 Commercial General Liability"
+)
+
+Address.create(
+  addressable_id: 1,
+  addressable_type: 'Organization',
+  street: '43 Farmington Dr.',
+  city: 'Brampton, ON',
+  postal_code: 'L6W 2V4'
+)
+
+xa54829bc
+
+Organization.create(
+  name: "Shadow River Tree Services",
+  phone_number: '1-416-557-8318',
+  website: 'www.bigtreeservices.ca',
+  email: 'shadowriverts@gmail.com',
+  outgoing_quote_email: 'shadowriverts@gmail.com',
+  quote_bcc: 'office@bigislandgroup.ca',
+  email_author: 'Kjell, Shadow River',
+  email_signature: 'Kjell Klockars',
+  insurance_provider: 'Economical Insurance',
+  insurance_policy_number: '040328020P',
+  insurance_description: "$2,000,000 Commercial General Liability"
+)
+
+Address.create(
+  addressable_id: 2,
+  addressable_type: 'Organization',
+  street: '301 Wawa Ave.',
+  city: 'Wawa, ON',
+  postal_code: 'P0S 1K9'
+)
+
+Tylers:
+
+EmailTemplate.create(
+  key: 'quote_mailout',
+  organization: Organization.first,
+  subject: "Your Quote from [ORGANIZATION_NAME]",
+  content: "Hi,\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[ADDITIONAL_CONTENT_SLOT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us toll free at 1 877 542 5551 or directly on my cell by calling or texting 705 943 7374. If I don't answer, I am probably up a tree but I will return your message as soon as I have a moment.\n\nThanks,\n\n"
+)
+
+EmailTemplate.create(
+  key: 'invoice_mailout',
+  organization: Organization.first,
+  subject: "Your [ORGANIZATION_NAME] Invoice",
+  content: "Hi,\n\nYour tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to tbrewer@bigislandgroup.ca\n\nCheques can be made out to Big Tree Inc. Arrangements can be made for pickup.\n\nCall me anytime on my cell at 705 943 7374 for card payments or if you have any questions.\n\nThanks,\n"
+)
+
+EmailTemplate.create(
+  key: 'receipt_mailout',
+  organization: Organization.first,
+  subject: 'Your [ORGANIZATION_NAME] Receipt',
+  content: "Hi,\n\nYour payment has been received. Here is your receipt.\n\nThank you so much for yout business. Give us a call anytime!\n\n"
+)
+
+EmailTemplate.create(
+  key: 'no_response',
+  organization: Organization.first,
+  subject: "Your [ORGANIZATION_NAME] Job",
+  content: "Hi,\n\nI didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. My cell is 705 943 7374 or you can reach me toll free at 1 877 542 5551. \n\nIf you have any concerns about the timing or price of your job, I would be more than happy to discuss them with you. \n\nOnce again, thanks for your time and consideration. \n\nHave a great day."
+)
+
+EmailTemplate.create(
+  key: 'image_request',
+  organization: Organization.first,
+  subject: "Your [ORGANIZATION_NAME] Job",
+  content: "Hi,\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call/text me on my cell at 705 943 7374 or call me toll free at 1 877 542 5551. We have arborists across the GTA that can make sure we expedite this quote for you.\n\nThanks,\n"
+)
+
+
+New:
+EmailTemplate.create(
+  key: 'quote_mailout',
+  organization: Organization.last,
+  subject: "Your Quote from [ORGANIZATION_NAME]",
+  content: "Hi,\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[ADDITIONAL_CONTENT_SLOT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us at 1-416-557-8318. If I don't answer, I will return your message as soon as I have a moment.\n\nThanks,\n\n"
+)
+
+EmailTemplate.create(
+  key: 'invoice_mailout',
+  organization: Organization.last,
+  subject: "Your [ORGANIZATION_NAME] Invoice",
+  content: "Hi,\n\nYour tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to shadowriverts@gmail.com\n\nCheques can be made out to Shadow River Tree Services. Arrangements can be made for pickup.\n\nCall me anytime at 1-416-557-8318 for card payments or if you have any questions.\n\nThanks,\n"
+)
+
+EmailTemplate.create(
+  key: 'receipt_mailout',
+  organization: Organization.last,
+  subject: 'Your [ORGANIZATION_NAME] Receipt',
+  content: "Hi,\n\nYour payment has been received. Here is your receipt.\n\nThank you so much for yout business. Give us a call anytime!\n\n"
+)
+
+EmailTemplate.create(
+  key: 'no_response',
+  organization: Organization.last,
+  subject: "Your [ORGANIZATION_NAME] Job",
+  content: "Hi,\n\nI didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. You can reach me at 1-416-557-8318. \n\nIf you have any concerns about the timing or price of your job, I would be more than happy to discuss them with you. \n\nOnce again, thanks for your time and consideration. \n\nHave a great day.\n\n"
+)
+
+EmailTemplate.create(
+  key: 'image_request',
+  organization: Organization.last,
+  subject: "Your [ORGANIZATION_NAME] Job",
+  content: "Hi,\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call me at 1-416-557-8318.\n\nThanks,\n"
+)

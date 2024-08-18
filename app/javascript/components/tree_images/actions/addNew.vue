@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Add Image' submitText='Save' :onSubmit='saveImage' :validate='validate'>
+  <app-right-sidebar :id='id' title='Add Images' submitText='Save' :onSubmit='saveImage' :validate='validate'>
     <template v-slot:content>
       <validation-observer ref="observer">
         <b-form-group
@@ -12,7 +12,14 @@
             :options="options"
           />
         </b-form-group>
-        <app-single-image v-model='image'></app-single-image>
+
+        <app-multi-image
+          v-model='images'
+          accept=".jpg, .jpeg, .png"
+          bucketName='tree_images'
+          name='image'
+
+        ></app-multi-image>
 
         <span class='submit-error' v-if='validationErrorMessage'>{{ validationErrorMessage }}</span>
       </validation-observer>
@@ -22,11 +29,13 @@
 
 <script>
 import SingleImage from '../forms/single';
+import MultiImage from '@/components/file/actions/multiUpload';
 import EventBus from '@/store/eventBus';
 
 export default {
   components: {
-    'app-single-image': SingleImage
+    'app-single-image': SingleImage,
+    'app-multi-image': MultiImage
   },
   props: {
     id: {
@@ -39,7 +48,8 @@ export default {
   data() {
     return {
       image: {},
-      taskNumber: 'new',
+      images: [],
+      taskNumber: null,
       validationErrorMessage: null
     }
   },
@@ -49,6 +59,7 @@ export default {
         return this.optionForTree(tree, index);
       })
       arr.unshift({value: 'new', text: 'New Task'});
+      arr.unshift({value: null, text: 'Uncategorized'});
 
       return arr;
     }
@@ -57,7 +68,7 @@ export default {
     saveImage() {
       var params = {
         estimate_id: this.estimate.id,
-        images: [this.image.url]
+        images: this.images.map(image => image.url)
       }
 
       if(this.taskNumber != 'new') {
@@ -76,6 +87,23 @@ export default {
       }
     },
     validate() {
+      if(this.images.length == 0){
+        this.validationErrorMessage = 'Please add at least one image';
+        EventBus.$emit('FORM_VALIDATION_FAILED');
+        return false;
+      }
+
+      console.log('validate', this.images);
+      for(var i = 0; i < this.images.length; i++){
+        if(this.images[i].uploading == true){
+          this.validationErrorMessage = 'Wait for image uploads to finish and try again';
+          EventBus.$emit('FORM_VALIDATION_FAILED');
+          return false;
+        }
+      }
+
+      return true;
+
       var image = this.image;
 
       if(image.uploadCompleted == null){

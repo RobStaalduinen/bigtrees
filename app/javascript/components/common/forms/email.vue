@@ -1,11 +1,19 @@
 <template>
   <div>
-    <app-input-field
-      v-model='recipient'
-      name='email'
-      label='Email Address'
-      validationRules='required'
-    ></app-input-field>
+    <div v-for='(recipient, index) in recipients' :key='index' class='email-field-container'>
+      <app-input-field
+        :value='recipient'
+        @input='(payload) => setRecipient(index, payload)'
+        name='email'
+        label='Email Address'
+        validationRules='required'
+        class='email-field'
+      ></app-input-field>
+
+      <b-icon icon='trash-fill' class='trash-icon' v-if="recipients.length > 1" @click='deleteRecipient(index)'/>
+    </div>
+
+    <div id='add-recipient-tag' @click='addRecipient'>+ Add Recipient +</div>
 
     <app-input-field
       v-model='emailSubject'
@@ -40,7 +48,7 @@ export default {
   props: ['value'],
   data() {
     return {
-      recipient: this.value.email,
+      recipients: this.value.email,
       emailSubject: this.value.subject,
       emailBody: this.value.content,
       editBody: false
@@ -49,10 +57,21 @@ export default {
   computed: {
     emailDefinition() {
       return {
-        email: this.recipient,
+        email: this.recipients,
         subject: this.emailSubject,
         content: this.emailBody
       }
+    }
+  },
+  methods: {
+    addRecipient() {
+      this.recipients.push(null)
+    },
+    setRecipient(index, payload){
+      this.recipients[index] = payload;
+    },
+    deleteRecipient(index){
+      this.recipients.splice(index, 1);
     }
   },
   watch: {
@@ -60,7 +79,6 @@ export default {
       this.$emit('changed', this.emailDefinition)
     },
     value() {
-      console.log("VAL CHANGED");
       this.emailBody = this.value.content
     }
   }
@@ -84,10 +102,33 @@ export default {
     justify-content: space-between;
   }
 
+  #add-recipient-tag {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: var(--main-color);
+    font-size: 12px;
+  }
+
   .sample-email-content {
     font-size: 10px;
     padding: 8px;
     margin-bottom: 0px;
     white-space: pre-wrap;
+  }
+
+  .email-field-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .email-field {
+    width: 100%;
+  }
+
+  .trash-icon {
+    color: var(--main-color);
+    margin-left: 8px;
   }
 </style>

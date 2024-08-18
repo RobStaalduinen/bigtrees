@@ -11,6 +11,7 @@
           />
 
           <app-select-field
+            v-if='organization.id == 1'
             label='Job'
             v-model='job'
             name='job'
@@ -91,7 +92,8 @@ export default {
       vehicles: [],
       uploading: false,
       paymentMethods: ['Corporate Card', 'Personal Cash'],
-      jobs: ['Big Trees', 'Big Properties', 'Big Stumps']
+      jobs: ['Big Trees', 'Big Properties', 'Big Stumps'],
+      organization: this.$store.state.organization
     }
   },
   computed: {
@@ -132,12 +134,15 @@ export default {
         let params = { receipt: {
           description: this.description,
           category: this.category,
-          job: this.job,
           payment_method: this.paymentMethod,
           vehicle_id: this.vehicle_id,
           image_url: this.image_url,
           cost: this.cost
         }}
+
+        if(this.organization.id == 1) {
+          params.job = this.job;
+        }
 
         this.axiosPost('/receipts', params).then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);

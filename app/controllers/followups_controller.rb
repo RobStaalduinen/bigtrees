@@ -6,6 +6,16 @@ class FollowupsController < ApplicationController
   def create
     authorize Estimate, :update?
 
+    send_email unless params[:skip]
+
+    estimate.update(estimate_params)
+
+    render json: estimate
+  end
+
+  private
+
+  def send_email
     should_include_quote = params[:include_quote] == true
     QuoteMailer.quote_email(
         estimate,
@@ -14,13 +24,7 @@ class FollowupsController < ApplicationController
         params[:content],
         should_include_quote
     ).deliver_now
-
-    estimate.update(estimate_params)
-
-    render json: estimate
   end
-
-  private
 
   def estimate
     @estimate ||= policy_scope(Estimate).find(params[:estimate_id])

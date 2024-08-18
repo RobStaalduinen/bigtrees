@@ -13,9 +13,11 @@ class RequestsController < ApplicationController
     end
 
     if params[:customer].present?
-      customer = Customer.find_by(id: customer_params[:id]) || Customer.new
-      customer.update(customer_params)
+      customer = Customer.find_or_create_by_params(customer_params)
       estimate.update(customer: customer)
+
+      customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)
+      customer_detail.update(customer_detail_params)
     end
 
     render json: { estimate_id: estimate.id }
@@ -33,6 +35,9 @@ class RequestsController < ApplicationController
     if params[:customer].present?
       customer = Customer.find_or_create_by_params(customer_params)
       estimate.update(customer: customer)
+
+      customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)
+      customer_detail.update(customer_detail_params)
     end
 
     if params[:estimate][:submission_completed] && !params[:estimate][:supress_email]
@@ -47,7 +52,7 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:estimate).permit(
         :tree_quantity, :submission_completed, :stumping_only,
-      ).merge({ arborist_id: Arborist::DEFAULT_ID })
+      ).merge({ arborist_id: Arborist::DEFAULT_ID, organization_id: 1 }) # TODO: Change this when having whitelabed request page
     end
 
     def site_params
@@ -64,4 +69,9 @@ class RequestsController < ApplicationController
       )
     end
 
+    def customer_detail_params
+      params.require(:customer).permit(
+       :name, :phone, :email
+      )
+    end
 end

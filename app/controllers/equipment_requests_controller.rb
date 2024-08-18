@@ -18,7 +18,6 @@ class EquipmentRequestsController < ApplicationController
   def show
     authorize EquipmentRequest, :show?
 
-    authorize! :manage, EquipmentRequest
     @equipment_request = policy_scope(EquipmentRequest).find(params[:id])
   end
 
@@ -81,7 +80,8 @@ class EquipmentRequestsController < ApplicationController
   end
 
   def tracker
-    repair_tracker = Trackers::RepairRequests.new.generate
+    equipment_requests = policy_scope(EquipmentRequest)
+    repair_tracker = Trackers::RepairRequests.new.generate(equipment_requests)
 
     respond_to do |format|
       format.xlsx {
@@ -96,6 +96,9 @@ class EquipmentRequestsController < ApplicationController
   private
 
   def equipment_request_parameters
-    params.require(:equipment_request).permit(:category, :description, :image_url, :vehicle_id, :submitted_at, :resolution_notes)
+    params
+    .require(:equipment_request)
+    .permit(:category, :description, :image_url, :vehicle_id, :submitted_at, :resolution_notes)
+    .merge({ organization_id: OrganizationContext.current_organization.id })
   end
 end

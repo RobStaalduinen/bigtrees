@@ -2,6 +2,8 @@
 
 class TreeImageSerializer < ApplicationSerializer
 
+  attribute :tree_id
+
   attribute :edited_image_url
 
   # Virtual
@@ -11,4 +13,6 @@ class TreeImageSerializer < ApplicationSerializer
 
   attribute :edited_image_url_sm
   attribute :edited_image_url_md
+
+  belongs_to :tree
 end

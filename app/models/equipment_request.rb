@@ -16,6 +16,7 @@ class EquipmentRequest < ActiveRecord::Base
     end
   end
 
+  belongs_to :organization
   belongs_to :arborist
   belongs_to :vehicle
   belongs_to :mechanic, class_name: 'Arborist'

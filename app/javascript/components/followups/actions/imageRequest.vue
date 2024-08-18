@@ -1,16 +1,22 @@
 <template>
   <app-right-sidebar :id='id' title='Send Image Request' submitText='Send' :onSubmit='sendImageRequest'>
     <template v-slot:content>
-      <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+      <app-email-form
+        :value='emailDefinition'
+        @changed='payload => handleChange(payload)'
+        template='image_request'
+        :estimate='estimate'
+      ></app-email-form>
     </template>
   </app-right-sidebar>
 </template>
 
 <script>
-import EmailForm from '../../common/forms/email';
+import EmailForm from '../../common/forms/templatedEmail';
 import { imageRequest } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
+import { EmailDefinition } from '@/models';
 
 export default {
   components: {
@@ -26,11 +32,7 @@ export default {
   },
   data() {
     return {
-      emailDefinition: {
-        email: this.estimate.customer.email,
-        content: imageRequest,
-        subject: 'Your Big Tree Services Job'
-      }
+      emailDefinition: null
     }
   },
   methods: {

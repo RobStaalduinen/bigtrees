@@ -4,7 +4,7 @@ require 'rubyXL/convenience_methods'
 class GenerateReceipt
 
   def self.call(estimate)
-    pdf_html = ActionController::Base.new.render_to_string('quotes/pdf/receipt.html.erb', layout: 'pdf', locals: { estimate: estimate })
+    pdf_html = ActionController::Base.new.render_to_string('quotes/pdf/main.html.erb', layout: 'pdf', locals: { estimate: estimate, is_receipt: true })
     pdf = WickedPdf.new.pdf_from_string(pdf_html, page_size: 'Letter')
     save_path = Rails.root.join('tmp', "Quote_#{estimate.id}.pdf")
     File.open(save_path, 'wb') do |file|

@@ -24,7 +24,7 @@ class InvoiceReceiptsController < ApplicationController
   end
 
   def email_params
-    params.require(:email).permit(:email, :subject, :content)
+    params.require(:email).permit(:subject, :content, :email => [])
   end
 
   def send_mailout

@@ -55,6 +55,10 @@ const STEPS = {
     actionLabel: 'Schedule',
     inputComponent: 'estimate-schedule-quote'
   },
+  'pending_permit': {
+    actionLabel: 'Schedule',
+    inputComponent: 'estimate-schedule-quote'
+  },
   'work_scheduled': {
     actionLabel: 'Send Invoice',
     inputComponent: 'estimate-send-invoice',
@@ -93,9 +97,10 @@ export default {
       this.$root.$emit('bv::toggle::collapse', this.currentAction.inputComponent);
     },
     hasImages() {
-      return this.estimate.trees.map(tree => {
-        return tree.tree_images.length > 0
-      }).some(img => img === true);
+      return this.estimate.tree_images.length > 0
+      // return this.estimate.tree_images.map(tree_image => {
+      //   return tree.tree_images.length > 0
+      // }).some(img => img === true);
     }
   }
 }

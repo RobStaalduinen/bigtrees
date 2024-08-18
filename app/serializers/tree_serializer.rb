@@ -3,9 +3,9 @@
 class TreeSerializer < ApplicationSerializer
   attribute :description
   attribute :stump_removal
+  attribute :job_type
 
   # Virtual
   attribute :work_name
-
-  has_many :tree_images
+  attribute :formatted_job_type
 end

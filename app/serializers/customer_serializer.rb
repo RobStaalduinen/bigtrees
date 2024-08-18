@@ -5,5 +5,5 @@ class CustomerSerializer < ApplicationSerializer
   attribute :email
   attribute :phone
 
-  belongs_to :address
+  has_one :address
 end

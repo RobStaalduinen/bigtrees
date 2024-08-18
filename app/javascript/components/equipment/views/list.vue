@@ -45,7 +45,6 @@ export default {
   methods: {
     retrieveEquipmentRequests() {
       this.axiosGet(`/equipment_requests?state=${this.status}`).then(response => {
-        console.log(response.data);
         this.equipmentRequests = response.data.equipment_requests
       })
     }

@@ -14,17 +14,17 @@ class EstimatesController < ApplicationController
 
     @estimates = policy_scope(Estimate)
 
-    @estimates = @estimates.submitted.
+    @estimates = @estimates.
       joins(:customer).
-      joins("LEFT OUTER JOIN sites ON sites.estimate_id = estimates.id").
-      joins("LEFT OUTER JOIN addresses ON sites.address_id = addresses.id").
-      includes(customer: [:address]).
-      includes(equipment_assignments: [ :vehicle ]).
+      joins(:site).
+      joins(:customer_detail).
+      joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
+      joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
+      joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id").
       includes(site: [:address]).
-      includes(:invoice).
-      includes(:arborist).
-      includes(:costs).
-      includes(trees: [:tree_images])
+      includes(:customer_detail).
+      includes(:customer).
+      includes(:arborist)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
@@ -35,8 +35,11 @@ class EstimatesController < ApplicationController
     end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
+
+
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
-    render json: @estimates, meta: { total_entries: @estimates.total_entries }
+
+    render json: @estimates, each_serializer: EstimateListSerializer, meta: { total_entries: @estimates.total_entries }
   end
 
   def new
@@ -48,8 +51,9 @@ class EstimatesController < ApplicationController
   end
 
   def show
+    authorize Customer, :show?
+
     @estimate = policy_scope(Estimate).find(params[:id])
-    authorize! :read, @estimate
 
     render json: @estimate
   end
@@ -58,7 +62,10 @@ class EstimatesController < ApplicationController
     authorize Estimate, :create?
 
     estimate = Estimate.new(estimate_params)
-    estimate.arborist = current_user
+    org = OrganizationContext.current_organization
+
+    estimate.arborist = current_user.organization_id == org.id ? current_user : org.default_arborist
+    estimate.organization = org
     estimate.save
 
     if params[:site].present?
@@ -67,9 +74,11 @@ class EstimatesController < ApplicationController
     end
 
     if params[:customer].present?
-      customer = Customer.find_by(id: customer_params[:id]) || Customer.new
-      customer.update(customer_params)
+      customer = policy_scope(Customer).find_by(id: customer_params[:id]) || Customer.create(customer_params)
       estimate.update(customer: customer)
+
+      customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)
+      customer_detail.update(customer_detail_params)
     end
 
 		render json: { estimate_id: estimate.id }
@@ -118,10 +127,14 @@ class EstimatesController < ApplicationController
         LOWER(customers.name) LIKE :search OR
         LOWER(customers.email) LIKE :search OR
         LOWER(customers.phone) LIKE :search OR
-        LOWER(sites.street) LIKE :search OR
-        LOWER(sites.city) LIKE :search OR
-        LOWER(addresses.street) LIKE :search OR
-        LOWER(addresses.city) LIKE :search
+        LOWER(customer_details.name) LIKE :search OR
+        LOWER(customer_details.email) LIKE :search OR
+        LOWER(customer_details.phone) LIKE :search OR
+        LOWER(site_addresses.street) LIKE :search OR
+        LOWER(site_addresses.city) LIKE :search OR
+        LOWER(customer_addresses.street) LIKE :search OR
+        LOWER(customer_addresses.city) LIKE :search OR
+        LOWER(invoices.number) LIKE :search
       ',
       search: "%#{query.downcase}%"
     )
@@ -129,7 +142,7 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :tree_quantity, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed, :skip_schedule,
+      :tree_quantity, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed, :skip_schedule, :cancelled_at, :pending_permit,
       equipment_assignments_attributes: [ :vehicle_id ],
       notes_attributes: [
         :content,
@@ -157,6 +170,12 @@ class EstimatesController < ApplicationController
   def assignment_params
     params.require(:estimate).permit(
       equipment_assignments_attributes: [ :vehicle_id ]
+    )
+  end
+
+  def customer_detail_params
+    params.require(:customer).permit(
+     :name, :phone, :email
     )
   end
 end

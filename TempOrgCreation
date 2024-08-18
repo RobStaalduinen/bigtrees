@@ -1,0 +1,13 @@
+o = Organization.first
+o.update(phone_number: '1 877 542 5551', email: 'tbrewer@bigislandgroup.ca', website: 'www.bigtreeservices.ca', insurance_provider: 'Intact Insurance', insurance_policy_number: '501381704', insurance_description: '$2,000,000 Commercial General Liability', hst_number: '752547802RT0001', email_author: 'Tyler, Big Tree Services', outgoing_quote_email: 'tbrewer@bigislandgroup.ca', quote_bcc: 'test@test.com', email_signature: "Tyler Brewer\nCertified Utility Arborist")
+o2 = Organization.last
+o2.update(phone_number: '1 800 555 5555', email: 'test@test.ca', website: 'www.test.ca', insurance_provider: 'Economical Insurance', insurance_policy_number: '12345678', insurance_description: '$1,000,000 Commercial General Liability', hst_number: '111547802RT0002', email_author: 'Kjell, Dark Shadow', outgoing_quote_email: 'kjell@bigislandgroup.ca', email_signature: "Kjell Klockars")
+
+Address.create(addressable: o, street: '43 Farmington Dr.', city: 'Brampton, ON', postal_code: 'L6W 2V4')
+Address.create(addressable: o2, street: '123 Fake St.', city: 'Markham, ON', postal_code: 'K7N 2V4')
+
+
+add_column :email_author
+add_column :outgoing_quote_email
+add_column :quote_bcc
+add_column :email_signature

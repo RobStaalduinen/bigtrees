@@ -90,6 +90,7 @@ import SearchField from '../components/form/searchField.vue';
 import Pagination from '../components/form/pagination.vue';
 import ArrowPagination from '../components/form/arrowPagination.vue';
 import InputField from '../components/form/inputField.vue';
+import TextArea from '../components/form/textArea.vue';
 import NumberField from '../components/form/numberField.vue';
 import SelectField from '../components/form/selectField';
 import DatePicker from '../components/form/datePicker.vue';
@@ -104,6 +105,7 @@ Vue.component('app-search-field', SearchField);
 Vue.component('app-pagination', Pagination);
 Vue.component('app-arrow-pagination', ArrowPagination);
 Vue.component('app-input-field', InputField);
+Vue.component('app-text-area', TextArea)
 Vue.component('app-number-field', NumberField);
 Vue.component('app-select-field', SelectField);
 Vue.component('app-submit-button', SubmitButton);
@@ -220,7 +222,6 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
     else{
-      console.log(from);
       next({ name: 'hours' })
     }
   }
@@ -237,5 +238,4 @@ document.addEventListener('DOMContentLoaded', () => {
     render: h => h(App),
     store: store
   })
-  console.log(app)
 })

@@ -4,16 +4,16 @@ class PayoutsController < ApplicationController
   layout 'admin_material'
 
   def index
-    authorize! :manage, Arborist
+    authorize Arborist, :admin?
 
     @payouts = Payout.all.includes(:work_records).order("date DESC")
   end
 
   def new
-    authorize! :manage, Arborist
+    authorize Arborist, :admin?
     @date = params[:date].present? ? Date.parse(params[:date]) : Date.today
     @work_records = WorkRecord.unpaid.includes(:arborist).before(@date)
-    
+
 
     respond_to do |format|
       format.html
@@ -22,8 +22,8 @@ class PayoutsController < ApplicationController
   end
 
   def create
-    authorize! :manage, Arborist
-    
+    authorize Arborist, :admin?
+
     payout = Payout.create(payout_params)
 
     WorkRecord.unpaid.before(payout.date).update_all(payout_id: payout.id)
@@ -31,13 +31,13 @@ class PayoutsController < ApplicationController
   end
 
   def show
-    authorize! :manage, Arborist
+    authorize Arborist, :admin?
 
     @payout = Payout.find(params[:id])
   end
 
   def destroy
-    authorize! :manage, Arborist
+    authorize Arborist, :admin?
 
     Payout.find(params[:id]).destroy
 

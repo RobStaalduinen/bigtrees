@@ -11,7 +11,7 @@
         <div class='list-item-content'>
           <div class='contact-row'>
             <b>Hourly Rate: </b>
-            <span v-if='employee.hourly_rate'>{{ `$${employee.hourly_rate}` }}</span>
+            <span v-if='employee.current_hourly_rate'>{{ `$${employee.current_hourly_rate}` }}</span>
             <span v-else>Not Entered</span>
           </div>
 
@@ -36,14 +36,16 @@
               :onClick='viewProfile'
             />
             <app-action-bar-item
-              name='Change Password'
-              icon='lock'
-              :onClick='editPassword'
-            />
-            <app-action-bar-item
               name='Edit'
               icon='pencil-square'
               :onClick='editEmployee'
+            />
+
+            <app-action-bar-item
+              name='Remove'
+              icon='trash-fill'
+              :onClick='removeEmployee'
+              v-if="employee.role != 'admin' && employee.role != 'super_admin'"
             />
           </template>
         </app-collapsable-action-bar>
@@ -70,8 +72,9 @@ export default {
     editEmployee() {
       EventBus.$emit('EDIT_EMPLOYEE', this.employee);
     },
-    editPassword() {
-      EventBus.$emit('EDIT_EMPLOYEE_PASSWORD', this.employee);
+    removeEmployee() {
+      confirm("Are you sure you want to remove this employee from your company?")
+      EventBus.$emit('REMOVE_EMPLOYEE', this.employee);
     }
   }
 }

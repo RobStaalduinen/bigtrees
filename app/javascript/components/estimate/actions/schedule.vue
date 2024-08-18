@@ -1,7 +1,7 @@
 <template>
   <app-right-sidebar-form
     :id='id'
-    title='Schedule Work'
+    title='Approve and Schedule'
     submitText='Submit'
     :onSubmit='updateWorkDate'
     :submitting='submitting'
@@ -16,9 +16,15 @@
         :options="arboristOptions"
         validationRules='required'
       />
-
-      <!-- <b-form-select v-model="lead_arborist" :options="arboristOptions" id='arborist-select'></b-form-select> -->
-
+      <b-form-group label="Waiting for permit?">
+        <b-form-checkbox
+          id="permit-required"
+          v-model="permitRequired"
+          name="permit-required"
+          :value='true'
+          :unchecked-value='false'
+        />
+      </b-form-group>
       <app-conditional-box
         v-model='scheduleWork'
         conditionName='Add Date Range'
@@ -84,9 +90,10 @@ export default {
       work_end_date: this.estimate.work_end_date,
       lead_arborist: null,
       emailTeam: false,
-      scheduleWork: true,
+      scheduleWork: false,
       submitting: false,
-      emailDefinition: null
+      emailDefinition: null,
+      permitRequired: false
     }
   },
   methods: {
@@ -100,10 +107,11 @@ export default {
 
         var params = {
           estimate: {
-             work_start_date: null,
-             work_end_date: null,
-             skip_schedule: false,
-            arborist_id: this.lead_arborist
+            work_start_date: null,
+            work_end_date: null,
+            skip_schedule: false,
+            arborist_id: this.lead_arborist,
+            pending_permit: this.permitRequired
           }
         }
 
@@ -115,6 +123,12 @@ export default {
           params.estimate.work_start_date = null;
           params.estimate.work_end_date = null;
           params.estimate.skip_schedule = true;
+        }
+
+        if(this.permitRequired) {
+          params.estimate.work_start_date = null;
+          params.estimate.work_end_date = null;
+          params.estimate.skip_schedule = false;
         }
 
         this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
@@ -159,15 +173,13 @@ export default {
         subject: this.emailDefinition.subject
       }
 
-      return this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
-        this.$root.$emit('bv::toggle::collapse', this.id);
-      })
+      return this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params);
     }
   },
   computed: {
     arboristOptions() {
       return this.$store.state.arborists.map(arborist => {
-        if(arborist.role == 'admin' || arborist.role == 'team_lead') {
+        if(arborist.role == 'super_admin' || arborist.role == 'admin' || arborist.role == 'team_lead') {
           return this.arboristValue(arborist);
         }
       }).filter(arborist => !!arborist);;

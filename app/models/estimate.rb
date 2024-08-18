@@ -8,7 +8,7 @@ class Estimate < ActiveRecord::Base
 	before_save :set_status
 
 	has_many :trees
-	has_many :tree_images, through: :trees
+	has_many :tree_images
 	has_many :extra_costs
   has_many :costs
   has_many :notes
@@ -17,9 +17,12 @@ class Estimate < ActiveRecord::Base
   has_many :vehicles, through: :equipment_assignments
 
 	has_one :invoice
-	has_one :site
+  has_one :site
+  has_one :customer_detail
+
 	belongs_to :customer
 	belongs_to :arborist
+  belongs_to :organization
 
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments
@@ -36,13 +39,16 @@ class Estimate < ActiveRecord::Base
     ")
   end
   scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
+  scope :cancelled, -> { where(cancelled_at: nil) }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
-	scope :active, -> { where(is_unknown: false) }
+	scope :active, -> { where(is_unknown: false).where("status < 8") }
+  scope :no_followup, -> { where(followup_sent_at: nil) }
 	scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
   scope :with_customer, -> { where.not(customer: nil) }
+  scope :pre_quote, -> { (price_required.or(pending_quote)).active }
 
   # Filters
   scope :created_after, -> (filter_string) do
@@ -53,23 +59,33 @@ class Estimate < ActiveRecord::Base
       where('estimates.created_at >= ?', Date.today - 1.month)
     when 'six_months'
       where('estimates.created_at >= ?', Date.today - 6.months)
+    when 'one_year'
+      where('estimates.created_at >= ?', Date.today - 1.year)
     else
       all
     end
   end
 
+
+
   scope :for_status, -> (filter_string) do
     case filter_string
+    when 'active'
+      submitted.all.active.no_followup
     when 'needs_pricing'
-      price_required
+      submitted.price_required.active
+    when 'pre_quote'
+      submitted.pre_quote
     when 'awaiting_response'
-      sent
+      submitted.sent.active
     when 'to_pay'
-      pending_payment
+      submitted.pending_payment.active
     when 'scheduled'
-      scheduled
+      submitted.scheduled.active
     when 'unknown'
-      unknown
+      submitted.unknown
+    when 'cancelled'
+      cancelled
     else
       all
     end
@@ -81,7 +97,7 @@ class Estimate < ActiveRecord::Base
 		needs_arborist: 1,
 		pending_quote: 2,
 		quote_sent: 3,
-		quote_accepted: 4,
+		pending_permit: 4,
 		work_scheduled: 5,
 		work_completed: 6,
 		final_invoice_sent: 7,
@@ -101,8 +117,8 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def additional_message
-    return 'Picture Request Sent' if read_attribute(:status) < 4 && picture_request_sent_at.present?
-    return 'No Response Followup Sent' if read_attribute(:status) < 4 && followup_sent_at.present?
+    return 'Picture Request Sent' if read_attribute(:status).to_i < 4 && picture_request_sent_at.present?
+    return 'No Response Followup Sent' if read_attribute(:status).to_i < 4 && followup_sent_at.present?
 	end
 
 	def quote_sent?
@@ -138,10 +154,6 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def pdf_quote
-		# destination = Rails.root.join("tmp", "Quote__Estimate_#{self.id}__PDF.pdf")
-		# Libreconv.convert(estimate_file.to_s, destination.to_s)
-    # return destination.to_s
-
     GenerateQuote.call(self)
 	end
 
@@ -179,8 +191,10 @@ class Estimate < ActiveRecord::Base
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
-		elsif(self.quote_sent? && !self.work_scheduled?)
+		elsif(self.quote_sent? && !self.work_scheduled? && !self.pending_permit)
 			:quote_sent
+    elsif(self.quote_sent? && self.pending_permit)
+      :pending_permit
 		elsif(self.work_scheduled? && !self.invoice.sent?)
 			:work_scheduled
 		elsif(self.invoice.sent? && !self.invoice.paid?)
@@ -190,6 +204,10 @@ class Estimate < ActiveRecord::Base
     end
 
     # self.is_unknown = false if new_status != self.status
+    if new_status.to_sym != self.status.to_sym && new_status.to_sym != :cancelled
+      self.picture_request_sent_at = nil
+      self.followup_sent_at = nil
+    end
 		self.status = new_status
 
 		self.save! if save

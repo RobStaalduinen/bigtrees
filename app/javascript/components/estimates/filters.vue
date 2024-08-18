@@ -31,7 +31,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          status: 'all',
+          status: 'active',
           createdAfter: 'forever'
         }
       }
@@ -41,16 +41,19 @@ export default {
     return {
       statusOptions: [
         { value: 'all', text: 'All' },
-        { value: 'needs_pricing', text: 'Needs Pricing' },
+        { value: 'active', text: 'Active' },
+        { value: 'pre_quote', text: 'Quote Needed' },
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },
         { value: 'scheduled', text: 'Approved and Scheduled' },
-        { value: 'unknown', text: 'Unknown' }
+        { value: 'unknown', text: 'Unknown' },
+        { value: 'cancelled', text: 'Cancelled' }
       ],
       createdOptions: [
         { value: 'one_week', text: 'One Week' },
         { value: 'one_month', text: 'One month' },
         { value: 'six_months', text: 'Six Months' },
+        { value: 'one_year', text: 'One Year' },
         { value: 'forever', text: 'Forever' }
       ],
       status: null,
@@ -67,13 +70,11 @@ export default {
       this.$bvModal.hide(this.modalId);
     },
     changeFilters() {
-      this.$emit('input', { status: this.status, createdAfter: this.createdAfter });
-    }
-  },
-  watch: {
-    value: function() {
-      this.status = this.value.status;
-      this.createdAfter = this.value.createdAfter;
+      this.$emit('input', this.filterObject());
+      // localStorage.setItem('estimateFilterStatus', JSON.stringify(this.filterObject()));
+    },
+    filterObject() {
+      return { status: this.status, createdAfter: this.createdAfter };
     }
   }
 }

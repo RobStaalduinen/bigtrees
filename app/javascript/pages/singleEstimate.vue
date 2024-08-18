@@ -19,6 +19,10 @@
         </section>
 
         <section class='estimate-section'>
+          <single-estimate-customer :estimate='estimate' :isParentCustomer='true'></single-estimate-customer>
+        </section>
+
+         <section class='estimate-section'>
           <single-estimate-customer :estimate='estimate'></single-estimate-customer>
         </section>
 
@@ -42,7 +46,7 @@
           <single-estimate-costs :estimate='estimate'></single-estimate-costs>
         </section>
 
-        <section class ='estimate-section' v-if='estimate.trees && estimate.trees.length > 0'>
+        <section class ='estimate-section'>
           <single-estimate-trees :estimate='estimate'></single-estimate-trees>
         </section>
       </div>
@@ -121,7 +125,6 @@ export default {
     EventBus.$on('ESTIMATE_UPDATED', this.updateHandler)
   },
   beforeDestroy() {
-    console.log("REMOVE");
     EventBus.$off('ESTIMATE_UPDATED', this.updateHandler)
   },
   methods: {

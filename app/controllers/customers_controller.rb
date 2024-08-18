@@ -6,7 +6,7 @@ class CustomersController < ApplicationController
   def index
     authorize Customer, :index?
 
-    @customers = Customer.all.order('customers.id DESC').includes(:estimates)
+    @customers = policy_scope(Customer).order('customers.id DESC').includes(:estimates)
     if params[:q]
       @customers = @customers.where(
         'LOWER(name) LIKE :value OR LOWER(email) LIKE :value',

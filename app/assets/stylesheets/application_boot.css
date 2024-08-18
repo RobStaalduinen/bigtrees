@@ -21,3 +21,8 @@
 html{
   font-size: 16px !important;
 }
+
+.btn-secondary:not(:disabled):not(.disabled).active{
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}

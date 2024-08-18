@@ -11,8 +11,8 @@ class ArboristPolicy < ApplicationPolicy
     role_resource :arborists
 
     def resolve
-      if level == 'organization'
-        scope.where(organization: user.organization)
+      if level == 'organization' || level == 'all'
+        scope.joins(:organization_memberships).where(organization_memberships: { organization_id: OrganizationContext.current_organization.id })
       else
         scope.where(id: user.id)
       end
