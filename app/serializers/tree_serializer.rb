@@ -8,6 +8,4 @@ class TreeSerializer < ApplicationSerializer
   # Virtual
   attribute :work_name
   attribute :formatted_job_type
-
-  has_many :tree_images
 end

@@ -3,7 +3,13 @@ class TreesController < ApplicationController
     work_type = Tree.work_type_for_name(params[:tree][:work_type_string])
     @tree = estimate.trees.create(tree_params.merge(work_type: work_type))
 
-    render json: { status: :ok, tree_id: @tree.id }
+    render json: { status: :ok, tree_id: @tree.id, tree: TreeSerializer.new(@tree).serializable_hash }
+  end
+
+  def admin_create
+    tree = estimate.trees.create(tree_params)
+
+    render json: tree
   end
 
   def bulk_create
@@ -22,7 +28,7 @@ class TreesController < ApplicationController
 
     def tree_params
       params.require(:tree).permit(
-        :stump_removal, :description, :in_backyard,
+        :work_type, :stump_removal, :description, :in_backyard,
         tree_image_attributes: [ :image_url ]
       )
     end

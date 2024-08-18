@@ -8,7 +8,7 @@ class Estimate < ActiveRecord::Base
 	before_save :set_status
 
 	has_many :trees
-	has_many :tree_images, through: :trees
+	has_many :tree_images
 	has_many :extra_costs
   has_many :costs
   has_many :notes
