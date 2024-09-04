@@ -2,6 +2,7 @@ class TreeImage < ActiveRecord::Base
   BUCKET_URL = 'https://bigtreecare.s3.amazonaws.com'
   IMGIX_CDN = 'https://bigtrees.imgix.net'
   belongs_to :tree
+  belongs_to :estimate
 
   # has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
   has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"

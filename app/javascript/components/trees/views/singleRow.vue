@@ -48,6 +48,12 @@ export default {
         return `Task ${index}`;
       }
     },
+  },
+  mounted() {
+    console.log("TREE")
+    console.log(this.tree);
+    console.log("IMAGES")
+    console.log(this.images);
   }
 }
 </script>
