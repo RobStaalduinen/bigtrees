@@ -1,0 +1,32 @@
+<% content_for :title, "Estimates" %>
+<% content_for :description, "Get a free online estimate for tree care, tree removal, stump removal and trimming services." %>
+
+<script>
+  // function loadOnboarding() {
+  //   setTimeout(() => {
+  //     const event = new CustomEvent('loadOnboarding', {
+  //       detail: {
+  //         organization_shortname: <%= @organization_shortname %>
+  //       }
+  //     });
+  //     document.dispatchEvent(event);
+  //   }, 1)
+  // }
+</script>
+
+<div class = "row header-image sub-page-header">
+	<div class = "sub-page-header-title">
+		<div class = "sub-page-header-text">
+			<h1>Estimate</h1>
+		</div>
+	</div>
+</div>
+
+<div id='onboarding-container' class='container' data-organization_shortname="<%= @organization_shortname %>">
+  <div id='onboarding'>
+  </div>
+
+  <script>
+    // loadOnboarding();
+  </script>
+</div>

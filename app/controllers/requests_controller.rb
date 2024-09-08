@@ -47,6 +47,14 @@ class RequestsController < ApplicationController
     render json: { status: :ok }
   end
 
+  def org_scoped
+    @organization_shortname = params[:organization_shortname]
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   private
 
     def request_params

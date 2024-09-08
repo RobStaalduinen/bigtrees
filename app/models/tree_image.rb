@@ -3,8 +3,8 @@ class TreeImage < ActiveRecord::Base
   IMGIX_CDN = 'https://bigtrees.imgix.net'
   belongs_to :tree
 
-  # has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
-  has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"
+  has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
+  # has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"
 
   after_save :update_image_url
 

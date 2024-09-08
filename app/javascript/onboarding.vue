@@ -57,12 +57,8 @@ export default {
       treeQuantity: 1,
       trees: [{}, {}, {}],
       site: {},
-      customer: {}
-    }
-  },
-  mounted() {
-    if (window.location.href.includes('requests')) {
-      this.context = 'Requests'
+      customer: {},
+      organizationShortname: null
     }
   },
   computed: {
@@ -109,9 +105,13 @@ export default {
     },
     stopTransition(previousPage, nextPage) {
       return this.isTreePage(previousPage) && this.isTreePage(nextPage)
+    },
+    setOrganization() {
+      this.organizationShortname = document.getElementById('onboarding-container').getAttribute('data-organization_shortname');
     }
   },
   mounted() {
+    this.setOrganization();
     EventBus.$on('form-forward', () => { this.advance() } )
     EventBus.$on('form-back', () => { this.goBack() } )
   }

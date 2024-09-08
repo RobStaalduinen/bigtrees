@@ -1,15 +1,6 @@
 <% content_for :title, "Estimates" %>
 <% content_for :description, "Get a free online estimate for tree care, tree removal, stump removal and trimming services." %>
 
-<script>
-  function loadOnboarding() {
-    setTimeout(() => {
-      const event = new Event('loadOnboarding');
-      document.dispatchEvent(event);
-    }, 1)
-  }
-</script>
-
 <div class = "row header-image sub-page-header">
 	<div class = "sub-page-header-title">
 		<div class = "sub-page-header-text">
@@ -18,11 +9,4 @@
 	</div>
 </div>
 
-<div class='container'>
-  <div id='onboarding'>
-  </div>
-
-  <script>
-    loadOnboarding();
-  </script>
-</div>
+<%= render 'estimate_forms/combined_form/container' %>

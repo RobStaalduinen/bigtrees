@@ -1,9 +1,6 @@
 <template>
-    <app-pane  :rightTitle="`Tell us about Tree #${treeNumber}`">
+    <app-pane  :formTitle="`Tell us about Tree #${treeNumber}`">
       <template v-slot:left-side>
-        We need some info
-      </template>
-      <template v-slot:right-side>
         <div>
           <app-tree-form
             :treeNumber='treeNumber'
@@ -29,6 +26,13 @@
             :key='3'
           />
         </div>
+      </template>
+      <template v-slot:right-side>
+        Give us as much detail as you can about the tree or stump you need work on. <br /><br />
+
+        Detailed <b>pictures</b> of your trees or stumps will help us accurately assess your job. Pictures of the tree from multiple angles, and close-ups of any problem areas are especially helpful. <br /><br />
+
+        The more information you provide, the faster and more accurate your estimate will be.
       </template>
       <template v-slot:controls>
         <app-buttons></app-buttons>

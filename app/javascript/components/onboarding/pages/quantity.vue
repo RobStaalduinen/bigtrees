@@ -1,10 +1,6 @@
 <template>
-    <app-pane rightTitle="Let's get started">
+    <app-pane formTitle="Let's get started">
       <template v-slot:left-side>
-        It couldn't be simpler
-      </template>
-
-      <template v-slot:right-side>
         <div id='right-side'>
           <b-form-group v-slot="{ ariaDescribedby }">
             <div class='form-label'>
@@ -16,6 +12,18 @@
             <b-form-radio v-model="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=3 class='quantity-radio'>Three</b-form-radio>
           </b-form-group>
         </div>
+      </template>
+
+      <template v-slot:right-side>
+        It couldn't be simpler to get an estimate. Just a few simple questions about your job, and we'll take care of the rest.
+
+        <br /><br />
+
+        Let's start with the number of trees or stumps you need work on.
+
+        <br /><br />
+
+        If your job requires more than three trees or stumps, please contact us directly so we can set up a more detailed consultation.
       </template>
 
       <template v-slot:controls>

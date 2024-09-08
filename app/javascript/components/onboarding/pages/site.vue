@@ -1,11 +1,6 @@
 <template>
-    <app-pane rightTitle="Job Site Details">
+    <app-pane formTitle="Job Site Details">
       <template v-slot:left-side>
-        We'll need to know the address in where the work will take place.
-        <br/><br/>
-        Additionally, a few basic questions about the job site will help us get a better sense for the work required, and our equipment needs.
-      </template>
-      <template v-slot:right-side>
         <div>
           <app-input-field
             v-model='street'
@@ -51,6 +46,13 @@
           </div>
         </div>
       </template>
+
+      <template v-slot:right-side>
+        Let's get some details on where the job will take place.
+        <br/><br/>
+        An address, plus a few details on about your site will help us plan for your job.
+      </template>
+
       <template v-slot:controls>
         <app-buttons></app-buttons>
       </template>

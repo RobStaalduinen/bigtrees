@@ -23,7 +23,7 @@
 
       <b-form-group>
         <div class='form-label'>
-          Can you desribe the job?
+          Can you describe the job?
         </div>
 
         <b-form-textarea

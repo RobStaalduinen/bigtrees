@@ -1,10 +1,6 @@
 <template>
-    <app-pane rightTitle='Your Details'>
+    <app-pane formTitle='Your Details'>
       <template v-slot:left-side>
-        Let us know how we can get in touch with you. <br /><br />
-        We will make sure to get back to you as soon as possible.
-      </template>
-      <template v-slot:right-side>
         <div>
           <app-input-field
             v-model='name'
@@ -23,6 +19,12 @@
           />
         </div>
       </template>
+
+      <template v-slot:right-side>
+        Last step! <br /><br />
+        Just let us know how to reach you, and we'll be in touch with your estimate as soon as we can.
+      </template>
+
       <template v-slot:controls>
         <app-buttons></app-buttons>
       </template>

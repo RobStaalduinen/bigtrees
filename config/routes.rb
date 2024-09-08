@@ -88,6 +88,9 @@ Rails.application.routes.draw do
 
   resources :files, only: [ :new ]
   resources :organizations, only: [ :index, :show ]
+  scope 'organizations/:organization_shortname', as: 'organization_shortname' do
+    resources :requests, only: [:new], to: 'requests#org_scoped'
+  end
   resources :email_templates, only: [ :show ]
 
   resources :vue_test, only: [ :new ]

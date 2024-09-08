@@ -79,8 +79,9 @@ export default {
     uploadFile() {
       this.axiosGet('/files/new', { bucket_name: this.bucketName, filename: this.fileName }).then(response => {
         const formData = signedUrlFormData(response.data.fields, this.imageToUpload);
-
+        console.log('uploading file', formData);
         this.axiosImagePost(response.data.url, formData).then(response => {
+          console.log(response);
           this.url = parseImageUploadResponse(response);
           this.uploading = false;
         })
