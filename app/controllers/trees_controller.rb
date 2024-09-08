@@ -14,7 +14,22 @@ class TreesController < ApplicationController
 
   def bulk_create
     params[:trees].each do |tree|
-      estimate.trees.create(tree.permit(:description, tree_images_attributes: [:image_url]).merge(work_type: 'other'))
+      # image_attributes = (tree[:tree_image_attributes] || []).map do |image|
+      #   image.merge(estimate_id: estimate.id)
+      # end
+      new_tree = Tree.create(
+        estimate: estimate,
+        description: tree[:description],
+        work_type: 'other'
+      )
+
+      tree[:tree_images_attributes]&.each do |image|
+        TreeImage.create(
+          tree: new_tree,
+          estimate: estimate,
+          image_url: image[:image_url]
+        )
+      end
     end
 
     render json: { status: :ok }

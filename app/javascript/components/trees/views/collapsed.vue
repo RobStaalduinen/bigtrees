@@ -68,6 +68,9 @@ export default {
 
       sortedImages['null'] = [];
 
+      console.log("ALL IMAGES");
+      console.log(this.estimate.tree_images);
+
        this.estimate.tree_images.map((image) => {
         sortedImages[image.tree_id].push(image);
       },);

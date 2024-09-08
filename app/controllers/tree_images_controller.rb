@@ -24,7 +24,8 @@ class TreeImagesController < ApplicationController
     params[:images].each do |image|
       TreeImage.create(
         tree: tree,
-        asset: image
+        asset: image,
+        estimate: tree.estimate
       )
     end
 
