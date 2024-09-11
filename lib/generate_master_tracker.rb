@@ -16,7 +16,19 @@ class GenerateMasterTracker
     workbook = RubyXL::Parser.parse(template)
     worksheet = workbook[0]
 
-    estimates = estimates.includes(:trees, :arborist, :invoice, :customer, :site, :costs).order("estimates.created_at ASC, status DESC")
+    cost_subquery = <<-SQL
+      (SELECT estimate_id, SUM(amount) as aggregated_cost
+      FROM costs
+      GROUP BY estimate_id) as cost_totals
+    SQL
+
+    estimates = estimates
+                .includes(:trees, :arborist, :invoice, :customer, :site)
+                .order("estimates.created_at ASC, status DESC")
+                .joins("LEFT OUTER JOIN #{cost_subquery} ON cost_totals.estimate_id = estimates.id")
+                .joins("LEFT OUTER JOIN trees ON trees.estimate_id = estimates.id")
+                .group("estimates.id, cost_totals.aggregated_cost")
+                .select("estimates.*, COALESCE(cost_totals.aggregated_cost, 0) as aggregated_cost, COUNT(DISTINCT(trees.id)) as tree_count")
 
     estimates.each_with_index do |estimate, i|
       row = 1 + i
@@ -39,17 +51,18 @@ class GenerateMasterTracker
       insert(worksheet, row, 8, customer.name)
       insert(worksheet, row, 9, estimate.street || estimate.site&.address&.street)
       insert(worksheet, row, 10, estimate.city || estimate.site&.address&.city)
-      insert(worksheet, row, 11, estimate.trees.count)
+      insert(worksheet, row, 11, estimate.tree_count)
       insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
       insert(worksheet, row, 13, contact.capitalize)
       insert(worksheet, row, 14, customer.phone)
       insert(worksheet, row, 15, customer.email)
       insert(worksheet, row, 16, discount)
 
-      if estimate.quote_sent_date.present?
-        insert(worksheet, row, 17, estimate.total_cost)
-        insert(worksheet, row, 18, estimate.total_cost * 0.13)
-        insert(worksheet, row, 19, estimate.total_cost * 1.13)
+      total_cost = estimate.aggregated_cost
+      if estimate.quote_sent_date.present? && total_cost.present?
+        insert(worksheet, row, 17, total_cost)
+        insert(worksheet, row, 18, total_cost * 0.13)
+        insert(worksheet, row, 19, total_cost * 1.13)
 
         if estimate.invoice.present? && estimate.invoice.sent_at.present? && !estimate.is_unknown
           insert(worksheet, row, 20, estimate.outstanding_amount * 1.13)
