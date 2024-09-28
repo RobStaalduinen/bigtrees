@@ -2,16 +2,20 @@
     <app-pane formTitle="Job Site Details">
       <template v-slot:left-side>
         <div>
-          <app-input-field
-            v-model='street'
-            name='street'
-            label='Street Address'
-          />
-          <app-input-field
-            v-model='city'
-            name='city'
-            label='City'
-          />
+          <validation-observer ref="observer">
+            <app-input-field
+              v-model='street'
+              name='street'
+              label='Street Address'
+              validationRules='required'
+            />
+            <app-input-field
+              v-model='city'
+              name='city'
+              label='City'
+              validationRules='required'
+            />
+          </validation-observer>
 
           <div>
             <b-form-group v-slot="{ ariaDescribedby }">
@@ -54,7 +58,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons></app-buttons>
+        <app-buttons :nextValidation='validate'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -89,6 +93,12 @@ export default {
         breakables: this.breakables,
         low_access_width: this.low_access_width
       }
+    }
+  },
+  methods: {
+    validate() {
+      console.log("Validating");
+      return this.$refs.observer.validate();
     }
   },
   mounted() {

@@ -2,21 +2,25 @@
     <app-pane formTitle='Your Details'>
       <template v-slot:left-side>
         <div>
-          <app-input-field
-            v-model='name'
-            name='name'
-            label='Your name'
-          />
-          <app-input-field
-            v-model='email'
-            name='email'
-            label='Email Address'
-          />
-          <app-input-field
-            v-model='phone'
-            name='phone'
-            label='Phone Number'
-          />
+          <validation-observer ref="observer">
+            <app-input-field
+              v-model='name'
+              name='name'
+              label='Your name'
+              validationRules='required'
+            />
+            <app-input-field
+              v-model='email'
+              name='email'
+              label='Email Address'
+              validationRules='required'
+            />
+            <app-input-field
+              v-model='phone'
+              name='phone'
+              label='Phone Number'
+            />
+          </validation-observer>
         </div>
       </template>
 
@@ -26,7 +30,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons></app-buttons>
+        <app-buttons :nextValidation='validate'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -57,6 +61,11 @@ export default {
         email: this.emaik,
         phone: this.phone
       }
+    }
+  },
+  methods: {
+    validate() {
+      return this.$refs.observer.validate();
     }
   },
   watch: {

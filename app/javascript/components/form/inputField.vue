@@ -15,7 +15,7 @@
         :disabled='disabled'
         autocomplete='off'
       ></b-form-input>
-      <b-form-invalid-feedback id="input-feedback">{{ valContext.errors[0] }}</b-form-invalid-feedback>
+      <b-form-invalid-feedback id="input-feedback" class='validation-error'>{{ valContext.errors[0] }}</b-form-invalid-feedback>
     </b-form-group>
   </ValidationProvider>
 </template>
@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      input: this.value ? this.value : null
+      input: this.value
     }
   },
   watch: {
@@ -80,7 +80,7 @@ export default {
 
 <style scoped>
   .validation-error {
-    font-size: 10px;
+    font-size: 12px;
     color: red;
     font-style: italic;
   }

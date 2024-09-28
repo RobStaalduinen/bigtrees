@@ -27,6 +27,11 @@ export default {
     displayForward: {
       required: false,
       default: true
+    },
+    nextValidation: {
+      type: Function,
+      required: false,
+      default: () => { return Promise.resolve(true); }
     }
   },
   methods: {
@@ -34,7 +39,15 @@ export default {
       EventBus.$emit('form-back');
     },
     forward() {
-      EventBus.$emit('form-forward');
+      this.nextValidation().then(success => {
+        console.log(success);
+        if (success) {
+          EventBus.$emit('form-forward');
+        }
+        else {
+          EventBus.$emit('form-error');
+        }
+      });
     }
   },
 }

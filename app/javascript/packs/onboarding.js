@@ -1,8 +1,15 @@
+
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
+
 import { extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
+
+extend('required', {
+  ...required,
+  message: 'This field is required'
+});
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
