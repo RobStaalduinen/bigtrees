@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     validate() {
-      console.log("Validating");
       return this.$refs.observer.validate();
     }
   },
