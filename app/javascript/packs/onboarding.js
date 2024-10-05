@@ -29,6 +29,15 @@ Vue.component('app-shadow-box', ShadowBox)
 Vue.component('app-loader', Loader)
 Vue.component('app-button', AppButton)
 
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import '../stylesheets/variables'
+
+import '../stylesheets/bootstrap_spinner_only.scss'
+// import '../stylesheets/bootstrap_overrides.css'
+// import '../stylesheets/common_styles.css'
+// import '../stylesheets/ui_styles.css'
+
 // Form components
 // import SearchField from '../components/form/searchField.vue';
 // import Pagination from '../components/form/pagination.vue';

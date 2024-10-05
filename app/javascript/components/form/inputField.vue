@@ -83,5 +83,9 @@ export default {
     font-size: 12px;
     color: red;
     font-style: italic;
+
+    line-height: 100%;
+    margin-top: 4px;
+    min-height: 12px;
   }
 </style>

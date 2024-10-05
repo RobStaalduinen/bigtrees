@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <b-form-group>
+      <b-form-group v-if="!stumpingOnly">
         <div class='form-label'>
           What type of work is required?
         </div>
@@ -28,9 +28,9 @@
 
         <b-form-textarea
           id="textarea"
-          name='notes'
-          :value="notes"
-          @input='(value) => updateNotes(value)'
+          name='description'
+          :value="description"
+          @input='(value) => updateDescription(value)'
           rows="3"
           max-rows="3"
           :placeholder='helpContent'
@@ -43,7 +43,7 @@
           Images
 
           <div class='form-subtext'>
-            Pictures of your trees or stumps will help us accurately assess your job
+            Pictures of your {{ this.stumpingOnly ? 'stumps' : 'trees or stumps' }} will help us estimate accurately.
           </div>
         </div>
         <div v-for="(image, index) in images" :key='`tree_${treeNumber}_image_${index}`' class='tree-image-uploader'>
@@ -65,7 +65,7 @@ export default {
   components: {
     'app-file-upload': Uploader
   },
-  props: ['treeNumber', 'value'],
+  props: ['treeNumber', 'value', 'stumpingOnly'],
   data() {
     return {
       options: [
@@ -77,17 +77,20 @@ export default {
       ],
       stump_removal: false,
       images: this.value.images || [null],
-      notes: this.value.notes || "",
-      work_type: this.value.work_type || 0,
+      description: this.value.description || "",
+      work_type: this.initialWorkType(),
       helpContent: ""
     }
   },
   computed: {
     tree() {
+      let newWorkType = this.stumpingOnly ? 3 : this.work_type;
+
       return {
-        work_type: this.work_type,
+        work_type: newWorkType,
+        stump_removal: this.stump_removal,
         images: this.images,
-        notes: this.notes
+        description: this.description
       }
     }
   },
@@ -103,8 +106,15 @@ export default {
         this.images.push(null);
       }
     },
-    updateNotes(value) {
-      this.notes = value;
+    initialWorkType() {
+      if(this.stumpingOnly) {
+        return 3;
+      } else {
+        return 0;
+      }
+    },
+    updateDescription(value) {
+      this.description = value;
     },
     setWorkTypeContent() {
       switch(this.work_type){

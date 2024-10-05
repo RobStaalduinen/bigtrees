@@ -25,12 +25,13 @@
       </template>
 
       <template v-slot:right-side>
-        Last step! <br /><br />
-        Just let us know how to reach you, and we'll be in touch with your estimate as soon as we can.
+        Almost there, just one more step remaining. <br /><br />
+        Just let us know how to reach you, and we'll be in touch with your estimate as soon as we can. <br/><br />
+        We'll never share your information with anyone else, and we'll only use it to contact you about your estimate.
       </template>
 
       <template v-slot:controls>
-        <app-buttons :nextValidation='validate'></app-buttons>
+        <app-buttons :nextValidation='validate' :loadingState='true' forwardText='Submit'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -58,7 +59,7 @@ export default {
     customer() {
       return {
         name: this.name,
-        email: this.emaik,
+        email: this.email,
         phone: this.phone
       }
     }

@@ -4,7 +4,7 @@
         <div id='right-side'>
           <b-form-group v-slot="{ ariaDescribedby }">
             <div class='form-label'>
-              How many trees or stumps need work?
+              {{ stumpingOnly ? "How many stumps need work?" : "How many trees or stumps need work?" }}
             </div>
 
             <b-form-radio v-model="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=1 class='quantity-radio'>One</b-form-radio>
@@ -42,7 +42,16 @@ export default {
     'app-pane' : Pane,
     'app-buttons': FormButtons
   },
-  props: ['value'],
+  props: {
+    value: {
+      type: Number,
+      default: 1
+    },
+    stumpingOnly: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       amount: this.value

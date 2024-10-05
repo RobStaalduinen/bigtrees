@@ -9,7 +9,7 @@ class Customer < ActiveRecord::Base
 
   def self.find_or_create_by_params(params)
     customer = Customer.find_by(email: params[:email]) if params[:email].present?
-    customer = Customer.find_by(email: params[:phone]) if customer.blank? && params[:phone].present?
+
     if customer.blank?
       customer = Customer.create(params)
     end

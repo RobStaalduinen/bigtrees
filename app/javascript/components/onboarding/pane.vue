@@ -37,7 +37,7 @@ export default {
 }
 
 .pane-side {
-  margin: 8px;
+  margin-top: 8px;
 
   border-width: 2px;
   border-color: lightgray;
@@ -84,12 +84,8 @@ export default {
 }
 
 @media(max-width: 759px) {
-  .left-side {
-    width: 100%;
-    margin-right: 0px;
-  }
-
   .pane-side {
+    border-width: 0px;
     margin: 0px;
     margin-top: 8px;
   }
@@ -97,5 +93,12 @@ export default {
   .right-side {
     display: none;
   }
+
+  .left-side {
+    width: 100%;
+    margin-right: 0px;
+    margin-bottom: 64px;
+  }
 }
+
 </style>

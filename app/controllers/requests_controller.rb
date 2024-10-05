@@ -51,7 +51,7 @@ class RequestsController < ApplicationController
     @organization_shortname = params[:organization_shortname]
 
     respond_to do |format|
-      format.html
+      format.html { render layout: 'white_label' }
     end
   end
 

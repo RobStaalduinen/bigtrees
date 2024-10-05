@@ -54,7 +54,9 @@
       <template v-slot:right-side>
         Let's get some details on where the job will take place.
         <br/><br/>
-        An address, plus a few details on about your site will help us plan for your job.
+        Please provide the address <b>where the work will be done</b>
+        <br/><br/>
+        Plus, a few simple questions to help us prepare for the job, and to see if there is any special equipment or precautions we need to take.
       </template>
 
       <template v-slot:controls>
@@ -87,8 +89,10 @@ export default {
   computed: {
     site() {
       return {
-        street: this.street,
-        city: this.city,
+        address_attributes: {
+          street: this.street,
+          city: this.city
+        },
         wood_removal: this.wood_removal,
         breakables: this.breakables,
         low_access_width: this.low_access_width

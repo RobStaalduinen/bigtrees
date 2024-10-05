@@ -42,18 +42,18 @@ export default {
   },
   methods: {
     taskHeader(index, tree) {
+      let header = ""
       if (tree == null) {
-        return 'Uncategorized';
+        header = 'Uncategorized';
       } else {
-        return `Task ${index}`;
+        header = `Task ${index} - ${this.tree.work_name}`;
       }
+
+      return header
     },
   },
   mounted() {
-    console.log("TREE")
-    console.log(this.tree);
-    console.log("IMAGES")
-    console.log(this.images);
+    console.log("Tree", this.tree);
   }
 }
 </script>

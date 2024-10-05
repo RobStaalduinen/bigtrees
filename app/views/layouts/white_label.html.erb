@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= yield(:title) %></title>
+  <meta name="description" content='<%= yield(:description) %>'>
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+
+  <%= javascript_pack_tag 'onboarding' %>
+  <%= stylesheet_pack_tag 'onboarding' %>
+
+  <%= csrf_meta_tags %>
+
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700" media="none" onload="this.media='all';">
+</head>
+<body>
+
+  <div id = "main-box">
+    <%= yield %>
+  </div>
+
+
+</body>
+</html>

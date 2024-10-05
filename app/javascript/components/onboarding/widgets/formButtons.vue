@@ -1,16 +1,23 @@
 <template>
   <div id='form-buttons'>
-    <button @click='back' v-if='displayBack' id='back-button'>
+    <button @click='back' v-if='displayBack && !loading' id='back-button'>
       <b-icon icon='arrow-left' id='left-icon'></b-icon>
       Back
     </button>
-    <div v-if='!displayBack' id='back-placeholder'>
+    <div v-if='!displayBack || loading' id='back-placeholder'>
 
     </div>
-    <button @click='forward' v-if='displayForward' id='forward-button'>
-      Next
-      <b-icon icon='arrow-right' id='right-icon'></b-icon>
-    </button>
+
+
+    <div v-if='!loading'>
+      <button @click='forward' v-if='displayForward && !loading' id='forward-button'>
+        {{ forwardText }}
+        <b-icon icon='arrow-right' id='right-icon'></b-icon>
+      </button>
+    </div>
+    <div v-else id='submit-button-loader'>
+      <b-spinner></b-spinner>
+    </div>
   </div>
 
 </template>
@@ -28,10 +35,23 @@ export default {
       required: false,
       default: true
     },
+    forwardText: {
+      required: false,
+      default: 'Next'
+    },
+    loadingState: {
+      required: false,
+      default: false
+    },
     nextValidation: {
       type: Function,
       required: false,
       default: () => { return Promise.resolve(true); }
+    }
+  },
+  data() {
+    return {
+      loading: false
     }
   },
   methods: {
@@ -40,8 +60,11 @@ export default {
     },
     forward() {
       this.nextValidation().then(success => {
-        console.log(success);
         if (success) {
+          if(this.loadingState) {
+            this.loading = true;
+            console.log("SET LOADING");
+          }
           EventBus.$emit('form-forward');
         }
         else {
@@ -54,6 +77,7 @@ export default {
 </script>
 
 <style>
+
   #form-buttons {
     display: flex;
     justify-content: space-between;
@@ -89,9 +113,24 @@ export default {
     align-items: center;
   }
 
+  #submit-button-loader {
+    margin-top: 4px;
+    margin-right: 16px;
+  }
+
   #right-icon {
     margin-left: 8px;
     font-size: 18px;
+  }
+
+  @media(max-width: 759px) {
+    #form-buttons {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: white;
+    }
   }
 
 </style>

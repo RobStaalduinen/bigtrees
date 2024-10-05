@@ -87,10 +87,14 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
-  resources :organizations, only: [ :index, :show ]
+  resources :organizations, only: [ :index, :show ] do
+    get 'public/:short_name', to: 'organizations#public', on: :collection
+  end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
     resources :requests, only: [:new], to: 'requests#org_scoped'
   end
+
+  resources :customer_requests, only: [ :create ]
   resources :email_templates, only: [ :show ]
 
   resources :vue_test, only: [ :new ]

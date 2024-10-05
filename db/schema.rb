@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_30_114924) do
+ActiveRecord::Schema.define(version: 2024_10_01_190814) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -271,6 +271,11 @@ ActiveRecord::Schema.define(version: 2024_06_30_114924) do
     t.string "insurance_description"
     t.string "hst_number"
     t.integer "address_id"
+    t.string "short_name"
+    t.string "logo_url"
+    t.string "primary_colour"
+    t.string "secondary_colour"
+    t.string "custom_thank_you_page"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
