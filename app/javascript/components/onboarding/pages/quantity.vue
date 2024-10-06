@@ -7,9 +7,9 @@
               {{ stumpingOnly ? "How many stumps need work?" : "How many trees or stumps need work?" }}
             </div>
 
-            <b-form-radio v-model="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=1 class='quantity-radio'>One</b-form-radio>
-            <b-form-radio v-model="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=2 class='quantity-radio'>Two</b-form-radio>
-            <b-form-radio v-model="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=3 class='quantity-radio'>Three</b-form-radio>
+            <b-form-radio v-model.number="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=1 class='quantity-radio'>One</b-form-radio>
+            <b-form-radio v-model.number="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=2 class='quantity-radio'>Two</b-form-radio>
+            <b-form-radio v-model.number="amount" :aria-describedby="ariaDescribedby" name="some-radios" value=3 class='quantity-radio'>Three</b-form-radio>
           </b-form-group>
         </div>
       </template>

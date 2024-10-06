@@ -79,8 +79,8 @@ export default {
   props: ['value'],
   data() {
     return {
-      street: this.value.street || "",
-      city: this.value.city || "",
+      street: this.value.address_attributes.street || "",
+      city: this.value.address_attributes.city || "",
       wood_removal: this.value.wood_removal || true,
       breakables: this.value.breakables || false,
       low_access_width: this.value.low_access_width || false
@@ -95,7 +95,8 @@ export default {
         },
         wood_removal: this.wood_removal,
         breakables: this.breakables,
-        low_access_width: this.low_access_width
+        low_access_width: this.low_access_width,
+        survey_filled_out: true
       }
     }
   },

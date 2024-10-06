@@ -18,15 +18,6 @@
 
           <b-row class='spaced-row'>
             <b-col cols='6' class='right-column'>
-              <b>Vehicle Access</b>
-            </b-col>
-            <b-col cols='6'>
-              {{ formatAnswer(estimate.site.vehicle_access) }}
-            </b-col>
-          </b-row>
-
-          <b-row class='spaced-row'>
-            <b-col cols='6' class='right-column'>
               <b>Breakables</b>
             </b-col>
             <b-col cols='6'>

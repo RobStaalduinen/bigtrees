@@ -43,7 +43,7 @@
           Images
 
           <div class='form-subtext'>
-            Pictures of your {{ this.stumpingOnly ? 'stumps' : 'trees or stumps' }} will help us estimate accurately.
+            Pictures of your {{ this.stumpingOnly ? 'stumps' : 'trees or stumps' }} will help us estimate accurately. Please add as many as you think will be helpful.
           </div>
         </div>
         <div v-for="(image, index) in images" :key='`tree_${treeNumber}_image_${index}`' class='tree-image-uploader'>
@@ -75,7 +75,7 @@ export default {
         { value: 3, text: 'Stump Removal' },
         { value: 6, text: 'Other Tree Services' },
       ],
-      stump_removal: false,
+      stump_removal: this.value.stump_removal || false,
       images: this.value.images || [null],
       description: this.value.description || "",
       work_type: this.initialWorkType(),
@@ -107,6 +107,10 @@ export default {
       }
     },
     initialWorkType() {
+      if(this.value.work_type) {
+        return this.value.work_type;
+      }
+
       if(this.stumpingOnly) {
         return 3;
       } else {

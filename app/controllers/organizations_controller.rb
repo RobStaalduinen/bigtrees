@@ -20,10 +20,6 @@ class OrganizationsController < ApplicationController
   def public
     @organization = Organization.find_by(short_name: params[:short_name])
 
-    render json: {
-      primary_colour: @organization.primary_colour,
-      secondary_colour: @organization.secondary_colour,
-      logo_url: @organization.logo_url
-    }
+    render json: @organization, serializer: OrganizationPublicSerializer
   end
 end

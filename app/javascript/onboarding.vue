@@ -70,7 +70,7 @@ export default {
       changing: false,
       treeQuantity: 1,
       trees: [{}, {}, {}],
-      site: {},
+      site: { address_attributes: {} },
       customer: {},
       organizationShortname: null,
       organizationData: {},
@@ -157,7 +157,7 @@ export default {
 
       this.axiosGet(`/organizations/public/${this.organizationShortname}`).then(response => {
         if(response.status == 200) {
-          this.organizationData = response.data;
+          this.organizationData = response.data.organization;
           console.log(this.organizationData);
 
           document.documentElement.style.setProperty('--main-color', this.organizationData.primary_colour);

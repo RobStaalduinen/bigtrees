@@ -6,6 +6,9 @@ class CustomerRequestsController < ApplicationController
 
     Estimate.transaction do
       estimate = Estimate.create(organization: organization, submission_completed: true)
+
+      estimate.arborist = organization.default_arborist
+
       estimate.create_site(site_params)
 
       customer = Customer.find_or_create_by_params(customer_params)
@@ -33,7 +36,7 @@ class CustomerRequestsController < ApplicationController
   end
 
   def site_params
-    params.require(:site).permit(:wood_removal, :breakables, :low_access_width, address_attributes: %i[street city])
+    params.require(:site).permit(:wood_removal, :breakables, :low_access_width, :survey_filled_out ,address_attributes: %i[street city])
   end
 
   def customer_params
