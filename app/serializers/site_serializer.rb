@@ -7,6 +7,8 @@ class SiteSerializer < ApplicationSerializer
   attribute :cleanup
   attribute :low_access_width
   attribute :survey_filled_out
+  attribute :visit_consent
+  attribute :visit_times
 
   has_one :address
 end

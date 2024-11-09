@@ -2,16 +2,19 @@ You have received a new estimate request on bigtreeservices.ca
 <br />
 <br />
 <h3>Estimate</h3>
+<% if @estimate.site_visit_required %>
+  <b>This customer has requested a site visit.</b> <br /> <br />
+
+  <b>Solo visit consent: </b> <%= @estimate.site.visit_consent %> <br />
+  <b>Suggested times: </b> <%= @estimate.site.visit_times %> <br /> <br />
+<% end %>
+
 <p>
 <b>Request From: </b><%= @estimate.customer.name %> <br />
 <b>Address: </b><%= @estimate.site&.full_address %> <br /> <br />
 
-<b>Contact By: </b><%= @estimate.preferred_contact_method %> <br />
 <b>Contact At: </b><%= @estimate.contact_methods %> <br /><br />
 
 <b>See the full estimate: </b> <a href=<%= "https://bigtreeservices.ca/admin/estimates/#{@estimate.id}" %>>Here</a>
-
-
-
 
 </p>

@@ -27,7 +27,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons :displayBack='false'></app-buttons>
+        <app-buttons></app-buttons>
       </template>
 
     </app-pane>

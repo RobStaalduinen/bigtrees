@@ -119,7 +119,7 @@ export default {
     imageDefinitions() {
       var allUrls = this.estimate.tree_images.map((image, imageIndex) => {
         return {
-          tree: new Tree(image.tree).galleryDisplay(imageIndex),
+          tree: new Tree(image.tree).galleryDisplay(this.taskIndex(image.tree)),
           treeImage: new TreeImage(image).galleryDisplay(imageIndex)
         }
       })
@@ -151,6 +151,12 @@ export default {
       }
 
       this.setInitialImageVersion();
+    },
+    taskIndex(tree) {
+      if(tree == null) {
+        return null;
+      }
+      return this.estimate.trees.findIndex(listTree => listTree.id == tree.id) + 1
     },
     closeModal() {
       this.display = false;

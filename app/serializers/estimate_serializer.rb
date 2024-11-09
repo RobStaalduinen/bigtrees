@@ -12,6 +12,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :picture_request_sent_at
   attribute :followup_sent_at
   attribute :skip_schedule
+  attribute :site_visit_tag
 
   attribute :created_at
   attribute :updated_at
@@ -22,6 +23,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :total_cost
   attribute :hst
   attribute :total_cost_with_tax
+  attribute :site_visit_required
 
   # Associations
   belongs_to :arborist

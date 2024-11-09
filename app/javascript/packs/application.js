@@ -69,6 +69,7 @@ import ActionBarItem from '../components/ui/actionBarItem.vue';
 import RightSidebar from '../components/ui/rightSidebar.vue';
 import RightSidebarForm from '../components/ui/rightSidebarForm.vue';
 import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue';
+import Tag from '../components/ui/tag.vue'
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -83,6 +84,7 @@ Vue.component('app-action-bar-item', ActionBarItem)
 Vue.component('app-right-sidebar', RightSidebar)
 Vue.component('app-right-sidebar-form', RightSidebarForm)
 Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
+Vue.component('app-tag', Tag);
 
 
 // Form components

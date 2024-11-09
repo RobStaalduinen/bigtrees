@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_01_190814) do
+ActiveRecord::Schema.define(version: 2024_11_02_150104) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(version: 2024_10_01_190814) do
     t.boolean "skip_schedule"
     t.integer "organization_id"
     t.boolean "pending_permit", default: false
+    t.boolean "site_visit_tag", default: false
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
@@ -275,7 +276,6 @@ ActiveRecord::Schema.define(version: 2024_10_01_190814) do
     t.string "logo_url"
     t.string "primary_colour"
     t.string "secondary_colour"
-    t.string "custom_thank_you_page"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -329,6 +329,8 @@ ActiveRecord::Schema.define(version: 2024_10_01_190814) do
     t.integer "address_id"
     t.boolean "low_access_width", default: false
     t.boolean "survey_filled_out", default: false
+    t.boolean "visit_consent", default: false
+    t.text "visit_times"
     t.index ["city"], name: "index_sites_on_city"
     t.index ["estimate_id"], name: "index_sites_on_estimate_id"
     t.index ["street"], name: "index_sites_on_street"

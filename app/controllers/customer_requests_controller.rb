@@ -7,6 +7,8 @@ class CustomerRequestsController < ApplicationController
     Estimate.transaction do
       estimate = Estimate.create(organization: organization, submission_completed: true)
 
+      estimate.site_visit_tag = true if params[:site_visit_tag]
+
       estimate.arborist = organization.default_arborist
 
       estimate.create_site(site_params)
@@ -27,6 +29,9 @@ class CustomerRequestsController < ApplicationController
       estimate.save!
 
       if estimate.persisted?
+        EstimateMailer.estimate_alert(estimate).deliver_now
+
+
         render json: {
           estimate_id: estimate.id,
           redirect_url: '/main/thank-you-estimate'
@@ -36,7 +41,7 @@ class CustomerRequestsController < ApplicationController
   end
 
   def site_params
-    params.require(:site).permit(:wood_removal, :breakables, :low_access_width, :survey_filled_out ,address_attributes: %i[street city])
+    params.require(:site).permit(:wood_removal, :breakables, :low_access_width, :survey_filled_out, :visit_consent, :visit_times, address_attributes: %i[street city])
   end
 
   def customer_params
@@ -44,7 +49,7 @@ class CustomerRequestsController < ApplicationController
   end
 
   def tree_params
-    params.require(:trees).map do |tree|
+    params[:trees].map do |tree|
       tree.permit(:description, :work_type, :stump_removal, images: [])
     end
   end

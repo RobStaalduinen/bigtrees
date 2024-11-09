@@ -37,30 +37,27 @@
     </div>
 
     <div class='estimate-footer'>
-      <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
+      <div class='estimate-footer-left'>
+        <div class='site-visit-tag' v-if='estimate.site_visit_required'>
+          <app-tag color='yellow'>Site Visit</app-tag>
+        </div>
+      </div>
 
-      <!-- <a class='estimate-link' v-b-modal='"timelineModal" + estimate.id'>
-        Timeline
-      </a> -->
+      <div class='estimate-footer-right'>
+        <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
 
-      <!-- <a class='estimate-link' @click='openImages' v-if='hasImages()'>
-        Images
-      </a> -->
-
-      <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
-        Details
-      </router-link>
+        <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
+          Details
+        </router-link>
+      </div>
     </div>
 
-    <!-- <app-timeline-modal :estimate='estimate' :modalId='"timelineModal" + estimate.id'></app-timeline-modal> -->
-    <!-- <app-image-gallery :estimate='estimate'></app-image-gallery> -->
   </div>
 </template>
 
 <script>
 import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
-import ImageGallery from '@/components/tree_images/views/galleryModal';
 import EventBus from '@/store/eventBus'
 import { mapState } from 'vuex'
 
@@ -74,21 +71,13 @@ export default {
   components: {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList,
-    'app-image-gallery': ImageGallery
   },
   computed: mapState({
     mySchedule: state => state.estimateSettings.mySchedule
   }),
   methods:
   {
-    openImages() {
-      EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id })
-    }
-    // hasImages() {
-    //   return this.estimate.trees.map(tree => {
-    //     return tree.tree_images.length > 0
-    //   }).some(img => img === true);
-    // }
+
   }
 }
 </script>
@@ -173,6 +162,17 @@ export default {
   }
 
   .estimate-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .estimate-footer-left {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+  }
+
+  .estimate-footer-right {
     display: flex;
     justify-content: flex-end;
   }

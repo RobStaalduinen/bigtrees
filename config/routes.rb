@@ -96,6 +96,7 @@ Rails.application.routes.draw do
 
   resources :customer_requests, only: [ :create ]
   resources :email_templates, only: [ :show ]
+  resources :commercial_requests, only: [ :create ]
 
   resources :vue_test, only: [ :new ]
 

@@ -6,36 +6,76 @@
 
      <template v-if='!this.formSubmitted'>
       <app-onboarding-progress-bar :percentage='progressPercentage'></app-onboarding-progress-bar>
+
       <transition name="fade">
-        <app-onboarding-quantity
+        <app-onboarding-initial
           v-if='currentPage == 1 && !changing'
-          v-model='treeQuantity'
-          :stumpingOnly='stumpingOnly'
-        ></app-onboarding-quantity>
+          v-model='quoteOption'
+        ></app-onboarding-initial>
       </transition>
 
-      <transition name="fade">
-        <app-onboarding-trees
-          v-if='onTreePage() && !changing'
-          :treeNumber='currentPage - 1'
-          v-model='trees'
-          :stumpingOnly='stumpingOnly'
-        ></app-onboarding-trees>
-      </transition>
-
-      <transition name="fade">
-          <app-onboarding-site
-            v-if='currentPage == (parseInt(treeQuantity) + 2) && !changing'
-            v-model='site'
-          ></app-onboarding-site>
+      <!--Quote group -->
+      <template v-if='quoteOption == "quote"'>
+        <transition name="fade">
+          <app-onboarding-quantity
+            v-if='currentPage == 2 && !changing'
+            v-model='treeQuantity'
+            :stumpingOnly='stumpingOnly'
+          ></app-onboarding-quantity>
         </transition>
 
-        <transition name='fade'>
-          <app-onboarding-contact
-            v-if='currentPage == (parseInt(treeQuantity) + 3) && !changing'
-            v-model='customer'
-          ></app-onboarding-contact>
+        <transition name="fade">
+          <app-onboarding-trees
+            v-if='onTreePage() && !changing'
+            :treeNumber='currentPage - 2'
+            v-model='trees'
+            :stumpingOnly='stumpingOnly'
+          ></app-onboarding-trees>
         </transition>
+
+        <transition name="fade">
+            <app-onboarding-site
+              v-if='currentPage == (parseInt(treeQuantity) + 3) && !changing'
+              v-model='site'
+            ></app-onboarding-site>
+          </transition>
+
+          <transition name='fade'>
+            <app-onboarding-contact
+              v-if='currentPage == (parseInt(treeQuantity) + 4) && !changing'
+              v-model='customer'
+            ></app-onboarding-contact>
+          </transition>
+        </template>
+
+        <!--Visit group -->
+        <template v-if='quoteOption == "visit"'>
+          <transition name="fade">
+            <app-onboarding-site-visit
+              v-if='currentPage == 2 && !changing'
+              v-model='site'
+            ></app-onboarding-site-visit>
+          </transition>
+
+          <transition name="fade">
+            <app-onboarding-contact
+              v-if='currentPage == 3 && !changing'
+              v-model='customer'
+            ></app-onboarding-contact>
+          </transition>
+        </template>
+
+        <!--Contact group -->
+        <template v-if='quoteOption == "contact"'>
+          <transition name="fade">
+            <app-onboarding-contact
+              v-if='currentPage == 2 && !changing'
+              v-model='customer'
+              subtype='commercial_quote'
+            ></app-onboarding-contact>
+          </transition>
+        </template>
+
       </template>
       <template v-if='this.formSubmitted'>
         <div id = 'thank-you-display'>
@@ -47,19 +87,24 @@
 </template>
 
 <script>
+import Initial from './components/onboarding/pages/initial';
 import Quantity from './components/onboarding/pages/quantity';
 import Trees from './components/onboarding/pages/trees';
 import Site from './components/onboarding/pages/site';
 import Contact from './components/onboarding/pages/contact';
+import SiteVisit from './components/onboarding/pages/siteVisit';
+import ContactUs from './components/onboarding/pages/contact_us';
 import ProgressBar from './components/onboarding/progressBar'
 
 import EventBus from '@/store/eventBus';
 
 export default {
   components: {
+    'app-onboarding-initial': Initial,
     'app-onboarding-quantity': Quantity,
     'app-onboarding-trees': Trees,
     'app-onboarding-site': Site,
+    'app-onboarding-site-visit': SiteVisit,
     'app-onboarding-contact': Contact,
     'app-onboarding-progress-bar': ProgressBar
   },
@@ -78,7 +123,8 @@ export default {
       logoUrl: null,
       standalone: true,
       formSubmitted: false,
-      stumpingOnly: false
+      stumpingOnly: false,
+      quoteOption: null
     }
   },
   computed: {
@@ -122,13 +168,21 @@ export default {
       this.currentPage -= 1;
     },
     onTreePage() {
-      return this.currentPage > 1 && this.currentPage <= 1 + parseInt(this.treeQuantity)
-    },
-    isTreePage(page) {
-      return page > 1 && (page <= 1 + parseInt(this.treeQuantity));
+      return this.currentPage > 2 && this.currentPage <= 2 + parseInt(this.treeQuantity)
     },
     totalPages() {
-      return parseInt(this.treeQuantity) + 3;
+      if (this.quoteOption == 'quote') {
+        return parseInt(this.treeQuantity) + 4;
+      }
+      else if(this.quoteOption == 'contact') {
+        return 2;
+      }
+      else if(this.quoteOption == 'visit') {
+        return 3;
+      }
+      else {
+        return 1;
+      }
     },
     lastPage() {
       return this.currentPage == this.totalPages();
@@ -169,6 +223,17 @@ export default {
       })
     },
     submitForm() {
+      if(this.quoteOption == 'quote') {
+        this.submitRequest();
+      }
+      else if (this.quoteOption == 'visit') {
+        this.submitVisit();
+      }
+      else {
+        this.submitContact();
+      }
+    },
+    submitRequest() {
       let params = {
         trees: this.trees.slice(0, this.treeQuantity),
         site: this.site,
@@ -178,15 +243,49 @@ export default {
 
       this.axiosPost('/customer_requests', params).then(response => {
         if(response.status == 200) {
-          let thankYouPage = document.getElementById('onboarding-top-level').getAttribute('data-thank-you-page');
-          if(thankYouPage != null) {
-            window.location.href = thankYouPage;
-          }
-          else {
-            this.formSubmitted = true;
-          }
+          this.moveToThankYou()
         }
       })
+    },
+    submitVisit() {
+      let params = {
+        site: this.site,
+        customer: this.customer,
+        organization_shortname: this.organizationShortname,
+        trees: [],
+        site_visit_tag: true
+      }
+
+      this.axiosPost('/customer_requests', params).then(response => {
+        if(response.status == 200) {
+          this.moveToThankYou()
+        }
+      })
+    },
+    submitContact() {
+      let params = {
+        commercial_request: {
+          name: this.customer.name,
+          email: this.customer.email,
+          phone: this.customer.phone
+        },
+        organization_id: this.organizationData.id
+      }
+
+      this.axiosPost('/commercial_requests', params).then(response => {
+        if(response.status == 200) {
+          this.moveToThankYou()
+        }
+      })
+    },
+    moveToThankYou() {
+      let thankYouPage = document.getElementById('onboarding-top-level').getAttribute('data-thank-you-page');
+      if(thankYouPage != null) {
+        window.location.href = thankYouPage;
+      }
+      else {
+        this.formSubmitted = true;
+      }
     }
   },
   mounted() {
@@ -194,6 +293,13 @@ export default {
     this.setOrganization();
     EventBus.$on('form-forward', () => { this.advance() } )
     EventBus.$on('form-back', () => { this.goBack() } )
+  },
+  watch: {
+    quoteOption() {
+      if(this.quoteOption) {
+        this.advance();
+      }
+    }
   }
 }
 </script>

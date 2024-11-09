@@ -19,6 +19,7 @@ class EstimateListSerializer < ApplicationSerializer
   # Virtual
   attribute :formatted_status
   attribute :additional_message
+  attribute :site_visit_required
 
   # Associations
   belongs_to :arborist

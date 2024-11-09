@@ -31,7 +31,7 @@
     <td class='title-column'><b>Phone Number:</b></td>
     <td class='entry-column'><%= estimate.customer_detail.phone %></td>
     <td class='title-column'><b>Address:</b></td>
-    <td class='entry-column'><%= estimate.customer_detail&.address&.full_address || estimate.site.full_address %></td>
+    <td class='entry-column'><%= estimate.quote_display_address %></td>
   </tr>
 
   <tr class='info-row'>

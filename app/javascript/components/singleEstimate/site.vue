@@ -38,6 +38,26 @@
           No Survey Filled out
         </template>
 
+        <template v-if='estimate.site_visit_tag'>
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Solo Visit Consent</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ formatAnswer(estimate.site.visit_consent) }}
+            </b-col>
+          </b-row>
+
+          <b-row class='spaced-row'>
+            <b-col cols='6' class='right-column'>
+              <b>Site Visit Notes</b>
+            </b-col>
+            <b-col cols='6'>
+              {{ estimate.site.visit_times }}
+            </b-col>
+          </b-row>
+        </template>
+
         <div class='single-estimate-link-row'>
           <div class='single-estimate-link' v-b-toggle.site-edit>
             <b-icon icon='pencil-square' class='app-icon'></b-icon>

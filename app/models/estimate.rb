@@ -153,6 +153,12 @@ class Estimate < ActiveRecord::Base
 		self.total_cost + self.hst
 	end
 
+  def quote_display_address
+    return site.full_address unless invoice&.number.present?
+
+    customer_detail&.address&.full_address || site.full_address
+  end
+
 	def pdf_quote
     GenerateQuote.call(self)
 	end
@@ -213,4 +219,7 @@ class Estimate < ActiveRecord::Base
 		self.save! if save
   end
 
+  def site_visit_required
+    status.to_s == 'needs_costs' && site_visit_tag
+  end
 end
