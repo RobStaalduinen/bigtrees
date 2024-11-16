@@ -203,11 +203,12 @@ export default {
       }
     },
     setOrganization() {
+      this.organizationShortname = document.getElementById('onboarding-top-level').getAttribute('data-organization_shortname');
+
       if(!this.standalone) {
         this.loading = false;
         return;
       }
-      this.organizationShortname = document.getElementById('onboarding-top-level').getAttribute('data-organization_shortname');
 
       this.axiosGet(`/organizations/public/${this.organizationShortname}`).then(response => {
         if(response.status == 200) {

@@ -46,15 +46,15 @@
       </template>
 
       <template v-slot:right-side>
-        It couldn't be simpler to get an estimate. Just a few simple questions about your job, and we'll take care of the rest.
+        We have several options to get you started.
+        <br><br>
+        You can <b>Receive a quote today</b> if you upload a few images and some basic information about your job.
+        <br><br>
+        If you prefer, we can <b>Schedule a site visit</b> so we can inspect your property and make our recommendations on the best way forward.
 
         <br /><br />
 
-        Let's start with the number of trees or stumps you need work on.
-
-        <br /><br />
-
-        If your job requires more than three trees or stumps, please contact us directly so we can set up a more detailed consultation.
+        If you are seeing a <b>Commercial Quote</b>, we are more than happy to discuss it and tailor our services to your needs.
       </template>
 
     </app-pane>
@@ -78,9 +78,12 @@ export default {
   },
   methods: {
     chooseOption(option) {
-      console.log("EMIT");
       this.$emit('input', option);
     }
+  },
+  mounted() {
+    console.log("Resetting");
+    this.$emit('input', null);
   }
 }
 </script>

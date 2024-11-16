@@ -2,6 +2,7 @@ class RequestsController < ApplicationController
 
   def new
 
+    render layout: 'onboarding_page'
   end
 
   def create

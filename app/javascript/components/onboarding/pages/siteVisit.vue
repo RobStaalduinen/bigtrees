@@ -41,6 +41,7 @@
                 v-model="visit_times"
                 rows="4"
                 max-rows="4"
+                placeholder="Ex. Mondays after 5pm, weekday afternoons etc, weekends etc."
               ></b-form-textarea>
             </b-form-group>
           </div>

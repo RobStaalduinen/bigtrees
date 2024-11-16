@@ -3,14 +3,14 @@
     var hash = (window.location.hash).replace('#', '');
 
     if(hash.length > 0 && hash == 'estimate'){
-        setTimeout(function(){ 
-          document.getElementById('stumping__estimate').scrollIntoView({ 
-          behavior: 'smooth' 
-        }); 
+        setTimeout(function(){
+          document.getElementById('stumping__estimate').scrollIntoView({
+          behavior: 'smooth'
+        });
       }, 100);
 
     }
-   
+
   }
 </script>
 
@@ -48,32 +48,34 @@
 
     <div id="services__method-box-inner">
       <div id="services__method-box-steps">
-        <%= 
+        <%=
           render 'main/components/single_step',
           step_number: 1,
           title: 'Assess',
           content: 'Identify, assess and determine the best approach for the safe removal of the tree. We will submit arborist reports to the city, if necessary.'
         %>
 
-        <%= 
+        <%=
           render 'main/components/single_step',
           step_number: 2,
           title: 'Cut',
           content: 'Whether we use a bucket truck, an off road lift or climbing, we will safely cut down the tree without causing damage to any property. Of course, we are fully insured by WSIB in case of any unforseen issues.'
-        %> 
+        %>
 
-        <%= 
+        <%=
           render 'main/components/single_step',
           step_number: 3,
           title: 'Clean',
           content: 'We will clean up all branches and debris from your site. You also have the option of keeping the wood for your own use, which saves from hauling it away and saves you the cost of removal.'
-        %> 
+        %>
       </div>
     </div>
   </div>
 
-  <div id="services__estimate">
-    <%= render 'estimate_forms/cutting_form/container' %>
+
+  <div id='onboarding-top-level' data-organization_shortname="bigtrees" data-thank-you-page='/main/thank-you-cutting'>
+    <div id='onboarding'>
+    </div>
   </div>
 
 </div>
