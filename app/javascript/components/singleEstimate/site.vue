@@ -38,6 +38,8 @@
           No Survey Filled out
         </template>
 
+        <hr />
+
         <template v-if='estimate.site_visit_tag'>
           <b-row class='spaced-row'>
             <b-col cols='6' class='right-column'>

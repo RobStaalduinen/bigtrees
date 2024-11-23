@@ -16,14 +16,6 @@
       ></b-form-radio-group>
     </b-form-group>
 
-    <b-form-group label="Vehicle Access?">
-      <b-form-radio-group
-        v-model="questions.vehicle_access"
-        :options="options"
-        name="vehicle-access"
-      ></b-form-radio-group>
-    </b-form-group>
-
     <b-form-group label="Breakables?">
       <b-form-radio-group
         v-model="questions.breakables"

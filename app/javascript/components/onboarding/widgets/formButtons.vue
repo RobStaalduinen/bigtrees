@@ -1,5 +1,5 @@
 <template>
-  <div id='form-buttons'>
+  <div id='form-buttons' :class='buttonLocation'>
     <button @click='back' v-if='displayBack && !loading' id='back-button'>
       <b-icon icon='arrow-left' id='left-icon'></b-icon>
       Back
@@ -47,11 +47,20 @@ export default {
       type: Function,
       required: false,
       default: () => { return Promise.resolve(true); }
+    },
+    standalone: {
+      required: false,
+      default: true
     }
   },
   data() {
     return {
       loading: false
+    }
+  },
+  computed: {
+    buttonLocation() {
+      return this.standalone ? 'buttons-fixed' : 'buttons-relative';
     }
   },
   methods: {
@@ -124,7 +133,15 @@ export default {
   }
 
   @media(max-width: 759px) {
-    #form-buttons {
+
+    .buttons-relative {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: white;
+    }
+
+    .buttons-fixed {
       position: fixed;
       bottom: 0;
       width: 100%;

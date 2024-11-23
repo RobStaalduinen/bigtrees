@@ -32,8 +32,6 @@ export default {
 <style scoped>
 .onboarding-pane {
   display: flex;
-
-  min-height: 500px;
 }
 
 .pane-side {

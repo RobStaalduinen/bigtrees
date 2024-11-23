@@ -27,7 +27,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons></app-buttons>
+        <app-buttons :standalone='standalone'></app-buttons>
       </template>
 
     </app-pane>
@@ -48,6 +48,10 @@ export default {
       default: 1
     },
     stumpingOnly: {
+      type: Boolean,
+      default: false
+    },
+    standalone: {
       type: Boolean,
       default: false
     }

@@ -33,7 +33,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons :nextValidation='validate' :loadingState='true' forwardText='Submit'></app-buttons>
+        <app-buttons :nextValidation='validate' :loadingState='true' forwardText='Submit' :standalone='standalone'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -49,7 +49,7 @@ export default {
     'app-buttons': FormButtons,
     'app-input-field': InputField
   },
-  props: ['value', 'subtype'],
+  props: ['value', 'subtype', 'standalone'],
   data() {
     return {
       name: this.value.name,

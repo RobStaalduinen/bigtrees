@@ -57,7 +57,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons :nextValidation='validate'></app-buttons>
+        <app-buttons :nextValidation='validate' :standalone='standalone'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -73,7 +73,7 @@ export default {
     'app-buttons': FormButtons,
     'app-input-field': InputField
   },
-  props: ['value'],
+  props: ['value', 'standalone'],
   data() {
     return {
       street: this.value.address_attributes.street || "",

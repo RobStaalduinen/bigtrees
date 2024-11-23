@@ -1,5 +1,5 @@
 <template>
-  <div id='onboarding-container' class='container' v-if='!loading'>
+  <div id='onboarding-container' class='container' v-if='!loading' :class="{ 'embedded': !standalone }">
     <div v-if='standalone && logoUrl'>
       <img :src='logoUrl' id='onboarding-logo'>
     </div>
@@ -21,6 +21,7 @@
             v-if='currentPage == 2 && !changing'
             v-model='treeQuantity'
             :stumpingOnly='stumpingOnly'
+            :standalone='standalone'
           ></app-onboarding-quantity>
         </transition>
 
@@ -30,6 +31,7 @@
             :treeNumber='currentPage - 2'
             v-model='trees'
             :stumpingOnly='stumpingOnly'
+            :standalone='standalone'
           ></app-onboarding-trees>
         </transition>
 
@@ -37,6 +39,7 @@
             <app-onboarding-site
               v-if='currentPage == (parseInt(treeQuantity) + 3) && !changing'
               v-model='site'
+              :standalone='standalone'
             ></app-onboarding-site>
           </transition>
 
@@ -44,6 +47,7 @@
             <app-onboarding-contact
               v-if='currentPage == (parseInt(treeQuantity) + 4) && !changing'
               v-model='customer'
+              :standalone='standalone'
             ></app-onboarding-contact>
           </transition>
         </template>
@@ -54,6 +58,7 @@
             <app-onboarding-site-visit
               v-if='currentPage == 2 && !changing'
               v-model='site'
+             :standalone='standalone'
             ></app-onboarding-site-visit>
           </transition>
 
@@ -61,6 +66,7 @@
             <app-onboarding-contact
               v-if='currentPage == 3 && !changing'
               v-model='customer'
+              :standalone='standalone'
             ></app-onboarding-contact>
           </transition>
         </template>
@@ -72,6 +78,7 @@
               v-if='currentPage == 2 && !changing'
               v-model='customer'
               subtype='commercial_quote'
+              :standalone='standalone'
             ></app-onboarding-contact>
           </transition>
         </template>
@@ -244,7 +251,7 @@ export default {
 
       this.axiosPost('/customer_requests', params).then(response => {
         if(response.status == 200) {
-          this.moveToThankYou()
+          this.moveToThankYou();
         }
       })
     },
@@ -259,7 +266,7 @@ export default {
 
       this.axiosPost('/customer_requests', params).then(response => {
         if(response.status == 200) {
-          this.moveToThankYou()
+          this.moveToThankYou();
         }
       })
     },
@@ -378,6 +385,11 @@ export default {
   margin: 0 auto;
   display: block;
   margin-bottom: 8px;
+}
+
+.embedded {
+  min-height: 400px;
+  position: relative;
 }
 
 @media(min-width: 760px) {

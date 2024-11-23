@@ -40,7 +40,7 @@
         The more information you provide, the faster and more accurate your estimate will be.
       </template>
       <template v-slot:controls>
-        <app-buttons></app-buttons>
+        <app-buttons :standalone='standalone'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -56,7 +56,7 @@ export default {
     'app-buttons': FormButtons,
     'app-tree-form': TreeForm
   },
-  props: ['treeNumber', 'value', 'stumpingOnly'],
+  props: ['treeNumber', 'value', 'stumpingOnly', 'standalone'],
   data() {
     return {
       trees: this.value

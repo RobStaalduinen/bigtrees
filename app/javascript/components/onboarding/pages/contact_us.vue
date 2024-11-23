@@ -13,7 +13,7 @@
       </template>
 
       <template v-slot:controls>
-        <app-buttons :displayForward='false'></app-buttons>
+        <app-buttons :displayForward='false' :standalone='standalone'></app-buttons>
       </template>
     </app-pane>
 </template>
@@ -26,6 +26,7 @@ export default {
   components: {
     'app-pane' : Pane,
     'app-buttons': FormButtons,
-  }
+  },
+  props: ['standalone'],
 }
 </script>
