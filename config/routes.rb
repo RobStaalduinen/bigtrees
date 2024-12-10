@@ -87,7 +87,7 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
-  resources :organizations, only: [ :index, :show ] do
+  resources :organizations, only: [ :index, :show, :update ] do
     get 'public/:short_name', to: 'organizations#public', on: :collection
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do

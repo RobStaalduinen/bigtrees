@@ -1,5 +1,5 @@
 <template>
-  <page-template>
+  <div>
     <app-header title='Vehicles and Equipment'>
       <template v-slot:header-right>
         <a v-b-toggle.create-vehicle v-if='hasPermission("vehicles", "create")'>
@@ -29,7 +29,7 @@
         :vehicle_id='selectedVehicle'
         :expiration='selectedExpiration'
       ></app-add-vehicle-expiration>
-  </page-template>
+  </div>
 </template>
 
 <script>

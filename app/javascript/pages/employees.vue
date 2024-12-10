@@ -1,5 +1,5 @@
 <template>
-  <page-template>
+  <div>
     <app-header title='Employees'>
       <template v-slot:header-right>
         <a v-b-toggle.create-employee v-if='hasPermission("arborists", "create")' >
@@ -23,7 +23,7 @@
       :employee='selectedEmployee'
     >
    </app-update-employee>
-  </page-template>
+  </div>
 </template>
 
 <script>

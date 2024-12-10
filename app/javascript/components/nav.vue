@@ -14,12 +14,11 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "list")'>Quotes</b-dropdown-item>
         <b-dropdown-item to="/admin/estimates/new" v-if='permissions.canUpdate("estimates")'>Create Quote</b-dropdown-item>
-        <b-dropdown-item to="/admin/vehicles" v-if='permissions.canAdmin("vehicles")'>Vehicles</b-dropdown-item>
-        <b-dropdown-item to="/admin/employees" v-if='permissions.canAdmin("arborists")'>Employees</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='permissions.canList("customers")'>Customers</b-dropdown-item>
         <b-dropdown-item to="/admin/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
+        <b-dropdown-item to='/admin/company' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
         <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
             <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
             <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>

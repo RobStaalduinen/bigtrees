@@ -159,6 +159,7 @@ import Equipment from '../pages/equipment.vue';
 import Receipts from '../pages/receipts.vue';
 import Vehicles from '../pages/vehicles.vue'
 import Employees from '../pages/employees.vue';
+import Company from '../pages/company.vue';
 
 import { store } from '../store/store.js';
 
@@ -200,7 +201,16 @@ const routes = [
   { path: '/admin/estimates/new', component: CreateEstimate },
   { path: '/admin/estimates/:estimate_id', component: SingleEstimate },
   { path: '/admin/users/:user_id', component: Users, name: 'profile' },
-  { path: '/admin/equipment', component: Equipment }
+  { path: '/admin/equipment', component: Equipment },
+  {
+    path: '/admin/company',
+    component: Company,
+    meta: {
+      authRequired: true,
+      permission: { page: 'organizations', permission_type: 'admin' }
+    }
+  }
+
 ]
 
 

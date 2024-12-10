@@ -15,6 +15,7 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :insurance_provider
   attribute :insurance_policy_number
   attribute :insurance_description
+  attribute :hst_number
 
   belongs_to :address
 end

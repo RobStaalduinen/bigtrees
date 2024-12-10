@@ -32,6 +32,12 @@ export const store = new Vuex.Store({
     setOrganization(state, payload) {
       state.organization = payload
     },
+    updateOrganization(state, payload) {
+      state.organization = {
+        ...state.organization,
+        ...payload
+      }
+    },
     setEstimateSettings(state, payload) {
       state.estimateSettings = {
         ...state.estimateSettings,
