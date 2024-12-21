@@ -1,4 +1,4 @@
-class CreateNewEstimateTable < ActiveRecord::Migration
+class CreateNewEstimateTable < ActiveRecord::Migration[5.2]
   def change
     drop_table :estimates
 

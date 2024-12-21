@@ -1,4 +1,4 @@
-class CreateExpirations < ActiveRecord::Migration
+class CreateExpirations < ActiveRecord::Migration[5.2]
   def change
     create_table :expirations do |t|
       t.belongs_to :vehicle

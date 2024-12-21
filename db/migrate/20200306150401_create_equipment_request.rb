@@ -1,4 +1,4 @@
-class CreateEquipmentRequest < ActiveRecord::Migration
+class CreateEquipmentRequest < ActiveRecord::Migration[5.2]
   def change
     create_table :equipment_requests do |t|
       t.belongs_to :arborist

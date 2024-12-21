@@ -1,4 +1,4 @@
-class PopulateCosts < ActiveRecord::Migration
+class PopulateCosts < ActiveRecord::Migration[5.2]
   def change
     Estimate.all.each do |estimate|
       next unless estimate.trees.any?

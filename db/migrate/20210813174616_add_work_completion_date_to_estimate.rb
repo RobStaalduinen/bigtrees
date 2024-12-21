@@ -1,4 +1,4 @@
-class AddWorkCompletionDateToEstimate < ActiveRecord::Migration
+class AddWorkCompletionDateToEstimate < ActiveRecord::Migration[5.2]
   def change
     add_column :estimates, :work_completion_date, :date
 

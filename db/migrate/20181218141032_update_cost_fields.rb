@@ -1,4 +1,4 @@
-class UpdateCostFields < ActiveRecord::Migration
+class UpdateCostFields < ActiveRecord::Migration[5.2]
   def change
     add_column :trees, :notes, :string
 

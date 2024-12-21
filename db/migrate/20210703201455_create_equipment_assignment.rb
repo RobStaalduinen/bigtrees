@@ -1,4 +1,4 @@
-class CreateEquipmentAssignment < ActiveRecord::Migration
+class CreateEquipmentAssignment < ActiveRecord::Migration[5.2]
   def change
     create_table :equipment_assignments do |t|
       t.belongs_to :estimate

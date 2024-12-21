@@ -1,4 +1,4 @@
-class PopulateCustomers < ActiveRecord::Migration
+class PopulateCustomers < ActiveRecord::Migration[5.2]
   def change
     Estimate.submitted.each do |estimate|
       customer = Customer.where(name: estimate.person_name).last

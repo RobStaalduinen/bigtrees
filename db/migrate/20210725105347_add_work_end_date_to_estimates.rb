@@ -1,4 +1,4 @@
-class AddWorkEndDateToEstimates < ActiveRecord::Migration
+class AddWorkEndDateToEstimates < ActiveRecord::Migration[5.2]
   def change
     rename_column :estimates, :work_date, :work_start_date
 

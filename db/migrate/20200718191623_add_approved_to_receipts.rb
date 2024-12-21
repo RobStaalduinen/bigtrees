@@ -1,4 +1,4 @@
-class AddApprovedToReceipts < ActiveRecord::Migration
+class AddApprovedToReceipts < ActiveRecord::Migration[5.2]
   def change
     add_column :receipts, :approved, :boolean, default: false
 

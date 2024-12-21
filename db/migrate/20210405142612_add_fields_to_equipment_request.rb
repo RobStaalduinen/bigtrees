@@ -1,4 +1,4 @@
-class AddFieldsToEquipmentRequest < ActiveRecord::Migration
+class AddFieldsToEquipmentRequest < ActiveRecord::Migration[5.2]
   def change
     add_column :equipment_requests, :image_url, :string
     add_column :equipment_requests, :resolver_id, :integer
