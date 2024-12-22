@@ -89,6 +89,8 @@ Rails.application.routes.draw do
   resources :files, only: [ :new ]
   resources :organizations, only: [ :index, :show, :update ] do
     get 'public/:short_name', to: 'organizations#public', on: :collection
+
+    resources :quick_costs, only: [ :index, :create, :update, :destroy ]
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
     resources :requests, only: [:new], to: 'requests#org_scoped'

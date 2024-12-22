@@ -16,7 +16,8 @@ module Roles
         arborists: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         customers: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         vehicles: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
-        organizations: permission_set(list: true, show: true, create: false, update: true, delete: false, admin: true, scope_level: default_scope_level)
+        organizations: permission_set(list: true, show: true, create: false, update: true, delete: false, admin: true, scope_level: default_scope_level),
+        quick_costs: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level)
       }
     end
   end
