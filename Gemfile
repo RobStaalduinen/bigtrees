@@ -132,6 +132,7 @@ group :development do
   gem 'capistrano-rvm'
   # gem 'cap-ec2'
   gem 'rbnacl'
+  gem 'webrick'
 
   # gem 'rubocop'
   # gem 'rubocop-performance'
