@@ -1,9 +1,9 @@
-<template>
+F<template>
   <div>
     <app-header title='Quick Cost Buttons'>
       <template v-slot:header-right>
         <div v-if='limitReached'>Limit Reached</div>
-        <a v-b-toggle.create-cost v-if='hasPermission("quick_costs", "create") && !limitReached'>
+        <a v-if='hasPermission("quick_costs", "create") && !limitReached' @click="createCost">
           New
         </a>
       </template>
@@ -37,6 +37,7 @@
       id='create-cost'
       @changed='retrieveCosts'
       :organization_id='organization_id'
+      :quick_cost='costToEdit'
     />
 
   </div>
@@ -57,7 +58,8 @@ export default {
   },
   data() {
     return {
-      quick_costs: []
+      quick_costs: [],
+      costToEdit: null
     }
   },
   methods: {
@@ -65,6 +67,22 @@ export default {
       this.axiosGet(`/organizations/${this.organization_id}/quick_costs`).then(response => {
         this.quick_costs = response.data.quick_costs;
       })
+    },
+    deleteCost(cost) {
+      if (confirm('Are you sure you want to delete this cost?')) {
+        this.axiosDelete(`/organizations/${this.organization_id}/quick_costs/${cost.id}`).then(() => {
+          this.quick_costs = this.quick_costs.filter(c => c.id !== cost.id);
+        });
+      }
+    },
+    createCost() {
+      this.costToEdit = null;
+      this.$root.$emit('bv::toggle::collapse', 'create-cost');
+    },
+    editCost(cost) {
+      console.log("Edit");
+      this.costToEdit = cost;
+      this.$root.$emit('bv::toggle::collapse', 'create-cost');
     }
   },
   computed: {

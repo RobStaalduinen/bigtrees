@@ -42,7 +42,7 @@ export default {
     organization_id: {
       required: true
     },
-    quick_cost_id: {
+    quick_cost: {
       required: false
     }
   },
@@ -69,19 +69,45 @@ export default {
               default_cost: this.defaultCost
             }
           }
-          this.axiosPost(`/organizations/${this.organization_id}/quick_costs`, params).then(response => {
-            this.$root.$emit('bv::toggle::collapse', this.id);
-            this.reset();
-            this.$emit('changed', response.data.quick_cost);
-          })
+
+          if (this.quick_cost) {
+            this.axiosPut(`/organizations/${this.organization_id}/quick_costs/${this.quick_cost.id}`, params).then(response => {
+              this.handleUpdate(response);
+            })
+          }
+          else {
+            this.axiosPost(`/organizations/${this.organization_id}/quick_costs`, params).then(response => {
+              this.handleUpdate(response);
+            })
+          }
         }
       })
+    },
+    handleUpdate(response){
+      this.$root.$emit('bv::toggle::collapse', this.id);
+      this.reset();
+      this.$emit('changed', response.data.quick_cost);
     },
     reset(){
       this.labelValue = null;
       this.contentValue = null;
       this.defaultCost = 0.0;
     }
+  },
+  watch: {
+    quick_cost() {
+      if (this.quick_cost) {
+        this.labelValue = this.quick_cost.label;
+        this.contentValue = this.quick_cost.content;
+        this.defaultCost = this.quick_cost.default_cost;
+      }
+      else {
+        this.reset();
+      }
+    }
+  },
+  mounted() {
+    console.log(this.quick_cost);
   }
 }
 </script>

@@ -21,6 +21,29 @@ class QuickCostsController < ApplicationController
     render json: @cost
   end
 
+  def update
+    authorize QuickCost, :update?
+
+    organization = policy_scope(Organization).find(params[:organization_id])
+    @cost = organization.quick_costs.find(params[:id])
+
+    if @cost.update(quick_cost_params)
+      render json: @cost
+    else
+      render json: @cost.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize QuickCost, :destroy?
+
+    organization = policy_scope(Organization).find(params[:organization_id])
+    @cost = organization.quick_costs.find(params[:id])
+    @cost.destroy
+
+    head :no_content
+  end
+
   private
 
   def quick_cost_params

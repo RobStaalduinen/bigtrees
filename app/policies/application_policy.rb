@@ -39,7 +39,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    permission_key?('destroy')
+    permission_key?('destroy') || permission_key?('delete')
   end
 
   def admin?
