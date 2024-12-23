@@ -1,4 +1,4 @@
-class ChangeCostPrecision < ActiveRecord::Migration
+class ChangeCostPrecision < ActiveRecord::Migration[5.2]
   def self.up
     change_column :costs, :amount, :float
   end

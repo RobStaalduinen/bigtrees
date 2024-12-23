@@ -1,4 +1,4 @@
-class AddPolymorphicAssociationToAddress < ActiveRecord::Migration
+class AddPolymorphicAssociationToAddress < ActiveRecord::Migration[5.2]
   def self.up
     add_column :addresses, :addressable_id, :integer, index: true unless Address.column_names.include?('addressable_id')
     add_column :addresses, :addressable_type, :string, index: true unless Address.column_names.include?('addressable_type')

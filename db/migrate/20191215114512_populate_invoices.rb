@@ -1,4 +1,4 @@
-class PopulateInvoices < ActiveRecord::Migration
+class PopulateInvoices < ActiveRecord::Migration[5.2]
   def change
     Estimate.all.each do |estimate|
       Invoice.create(

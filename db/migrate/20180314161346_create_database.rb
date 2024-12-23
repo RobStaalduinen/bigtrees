@@ -1,4 +1,4 @@
-class CreateDatabase < ActiveRecord::Migration
+class CreateDatabase < ActiveRecord::Migration[5.2]
   def self.up
     create_table "appointments", force: :cascade do |t|
       t.integer "estimate_id",    limit: 4

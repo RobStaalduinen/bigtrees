@@ -1,4 +1,4 @@
-class CreatePayout < ActiveRecord::Migration
+class CreatePayout < ActiveRecord::Migration[5.2]
   def change
     create_table :payouts do |t|
       t.date :date

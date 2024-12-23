@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0'
-gem 'responders', '~> 2.0'
+gem 'rails', '~> 6.0'
+gem 'responders'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -21,7 +21,7 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+# gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rake'
 
 gem "font-awesome-rails"
@@ -30,8 +30,8 @@ gem "sitemap_generator"
 
 # File storage
 gem 'fog-aws'
-gem 'aws-sdk-s3'
-gem 'aws-sdk-ec2'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-ec2', '~> 1'
 gem 'paperclip'
 
 # Secret management
@@ -47,7 +47,7 @@ gem 'caxlsx_rails'
 gem 'whenever', require: false
 
 gem 'twitter-bootstrap-rails'
-gem 'mini_racer', '=0.4.0'
+gem 'mini_racer'
 gem 'mysql2'
 gem 'jquery-ui-rails'
 # gem 'jquery-modal-rails'
@@ -103,7 +103,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'byebug'
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '1.3.10'
+  # gem 'sqlite3', '1.3.10'
 
   gem 'rspec-rails'
   gem 'rspec-mocks'
@@ -130,8 +130,9 @@ group :development do
   gem 'capistrano-rake', require: false
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-rvm'
-  gem 'cap-ec2'
+  # gem 'cap-ec2'
   gem 'rbnacl'
+  gem 'webrick'
 
   # gem 'rubocop'
   # gem 'rubocop-performance'

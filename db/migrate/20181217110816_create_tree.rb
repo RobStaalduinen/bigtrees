@@ -1,4 +1,4 @@
-class CreateTree < ActiveRecord::Migration
+class CreateTree < ActiveRecord::Migration[5.2]
   def change
     create_table :trees do |t|
       t.belongs_to :estimate, index: true

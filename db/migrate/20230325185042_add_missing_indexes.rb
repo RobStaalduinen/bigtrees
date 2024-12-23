@@ -1,4 +1,4 @@
-class AddMissingIndexes < ActiveRecord::Migration
+class AddMissingIndexes < ActiveRecord::Migration[5.2]
   def change
     add_index :estimates, :status
     add_index :estimates, :followup_sent_at

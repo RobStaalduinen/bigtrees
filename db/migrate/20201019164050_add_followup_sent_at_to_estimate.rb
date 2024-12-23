@@ -1,4 +1,4 @@
-class AddFollowupSentAtToEstimate < ActiveRecord::Migration
+class AddFollowupSentAtToEstimate < ActiveRecord::Migration[5.2]
   def change
     add_column :estimates, :followup_sent_at, :datetime
 

@@ -1,4 +1,4 @@
-class AddCanManageEstimatesToArborist < ActiveRecord::Migration
+class AddCanManageEstimatesToArborist < ActiveRecord::Migration[5.2]
   def change
     add_column :arborists, :can_manage_estimates, :boolean, default: false
 

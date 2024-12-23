@@ -1,4 +1,4 @@
-class CreateReceipt < ActiveRecord::Migration
+class CreateReceipt < ActiveRecord::Migration[5.2]
   def change
     create_table :receipts do |t|
       t.belongs_to :arborist

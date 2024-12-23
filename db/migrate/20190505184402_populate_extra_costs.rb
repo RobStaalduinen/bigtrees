@@ -1,4 +1,4 @@
-class PopulateExtraCosts < ActiveRecord::Migration
+class PopulateExtraCosts < ActiveRecord::Migration[5.2]
   def change
 
   end

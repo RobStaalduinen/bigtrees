@@ -1,4 +1,4 @@
-class CreateDocuments < ActiveRecord::Migration
+class CreateDocuments < ActiveRecord::Migration[5.2]
   def change
     create_table :documents do |t|
       t.belongs_to :arborist, index: true

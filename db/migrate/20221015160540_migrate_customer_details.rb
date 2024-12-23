@@ -1,4 +1,4 @@
-class MigrateCustomerDetails < ActiveRecord::Migration
+class MigrateCustomerDetails < ActiveRecord::Migration[5.2]
   def self.up
     Estimate.joins(:customer).find_each do |e|
       next if e.customer_detail.present?

@@ -1,4 +1,4 @@
-class AddAdditionalHoursFields < ActiveRecord::Migration
+class AddAdditionalHoursFields < ActiveRecord::Migration[5.2]
   def change
     add_column :work_records, :start_at, :time
     add_column :work_records, :end_at, :time

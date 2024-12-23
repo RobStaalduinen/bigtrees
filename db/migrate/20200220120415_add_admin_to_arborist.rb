@@ -1,4 +1,4 @@
-class AddAdminToArborist < ActiveRecord::Migration
+class AddAdminToArborist < ActiveRecord::Migration[5.2]
   def change
     add_column :arborists, :admin, :boolean, default: false
     add_column :arborists, :hidden, :boolean, default: false

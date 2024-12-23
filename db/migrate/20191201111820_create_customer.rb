@@ -1,4 +1,4 @@
-class CreateCustomer < ActiveRecord::Migration
+class CreateCustomer < ActiveRecord::Migration[5.2]
   def change
     if Rails.env.test? || Rails.env.development?
       create_table :customers do |t|

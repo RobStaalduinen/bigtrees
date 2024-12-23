@@ -1,4 +1,4 @@
-class PopulateSites < ActiveRecord::Migration
+class PopulateSites < ActiveRecord::Migration[5.2]
   def change
     Estimate.all.each do |estimate|
       Site.create(

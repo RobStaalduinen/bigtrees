@@ -1,4 +1,4 @@
-class CreateCustomerDetails < ActiveRecord::Migration
+class CreateCustomerDetails < ActiveRecord::Migration[5.2]
   def change
     create_table :customer_details do |t|
       t.belongs_to :estimate

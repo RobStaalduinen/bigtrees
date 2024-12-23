@@ -1,4 +1,4 @@
-class RemoveUnusedInvoiceColumns < ActiveRecord::Migration
+class RemoveUnusedInvoiceColumns < ActiveRecord::Migration[5.2]
   def change
     remove_column :estimates, :invoice_number
     remove_column :estimates, :discount_applied
