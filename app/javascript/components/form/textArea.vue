@@ -9,6 +9,7 @@
         v-model='text'
         :no-resize='noResize'
         class="form-control"
+        :rows="rows"
       ></b-form-textarea>
     </b-form-group>
 </template>
@@ -35,6 +36,10 @@ export default {
     noResize: {
       type: Boolean,
       default: false
+    },
+    rows: {
+      type: Number,
+      default: 3
     }
   },
   data() {

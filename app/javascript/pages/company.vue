@@ -16,6 +16,7 @@
       <app-employees v-if='selectedOption === "Employees"'></app-employees>
       <app-vehicles v-if='selectedOption === "Equipment"'></app-vehicles>
       <app-quick-costs v-if='selectedOption === "Quick Costs"' :organization_id="organization.id"></app-quick-costs>
+      <app-email-templates v-if='selectedOption === "Email Templates"'></app-email-templates>
     </div>
   </page-template>
 </template>
@@ -26,18 +27,20 @@ import Information from '../components/company/views/information.vue';
 import Employees from '../pages/employees.vue';
 import Vehicles from '../pages/vehicles.vue';
 import QuickCosts from '../components/quick_costs/views/list.vue';
+import EmailTemplates from '../components/emailTemplates/views/list.vue';
 
 export default {
   components: {
     'app-employees': Employees,
     'app-vehicles': Vehicles,
     'app-information': Information,
-    'app-quick-costs': QuickCosts
+    'app-quick-costs': QuickCosts,
+    'app-email-templates': EmailTemplates
   },
   data() {
     return {
       selectedOption: 'Information',
-      options: ['Information', 'Employees', 'Equipment', 'Quick Costs'],
+      options: ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates'],
       organization: this.$store.state.organization
     }
   },

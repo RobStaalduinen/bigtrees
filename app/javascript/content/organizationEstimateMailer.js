@@ -6,7 +6,6 @@ export default class OrganizationEstimateMailer {
 
   quoteContent(baseContent = "", extraContent = {}) {
     let content = baseContent
-    content = this.replaceGreeting(content);
     if(extraContent.afterList != null) {
       content = content.replace("[ADDITIONAL_CONTENT_SLOT]", `${extraContent.afterList}\n\n`);
     }
@@ -14,33 +13,38 @@ export default class OrganizationEstimateMailer {
       content = content.replace("[ADDITIONAL_CONTENT_SLOT]", "");
     }
 
-    content += `${this.organization.email_signature}`
-
-    return content
+    return this.replaceContentSlots(content)
   }
 
   invoiceContent(baseContent="") {
-    let content = baseContent;
-    content = this.replaceGreeting(content);
-    content += `${this.organization.email_signature}`
-
-    return content
+    return this.replaceContentSlots(baseContent)
   }
 
   defaultContent(baseContent="") {
-    let content = baseContent;
-    content = this.replaceGreeting(content);
-    content += `${this.organization.email_signature}`
-
-    return content
+    return this.replaceContentSlots(baseContent)
   }
 
   receiptContent(baseContent="") {
     let content = baseContent;
     content = this.replaceGreeting(content);
-    content += `${this.organization.email_signature}`
-
+    content = this.replaceSignature(content);
+  
     return content
+  }
+
+  replaceContentSlots(content) {
+    return content
+      .replace('[FIRST_NAME]', this.estimateFirstName())
+      .replace('[SIGNATURE]', this.organization.email_signature);
+  }
+
+  estimateFirstName() {
+    if(this.estimate.customer_detail.name != null) {
+      var name = this.estimate.customer_detail.name.split(" ")[0];
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      return name;
+    }
+    return
   }
 
   replaceGreeting(content) {
@@ -49,9 +53,13 @@ export default class OrganizationEstimateMailer {
     if(this.estimate.customer_detail.name != null) {
       var name = this.estimate.customer_detail.name.split(" ")[0];
       name = name.charAt(0).toUpperCase() + name.slice(1);
-      newContent = newContent.replace('Hi,', `Hi ${name},`);
+      newContent = newContent.replace('[FIRST_NAME]', `${name}`);
     }
 
     return newContent;
+  }
+
+  replaceSignature(content) {
+    return content.replace('[SIGNATURE]', this.organization.email_signature);
   }
 }

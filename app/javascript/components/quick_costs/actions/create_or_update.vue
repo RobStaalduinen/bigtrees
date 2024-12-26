@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Create Quick Cost Buton' submitText='Submit' :onSubmit='submitCost'>
+  <app-right-sidebar :id='id' title='Create Quick Cost Button' submitText='Submit' :onSubmit='submitCost'>
     <template v-slot:content>
       <validation-observer ref="observer">
         <app-input-field

@@ -13,7 +13,6 @@
 
 <script>
 import EmailForm from '../../common/forms/templatedEmail';
-import { imageRequest } from '../../../content/emailContent';
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
 import { EmailDefinition } from '@/models';
