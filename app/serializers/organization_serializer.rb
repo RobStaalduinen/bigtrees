@@ -17,5 +17,8 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :insurance_description
   attribute :hst_number
 
+  attribute :logo_url
+  attribute :condensed_logo_url
+
   belongs_to :address
 end

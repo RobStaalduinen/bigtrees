@@ -51,9 +51,6 @@ export default {
 
       return header
     },
-  },
-  mounted() {
-    console.log("Tree", this.tree);
   }
 }
 </script>

@@ -76,6 +76,12 @@ export default {
     filterObject() {
       return { status: this.status, createdAfter: this.createdAfter };
     }
+  },
+  watch: {
+    value() {
+      this.status = this.value.status;
+      this.createdAfter = this.value.createdAfter;
+    }
   }
 }
 </script>

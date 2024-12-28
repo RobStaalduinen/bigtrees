@@ -30,7 +30,8 @@ class WorkRecordsController < AdminBaseController
   end
 
   def create
-    @work_record = current_user.work_records.find_or_initialize_by(date: work_record_params[:date])
+    arborist = params[:arborist_id] ? Arborist.find(params[:arborist_id]) : current_user
+    @work_record = arborist.work_records.find_or_initialize_by(date: work_record_params[:date])
     @work_record.update(work_record_params)
 
     render json: @work_record

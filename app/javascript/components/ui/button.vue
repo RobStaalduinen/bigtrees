@@ -1,5 +1,5 @@
 <template>
-  <button @click='click()'>
+  <button @click='handleClick'>
     <b-icon :icon="icon" v-if="icon != null" class='button-icon'></b-icon>
 
     {{ text }}
@@ -17,7 +17,15 @@ export default {
       type: String
     },
     click: {
-      type: Function
+      type: Function,
+      required: false
+    }
+  },
+  methods: {
+    handleClick() {
+      if (this.click) {
+        this.click();
+      }
     }
   }
 }

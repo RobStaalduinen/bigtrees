@@ -43,7 +43,7 @@
       </template>
     </app-collapsable>
 
-    <app-update-hours id='update-hours'></app-update-hours>
+    <app-update-hours id='update-hours' :employee_id='employee_id'></app-update-hours>
   </div>
 </template>
 
@@ -54,6 +54,9 @@ export default {
   props: {
     hours: {
       default: () => { return [] }
+    },
+    employee_id: {
+      required: false
     }
   },
   components: {

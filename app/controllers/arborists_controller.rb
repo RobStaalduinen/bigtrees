@@ -10,8 +10,8 @@ class ArboristsController < ApplicationController
   end
 
   def show
-    @arborist = Arborist.find(params[:id])
-    authorize! :read, @arborist
+    authorize Arborist, :show?
+    @arborist = policy_scope(Arborist).find(params[:id])
 
     render json: @arborist
   end

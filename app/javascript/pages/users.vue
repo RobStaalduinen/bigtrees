@@ -36,7 +36,7 @@
     </section>
 
     <section class='spaced-row'>
-      <app-hours-collapsed :hours='hours'></app-hours-collapsed>
+      <app-hours-collapsed :hours='hours' :employee_id="user_id"></app-hours-collapsed>
     </section>
 
    <app-update-employee
@@ -47,7 +47,6 @@
    </app-update-employee>
 
     <app-update-password
-    v-
       id='update-password'
       :employee='user'
     >

@@ -32,7 +32,6 @@ export default {
   methods: {
     retrieveCosts() {
       this.axiosGet(`/organizations/${this.organization_id}/quick_costs`).then(response => {
-        console.log("Quick costs", response.data.quick_costs);
         this.quick_costs = response.data.quick_costs;
       })
     },

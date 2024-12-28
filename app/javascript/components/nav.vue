@@ -3,12 +3,12 @@
     <b-navbar toggleable="true" class='nav' id='app-nav'>
       <div id='navbar-fixed'>
         <div id='navbar-fixed-top'>
-          <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="require('images/BigTreeServicesLogo.png')"></b-navbar-brand>
+          <b-navbar-brand href="#" id='logo'><img id='logo-image' v-bind:src="organizationLogo()"></b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         </div>
-        <div id='navbar-fixed-bottom' v-if='hasMultipleCompanies()'>
+        <!-- <div id='navbar-fixed-bottom' v-if='hasMultipleCompanies()'>
           <span>Current Company: {{ organizationName() }} <a @click='changeOrganization' id='change-org-button'>(Change)</a></span>
-        </div>
+        </div> -->
       </div>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -21,6 +21,7 @@
         <b-dropdown-item to='/admin/company' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
         <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
             <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
+            <b-dropdown-item v-if="hasMultipleCompanies()" @click='changeOrganization'>Change Company</b-dropdown-item>
             <b-dropdown-item @click='logout'>Log Out</b-dropdown-item>
           </b-nav-item-dropdown>
       </b-collapse>
@@ -64,6 +65,13 @@ export default {
         return this.$store.state.organization.name;
       }
     },
+    organizationLogo() {
+      let organization = this.$store.state.organization;
+      console.log(organization);
+      if(organization != null) {
+        return organization.condensed_logo_url || organization.logo_url;
+      }
+    },
     hasMultipleCompanies() {
       return this.$store.state.user.organization_count > 1
     }
@@ -74,12 +82,13 @@ export default {
 <style scoped>
   #app-nav{
     border-width: 0 0 3px 0;
-    border-color: red;
+    border-color: var(--main-color);
     border-style: solid;
   }
 
   #logo-image {
     max-width: 250px;
+    max-height: 70px;
   }
 
   .text-dark {

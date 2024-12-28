@@ -11,7 +11,7 @@ import WorkRecordForm from '../forms/single';
 import EventBus from '@/store/eventBus';
 
 export default {
-  props: ['id'],
+  props: ['id', 'employee_id'],
   data() {
     return {
       work_record: {}
@@ -24,11 +24,18 @@ export default {
     createHours() {
       let params = { work_record: this.work_record }
 
+      if(this.employee_id) {
+        params.arborist_id = this.employee_id
+      }
+
       this.axiosPost('/work_records', params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);
         EventBus.$emit('WORK_RECORD_UPDATED');
       })
     }
+  },
+  mounted() {
+    console.log(this.employee_id);
   }
 }
 </script>

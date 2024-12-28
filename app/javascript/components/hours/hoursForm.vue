@@ -63,6 +63,9 @@ export default {
     'workRecord': {
       type: Object,
       required: false
+    },
+    employee_id: {
+      required: false
     }
   },
   methods:{
@@ -74,6 +77,9 @@ export default {
           unpaid_hours: this.workRecord.unpaid_hours,
           hours: this.workRecord.hours
         }
+      }
+      if(this.employee_id != null) {
+        options.arborist_id = this.employee_id;
       }
       this.axiosPut(`/work_records/${this.workRecord.id}`, options)
         .then(response => {
