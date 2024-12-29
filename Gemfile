@@ -57,8 +57,6 @@ gem 'letter_opener'
 # gem 'less-rails', '~> 2.7.1'
 gem 'materialize-sass', '~> 1.0.0'
 
-
-gem 'cancancan'
 gem 'pundit'
 
 gem 'spreadsheet'

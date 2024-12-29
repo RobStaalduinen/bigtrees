@@ -198,6 +198,11 @@ export default {
           'Take a look at this quote'
         )
       }
+    },
+    work_start_date() {
+      if(this.work_end_date == null || this.work_end_date === undefined) {
+        this.work_end_date = this.work_start_date;
+      }
     }
   }
 }

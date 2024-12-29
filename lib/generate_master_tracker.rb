@@ -43,35 +43,37 @@ class GenerateMasterTracker
       insert(worksheet, row, 3, estimate.created_at.strftime("%B")) rescue ""
       insert(worksheet, row, 4, estimate.created_at.strftime("%Y")) rescue ""
 
+      insert(worksheet, row, 5, estimate.work_start_date.strftime("%-d-%b-%Y")) rescue ""
 
-      insert(worksheet, row, 5, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
-      insert(worksheet, row, 6, estimate.invoice.paid_at.strftime("%B")) rescue ""
-      insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%Y")) rescue ""
+      
+      insert(worksheet, row, 6, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 7, estimate.invoice.paid_at.strftime("%B")) rescue ""
+      insert(worksheet, row, 8, estimate.invoice.paid_at.strftime("%Y")) rescue ""
 
-      insert(worksheet, row, 8, customer.name)
-      insert(worksheet, row, 9, estimate.street || estimate.site&.address&.street)
-      insert(worksheet, row, 10, estimate.city || estimate.site&.address&.city)
-      insert(worksheet, row, 11, estimate.tree_count)
-      insert(worksheet, row, 12, estimate.trees.first.work_name) rescue ""
-      insert(worksheet, row, 13, contact.capitalize)
-      insert(worksheet, row, 14, customer.phone)
-      insert(worksheet, row, 15, customer.email)
-      insert(worksheet, row, 16, discount)
+      insert(worksheet, row, 9, customer.name)
+      insert(worksheet, row, 10, estimate.street || estimate.site&.address&.street)
+      insert(worksheet, row, 11, estimate.city || estimate.site&.address&.city)
+      insert(worksheet, row, 12, estimate.tree_count)
+      insert(worksheet, row, 13, estimate.trees.first.work_name) rescue ""
+      insert(worksheet, row, 14, contact.capitalize)
+      insert(worksheet, row, 15, customer.phone)
+      insert(worksheet, row, 16, customer.email)
+      insert(worksheet, row, 17, discount)
 
       total_cost = estimate.aggregated_cost
       if estimate.quote_sent_date.present? && total_cost.present?
-        insert(worksheet, row, 17, total_cost)
-        insert(worksheet, row, 18, total_cost * 0.13)
-        insert(worksheet, row, 19, total_cost * 1.13)
+        insert(worksheet, row, 18, total_cost)
+        insert(worksheet, row, 19, total_cost * 0.13)
+        insert(worksheet, row, 20, total_cost * 1.13)
 
         if estimate.invoice.present? && estimate.invoice.sent_at.present? && !estimate.is_unknown
-          insert(worksheet, row, 20, estimate.outstanding_amount * 1.13)
+          insert(worksheet, row, 21, estimate.outstanding_amount * 1.13)
         end
       end
       raw_link = Rails.application.routes.url_helpers.estimate_path(estimate)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
-      worksheet.add_cell(row, 33, '', link)
-      worksheet[row][33].change_font_color('0000ff')
+      worksheet.add_cell(row, 34, '', link)
+      worksheet[row][34].change_font_color('0000ff')
 
     end
 
