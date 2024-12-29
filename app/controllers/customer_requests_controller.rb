@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class CustomerRequestsController < ApplicationController
+  def new
+    render layout: 'onboarding_page'
+  end
+
+  def org_scoped
+    @organization_shortname = params[:organization_shortname]
+
+    respond_to do |format|
+      format.html { render layout: 'white_label' }
+    end
+  end
+
   def create
     organization = Organization.find_by(short_name: params[:organization_shortname])
 

@@ -47,7 +47,6 @@ Rails.application.routes.draw do
   end
   resources :customers
   resources :customer_details, only: [ :update ]
-  resources :requests
   resources :trees do
     post '/admin_create', to: 'trees#admin_create', on: :collection, as: 'admin_create'
     post '/bulk_create', to: 'trees#bulk_create', on: :collection
@@ -93,10 +92,10 @@ Rails.application.routes.draw do
     resources :quick_costs, only: [ :index, :create, :update, :destroy ]
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
-    resources :requests, only: [:new], to: 'requests#org_scoped'
+    resources :requests, only: [:new], to: 'customer_requests#org_scoped'
   end
 
-  resources :customer_requests, only: [ :create ]
+  resources :customer_requests, only: [ :new, :create ]
   resources :email_templates, only: [ :index, :show, :update ]
   resources :commercial_requests, only: [ :create ]
 
