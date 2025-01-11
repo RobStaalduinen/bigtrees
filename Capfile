@@ -4,7 +4,7 @@ require "capistrano/setup"
 # Include default deployment tasks
 require "capistrano/deploy"
 
-# Load the SCM plugin appropriate to your project:
+# Load the SCM plugin appropriate to your projst:
 #
 # require "capistrano/scm/hg"
 # install_plugin Capistrano::SCM::Hg
@@ -33,7 +33,6 @@ require 'capistrano-nc/nc'
 require 'capistrano/upload-config'
 require 'capistrano/rake'
 require 'capistrano/rbenv'
-require 'capistrano/aws'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
