@@ -8,7 +8,6 @@ set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
 set :deploy_to, '/var/www/bigtrees'
 set :rvm_map_bins, %w{gem rake ruby rails bundle}
-rxco
 set :rbenv_ruby, '3.3.1'
 
 # set :npm_roles, :web
