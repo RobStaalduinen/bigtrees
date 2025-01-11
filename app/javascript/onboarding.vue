@@ -156,8 +156,6 @@ export default {
       }
 
       this.currentPage += 1;
-
-      console.log("Last Page status: ", this.lastPage());
     },
     goBack() {
       if(this.currentPage == 1) {
@@ -220,7 +218,6 @@ export default {
       this.axiosGet(`/organizations/public/${this.organizationShortname}`).then(response => {
         if(response.status == 200) {
           this.organizationData = response.data.organization;
-          console.log(this.organizationData);
 
           document.documentElement.style.setProperty('--main-color', this.organizationData.primary_colour);
 

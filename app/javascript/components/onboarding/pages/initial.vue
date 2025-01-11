@@ -82,7 +82,6 @@ export default {
     }
   },
   mounted() {
-    console.log("Resetting");
     this.$emit('input', null);
   }
 }

@@ -68,9 +68,6 @@ export default {
 
       sortedImages['null'] = [];
 
-      console.log("ALL IMAGES");
-      console.log(this.estimate.tree_images);
-
        this.estimate.tree_images.map((image) => {
         sortedImages[image.tree_id].push(image);
       },);
@@ -80,7 +77,6 @@ export default {
     sortedKeys() {
       let initialKeys = Object.keys(this.sortedImages).filter(x => x != 'null');
       initialKeys = initialKeys.sort()
-      console.log(initialKeys);
       initialKeys.unshift(null);
       return initialKeys;
     }
@@ -90,8 +86,6 @@ export default {
       EventBus.$emit('TOGGLE_IMAGE_GALLERY', { estimate_id: this.estimate.id, image_id: image_id });
     },
     treeForId(treeId) {
-      console.log(this.estimate.trees);
-      console.log(treeId);
       return this.estimate.trees.find(tree => tree.id == treeId);
     }
   },

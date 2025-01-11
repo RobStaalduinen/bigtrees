@@ -33,9 +33,6 @@ export default {
         EventBus.$emit('WORK_RECORD_UPDATED');
       })
     }
-  },
-  mounted() {
-    console.log(this.employee_id);
   }
 }
 </script>

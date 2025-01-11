@@ -173,8 +173,8 @@ export default {
     var query = this.$route.query;
     if(query.customer_id) {
       this.axiosGet(`/customers/${query.customer_id}`).then(response => {
-        if(response.data.id == query.customer_id) {
-          var customer = response.data;
+        if(response.data.customer.id == query.customer_id) {
+          var customer = response.data.customer;
           this.customer = {
             id: customer.id,
             name: customer.name,

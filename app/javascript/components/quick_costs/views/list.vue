@@ -80,7 +80,6 @@ export default {
       this.$root.$emit('bv::toggle::collapse', 'create-cost');
     },
     editCost(cost) {
-      console.log("Edit");
       this.costToEdit = cost;
       this.$root.$emit('bv::toggle::collapse', 'create-cost');
     }

@@ -2,15 +2,6 @@ class ApplicationController < ActionController::Base
   include UserHelper
   include Pundit
 
-  rescue_from CanCan::AccessDenied do |exception|
-    Sentry.capture_exception(exception)
-
-    respond_to do |format|
-      format.html { :redirect_unauthorized }
-      format.json { render json: { error: 'Unauthorized'}, status: :unauthorized }
-    end
-  end
-
   before_action :redirect_if_old
   before_action :set_organization
 

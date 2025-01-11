@@ -72,7 +72,6 @@ export default {
         if (success) {
           if(this.loadingState) {
             this.loading = true;
-            console.log("SET LOADING");
           }
           EventBus.$emit('form-forward');
         }

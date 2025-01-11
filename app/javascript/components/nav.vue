@@ -67,7 +67,6 @@ export default {
     },
     organizationLogo() {
       let organization = this.$store.state.organization;
-      console.log(organization);
       if(organization != null) {
         return organization.condensed_logo_url || organization.logo_url;
       }

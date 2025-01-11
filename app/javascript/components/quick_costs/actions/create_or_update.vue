@@ -105,9 +105,6 @@ export default {
         this.reset();
       }
     }
-  },
-  mounted() {
-    console.log(this.quick_cost);
   }
 }
 </script>

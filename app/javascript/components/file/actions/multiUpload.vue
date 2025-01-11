@@ -61,7 +61,6 @@ export default {
       this.images.splice(id, 1);
     },
     handleUpload(id, uploadData) {
-      console.log('handleUpload', id, uploadData);
       this.images[id] = uploadData;
       this.$emit('input', this.images);
     }

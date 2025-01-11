@@ -141,9 +141,6 @@ export default {
       this.canvasWidth = this.$refs.image.clientWidth;
       this.canvasHeight = this.$refs.image.clientHeight;
 
-      console.log(this.canvasWidth);
-      console.log(this.canvasHeight);
-
       this.$refs.editor.invoke('loadImageFromURL', this.urlToEdit, 'Test.png').then(() => {
         this.$refs.editor.invoke('resizeCanvasDimension', { width: this.canvasWidth, height: this.canvasHeight }).then(() => {
           this.$refs.editor.invoke('clearUndoStack');
@@ -163,8 +160,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.$refs.editor);
-    // console.log(this.urlToEdit);
     // this.$refs.editor.invoke('loadImageFromURL', this.urlToEdit, 'Test.png').then(() => {
     //   this.$refs.editor.invoke('resizeCanvasDimension', { width: 800, height: 120 })
     // });

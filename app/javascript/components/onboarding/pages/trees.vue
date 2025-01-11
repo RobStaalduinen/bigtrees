@@ -79,14 +79,6 @@ export default {
         return `Tell us about Tree #${this.treeNumber}`;
       }
     }
-  },
-  watch: {
-    treeNumber() {
-      console.log(this.trees);
-    },
-    trees() {
-
-    }
   }
 }
 </script>

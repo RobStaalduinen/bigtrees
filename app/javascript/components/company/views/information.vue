@@ -100,7 +100,6 @@
       }
     },
     mounted() {
-      console.log(this.$store.state.organization);
       this.company = this.$store.state.organization;
     }
   }

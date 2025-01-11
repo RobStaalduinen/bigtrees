@@ -62,9 +62,7 @@ export default {
   },
   watch: {
     treeImage() {
-      console.log('SELECTED');
       this.selectedTask = this.treeImage.tree_id || 'uncategorized';
-      console.log('SELECTED', this.selectedTask);
     },
     immediate: true
   }

@@ -179,7 +179,6 @@ export default {
     },
     handleTaskUpdate(updatedImage) {
       this.$bvModal.hide('edit-task-modal');
-      console.log('UPDATED', updatedImage);
       EventBus.$emit('ESTIMATE_UPDATED', updatedImage);
     },
     onEditSave(image_base64) {

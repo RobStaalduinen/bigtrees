@@ -15,12 +15,18 @@ class CustomersController < ApplicationController
     end
 
     @customers = @customers.paginate(page: params[:page], per_page: params[:per_page])
+
+    json_customers = @customers.map { |customer| CustomerSerializer.new(customer).as_json }
+    
+    render json: { customers: json_customers, total_entries: @customers.total_entries }
   end
 
   def show
     authorize Customer, :show?
 
     @customer = policy_scope(Customer).find(params[:id])
+
+    render json: @customer, serializer: CustomerSerializer, include_addresses: true
   end
 
   def create
@@ -28,7 +34,7 @@ class CustomersController < ApplicationController
 
     @customer = Customer.create(customer_params)
 
-    render json: @customer.serialized
+    render json: @customer
   end
 
   def update

@@ -92,8 +92,7 @@ export default {
         EventBus.$emit('FORM_VALIDATION_FAILED');
         return false;
       }
-
-      console.log('validate', this.images);
+      
       for(var i = 0; i < this.images.length; i++){
         if(this.images[i].uploading == true){
           this.validationErrorMessage = 'Wait for image uploads to finish and try again';

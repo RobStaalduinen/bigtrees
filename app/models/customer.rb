@@ -17,12 +17,23 @@ class Customer < ActiveRecord::Base
     customer
   end
 
-  def serialized
-    slice(:id, :name, :phone, :email, :preferred_contact).merge({ address: address&.serialized })
-  end
+  # def serialized
+  #   slice(:id, :name, :phone, :email, :preferred_contact).merge({ address: address&.serialized })
+  # end
 
   def recent_estimate_id
     estimates.order('id DESC').first&.id
+  end
+
+  def customer_address
+     address&.slice(:street, :city)
+  end
+
+  def site_address
+    estimate = estimates.joins(:site).last
+    if estimate.present? && estimate.site.present?
+      estimate.site.address&.slice(:street, :city)
+    end
   end
 
   def first_name
