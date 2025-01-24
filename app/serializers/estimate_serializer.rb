@@ -12,7 +12,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :picture_request_sent_at
   attribute :followup_sent_at
   attribute :skip_schedule
-  attribute :site_visit_tag
+  attribute :site_visit
 
   attribute :created_at
   attribute :updated_at
@@ -36,4 +36,5 @@ class EstimateSerializer < ApplicationSerializer
   has_many :tree_images
   has_many :vehicles
   has_many :notes
+  has_many :tags
 end

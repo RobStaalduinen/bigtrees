@@ -3,6 +3,8 @@
 class NotesController < ApplicationController
 
   def create
+    authorize Note, :create?
+
     note = estimate.notes.new(notes_params)
     note.author = current_user
     note.save

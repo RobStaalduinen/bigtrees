@@ -3,12 +3,9 @@ class QuoteMailoutsController < ApplicationController
 
   before_action :signed_in_user
 
-  def new
-    @estimate = Estimate.find(params[:estimate_id])
-    render template: "quote_mailouts/new/#{params[:mail_type]}"
-  end
-
   def create
+    authorize Estimate, :update?
+
     @estimate = Estimate.find(params[:estimate_id])
     send_email unless params[:skip]
     @estimate.update(estimate_params)

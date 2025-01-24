@@ -23,7 +23,7 @@ button {
 
 .submit-button {
   width: 100%;
-  background-color: #8A0000;
+  background-color: var(--main-color);
 }
 
 .inverse-button {
@@ -102,6 +102,11 @@ a:not([href]):not([class]) {
 .btn-secondary:not(:disabled):not(.disabled).active{
   background-color: var(--main-color);
   border-color: var(--main-color);
+}
+
+.subtext {
+  font-size: 0.8rem;
+  color: #6c757d;
 }
 
 @media (min-width: 200px) and (max-width: 759px){

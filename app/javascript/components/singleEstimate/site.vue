@@ -40,7 +40,7 @@
 
         <hr />
 
-        <template v-if='estimate.site_visit_tag'>
+        <template v-if='estimate.site_visit'>
           <b-row class='spaced-row'>
             <b-col cols='6' class='right-column'>
               <b>Solo Visit Consent</b>

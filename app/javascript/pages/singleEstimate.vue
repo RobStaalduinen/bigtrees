@@ -137,6 +137,7 @@ export default {
     retrieveEstimate() {
       this.axiosGet(`/estimates/${this.estimate_id}.json`)
         .then(response => {
+          console.log("ESTIMATE", response.data.estimate);
           this.estimate = response.data.estimate;
         }).catch(
           (error) => {

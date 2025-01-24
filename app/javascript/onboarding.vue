@@ -258,7 +258,7 @@ export default {
         customer: this.customer,
         organization_shortname: this.organizationShortname,
         trees: [],
-        site_visit_tag: true
+        site_visit: true
       }
 
       this.axiosPost('/customer_requests', params).then(response => {

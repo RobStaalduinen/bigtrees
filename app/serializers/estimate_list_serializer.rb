@@ -25,6 +25,9 @@ class EstimateListSerializer < ApplicationSerializer
   belongs_to :arborist
 
   belongs_to :customer, serializer: CustomerListSerializer
+
+  has_many :tags
+  
   has_one :site, include_nested_associations: true
   has_one :customer_detail, serializer: CustomerDetailListSerializer
 end

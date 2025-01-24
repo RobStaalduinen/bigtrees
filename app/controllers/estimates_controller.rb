@@ -24,7 +24,8 @@ class EstimatesController < ApplicationController
       includes(site: [:address]).
       includes(:customer_detail).
       includes(:customer).
-      includes(:arborist)
+      includes(:arborist).
+      includes(:tags)
 
     @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
     @estimates = @estimates.for_status(params[:status]) if params[:status]
@@ -34,8 +35,6 @@ class EstimatesController < ApplicationController
       @estimates = @estimates.order('estimates.id DESC')
     end
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
-
-
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])
 

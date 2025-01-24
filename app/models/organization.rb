@@ -8,6 +8,7 @@ class Organization < ActiveRecord::Base
   has_many :email_templates
   has_many :estimates
   has_many :quick_costs
+  has_many :tags
 
   def default_arborist
     arborists.where(role: ['admin', 'super_admin']).first

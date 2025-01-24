@@ -38,9 +38,7 @@
 
     <div class='estimate-footer'>
       <div class='estimate-footer-left'>
-        <div class='site-visit-tag' v-if='estimate.site_visit_required'>
-          <app-tag color='yellow'>Site Visit</app-tag>
-        </div>
+        <app-tag-list :tags='estimate.tags'></app-tag-list>
       </div>
 
       <div class='estimate-footer-right'>
@@ -60,6 +58,7 @@ import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
 import EventBus from '@/store/eventBus'
 import { mapState } from 'vuex'
+import TagList from '@/components/tags/views/list.vue'
 
 export default {
   props: {
@@ -71,6 +70,7 @@ export default {
   components: {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList,
+    'app-tag-list': TagList
   },
   computed: mapState({
     mySchedule: state => state.estimateSettings.mySchedule

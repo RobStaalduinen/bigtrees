@@ -7,18 +7,21 @@ class Estimate < ActiveRecord::Base
 
 	before_save :set_status
 
-	has_many :trees
-	has_many :tree_images
-	has_many :extra_costs
-  has_many :costs
-  has_many :notes
+	has_many :trees, dependent: :destroy
+	has_many :tree_images, dependent: :destroy
+	has_many :extra_costs, dependent: :destroy
+  has_many :costs, dependent: :destroy
+  has_many :notes, dependent: :destroy
 
-  has_many :equipment_assignments
+  has_many :equipment_assignments, dependent: :destroy
   has_many :vehicles, through: :equipment_assignments
 
-	has_one :invoice
-  has_one :site
-  has_one :customer_detail
+	has_many :taggings, dependent: :destroy
+	has_many :tags, through: :taggings
+
+	has_one :invoice, dependent: :destroy
+  has_one :site, dependent: :destroy
+  has_one :customer_detail, dependent: :destroy
 
 	belongs_to :customer
 	belongs_to :arborist
@@ -214,12 +217,26 @@ class Estimate < ActiveRecord::Base
       self.picture_request_sent_at = nil
       self.followup_sent_at = nil
     end
+
+		process_tags(new_status)
+
 		self.status = new_status
 
 		self.save! if save
   end
 
+	def process_tags(new_status)
+		if %w[needs_arborist pending_quote].include?(new_status.to_s)
+			self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
+		end
+	end
+
   def site_visit_required
-    status.to_s == 'needs_costs' && site_visit_tag
+    status.to_s == 'needs_costs' && site_visit
   end
+
+	def add_system_tag(tag_name)
+		tag = organization.tags.find_by(label: tag_name)
+		self.taggings.create(tag: tag)
+	end
 end

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       get '/pdf', to: 'quotes#pdf', on: :collection
     end
     resources :image_requests, only: [ :new, :create ]
-    resources :quote_mailouts, only: [ :new, :create ]
+    resources :quote_mailouts, only: [ :create ]
     resources :sites, only: [ :create, :edit, :update ]
     resources :costs, only: [ :new, :create ] do
       get '/edit', to: 'costs#edit', on: :collection, as: :edit
@@ -90,6 +90,10 @@ Rails.application.routes.draw do
     get 'public/:short_name', to: 'organizations#public', on: :collection
 
     resources :quick_costs, only: [ :index, :create, :update, :destroy ]
+    resources :tags, only: [ :index, :create, :update, :destroy ]
+    resources :taggings, only: [ :create ] do 
+      delete '/', to: 'taggings#destroy', on: :collection
+    end
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
     resources :requests, only: [:new], to: 'customer_requests#org_scoped'

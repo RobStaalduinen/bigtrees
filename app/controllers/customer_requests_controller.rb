@@ -19,7 +19,10 @@ class CustomerRequestsController < ApplicationController
     Estimate.transaction do
       estimate = Estimate.create(organization: organization, submission_completed: true)
 
-      estimate.site_visit_tag = true if params[:site_visit_tag]
+      if params[:site_visit]
+        estimate.site_visit = true 
+        estimate.add_system_tag('Site Visit')
+      end
 
       estimate.arborist = organization.default_arborist
 

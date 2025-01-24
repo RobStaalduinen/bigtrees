@@ -3,7 +3,7 @@
 module Roles
   class Admin < Base
     def default_scope_level
-      'organization'
+    'organization'
     end
 
     def role_permissions
@@ -17,7 +17,10 @@ module Roles
         customers: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         vehicles: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true,  scope_level: default_scope_level),
         organizations: permission_set(list: true, show: true, create: false, update: true, delete: false, admin: true, scope_level: default_scope_level),
-        quick_costs: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level)
+        quick_costs: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level),
+        tags: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level),
+        taggings: permission_set(list: true, show: true, create: true, update: true, delete: true, admin: true, scope_level: default_scope_level),
+        notes: permission_set(create: true),
       }
     end
   end

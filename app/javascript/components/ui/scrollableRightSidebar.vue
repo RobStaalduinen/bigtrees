@@ -10,7 +10,7 @@
       <div class='sidebar-bottom'>
         <slot name='extras'></slot>
         <div id='submission'>
-          <b-button type='submit' class='inverse-button sidebar-button' @click='cancel'>Cancel</b-button>
+          <b-button type='submit' class='inverse-button sidebar-button' @click='cancel' v-if="cancellable">Cancel</b-button>
           <b-button type='submit' class='inverse-button sidebar-button' v-if='alternateAction' @click='() => alternateAction()'>
             {{ alternateActionText }}
           </b-button>
@@ -42,6 +42,10 @@ export default {
     alternateAction: {
       required: false,
       type: Function
+    },
+    cancellable: {
+      required: false,
+      default: true
     },
     alternateActionText: {
       required: false,
