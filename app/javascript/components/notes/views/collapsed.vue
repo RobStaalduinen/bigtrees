@@ -6,7 +6,7 @@
       </template>
 
       <template v-slot:content>
-        <div v-for='note in estimate.notes' :key='note.id' class='note-row' @click='toggleModal(note.id)'>
+        <div v-for='note in estimate.notes' :key='note.id' class='note-row'>
           <img v-if='note.image' :src='note.image.image_url' class='note-image' />
           <div v-else class='note-image'>
 
@@ -14,7 +14,7 @@
 
           <div class='note-content'>
             <div class='note-header'><b>{{ `${note.author_name} | ${formatDate(note.created_at)}`}}</b></div>
-            {{ note.content }}
+            {{ note.content.trim() }}
           </div>
         </div>
 
@@ -117,6 +117,7 @@ export default {
     display: flex;
     flex-direction: column;
     font-size: 14px;
+    white-space: pre-line;
   }
 
   .modal-image {

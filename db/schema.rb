@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_28_094517) do
+ActiveRecord::Schema.define(version: 2025_01_24_185421) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -239,7 +239,7 @@ ActiveRecord::Schema.define(version: 2024_12_28_094517) do
   create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "arborist_id"
-    t.string "content"
+    t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["arborist_id"], name: "index_notes_on_arborist_id"
@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(version: 2024_12_28_094517) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label"
     t.string "content"
@@ -345,6 +345,25 @@ ActiveRecord::Schema.define(version: 2024_12_28_094517) do
     t.index ["city"], name: "index_sites_on_city"
     t.index ["estimate_id"], name: "index_sites_on_estimate_id"
     t.index ["street"], name: "index_sites_on_street"
+  end
+
+  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "tag_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["estimate_id"], name: "index_taggings_on_estimate_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "label", null: false
+    t.string "colour", null: false
+    t.boolean "system", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
 
   create_table "tree_images", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
