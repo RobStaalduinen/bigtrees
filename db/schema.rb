@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_13_194833) do
+ActiveRecord::Schema.define(version: 2025_01_24_191231) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 2025_01_13_194833) do
     t.integer "organization_id"
     t.boolean "pending_permit", default: false
     t.boolean "site_visit", default: false
+    t.string "state", default: "in_progress", null: false
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
@@ -239,7 +240,7 @@ ActiveRecord::Schema.define(version: 2025_01_13_194833) do
   create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "arborist_id"
-    t.string "content"
+    t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["arborist_id"], name: "index_notes_on_arborist_id"
@@ -285,7 +286,7 @@ ActiveRecord::Schema.define(version: 2025_01_13_194833) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label"
     t.string "content"

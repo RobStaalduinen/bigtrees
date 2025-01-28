@@ -2,6 +2,7 @@
 
 class EstimateSerializer < ApplicationSerializer
 
+  attribute :state
   attribute :status
   attribute :quote_sent_date
   attribute :quote_accepted_date

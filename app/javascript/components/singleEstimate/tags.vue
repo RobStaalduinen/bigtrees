@@ -2,9 +2,19 @@
   <div>
     <app-collapsable id='tags-collapse'>
       <template v-slot:title>
-        <b>Tags</b>
-        <div id='tags-preview'>
-          <app-tag-list :tags='estimate.tags' />
+        <div class="title-container">
+          <div class='title-row'>
+            <b>State: </b>
+            <div id="tags-preview">
+              {{ formatStatus(estimate.state) }}
+            </div>
+          </div>
+          <div class="title-row">  
+            <b>Tags: </b>
+            <div id='tags-preview'>
+              <app-tag-list :tags='estimate.tags' />
+            </div>
+          </div>
         </div>
       </template>
 
@@ -44,7 +54,9 @@ export default {
 
   },
   methods: {
-
+    formatStatus(status) {
+      return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
   }
 }
 </script>
@@ -54,5 +66,15 @@ export default {
     display: flex;
 
     margin-left: 24px;
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title-row {
+    display: flex;
+    margin-bottom: 8px;
   }
 </style>

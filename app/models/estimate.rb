@@ -48,7 +48,7 @@ class Estimate < ActiveRecord::Base
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
 	scope :active, -> { where(is_unknown: false).where("status < 8") }
   scope :no_followup, -> { where(followup_sent_at: nil) }
-	scope :unknown, -> { where(is_unknown: true) }
+	# scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
   scope :with_customer, -> { where.not(customer: nil) }
   scope :pre_quote, -> { (price_required.or(pending_quote)).active }
@@ -93,6 +93,13 @@ class Estimate < ActiveRecord::Base
       all
     end
   end
+
+	enum state: {
+		in_progress: 'in_progress',
+		on_hold: 'on_hold',
+		done: 'done',
+		unknown: 'unknown'
+	}
 
 
 	enum status: {
