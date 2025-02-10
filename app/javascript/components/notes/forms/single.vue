@@ -1,11 +1,13 @@
 <template>
   <div>
-    <app-input-field
-      v-model='content'
-      name='content'
-      label='Content'
-      validationRules='required'
-    />
+    <app-text-area
+        v-model='content'
+        name='content'
+        label='Content'
+        validationRules='required'
+        :maxLength='65'
+        :noResize='true'
+      ></app-text-area>
 
     <b-form-group
       label="Image (Optional)"

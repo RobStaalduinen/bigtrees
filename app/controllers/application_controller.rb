@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def redirect_if_old
     return unless Rails.env.production?
 
-    url_list = ['thatsabigtree.ca', 'thatsabigtree.ca', 'bigtreeservices.com', 'bigtreecare.ca']
+    url_list = ['thatsabigtree.ca', 'thatsabigtree.ca', 'bigtreeservices.com']
     if url_list.map { |u| u.include?(request.host) }.any?
       redirect_to "#{request.protocol}bigtreeservices.ca#{request.fullpath}", status: :moved_permanently
     end

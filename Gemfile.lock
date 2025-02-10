@@ -491,6 +491,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   active_model_serializers
+  addressable
   aws-sdk-ec2 (~> 1)
   aws-sdk-s3 (~> 1)
   bcrypt
