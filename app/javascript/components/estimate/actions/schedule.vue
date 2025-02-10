@@ -16,15 +16,6 @@
         :options="arboristOptions"
         validationRules='required'
       />
-      <b-form-group label="Waiting for permit?">
-        <b-form-checkbox
-          id="permit-required"
-          v-model="permitRequired"
-          name="permit-required"
-          :value='true'
-          :unchecked-value='false'
-        />
-      </b-form-group>
       <app-conditional-box
         v-model='scheduleWork'
         conditionName='Add Date Range'
@@ -92,8 +83,7 @@ export default {
       emailTeam: false,
       scheduleWork: false,
       submitting: false,
-      emailDefinition: null,
-      permitRequired: false
+      emailDefinition: null
     }
   },
   methods: {
@@ -110,8 +100,7 @@ export default {
             work_start_date: null,
             work_end_date: null,
             skip_schedule: false,
-            arborist_id: this.lead_arborist,
-            pending_permit: this.permitRequired
+            arborist_id: this.lead_arborist
           }
         }
 
@@ -123,12 +112,6 @@ export default {
           params.estimate.work_start_date = null;
           params.estimate.work_end_date = null;
           params.estimate.skip_schedule = true;
-        }
-
-        if(this.permitRequired) {
-          params.estimate.work_start_date = null;
-          params.estimate.work_end_date = null;
-          params.estimate.skip_schedule = false;
         }
 
         this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {

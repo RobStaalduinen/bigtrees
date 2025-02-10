@@ -6,6 +6,7 @@ class Estimate < ActiveRecord::Base
 	TAX_RATE = 0.13
 
 	before_save :set_status
+	before_save :set_timestamps
 
 	has_many :trees, dependent: :destroy
 	has_many :tree_images, dependent: :destroy
@@ -31,22 +32,23 @@ class Estimate < ActiveRecord::Base
   accepts_nested_attributes_for :equipment_assignments
   accepts_nested_attributes_for :notes
 
-	scope :submitted, -> { where(submission_completed: true).where(cancelled_at: nil) }
+	scope :submitted, -> { where(submission_completed: true) }
 	scope :incomplete, -> { active.where("status < 4") }
 	scope :price_required, -> { active.where("status = 0").where(picture_request_sent_at: nil) }
   scope :sent, -> do
      active.where("
       status = 3 OR
-      (status < 4 AND picture_request_sent_at IS NOT NULL AND is_unknown = false) OR
-      (status < 4 AND followup_sent_at IS NOT NULL AND is_unknown = false)
+      (status < 4 AND picture_request_sent_at IS NOT NULL) OR
+      (status < 4 AND followup_sent_at IS NOT NULL)
     ")
   end
   scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
-  scope :cancelled, -> { where(cancelled_at: nil) }
+  # scope :cancelled, -> { where(cancelled_at: nil) }
 	scope :pending_payment, -> { active.final_invoice_sent }
-	scope :complete, -> { where(status: 8) }
+	# scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
-	scope :active, -> { where(is_unknown: false).where("status < 8") }
+	# scope :active, -> { where(is_unknown: false).where("status < 8") }
+	scope :active, -> { in_progress }
   scope :no_followup, -> { where(followup_sent_at: nil) }
 	# scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
@@ -73,24 +75,26 @@ class Estimate < ActiveRecord::Base
 
   scope :for_status, -> (filter_string) do
     case filter_string
-    when 'active'
-      submitted.all.active.no_followup
-    when 'needs_pricing'
-      submitted.price_required.active
-    when 'pre_quote'
-      submitted.pre_quote
-    when 'awaiting_response'
-      submitted.sent.active
-    when 'to_pay'
-      submitted.pending_payment.active
-    when 'scheduled'
-      submitted.scheduled.active
-    when 'unknown'
-      submitted.unknown
-    when 'cancelled'
-      cancelled
-    else
-      all
+		when 'active'
+			submitted.in_progress
+		when 'needs_pricing'
+			submitted.in_progress.needs_costs
+		when 'pre_quote'
+			submitted.in_progress.pre_quote
+		when 'awaiting_response'
+			submitted.in_progress.sent
+		when 'to_pay'
+			submitted.in_progress.pending_payment
+		when 'scheduled'
+			submitted.in_progress.scheduled
+		when 'unknown'
+			submitted.unknown
+		when 'on_hold'
+			submitted.on_hold
+		when 'completed'
+			submitted.done
+		when 'cancelled'
+			cancelled
     end
   end
 
@@ -98,7 +102,8 @@ class Estimate < ActiveRecord::Base
 		in_progress: 'in_progress',
 		on_hold: 'on_hold',
 		done: 'done',
-		unknown: 'unknown'
+		unknown: 'unknown',
+		cancelled: 'cancelled'
 	}
 
 
@@ -107,12 +112,10 @@ class Estimate < ActiveRecord::Base
 		needs_arborist: 1,
 		pending_quote: 2,
 		quote_sent: 3,
-		pending_permit: 4,
 		work_scheduled: 5,
 		work_completed: 6,
 		final_invoice_sent: 7,
-		completed: 8,
-		cancelled: 10
+		completed: 8
   }
 
 	# Associations
@@ -198,19 +201,17 @@ class Estimate < ActiveRecord::Base
 		self.paid? ? 0.0 : self.total_cost
 	end
 
-	def set_status(save = false)
-		new_status = if(self.cancelled_at.present?)
-			:cancelled
-		elsif(!self.costs.any?)
+	def set_status(save = false, process_state = true)
+		old_status = self.status
+
+		new_status = if(!self.costs.any?)
 			:needs_costs
 		elsif(self.costs.any? && !self.arborist?)
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
-		elsif(self.quote_sent? && !self.work_scheduled? && !self.pending_permit)
+		elsif(self.quote_sent? && !self.work_scheduled?)
 			:quote_sent
-    elsif(self.quote_sent? && self.pending_permit)
-      :pending_permit
 		elsif(self.work_scheduled? && !self.invoice.sent?)
 			:work_scheduled
 		elsif(self.invoice.sent? && !self.invoice.paid?)
@@ -219,22 +220,44 @@ class Estimate < ActiveRecord::Base
 			:completed
     end
 
-    # self.is_unknown = false if new_status != self.status
-    if new_status.to_sym != self.status.to_sym && new_status.to_sym != :cancelled
-      self.picture_request_sent_at = nil
-      self.followup_sent_at = nil
-    end
+		if new_status == :completed
+			self.state = 'done'
+			self.state_reason = nil
+		end
 
-		process_tags(new_status)
+		if process_state && old_status.present?
+			if new_status.to_sym != old_status.to_sym && new_status.to_sym != :cancelled
+				self.picture_request_sent_at = nil
+				self.followup_sent_at = nil
+				if self.state.to_s != 'done'
+					self.state = 'in_progress'
+					self.state_reason = nil
+				end
+			end
+
+			process_tags(old_status, new_status)
+		end	
 
 		self.status = new_status
 
 		self.save! if save
-  end
+	end
 
-	def process_tags(new_status)
+	def set_timestamps
+		if self.state == 'cancelled'
+			self.cancelled_at ||= Time.now
+		else
+			self.cancelled_at = nil
+		end
+	end
+
+	def process_tags(old_status, new_status)
 		if %w[needs_arborist pending_quote].include?(new_status.to_s)
 			self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
+		end
+
+		if old_status.to_sym != new_status.to_sym
+			self.taggings.joins(:tag).where(tags: { label: 'Pending Permit' }).destroy_all
 		end
 	end
 

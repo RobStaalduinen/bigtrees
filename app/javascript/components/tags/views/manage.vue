@@ -15,13 +15,13 @@
 
     <div class="custom-tag-container">
       <table class='tag-table' v-if="nonSystemTags.length > 0">
-        <tr v-for="tag in nonSystemTags" :key="tag.id" class="tag-row">
-          <td class="tag-cell"><app-tag :tag="tag" /></td>
-          <td class="tag-cell tag-icons">
+        <div v-for="tag in nonSystemTags" :key="tag.id" class="tag-row">
+          <div class="tag-cell"><app-tag :tag="tag" /></div>
+          <div class="tag-cell tag-icons">
             <b-icon class='tag-icon' icon='pencil' @click='editTag(tag)'></b-icon>
             <b-icon class='tag-icon' icon='trash' @click='deleteTag(tag)'></b-icon>
-          </td>
-        </tr>
+          </div>
+        </div>
       </table>
       <div v-else>
         <i>No custom tags created</i>
@@ -31,15 +31,11 @@
     <app-header title='System Tags'></app-header>
     <div class='tag-description'>System controlled tags can not be edited or deleted</div>
 
-    <table class='tag-table'>
-      <tr v-for="tag in systemTags" :key="tag.id" class="tag-row">
-        <td class="tag-cell"><app-tag :tag="tag" /></td>
-        <!-- <td class="tag-cell tag-icons">
-          <b-icon class='tag-icon' icon='pencil' @click='editTag(tag)'></b-icon>
-          <b-icon class='tag-icon' icon='trash' @click='deleteTag(tag)'></b-icon>
-        </td> -->
-      </tr>
-    </table>
+    <div class='tag-table'>
+      <div v-for="tag in systemTags" :key="tag.id" class="tag-row">
+      <div class="tag-cell"><app-tag :tag="tag" /></div>
+      </div>
+    </div>
 
     <app-create-or-update-tag
       :organization_id='organization_id'
@@ -126,6 +122,9 @@
 
   .tag-row {
     border-bottom: 1px solid grey;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .tag-cell {

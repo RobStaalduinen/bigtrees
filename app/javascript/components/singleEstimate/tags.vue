@@ -1,27 +1,32 @@
 <template>
   <div>
-    <app-collapsable id='tags-collapse'>
+    <app-collapsable id='tags-collapse' :canExpand='false'>
       <template v-slot:title>
         <div class="title-container">
           <div class='title-row'>
-            <b>State: </b>
-            <div id="tags-preview">
-              {{ formatStatus(estimate.state) }}
+            <div class="title-label"><b>State: </b></div>
+            <div class="title-right">
+              {{ formatState(estimate.state) }}
+
+              <div class="edit-container" v-if="estimate.state != 'done'">
+                <b-icon icon='pencil-square' class='app-icon edit-status-button' v-b-toggle.manage-tags></b-icon>
+              </div>
+            </div>   
+          </div>
+
+          <div class='title-sub-row' v-if='estimate.state_reason'>
+            <div class="title-label"><b>Reason: </b></div>
+            <div class="title-right">
+              {{ estimate.state_reason }}
             </div>
           </div>
-          <div class="title-row">  
-            <b>Tags: </b>
-            <div id='tags-preview'>
+
+          <div class='title-sub-row'>
+            <div class="title-label"><b>Tags: </b></div>
+            <div class="title-right" v-if="estimate.tags.length > 0">
               <app-tag-list :tags='estimate.tags' />
             </div>
-          </div>
-        </div>
-      </template>
-
-      <template v-slot:content>
-        <div class='single-estimate-link-row'>
-          <div class='single-estimate-link' v-b-toggle.manage-tags>
-            Manage Tags
+            <div class='title-right' v-else><i>None</i></div>
           </div>
         </div>
       </template>
@@ -54,27 +59,49 @@ export default {
 
   },
   methods: {
-    formatStatus(status) {
-      return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    formatState(state) {
+      return state.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
   }
 }
 </script>
 
 <style scoped>
-  #tags-preview {
+  .title-right {
     display: flex;
 
     margin-left: 24px;
+    width: 80%;
+  }
+
+  .title-label {
+    width: 20%;
+  }
+
+  .title-separator {
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
   .title-container {
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
+    width: 100%;
   }
+
 
   .title-row {
     display: flex;
-    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .title-sub-row {
+    display: flex;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .edit-status-button {
+    margin-left: 16px;
+    cursor: pointer;
   }
 </style>

@@ -1,6 +1,11 @@
 <template>
-    <app-scrollable-sidebar :id='id' title='Manage Tags' submitText='Done' :onSubmit='handleDone' :cancellable='false'>
+    <app-scrollable-sidebar :id='id' title='Manage State' submitText='Done' :onSubmit='handleDone' :cancellable='false'>
       <template v-slot:content>
+        
+        <app-select-field v-model="state" :options="options" label="State" name="state"/>
+
+        <app-input-field v-model="reason" name="reason" label="Reason (optional)" v-if="reasonAllowed()"/>
+
         <b-form-group label="Current Tags">
           <div class="tag-list">
             <div class="tag-container" v-for="tag in estimateTags" :key="tag.id">
@@ -38,13 +43,26 @@
         organization: this.$store.state.organization,
         organizationTags: [],
         addableTags: [],
-        estimateTags: this.estimate.tags
+        estimateTags: this.estimate.tags,
+        state: this.estimate.state,
+        reason: this.estimate.state_reason
       }
     },
     computed: {
+      options() {
+        return ['in_progress', 'on_hold', 'unknown', 'done', 'cancelled'].map(option => {
+          return {
+            value: option,
+            text: option.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
+          };
+        });
+      },
 
     },
     methods: {
+      reasonAllowed() {
+        return ['on_hold', 'unknown', 'cancelled'].includes(this.state);
+      },
       retrieveTags() {
         this.axiosGet(`/organizations/${this.organization.id}/tags`)
           .then(response => {
@@ -73,9 +91,23 @@
             }
           })
       },
+      updateEstimate() {
+        let params = { estimate: { state: this.state, state_reason: this.reason } }
+        if (!this.reasonAllowed()) {
+          this.reason = null;
+          params.estimate.state_reason = null;
+        }
+
+        this.axiosPut(`/estimates/${this.estimate.id}`, params)
+          .then(response => {
+            if (response.status === 200) {
+              this.$root.$emit('bv::toggle::collapse', this.id);
+              EventBus.$emit('ESTIMATE_UPDATED', { state: this.state, state_reason: this.reason, tags: this.estimateTags });
+            }
+          })
+      },
       handleDone(){
-        this.$root.$emit('bv::toggle::collapse', this.id);
-        EventBus.$emit('ESTIMATE_UPDATED', { tags: this.estimateTags });
+        this.updateEstimate();
       },
       calculateAddableTags() {
         this.addableTags = this.organizationTags.filter(tag => {
@@ -85,6 +117,15 @@
     },
     mounted() {
       this.retrieveTags();
+    },
+    watch: {
+      'estimate.state'(newVal) {
+        this.state = newVal;
+      },
+      'estimate.tags'(newVal) {
+        this.estimateTags = newVal;
+        this.calculateAddableTags();
+      }
     }
   }
 </script>

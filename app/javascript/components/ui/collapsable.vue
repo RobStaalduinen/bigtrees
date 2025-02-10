@@ -18,6 +18,10 @@ export default {
   props: {
     id: {
       required: true
+    },
+    canExpand: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -27,6 +31,8 @@ export default {
   },
   methods: {
     handleClick() {
+      if (!this.canExpand) return;
+      
       this.$root.$emit('bv::toggle::collapse', this.id + '_content');
       this.collapsed = !this.collapsed;
     }

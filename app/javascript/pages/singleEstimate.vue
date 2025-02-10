@@ -156,10 +156,6 @@ export default {
     getTitle() {
       var title = "Estimate #" + this.estimate_id;
 
-      if(this.estimate && this.estimate.is_unknown){
-        title += ' (Unknown)';
-      }
-
       return title;
     }
   }

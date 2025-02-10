@@ -42,6 +42,8 @@ export default {
       statusOptions: [
         { value: 'all', text: 'All' },
         { value: 'active', text: 'Active' },
+        { value: 'completed', text: 'Completed' },
+        { value: 'on_hold', text: 'On Hold' },
         { value: 'pre_quote', text: 'Quote Needed' },
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },

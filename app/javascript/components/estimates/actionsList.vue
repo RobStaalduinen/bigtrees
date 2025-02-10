@@ -4,13 +4,13 @@
     text="Actions"
     right
   >
-    <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
+    <!-- <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
       Move to Unknown
     </b-dropdown-item>
 
     <b-dropdown-item v-if="estimate.is_unknown || estimate.status == 'cancelled'" @click='updateStatus(false)'>
       Reactivate
-    </b-dropdown-item>
+    </b-dropdown-item> -->
 
     <b-dropdown-item @click='triggerAction("no_response_followup")' v-if='estimateHelper.canSendFollowup()'>
       Send Followup
@@ -36,9 +36,9 @@
       Send to Team
     </b-dropdown-item>
 
-    <b-dropdown-item v-if='estimate.status != "cancelled"' @click='triggerAction("cancel")'>
+    <!-- <b-dropdown-item v-if='estimate.status != "cancelled"' @click='triggerAction("cancel")'>
       Cancel
-    </b-dropdown-item>
+    </b-dropdown-item> -->
   </b-nav-item-dropdown>
 </template>
 

@@ -2,7 +2,9 @@
   <div class='shadow-box-entry estimate'>
     <div class='estimate-header'>
       <div class='estimate-header-name'>{{ estimate.customer_detail.name }}</div>
-      <div v-if='estimate.is_unknown' class='estimate-unknown-header'>Unknown</div>
+      <div v-if='estimate.state == "unknown"' class='estimate-unknown-header'>Unknown</div>
+      <div v-if='estimate.state === "on_hold"' class='estimate-unknown-header'>On Hold</div>
+      <div v-if='estimate.state == "cancelled"' class='estimate-unknown-header'>Cancelled</div>
       <div class='estimate-header-status'>{{ estimate.formatted_status }}</div>
     </div>
 
