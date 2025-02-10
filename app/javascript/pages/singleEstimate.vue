@@ -15,7 +15,7 @@
         </section>
 
         <section class='estimate-section'>
-          <single-estimate-tags :estimate='estimate'></single-estimate-tags>
+          <single-estimate-state :estimate='estimate'></single-estimate-state>
         </section>
 
         <section class='estimate-section'>
@@ -89,7 +89,7 @@ import Owner from '../components/singleEstimate/owner';
 import Customer from '../components/singleEstimate/customer';
 import Addresses from '../components/singleEstimate/addresses';
 import StatusAndActions from '../components/singleEstimate/statusAndActions';
-import Tags from '../components/singleEstimate/tags';
+import StateAndTags from '../components/singleEstimate/stateAndTags';
 import Site from '../components/singleEstimate/site';
 import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
@@ -108,7 +108,7 @@ export default {
     'single-estimate-customer': Customer,
     'single-estimate-addresses': Addresses,
     'single-estimate-actions': StatusAndActions,
-    'single-estimate-tags': Tags,
+    'single-estimate-state': StateAndTags,
     'single-estimate-site': Site,
     'single-estimate-invoice': Invoice,
     'single-estimate-quotes': Quote,

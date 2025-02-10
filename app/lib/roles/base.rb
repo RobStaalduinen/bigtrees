@@ -7,7 +7,7 @@ module Roles
       {
         documents: permission_set(list: true, show: true, create: true, update: true, delete: true),
         hours: permission_set(list: true, show: true, update: true),
-        work_records: permission_set(list: true, show: true, update: true)
+        work_records: permission_set(list: true, show: true, create: true, update: true)
       }
     end
 

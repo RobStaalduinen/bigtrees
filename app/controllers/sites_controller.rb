@@ -1,5 +1,7 @@
 class SitesController < ApplicationController
   def create
+    authorize Estimate, :create?
+
     site = Site.new(site_params)
     site.estimate_id = estimate.id
     site.save
@@ -10,6 +12,8 @@ class SitesController < ApplicationController
   end
 
   def update
+    authorize Estimate, :update?
+
     @site = Site.where(estimate: estimate).find(params[:id])
     @site.update(site_params)
 

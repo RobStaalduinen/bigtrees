@@ -1,10 +1,11 @@
 class WorkRecordsController < AdminBaseController
   before_action :signed_in_user
 
-  layout 'admin_material'
-
   def index
+    authorize WorkRecord, :index?
+
     @work_records = policy_scope(WorkRecord)
+
     if params[:arborist_id]
       @work_records = @work_records.where(arborist_id: params[:arborist_id])
     end
@@ -17,6 +18,8 @@ class WorkRecordsController < AdminBaseController
   end
 
   def for_arborist
+    authorize WorkRecord, :index?
+
     @work_records = WorkRecord.where(arborist_id: params[:arborist_id]).includes(:arborist).order('date DESC')
 
     @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days)
@@ -25,11 +28,9 @@ class WorkRecordsController < AdminBaseController
     render json: @work_records
   end
 
-  def new
-    @work_record = WorkRecord.new
-  end
-
   def create
+    authorize WorkRecord, :create?
+
     arborist = params[:arborist_id] ? Arborist.find(params[:arborist_id]) : current_user
     @work_record = arborist.work_records.find_or_initialize_by(date: work_record_params[:date])
     @work_record.update(work_record_params)
@@ -38,6 +39,8 @@ class WorkRecordsController < AdminBaseController
   end
 
   def update
+    authorize WorkRecord, :update?
+
     @work_record = WorkRecord.find(params[:id])
     @work_record.update(work_record_params)
 
@@ -45,7 +48,7 @@ class WorkRecordsController < AdminBaseController
   end
 
   def report
-    authorize Arborist, :admin?
+    authorize WorkRecord, :admin?
 
     report = Reports::Hours.new(
       work_records: policy_scope(WorkRecord),
@@ -57,7 +60,9 @@ class WorkRecordsController < AdminBaseController
   end
 
   def summaries
-    @work_records = policy_scope(WorkRecord) # current_user.admin? ? WorkRecord.all : current_user.work_records
+    authorize WorkRecord, :admin?
+
+    @work_records = policy_scope(WorkRecord)
 
     if params[:arborist_id]
       @work_records = @work_records.where(arborist_id: params[:arborist_id])

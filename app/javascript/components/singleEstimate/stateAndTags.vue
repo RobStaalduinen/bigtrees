@@ -9,7 +9,7 @@
               {{ formatState(estimate.state) }}
 
               <div class="edit-container" v-if="estimate.state != 'done'">
-                <b-icon icon='pencil-square' class='app-icon edit-status-button' v-b-toggle.manage-tags></b-icon>
+                <b-icon icon='pencil-square' class='app-icon edit-status-button' v-b-toggle.manage-state></b-icon>
               </div>
             </div>   
           </div>
@@ -32,18 +32,18 @@
       </template>
     </app-collapsable>
     
-    <app-manage-tags id='manage-tags' :estimate="estimate" />
+    <app-manage-state id='manage-state' :estimate="estimate" />
   </div>
 </template>
 
 <script>
 import TagList from '@/components/tags/views/list.vue'
-import Manage from '@/components/tags/actions/manage_estimate.vue'
+import Manage from '@/components/estimateState/actions/manage.vue'
 
 export default {
   components: {
     'app-tag-list': TagList,
-    'app-manage-tags': Manage
+    'app-manage-state': Manage
   },
   props: {
     estimate: {
