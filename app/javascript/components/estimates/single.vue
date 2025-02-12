@@ -40,7 +40,7 @@
 
     <div class='estimate-footer'>
       <div class='estimate-footer-left'>
-        <app-tag-list :tags='estimate.tags'></app-tag-list>
+        <app-tag-list :tags='estimate.tags' :collapsed="true"></app-tag-list>
       </div>
 
       <div class='estimate-footer-right'>

@@ -21,12 +21,10 @@ class EquipmentRequest < ActiveRecord::Base
   belongs_to :vehicle
   belongs_to :mechanic, class_name: 'Arborist'
 
-  has_attached_file :image
-
   CATEGORIES = %w[other mechanical equipment supplies paperwork].freeze
 
   def image_path
-    image.present? ? image.url : image_url
+    image_url
   end
 
   def file_name
@@ -35,5 +33,4 @@ class EquipmentRequest < ActiveRecord::Base
 
   validates :category, inclusion: { in: CATEGORIES }, presence: true
   validates :description, presence: true
-  validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 end

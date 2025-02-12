@@ -4,17 +4,10 @@ class TreeImage < ActiveRecord::Base
   belongs_to :tree
   belongs_to :estimate
 
-  has_attached_file :asset, :path =>  "images/:rails_env/:class/:image_name.:content_type_extension"
-  # has_attached_file :asset, :path =>  "images/production/:class/:image_name.:content_type_extension"
-
   after_save :update_image_url
 
-  Paperclip.interpolates :image_name do |attachment, style|
-    attachment.instance.generate_image_name
-  end
-
   def url
-    image_url || asset.url
+    image_url
   end
 
   def imgix_url
@@ -57,6 +50,4 @@ class TreeImage < ActiveRecord::Base
 
     self.update_attribute(:image_url, asset.url)
   end
-
-  validates_attachment_content_type :asset, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 end

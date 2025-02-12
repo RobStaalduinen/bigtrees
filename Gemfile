@@ -29,10 +29,7 @@ gem "font-awesome-rails"
 gem "sitemap_generator"
 
 # File storage
-gem 'fog-aws'
 gem 'aws-sdk-s3', '~> 1'
-gem 'aws-sdk-ec2', '~> 1'
-gem 'paperclip'
 
 # Secret management
 gem 'figaro'
@@ -40,8 +37,6 @@ gem 'figaro'
 gem 'daemons'
 gem 'delayed_job_active_record'
 
-# gem 'axlsx'
-# gem 'axlsx_rails'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'whenever', require: false
