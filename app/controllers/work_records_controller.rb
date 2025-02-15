@@ -15,6 +15,8 @@ class WorkRecordsController < AdminBaseController
     # FILTERS
     @work_records = @work_records.where("date >= ?", params[:start_at] || Date.today - 10.days)
     @work_records = @work_records.where("date <= ?", params[:end_at] || Date.today)
+
+    render json: WorkRecordReport.new(@work_records).report_by_date
   end
 
   def for_arborist
@@ -87,6 +89,8 @@ class WorkRecordsController < AdminBaseController
     else
       @work_records = @work_records.order('date DESC').group_by { |w| w.date.strftime("%Y") }
     end
+
+    render json: WorkRecordReport.new(@work_records).summary_report
   end
 
   private

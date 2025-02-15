@@ -20,7 +20,9 @@
         </b-form-group>
 
         <b-form-group label="Example">
-          <app-tag :tag='sampleTag' />
+          <div class='example-container'>
+            <app-tag :tag='sampleTag' />
+          </div>
         </b-form-group>
       </validation-observer>
     </template>
@@ -113,3 +115,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .example-container {
+    display: flex;
+  }
+</style>

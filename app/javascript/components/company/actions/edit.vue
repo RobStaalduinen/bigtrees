@@ -105,7 +105,7 @@ export default {
   },
   data() {
     return {
-      editableCompany: this.company
+      editableCompany: { address: {} }
     }
   },
   methods: {
@@ -128,7 +128,14 @@ export default {
         this.$root.$emit('bv::toggle::collapse', this.id);
         this.$store.commit('updateOrganization', response.data);
       });
-
+    }
+  },
+  watch: {
+    company: {
+      immediate: true,
+      handler(value) {
+        this.editableCompany = value;
+      }
     }
   }
 }

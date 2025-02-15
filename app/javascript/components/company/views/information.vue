@@ -8,7 +8,7 @@
       </template>
     </app-header>
 
-    <div id='company-information'>
+    <div id='company-information' v-if="company">
       <div class='company-section-header'>
         Basic Information
       </div>
@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <app-edit-company id='edit-company' :company='company'></app-edit-company>
+    <app-edit-company id='edit-company' :company='company' v-if="company"></app-edit-company>
   </div>
 </template>
 
@@ -96,7 +96,7 @@
     },
     data() {
       return {
-        company: {}
+        company: null
       }
     },
     mounted() {
