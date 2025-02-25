@@ -252,7 +252,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def process_tags(old_status, new_status)
-		if %w[needs_arborist pending_quote].include?(new_status.to_s)
+		if %w[needs_arborist pending_quote quote_sent work_scheduled].include?(new_status.to_s) && old_status.to_s != new_status.to_s
 			self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
 		end
 
