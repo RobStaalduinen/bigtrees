@@ -9,20 +9,32 @@ class PropertyManagementController < ApplicationController
   end
 
   def create
-    estimate = Estimate.create(
-      arborist: Organization.first.arborists.first, # TODO: Update when we have multiple teams
-      submission_completed: true,
-      customer: customer
-    )
+    Estimate.transaction do
+      estimate = Estimate.create(
+        organization: Organization.first,
+        arborist: Organization.first.arborists.first, # TODO: Update when we have multiple teams
+        submission_completed: true,
+        customer: customer
+      )
 
-    estimate.customer_detail = CustomerDetail.create(customer_detail_params)
-    tree = Tree.create(tree_params.merge(estimate_id: estimate.id))
-    Site.create(site_params.merge(estimate_id: estimate.id))
+      estimate.customer_detail = CustomerDetail.create(customer_detail_params)
+      tree = Tree.create(tree_params.merge(estimate_id: estimate.id))
 
-    render json: {
-      estimate_id: estimate.id,
-      tree_id: tree.id
-    }, status: 200
+      params[:image_urls]&.each do |image_url|
+        TreeImage.create(image_url: image_url, tree_id: tree.id)
+      end
+
+      Site.create(site_params.merge(estimate_id: estimate.id))
+
+      tag = Organization.first.tags.find_by(label: 'Property Management')
+
+      estimate.taggings.create(tag: tag) if tag
+
+      render json: {
+        estimate_id: estimate&.id,
+        tree_id: tree.id
+      }, status: 200
+    end
   end
 
   private
