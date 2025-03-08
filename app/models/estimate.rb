@@ -243,7 +243,7 @@ class Estimate < ActiveRecord::Base
 				end
 			end
 
-			process_tags(old_status, new_status)
+			# process_tags(old_status, new_status)
 		end	
 
 		self.status = new_status
@@ -259,15 +259,15 @@ class Estimate < ActiveRecord::Base
 		end
 	end
 
-	def process_tags(old_status, new_status)
-		if %w[needs_arborist pending_quote quote_sent work_scheduled].include?(new_status.to_s) && old_status.to_s != new_status.to_s
-			self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
-		end
+	# def process_tags(old_status, new_status)
+	# 	if %w[needs_arborist pending_quote quote_sent work_scheduled].include?(new_status.to_s) && old_status.to_s != new_status.to_s
+	# 		self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
+	# 	end
 
-		if old_status.to_sym != new_status.to_sym
-			self.taggings.joins(:tag).where(tags: { label: 'Pending Permit' }).destroy_all
-		end
-	end
+	# 	if old_status.to_sym != new_status.to_sym
+	# 		self.taggings.joins(:tag).where(tags: { label: 'Pending Permit' }).destroy_all
+	# 	end
+	# end
 
   def site_visit_required
     status.to_s == 'needs_costs' && site_visit
