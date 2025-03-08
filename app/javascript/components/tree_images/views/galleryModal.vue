@@ -10,7 +10,7 @@
           <div>
             <b>Task: </b>
             {{ displayedImageDefinition.tree.treeName }}
-            <b-icon icon='pencil-square' @click='toggleEditTask(displayedImageDefinition)'></b-icon>
+            <b-icon icon='pencil-square' @click='toggleEditTask(displayedImageDefinition)' v-if="hasPermission('estimates', 'update')"></b-icon>
           </div>
         </div>
 
@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class='modal-actions-box'>
+          <div class='modal-actions-box' v-if="hasPermission('estimages', 'update')">
             <div class='modal-edits-icon'>
               <b-icon icon='pencil-square' @click='toggleEdit(displayedImageDefinition.treeImage.id)'></b-icon>
             </div>
