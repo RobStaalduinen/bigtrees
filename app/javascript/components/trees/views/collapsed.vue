@@ -16,7 +16,7 @@
 
         </div>
 
-        <div class='single-estimate-link-row'>
+        <div class='single-estimate-link-row' v-if="hasPermission('estimates', 'update')">
           <div class='single-estimate-link' v-b-toggle.add-task>
             Add Task
           </div>

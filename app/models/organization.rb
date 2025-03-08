@@ -17,4 +17,12 @@ class Organization < ActiveRecord::Base
   def quote_author
     "#{email_author} <#{outgoing_quote_email}>"
   end
+
+  def configured_features
+    templates = YAML.load_file(Rails.root.join('app', 'configuration_templates.yml'))
+
+    templates.each_with_object({}) do |(name, config), hash|
+      hash[name] = config['default']
+    end.merge(configuration || {})
+  end
 end

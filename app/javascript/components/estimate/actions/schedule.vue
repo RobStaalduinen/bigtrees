@@ -1,7 +1,7 @@
 <template>
   <app-right-sidebar-form
     :id='id'
-    title='Approve and Schedule'
+    title='Schedule'
     submitText='Submit'
     :onSubmit='updateWorkDate'
     :submitting='submitting'

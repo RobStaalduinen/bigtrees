@@ -28,10 +28,10 @@
           <a class='single-estimate-link' :href='`/estimates/${estimate.id}/quotes.pdf`'>
             Download
           </a>
-          <div class='single-estimate-link' v-b-toggle.quote-send-team>
+          <div class='single-estimate-link' v-b-toggle.quote-send-team v-if="hasPermission('estimates', 'update')">
             Send to Team
           </div>
-          <div class='single-estimate-link' v-b-toggle.quote-send>
+          <div class='single-estimate-link' v-b-toggle.quote-send v-if="hasPermission('estimates', 'update')">
             Resend
           </div>
         </div>

@@ -9,7 +9,7 @@
               {{ formatState(estimate.state) }}
 
               <div class="edit-container" v-if="estimate.state != 'done'">
-                <b-icon icon='pencil-square' class='app-icon edit-status-button' v-b-toggle.manage-state></b-icon>
+                <b-icon icon='pencil-square' class='app-icon edit-status-button' v-if="hasPermission('estimates', 'update')" v-b-toggle.manage-state></b-icon>
               </div>
             </div>   
           </div>

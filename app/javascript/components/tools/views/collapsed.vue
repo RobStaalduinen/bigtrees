@@ -12,7 +12,7 @@
           </li>
         </ul>
 
-        <div class='single-estimate-link-row'>
+        <div class='single-estimate-link-row' v-if="hasPermission('estimates', 'update')">
           <div class='single-estimate-link' v-b-toggle.edit-requirements>
             <b-icon icon='pencil-square' class='app-icon'></b-icon>
           </div>

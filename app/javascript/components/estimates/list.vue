@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <div id='estimate-search-controls' v-if='!mySchedule'>
+  <div id='estimate-search-controls'>
     <div id='search-container'>
       <div id='search-field-container'>
         <app-search-field v-model='searchTerm'></app-search-field>
@@ -53,8 +53,7 @@ export default {
     }
   },
   computed: mapState({
-    estimates: state => state.estimates,
-    mySchedule: state => state.estimateSettings.mySchedule
+    estimates: state => state.estimates
   }),
   methods: {
     retrieveEstimates() {
@@ -64,23 +63,13 @@ export default {
       this.loadingEstimates = true;
       this.error = false;
 
-      var params = {}
-      if(!this.mySchedule) {
-        params = {
+      var params = {
           page: this.page,
           per_page: this.perPage,
           created_after: this.filters.createdAfter,
           status: this.filters.status
         }
-      }
-      else {
-        var params = {
-          page: 1,
-          per_page: 1000,
-          only_mine: true,
-          status: 'scheduled'
-        }
-      }
+    
 
       if(this.searchTerm != null) {
         params['q'] = this.searchTerm

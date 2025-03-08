@@ -1,9 +1,9 @@
 <template>
   <div id='owner'>
     <span id='owner-label'>Owner:</span>
-    <template v-if='!isEdit'>
+    <template v-if="!isEdit">
       <span id='owner-text'>{{ estimate.arborist.name }}</span>
-      <b-icon icon='pencil-square' id='owner-edit-icon' @click='isEdit=true' />
+      <b-icon icon='pencil-square' id='owner-edit-icon' @click='isEdit=true' v-if="hasPermission('estimates', 'update')" />
     </template>
 
     <div id='arborist-form' v-if='isEdit'>

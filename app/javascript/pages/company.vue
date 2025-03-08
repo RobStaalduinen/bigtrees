@@ -18,6 +18,7 @@
       <app-quick-costs v-if='selectedOption === "Quick Costs"' :organization_id="organization.id"></app-quick-costs>
       <app-email-templates v-if='selectedOption === "Email Templates"'></app-email-templates>
       <app-manage-tags v-if='selectedOption === "Tags"' :organization_id="organization.id"></app-manage-tags>
+      <app-company-settings v-if='selectedOption === "Settings"'></app-company-settings>
     </div>
   </page-template>
 </template>
@@ -30,6 +31,7 @@ import Vehicles from '../pages/vehicles.vue';
 import QuickCosts from '../components/quick_costs/views/list.vue';
 import EmailTemplates from '../components/emailTemplates/views/list.vue';
 import ManageTags from '../components/tags/views/manage.vue';
+import Settings from '../components/company/views/settings.vue';
 
 export default {
   components: {
@@ -38,12 +40,13 @@ export default {
     'app-information': Information,
     'app-quick-costs': QuickCosts,
     'app-email-templates': EmailTemplates,
-    'app-manage-tags': ManageTags
+    'app-manage-tags': ManageTags,
+    'app-company-settings': Settings
   },
   data() {
     return {
       selectedOption: 'Information',
-      options: ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates', 'Tags'],
+      options: ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates', 'Tags', 'Settings'],
       organization: this.$store.state.organization
     }
   },

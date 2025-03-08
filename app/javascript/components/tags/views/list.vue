@@ -4,9 +4,10 @@
       <app-tag :tag="tag" :index="index" />
     </div>
 
-    <template v-if="shouldCollapse() && tags.length > 0">
+    <template v-if="shouldCollapse()">
       <div class="tag-container"><app-tag :tag="tags[0]" :index="index" /></div>
-      <div class="tag-container"><app-tag :tag="{ label: `+ ${tags.length - 1}`, colour: 'grey' }" /></div>
+      <div class="tag-container"><app-tag :tag="tags[1]" :index="index" /></div>
+      <div class="tag-container"><app-tag :tag="{ label: `+ ${tags.length - 2}`, colour: 'grey' }" /></div>
     </template>
   </div>
 </template>
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     shouldCollapse() {
-      return this.collapsed && this.tags.length > 1
+      return this.collapsed && this.tags.length > 2
     }
   }
 }

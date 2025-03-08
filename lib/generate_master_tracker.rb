@@ -36,7 +36,7 @@ class GenerateMasterTracker
       customer = estimate.customer || Customer.new
       contact = customer&.preferred_contact || ""
 
-      insert(worksheet, row, 0, !estimate.is_unknown ? estimate.invoice.number : 'UNKNOWN')
+      insert(worksheet, row, 0, !estimate.unknown? ? estimate.invoice.number : 'UNKNOWN')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
 
       insert(worksheet, row, 2, estimate.created_at.strftime("%-d-%b-%Y")) rescue ""

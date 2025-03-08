@@ -12,8 +12,8 @@
       </div>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "list")'>Quotes</b-dropdown-item>
-        <b-dropdown-item to="/admin/estimates/new" v-if='permissions.canUpdate("estimates")'>Create Quote</b-dropdown-item>
+        <b-dropdown-item to="/admin/estimates" v-if='hasPermission("estimates", "update")'>Quotes</b-dropdown-item>
+        <b-dropdown-item to="/admin/schedule" v-if='hasPermission("estimates", "update") || (hasPermission("estimates", "list") && featureEnabled("accessible_schedule"))'>Schedule</b-dropdown-item>
         <b-dropdown-item to='/admin/customers' v-if='permissions.canList("customers")'>Customers</b-dropdown-item>
         <b-dropdown-item to="/admin/receipts" v-if='permissions.canList("receipts")'>Receipts</b-dropdown-item>
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>

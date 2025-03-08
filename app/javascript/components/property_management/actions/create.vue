@@ -126,7 +126,7 @@ export default {
           }
         },
         job: {
-          job_type: this.work_Type,
+          job_type: this.work_type,
           description: this.description
         },
         site: {

@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     user: { logged_in: false, user_id: null },
+    lastRoute: null,
     authorization: null,
     estimates: [],
     estimateSettings: {
@@ -72,6 +73,9 @@ export const store = new Vuex.Store({
   getters: {
     hasPermission: (state) => (page, permission_type) => {
       return state.authorization.hasPermission(page, permission_type);
+    },
+    featureEnabled: (state) => (feature) => {
+      return state.organization.configuration[feature] === true;
     },
     userRole: (state) => () => {
       return state.user.role;

@@ -6,19 +6,20 @@
 
     <div class='single-estimate-link-row'>
       <estimate-actions-list
+        v-if="hasPermission('estimates', 'update')"
         :estimate='estimate'
       ></estimate-actions-list>
 
       <div class='single-estimate-link' @click='toggleImages' v-if='hasImages()'>
         Images
       </div>
-      <div class='single-estimate-link' @click='toggleAction' v-if='currentAction'>
+      <div class='single-estimate-link' @click='toggleAction' v-if="hasPermission('estimates', 'update') && currentAction">
         <b>{{ `Next: ${currentAction.actionLabel}` }}</b>
       </div>
     </div>
 
     <component
-      v-if='currentAction'
+      v-if="hasPermission('estimates', 'update') && currentAction"
       :is='currentAction.inputComponent'
       :estimate='estimate'
       :id='currentAction.inputComponent'
@@ -32,6 +33,7 @@
 
 <script>
 import ScheduleWork from '../estimate/actions/schedule';
+import Approve from '../estimate/actions/approve';
 import SendInvoice from '../invoice/actions/send';
 import PayInvoice from '../invoice/actions/pay';
 import AddCosts from '../costs/actions/createMultiple';
@@ -52,6 +54,10 @@ const STEPS = {
     inputComponent: 'estimate-send-quote',
   },
   'quote_sent': {
+    actionLabel: 'Approve',
+    inputComponent: 'estimate-approve'
+  },
+  'approved': {
     actionLabel: 'Schedule',
     inputComponent: 'estimate-schedule-quote'
   },
@@ -61,7 +67,7 @@ const STEPS = {
   },
   'work_scheduled': {
     actionLabel: 'Send Invoice',
-    inputComponent: 'estimate-send-invoice',
+    inputComponent: 'estimate-send-invoice'
   },
   'final_invoice_sent': {
     actionLabel: 'Process Payment',
@@ -77,7 +83,8 @@ export default {
     'estimate-pay-invoice': PayInvoice,
     'estimate-add-costs': AddCosts,
     'estimate-actions-list': ActionList,
-    'estimate-action-handler': ListActionHandler
+    'estimate-action-handler': ListActionHandler,
+    'estimate-approve': Approve
   },
   props: {
     estimate: {

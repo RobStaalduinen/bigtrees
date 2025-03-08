@@ -54,6 +54,7 @@ class Estimate < ActiveRecord::Base
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
   scope :with_customer, -> { where.not(customer: nil) }
   scope :pre_quote, -> { (price_required.or(pending_quote)).active }
+	scope :approved, -> { where(approved: true) }
 
   # Filters
   scope :created_after, -> (filter_string) do
@@ -86,7 +87,7 @@ class Estimate < ActiveRecord::Base
 		when 'to_pay'
 			submitted.in_progress.pending_payment
 		when 'scheduled'
-			submitted.in_progress.scheduled
+			submitted.in_progress.scheduled.or(submitted.in_progress.approved)
 		when 'unknown'
 			submitted.unknown
 		when 'on_hold'
@@ -112,6 +113,7 @@ class Estimate < ActiveRecord::Base
 		needs_arborist: 1,
 		pending_quote: 2,
 		quote_sent: 3,
+		approved: 4,
 		work_scheduled: 5,
 		work_completed: 6,
 		final_invoice_sent: 7,
@@ -144,6 +146,10 @@ class Estimate < ActiveRecord::Base
 
 	def work_scheduled?
 		self.work_start_date.present? || self.skip_schedule
+	end
+
+	def approved?
+		self.approved == true
 	end
 
 	def contact_methods
@@ -210,8 +216,10 @@ class Estimate < ActiveRecord::Base
 			:needs_arborist
 		elsif(self.arborist? && !self.quote_sent?)
 			:pending_quote
-		elsif(self.quote_sent? && !self.work_scheduled?)
+		elsif(self.quote_sent? && !self.approved?)
 			:quote_sent
+		elsif(self.approved? && !self.work_scheduled?)
+			:approved
 		elsif(self.work_scheduled? && !self.invoice.sent?)
 			:work_scheduled
 		elsif(self.invoice.sent? && !self.invoice.paid?)

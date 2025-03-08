@@ -26,7 +26,7 @@ class PropertyManagementController < ApplicationController
 
       Site.create(site_params.merge(estimate_id: estimate.id))
 
-      tag = Organization.first.tags.find_by(label: 'Property Management')
+      tag = Organization.first.tags.find_by(label: 'Property Mgmt')
 
       estimate.taggings.create(tag: tag) if tag
 

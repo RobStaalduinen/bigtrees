@@ -1,0 +1,4 @@
+accessible_schedule:
+  description: 'Allow all employees read-only access to approved and scheduled jobs'
+  type: 'boolean'
+  default: false

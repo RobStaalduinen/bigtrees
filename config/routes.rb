@@ -94,6 +94,8 @@ Rails.application.routes.draw do
     resources :taggings, only: [ :create ] do 
       delete '/', to: 'taggings#destroy', on: :collection
     end
+
+    resources :configurations, only: [ :index, :update ]
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
     resources :requests, only: [:new], to: 'customer_requests#org_scoped'

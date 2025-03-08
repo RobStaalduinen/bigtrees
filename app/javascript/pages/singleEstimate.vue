@@ -2,7 +2,7 @@
   <page-template>
     <app-header
       :title='getTitle()'
-      backLink='/admin/estimates'
+      :backLink='backLink()'
     ></app-header>
 
     <div v-if='estimate' id='estimate-body'>
@@ -144,6 +144,21 @@ export default {
             this.$router.push('/admin/estimates');
           }
         )
+    },
+    backLink() {
+      let lastRoute = this.$store.state.lastRoute;
+
+      if(lastRoute && lastRoute != '/') {  
+        return lastRoute;
+      }
+      else {
+        if(this.hasPermission('estimates', 'update')) {
+          return '/admin/estimates';
+        }
+        else {
+          return '/admin/schedule';
+        }
+      }
     },
     handleUpdate(payload) {
       if(payload.estimate) {

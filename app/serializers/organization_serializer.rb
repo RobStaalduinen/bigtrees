@@ -20,5 +20,7 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :logo_url
   attribute :condensed_logo_url
 
+  attribute :configuration
+
   belongs_to :address
 end

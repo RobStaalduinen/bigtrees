@@ -30,7 +30,7 @@
         <b-row class='spaced-row' v-if='estimate.work_start_date'>
           <b-col cols='4' class='right-column'>
             <b>Scheduled</b>
-            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work></b-icon>
+            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work v-if="hasPermission('estimates', 'update')"></b-icon>
           </b-col>
           <b-col cols='8'>
             {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
@@ -40,7 +40,7 @@
         <b-row class='spaced-row' v-if='estimate.skip_schedule'>
           <b-col cols='4' class='right-column'>
             <b>Not Scheduled</b>
-            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work></b-icon>
+            <b-icon icon='pencil-square' class='app-icon' v-b-toggle.timeline-schedule-work v-if="hasPermission('estimates', 'update')"></b-icon>
           </b-col>
           <!-- <b-col cols='8'>
             {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}

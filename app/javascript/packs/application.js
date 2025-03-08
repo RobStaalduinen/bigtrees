@@ -162,6 +162,7 @@ import Receipts from '../pages/receipts.vue';
 import Vehicles from '../pages/vehicles.vue'
 import Employees from '../pages/employees.vue';
 import Company from '../pages/company.vue';
+import Schedule from '../pages/schedule.vue';
 
 import { store } from '../store/store.js';
 
@@ -171,6 +172,14 @@ const routes = [
   {
     path: '/admin/estimates',
     component: Estimates,
+    meta: {
+      authRequired: true,
+      permission: { page: 'estimates', permission_type: 'update' }
+    }
+  },
+  {
+    path: '/admin/schedule',
+    component: Schedule,
     meta: {
       authRequired: true,
       permission: { page: 'estimates', permission_type: 'list' }
@@ -230,6 +239,9 @@ router.beforeEach(async (to, from, next) => {
       window.location.href = '/login'
     }
   }
+
+  store.state.lastRoute = from.path;
+  
   if (to.meta.authRequired) {
     var authRequirement = to.meta.permission;
     if(store.getters.hasPermission(authRequirement.page, authRequirement.permission_type)){
