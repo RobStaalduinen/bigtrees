@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
     url_list = ['thatsabigtree.ca', 'thatsabigtree.ca', 'bigtreeservices.com']
     if url_list.map { |u| u.include?(request.host) }.any?
-      redirect_to "#{request.protocol}bigtreeservices.ca#{request.fullpath}", status: :moved_permanently
+      redirect_to "#{request.protocol}admin.bigtreeservices.ca#{request.fullpath}", status: :moved_permanently
     end
   end
 

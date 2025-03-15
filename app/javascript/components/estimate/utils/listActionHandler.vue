@@ -16,6 +16,7 @@ import SendInvoice from '@/components/invoice/actions/send';
 import PayInvoice from '@/components/invoice/actions/pay';
 import SendToTeam from '@/components/quote/actions/sendToTeam';
 import NoResponse from '@/components/followups/actions/noResponse';
+import Manage from '@/components/estimateState/actions/manage.vue'
 
 const ACTIONS = {
   'send_quote': {
@@ -41,6 +42,10 @@ const ACTIONS = {
   'no_response_followup': {
     actionLabel: 'Send Followup',
     inputComponent: 'estimate-no-response'
+  },
+  'change_status': {
+    actionLabel: 'Status and Tags',
+    inputComponent: 'estimate-change-status'
   }
 }
 
@@ -57,7 +62,8 @@ export default {
     'estimate-send-invoice': SendInvoice,
     'estimate-pay-invoice': PayInvoice,
     'estimate-send-to-team': SendToTeam,
-    'estimate-no-response': NoResponse
+    'estimate-no-response': NoResponse,
+    'estimate-change-status': Manage
   },
   data() {
     return {

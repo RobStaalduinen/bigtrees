@@ -49,6 +49,27 @@
                 v-bind:class="{ 'single-color-active': selectedColor == 'yellow' }"
                 @click='setColor("yellow")'
               ></div>
+
+              <div
+                class='single-color'
+                style='background-color: green'
+                v-bind:class="{ 'single-color-active': selectedColor == 'green' }"
+                @click='setColor("green")'
+              ></div>
+
+              <div
+                class='single-color'
+                style='background-color: orange'
+                v-bind:class="{ 'single-color-active': selectedColor == 'orange' }"
+                @click='setColor("orange")'
+              ></div>
+
+              <div
+                class='single-color'
+                style='background-color: black'
+                v-bind:class="{ 'single-color-active': selectedColor == 'black' }"
+                @click='setColor("black")'
+              ></div>
             </div>
 
             <div id='undo-controls'>

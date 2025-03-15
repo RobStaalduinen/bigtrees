@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class='modal-actions-box' v-if="hasPermission('estimages', 'update')">
+          <div class='modal-actions-box' v-if="hasPermission('estimates', 'update')">
             <div class='modal-edits-icon'>
               <b-icon icon='pencil-square' @click='toggleEdit(displayedImageDefinition.treeImage.id)'></b-icon>
             </div>

@@ -162,18 +162,19 @@ export default {
   }
 
   #estimate-search-controls{
-    position: fixed;
+    /* position: fixed;
     bottom: 0;
-    left: 0;
+    left: 0; */
     z-index: 20;
     width: 100%;
 
     background-color: white;
-    border-top: 4px var(--main-color) solid;
+    border-bottom: 4px var(--main-color) solid;
+    margin-bottom: 8px;
   }
 
   #search-container {
-    padding: 8px;
+    margin: 8px 0;
     display: flex;
     justify-content: space-between;
   }
@@ -186,7 +187,7 @@ export default {
     #estimate-search-controls {
       position: relative;
       margin-bottom: 8px;
-      margin-top: -16px;
+      margin-top: -8px;
       border-width: 0;
     }
   }
