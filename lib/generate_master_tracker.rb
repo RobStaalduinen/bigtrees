@@ -36,45 +36,46 @@ class GenerateMasterTracker
       customer = estimate.customer || Customer.new
       contact = customer&.preferred_contact || ""
 
-      insert(worksheet, row, 0, !estimate.unknown? ? estimate.invoice.number : 'UNKNOWN')
+      insert(worksheet, row, 0, !estimate.unknown? ? estimate.invoice.number : '-')
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
+      insert(worksheet, row, 2, estimate.state.gsub("_", " ").capitalize)
 
-      insert(worksheet, row, 2, estimate.created_at.strftime("%-d-%b-%Y")) rescue ""
-      insert(worksheet, row, 3, estimate.created_at.strftime("%B")) rescue ""
-      insert(worksheet, row, 4, estimate.created_at.strftime("%Y")) rescue ""
+      insert(worksheet, row, 3, estimate.created_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 4, estimate.created_at.strftime("%B")) rescue ""
+      insert(worksheet, row, 5, estimate.created_at.strftime("%Y")) rescue ""
 
-      insert(worksheet, row, 5, estimate.work_start_date.strftime("%-d-%b-%Y")) rescue ""
-      insert(worksheet, row, 6, estimate.work_start_date.strftime("%B")) rescue ""
-      insert(worksheet, row, 7, estimate.work_start_date.strftime("%Y")) rescue ""
+      insert(worksheet, row, 6, estimate.work_start_date.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 7, estimate.work_start_date.strftime("%B")) rescue ""
+      insert(worksheet, row, 8, estimate.work_start_date.strftime("%Y")) rescue ""
       
-      insert(worksheet, row, 8, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
-      insert(worksheet, row, 9, estimate.invoice.paid_at.strftime("%B")) rescue ""
-      insert(worksheet, row, 10, estimate.invoice.paid_at.strftime("%Y")) rescue ""
+      insert(worksheet, row, 9, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 10, estimate.invoice.paid_at.strftime("%B")) rescue ""
+      insert(worksheet, row, 11, estimate.invoice.paid_at.strftime("%Y")) rescue ""
 
-      insert(worksheet, row, 11, customer.name)
-      insert(worksheet, row, 12, estimate.street || estimate.site&.address&.street)
-      insert(worksheet, row, 13, estimate.city || estimate.site&.address&.city)
-      insert(worksheet, row, 14, estimate.tree_count)
-      insert(worksheet, row, 15, estimate.trees.first.work_name) rescue ""
-      insert(worksheet, row, 16, contact.capitalize)
-      insert(worksheet, row, 17, customer.phone)
-      insert(worksheet, row, 18, customer.email)
-      insert(worksheet, row, 19, discount)
+      insert(worksheet, row, 12, customer.name)
+      insert(worksheet, row, 13, estimate.street || estimate.site&.address&.street)
+      insert(worksheet, row, 14, estimate.city || estimate.site&.address&.city)
+      insert(worksheet, row, 15, estimate.tree_count)
+      insert(worksheet, row, 16, estimate.trees.first.work_name) rescue ""
+      insert(worksheet, row, 17, contact.capitalize)
+      insert(worksheet, row, 18, customer.phone)
+      insert(worksheet, row, 19, customer.email)
+      insert(worksheet, row, 20, discount)
 
       total_cost = estimate.aggregated_cost
       if estimate.quote_sent_date.present? && total_cost.present?
-        insert(worksheet, row, 20, total_cost)
-        insert(worksheet, row, 21, total_cost * 0.13)
-        insert(worksheet, row, 22, total_cost * 1.13)
+        insert(worksheet, row, 21, total_cost)
+        insert(worksheet, row, 22, total_cost * 0.13)
+        insert(worksheet, row, 23, total_cost * 1.13)
 
         if estimate.invoice.present? && estimate.invoice.sent_at.present? && !estimate.is_unknown
-          insert(worksheet, row, 23, estimate.outstanding_amount * 1.13)
+          insert(worksheet, row, 24, estimate.outstanding_amount * 1.13)
         end
       end
       raw_link = Rails.application.routes.url_helpers.estimate_path(estimate)
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
-      worksheet.add_cell(row, 36, '', link)
-      worksheet[row][36].change_font_color('0000ff')
+      worksheet.add_cell(row, 37, '', link)
+      worksheet[row][37].change_font_color('0000ff')
 
     end
 

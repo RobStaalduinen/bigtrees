@@ -62,7 +62,7 @@ class WorkRecordsController < AdminBaseController
   end
 
   def summaries
-    authorize WorkRecord, :admin?
+    authorize WorkRecord, :index?
 
     @work_records = policy_scope(WorkRecord)
 

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 	# default_url_options :host => "https://thatsabigtree.ca"
 
-  root 'main#show', page: "home"
+  root 'sessions#new'
 
   get "/main/image" => 'main#image', as: :images
   get "/main/:page" => "main#show", as: :pages
