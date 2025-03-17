@@ -3,9 +3,6 @@ Rails.application.routes.draw do
 	# default_url_options :host => "https://thatsabigtree.ca"
 
   root 'sessions#new'
-
-  get "/main/image" => 'main#image', as: :images
-  get "/main/:page" => "main#show", as: :pages
   get 'health' => 'main#health'
 
   get '/admin/admin_panel', to: redirect('/estimates')
