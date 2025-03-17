@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 	# default_url_options :host => "https://thatsabigtree.ca"
 
   root 'sessions#new'
-  get 'health' => 'main#health'
 
   get '/admin/admin_panel', to: redirect('/estimates')
   # get '/arborists/:id', to: redirect { |params, request| "/admin/users/#{request.params[:id]}" }
@@ -118,6 +117,4 @@ Rails.application.routes.draw do
   post ':controller/:action'
 
   patch ':controller/:action'
-
-  match '*path' => 'main#not_found', via: :all
 end
