@@ -1,39 +1,67 @@
-<div class="row">
-  <span class="col s12 m6 offset-m3" id="login-welcome">
-    Big Tree Services Arborist Login
-  </span>
+<style>
+  #login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+  }
+
+  #login-credentials-container {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+
+  }
+  .submit-container {
+    display: flex;
+    justify-content: center;
+  }
+  #login-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--main-color);
+    height: 50px;
+  }
+
+  #forgot-password {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+</style>
+
+
+<div id='login-container' class='login-container'>
+  <% if flash[:error] %>
+    <div class='row'>
+      <span class='error-message'><%= flash[:error] %></span>
+    </div>
+  <% end %>
+
+  <div id='login-credentials-container'>
+    <%= form_tag sessions_path, method: 'post', class: "col s12 m6 offset-m3" do %>
+      <div id='login-credentials-email'>
+        <%= label_tag 'email', 'Email', class: 'form-label' %>
+        <%= text_field_tag 'email', nil, class: 'form-field' %>
+      </div>
+
+      <div id='login-credentials-password'>
+        <%= label_tag 'password', 'Password', class: 'form-label' %>
+        <%= password_field_tag 'password', nil,  class: 'form-field' %>
+      </div>
+
+      <div class='submit-container'>
+        <%= submit_tag "Login", class: 'submit-button' %>
+      </div>
+    <% end %>
+
+    <div id='forgot-password'>
+      <a href='/users/password/new'>I forgot my password</a>
+    </div>
 </div>
 
-<% if flash[:error] %>
-  <div class='row'>
-    <span class='error-message'><%= flash[:error] %></span>
-  </div>
-<% end %>
-
-<div class="row">
-<%= form_tag sessions_path, method: 'post', class: "col s12 m6 offset-m3" do %>
-  <div class="row">
-    <div class="input-field col s12">
-      <%= text_field_tag 'email' %>
-      <%= label_tag 'email', 'Email' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="input-field col s12">
-      <%= password_field_tag 'password' %>
-      <%= label_tag 'password', 'Password' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <%= submit_tag "Login", class: 'btn col s12 m6 offset-m3' %>
-  </div>
-
-  <div class="row" style='text-align: center'>
-    <a href='/users/password/new'>I forgot my password</a>
-  </div>
-
-<% end %>
+<div id='login-footer'>
 
 </div>

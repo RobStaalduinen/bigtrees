@@ -88,6 +88,10 @@
         <div id = 'thank-you-display'>
           Thank you for your request! <br/> <br/>
           We will review your job and get back to you with your estimate as soon as we possibly can.
+
+          <div v-if='organizationData.quote_redirect_link'>
+            <button class='redirect-button' @click='redirectHome'>Return to Home</button>
+          </div>
         </div>
       </template>
   </div>
@@ -291,6 +295,9 @@ export default {
       else {
         this.formSubmitted = true;
       }
+    },
+    redirectHome() {
+      window.location.href = this.organizationData.quote_redirect_link;
     }
   },
   mounted() {
@@ -332,6 +339,15 @@ export default {
   text-align: center;
 }
 
+.redirect-button {
+  background-color: var(--main-color);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 16px;
+  cursor: pointer;
+}
 
 
 .form-label {

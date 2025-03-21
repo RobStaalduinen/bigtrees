@@ -35,7 +35,9 @@ export default class OrganizationEstimateMailer {
   replaceContentSlots(content) {
     return content
       .replace('[FIRST_NAME]', this.estimateFirstName())
-      .replace('[SIGNATURE]', this.organization.email_signature);
+      .replace('[SIGNATURE]', this.organization.email_signature)
+      .replace('[TOTAL_COST]', this.estimate.total_cost)
+      .replace('[TOTAL_COST_WITH_TAX]', this.estimate.total_cost_with_tax);
   }
 
   estimateFirstName() {

@@ -18,4 +18,4 @@ Dir.glob("#{Rails.root}/app/assets/images/**/").each do |path|
   Rails.application.config.assets.paths << path
 end
 
-Rails.application.config.assets.precompile += %w( application_mat.css application_material.css application_boot.css onboarding.js property_management.js )
+Rails.application.config.assets.precompile += %w(application_boot.css onboarding.js property_management.js )

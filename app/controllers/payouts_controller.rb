@@ -1,8 +1,6 @@
 class PayoutsController < ApplicationController
   before_action :signed_in_user
 
-  layout 'admin_material'
-
   def index
     authorize Arborist, :admin?
 

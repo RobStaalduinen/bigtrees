@@ -10,7 +10,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails'
+# gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 
 
@@ -25,7 +25,7 @@ gem 'rake'
 
 gem "font-awesome-rails"
 
-gem "sitemap_generator"
+# gem "sitemap_generator"
 
 # File storage
 gem 'aws-sdk-s3', '~> 1'
@@ -49,7 +49,7 @@ gem 'rubyXL', '=3.4.15'
 gem 'libreconv', '=0.9.1'
 gem 'letter_opener'
 # gem 'less-rails', '~> 2.7.1'
-gem 'materialize-sass', '~> 1.0.0'
+# gem 'materialize-sass', '~> 1.0.0'
 
 gem 'pundit'
 

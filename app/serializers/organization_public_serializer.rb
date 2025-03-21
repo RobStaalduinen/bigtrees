@@ -10,4 +10,6 @@ class OrganizationPublicSerializer < ApplicationSerializer
   attribute :logo_url
   attribute :primary_colour
   attribute :secondary_colour
+
+  attribute :quote_redirect_link
 end

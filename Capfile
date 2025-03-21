@@ -24,7 +24,6 @@ require 'capistrano/console'
 require 'capistrano/maintenance'
 require 'capistrano/delayed_job'
 require 'whenever/capistrano'
-require 'capistrano/sitemap_generator'
 
 
 require 'capistrano/rails/console'

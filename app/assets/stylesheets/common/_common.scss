@@ -2,3 +2,45 @@
   padding: 16px;
   margin-bottom: 16px;
 }
+
+.outer-container{
+  display: flex;
+  justify-content: center;
+}
+
+.inner-container {
+  width: 100%;
+  max-width: 540px;
+}
+
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-field:focus {
+  outline: none;
+  border-color: var(--main-color);
+  box-shadow: 0 0 5px var(--main-color);
+}
+
+.submit-button {
+  background-color: var(--main-color);
+  color: white;
+  padding: 5px 5px;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

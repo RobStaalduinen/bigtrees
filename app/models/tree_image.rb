@@ -26,11 +26,13 @@ class TreeImage < ActiveRecord::Base
   end
 
   def image_url_sm
-    "#{imgix_url}?w=400"
+    # "#{imgix_url}?w=400"
+    image_url
   end
 
   def image_url_md
-    "#{imgix_url}?w=800"
+    # "#{imgix_url}?w=800"
+    image_url
   end
 
   def edited_image_url_sm

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_08_004252) do
+ActiveRecord::Schema.define(version: 2025_03_20_171953) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -281,6 +281,7 @@ ActiveRecord::Schema.define(version: 2025_03_08_004252) do
     t.string "secondary_colour"
     t.string "condensed_logo_url"
     t.json "configuration"
+    t.string "quote_redirect_link"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -351,7 +352,7 @@ ActiveRecord::Schema.define(version: 2025_03_08_004252) do
     t.index ["street"], name: "index_sites_on_street"
   end
 
-  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "estimate_id"
     t.bigint "tag_id"
     t.datetime "created_at", precision: 6, null: false
@@ -360,7 +361,7 @@ ActiveRecord::Schema.define(version: 2025_03_08_004252) do
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
   end
 
-  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label", null: false
     t.string "colour", null: false

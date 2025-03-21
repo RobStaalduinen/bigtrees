@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
-  layout 'admin_material'
-
   def new
+    @organization = Organization.first
+
     redirect_to '/admin/estimates' if signed_in?
   end
 

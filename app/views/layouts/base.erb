@@ -14,31 +14,9 @@
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700" media="none" onload="this.media='all';">
 
-  <style>
-    #header-container {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-    #logo-container{
-      display: flex;
-      justify-content: center;
-      max-width: 400px;
-    }
-
-    #header-logo{
-      max-width: 100%;
-    }
-  </style>
-
 </head>
 <body>
   <div id='main-container'>
-    <div id='header-container'>
-      <div id='logo-container'>
-        <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' alt='logo' id='header-logo'>
-      </div>
-    </div>
     <div id = "admin-content">
       <%= yield %>
     </div>

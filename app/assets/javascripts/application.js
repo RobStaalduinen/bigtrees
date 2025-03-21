@@ -16,8 +16,6 @@
 //= require twitter/bootstrap
 //= require turbolinks
 
-//= require materialize
-
 //= require_tree .
 
 

@@ -161,7 +161,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def total_cost
-		self.costs.sum(:amount)
+		self.costs.sum(:amount).round(2)
 	end
 
 	def hst
@@ -169,7 +169,7 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def total_cost_with_tax
-		self.total_cost + self.hst
+		(self.total_cost + self.hst).round(2)
 	end
 
   def quote_display_address
