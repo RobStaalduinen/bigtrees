@@ -30,7 +30,7 @@ set :keep_releases, 5
 set :delayed_job_server_role, :worker
 set :delayed_job_workers, 1
 
-after 'deploy:symlink:release', 'sitemap:refresh'
+after 'deploy:symlink:release'
 after 'deploy:publishing', 'deploy:restart'
 
 # namespace :deploy do
