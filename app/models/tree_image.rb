@@ -16,7 +16,9 @@ class TreeImage < ActiveRecord::Base
 
   def edited_imgix_url
     return nil unless edited_image_url
-    edited_image_url.gsub(BUCKET_URL, IMGIX_CDN).split('?')[0]
+
+    edited_image_url
+    # edited_image_url.gsub(BUCKET_URL, IMGIX_CDN).split('?')[0]
   end
 
   def generate_image_name
@@ -38,13 +40,17 @@ class TreeImage < ActiveRecord::Base
   def edited_image_url_sm
     return nil unless edited_imgix_url
 
-    "#{edited_imgix_url}?w=400"
+    # "#{edited_imgix_url}?w=400"
+    
+    edited_imgix_url
   end
 
   def edited_image_url_md
     return nil unless edited_imgix_url
 
-    "#{edited_imgix_url}?w=800"
+    # "#{edited_imgix_url}?w=800"
+    
+    edited_imgix_url
   end
 
   def update_image_url
