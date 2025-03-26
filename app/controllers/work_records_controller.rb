@@ -90,7 +90,7 @@ class WorkRecordsController < AdminBaseController
       @work_records = @work_records.order('date DESC').group_by { |w| w.date.strftime("%Y") }
     end
 
-    render json: WorkRecordReport.new(@work_records).summary_report
+    render json: WorkRecordReport.new(@work_records).summary_report.to_json
   end
 
   private
