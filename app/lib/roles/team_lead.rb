@@ -5,7 +5,7 @@ module Roles
     def role_permissions
       Roles::Arborist.new.role_permissions.merge(
         {
-          estimates: permission_set(list: true, show: true, create: true, update: true),
+          estimates: permission_set(list: true, show: true, create: true, update: true, scope_level: 'organization'),
           customers: permission_set(show: true, create: true, update: true),
           notes: permission_set(create: true),
         }
