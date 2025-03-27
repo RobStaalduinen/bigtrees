@@ -23,6 +23,7 @@ class Estimate < ActiveRecord::Base
 	has_one :invoice, dependent: :destroy
   has_one :site, dependent: :destroy
   has_one :customer_detail, dependent: :destroy
+	has_one :job, dependent: :destroy
 
 	belongs_to :customer
 	belongs_to :arborist
@@ -31,18 +32,19 @@ class Estimate < ActiveRecord::Base
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments
   accepts_nested_attributes_for :notes
+	accepts_nested_attributes_for :job
 
 	scope :submitted, -> { where(submission_completed: true) }
-	scope :incomplete, -> { active.where("status < 4") }
+	scope :incomplete, -> { active.where("status < 40") }
 	scope :price_required, -> { active.where("status = 0").where(picture_request_sent_at: nil) }
   scope :sent, -> do
      active.where("
-      status = 3 OR
-      (status < 4 AND picture_request_sent_at IS NOT NULL) OR
-      (status < 4 AND followup_sent_at IS NOT NULL)
+      status = 30 OR
+      (status < 40 AND picture_request_sent_at IS NOT NULL) OR
+      (status < 40 AND followup_sent_at IS NOT NULL)
     ")
   end
-  scope :scheduled, -> { active.where("status >= 4 AND status < 7") }
+  scope :scheduled, -> { active.where("status >= 40 AND status < 70") }
   # scope :cancelled, -> { where(cancelled_at: nil) }
 	scope :pending_payment, -> { active.final_invoice_sent }
 	# scope :complete, -> { where(status: 8) }
@@ -110,14 +112,15 @@ class Estimate < ActiveRecord::Base
 
 	enum status: {
 		needs_costs: 0,
-		needs_arborist: 1,
-		pending_quote: 2,
-		quote_sent: 3,
-		approved: 4,
-		work_scheduled: 5,
-		work_completed: 6,
-		final_invoice_sent: 7,
-		completed: 8
+		needs_arborist: 10,
+		pending_quote: 20,
+		quote_sent: 30,
+		approved: 40,
+		work_scheduled: 50,
+		work_started: 55,
+		work_completed: 60,
+		final_invoice_sent: 70,
+		completed: 80
   }
 
 	# Associations
@@ -128,7 +131,7 @@ class Estimate < ActiveRecord::Base
 
 	def formatted_status
 		return "Invoice Sent" if status == 'final_invoice_sent'
-		self.status.gsub('_', ' ').capitalize
+		self.status&.gsub('_', ' ')&.capitalize
 	end
 
 	def additional_message

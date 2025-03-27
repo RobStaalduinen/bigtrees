@@ -2,3 +2,7 @@ accessible_schedule:
   description: 'Allow all employees read-only access to approved and scheduled jobs'
   type: 'boolean'
   default: false
+job_notifications:
+  description: 'Send email notifications when a job starts or completes'
+  type: 'boolean'
+  default: false

@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_20_171953) do
+ActiveRecord::Schema.define(version: 2025_03_27_164031) do
 
-  create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "street"
     t.string "city"
     t.datetime "created_at", null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["street"], name: "index_addresses_on_street"
   end
 
-  create_table "appointments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "appointments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "estimate_id"
     t.string "date_submitted", null: false
     t.string "name", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.string "status", limit: 50, null: false
   end
 
-  create_table "arborists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "arborists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "certification"
     t.string "phone_number"
@@ -58,15 +58,16 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.datetime "reset_password_sent_at"
   end
 
-  create_table "costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.float "amount"
     t.string "description"
     t.boolean "discount", default: false
+    t.index ["estimate_id"], name: "index_costs_on_estimate_id"
   end
 
-  create_table "customer_details", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "customer_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.string "name"
     t.string "email"
     t.string "phone"
@@ -78,7 +79,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["phone"], name: "index_customer_details_on_phone"
   end
 
-  create_table "customers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "phone"
@@ -90,7 +91,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["phone"], name: "index_customers_on_phone"
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delayed_jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -105,13 +106,9 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "documents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "arborist_id"
+  create_table "documents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "arborist_id"
     t.string "name"
-    t.string "file_file_name"
-    t.string "file_content_type"
-    t.integer "file_file_size"
-    t.datetime "file_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "expires_at"
@@ -119,7 +116,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
   end
 
-  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "key"
     t.string "subject"
@@ -130,24 +127,22 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["organization_id"], name: "index_email_templates_on_organization_id"
   end
 
-  create_table "equipment_assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
-    t.integer "vehicle_id"
+  create_table "equipment_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_equipment_assignments_on_estimate_id"
+    t.index ["vehicle_id"], name: "index_equipment_assignments_on_vehicle_id"
   end
 
-  create_table "equipment_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "arborist_id"
-    t.integer "vehicle_id"
+  create_table "equipment_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "arborist_id"
+    t.bigint "vehicle_id"
     t.date "submitted_at"
     t.string "category"
     t.text "description"
     t.string "state", default: "submitted"
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
@@ -155,10 +150,12 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.string "resolution_notes"
     t.integer "mechanic_id"
     t.integer "organization_id"
+    t.index ["arborist_id"], name: "index_equipment_requests_on_arborist_id"
     t.index ["resolver_id"], name: "index_equipment_requests_on_resolver_id"
+    t.index ["vehicle_id"], name: "index_equipment_requests_on_vehicle_id"
   end
 
-  create_table "estimates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "estimates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "tree_quantity", default: 1
     t.string "street"
     t.string "city"
@@ -192,43 +189,41 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.string "state", default: "in_progress", null: false
     t.string "state_reason"
     t.boolean "approved", default: false
-    t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
-    t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
-    t.index ["customer_id"], name: "index_estimates_on_customer_id"
     t.index ["followup_sent_at"], name: "index_estimates_on_followup_sent_at"
     t.index ["is_unknown"], name: "index_estimates_on_is_unknown"
     t.index ["picture_request_sent_at"], name: "index_estimates_on_picture_request_sent_at"
     t.index ["status"], name: "index_estimates_on_status"
-    t.index ["submission_completed"], name: "index_estimates_on_submission_completed"
   end
 
-  create_table "expirations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "vehicle_id"
+  create_table "expirations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "vehicle_id"
     t.string "name"
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["vehicle_id"], name: "index_expirations_on_vehicle_id"
   end
 
-  create_table "extra_costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "extra_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.decimal "amount", precision: 10
     t.string "description"
     t.index ["estimate_id"], name: "index_extra_costs_on_estimate_id"
   end
 
-  create_table "images", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "imageable_id"
+  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "imageable_type"
+    t.bigint "imageable_id"
     t.string "image_url"
     t.string "edited_image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
   end
 
-  create_table "invoices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.string "number"
     t.string "payment_method"
     t.boolean "paid", default: false
@@ -239,9 +234,19 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["number"], name: "index_invoices_on_number"
   end
 
-  create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
-    t.integer "arborist_id"
+  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id", null: false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.json "job_survey_responses"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["estimate_id"], name: "index_jobs_on_estimate_id"
+  end
+
+  create_table "notes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
+    t.bigint "arborist_id"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -249,7 +254,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
-  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "organization_id"
     t.bigint "arborist_id"
     t.datetime "created_at", null: false
@@ -259,7 +264,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["organization_id"], name: "index_organization_memberships_on_organization_id"
   end
 
-  create_table "organizations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "organizations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -282,15 +287,16 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.string "condensed_logo_url"
     t.json "configuration"
     t.string "quote_redirect_link"
+    t.json "job_survey_questions"
   end
 
-  create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "payouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label"
     t.string "content"
@@ -300,41 +306,38 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["organization_id"], name: "index_quick_costs_on_organization_id"
   end
 
-  create_table "receipts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "arborist_id"
+  create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "arborist_id"
     t.date "date"
     t.string "category"
     t.string "job"
     t.string "payment_method"
     t.string "description"
     t.decimal "cost", precision: 10
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.integer "vehicle_id"
     t.boolean "approved", default: false
     t.string "image_url"
     t.string "state", default: "pending"
     t.string "rejection_reason"
     t.integer "organization_id"
+    t.index ["arborist_id"], name: "index_receipts_on_arborist_id"
     t.index ["state"], name: "index_receipts_on_state"
   end
 
-  create_table "site_config", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "site_config", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "attribute_name", null: false
     t.string "attribute_value", null: false
   end
 
-  create_table "site_stats", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "site_stats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "estimates_started", default: 0, null: false
     t.integer "appointments_started", default: 0, null: false
     t.string "month", limit: 20, null: false
     t.string "year", limit: 10
   end
 
-  create_table "sites", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "sites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.string "street"
     t.string "city"
     t.boolean "wood_removal", default: true
@@ -352,7 +355,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["street"], name: "index_sites_on_street"
   end
 
-  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "estimate_id"
     t.bigint "tag_id"
     t.datetime "created_at", precision: 6, null: false
@@ -361,7 +364,7 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
   end
 
-  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label", null: false
     t.string "colour", null: false
@@ -371,11 +374,8 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
 
-  create_table "tree_images", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.string "asset_file_name"
-    t.string "asset_content_type"
-    t.integer "asset_file_size"
-    t.datetime "asset_updated_at"
+  create_table "tree_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "filename", null: false
     t.integer "tree_id"
     t.string "image_url"
     t.string "image_small_url"
@@ -383,8 +383,8 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.integer "estimate_id"
   end
 
-  create_table "trees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "estimate_id"
+  create_table "trees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id"
     t.integer "work_type", default: 0
     t.integer "sequence", default: 0
     t.decimal "cost", precision: 10
@@ -396,18 +396,18 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.index ["estimate_id"], name: "index_trees_on_estimate_id"
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "username", limit: 50, null: false
     t.string "session_token", limit: 100, null: false
   end
 
-  create_table "vehicles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "vehicles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.integer "organization_id"
     t.index ["name"], name: "index_vehicles_on_name"
   end
 
-  create_table "work_actions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "work_actions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "estimate_id", null: false
     t.string "work_type", null: false
     t.integer "tree_index", null: false
@@ -417,8 +417,8 @@ ActiveRecord::Schema.define(version: 2025_03_20_171953) do
     t.string "status", null: false
   end
 
-  create_table "work_records", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "arborist_id"
+  create_table "work_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "arborist_id"
     t.date "date"
     t.float "hours"
     t.time "start_at"
