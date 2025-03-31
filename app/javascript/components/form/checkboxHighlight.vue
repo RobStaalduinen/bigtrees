@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" :class="{'checkbox-container': true,  'checkbox-container-faded': status != checkedValue }">
+  <label :for="id" :class="{'checkbox-container': true,  'checkbox-container-faded': status != checkedValue }" :id="label_id">
     <b-form-checkbox
       :id="id"
       v-model="status"
@@ -35,6 +35,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    label_id: {
+      type: String,
+      required: false
     }
   },
   data() {

@@ -146,10 +146,17 @@ class EstimatesController < ApplicationController
       notes_attributes: [
         :content,
         image_attributes: [ :image_url, :edited_url ]
-      ]
+      ],
+      job_attributes: [ :started_at, :completed_at ],
     )
     e_params[:is_unknown] ||= false
     e_params
+  end
+
+  def job_attributes
+    params.require(:job).permit(
+      :started_at, :completed_at, :job_survey_responses
+    )
   end
 
   def site_params

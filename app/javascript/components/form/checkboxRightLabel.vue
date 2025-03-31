@@ -26,7 +26,8 @@ export default {
     },
     value: {
       required: true,
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   },
   data() {

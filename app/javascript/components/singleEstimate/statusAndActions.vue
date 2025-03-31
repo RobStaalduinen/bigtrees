@@ -34,6 +34,7 @@
 <script>
 import ScheduleWork from '../estimate/actions/schedule';
 import Approve from '../estimate/actions/approve';
+import StartJob from '@/components/job/actions/start';
 import SendInvoice from '../invoice/actions/send';
 import PayInvoice from '../invoice/actions/pay';
 import AddCosts from '../costs/actions/createMultiple';
@@ -66,6 +67,14 @@ const STEPS = {
     inputComponent: 'estimate-schedule-quote'
   },
   'work_scheduled': {
+    actionLabel: 'Start Job',
+    inputComponent: 'estimate-start-job'
+  },
+  'work_started': {
+    actionLabel: 'Complete Job',
+    inputComponent: 'estimate-send-invoice'
+  },
+  'work_completed': {
     actionLabel: 'Send Invoice',
     inputComponent: 'estimate-send-invoice'
   },
@@ -84,7 +93,8 @@ export default {
     'estimate-add-costs': AddCosts,
     'estimate-actions-list': ActionList,
     'estimate-action-handler': ListActionHandler,
-    'estimate-approve': Approve
+    'estimate-approve': Approve,
+    'estimate-start-job': StartJob
   },
   props: {
     estimate: {

@@ -90,6 +90,10 @@ class ArboristsController < ApplicationController
       arborists = arborists.where(role: params[:role])
     end
 
+    if params[:crew_member]
+      arborists = arborists.where(crew_member: params[:crew_member]).where.not(role: 'mechanic')
+    end
+
     arborists
   end
 

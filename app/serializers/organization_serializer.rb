@@ -22,7 +22,7 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :quote_redirect_link
 
   attribute :configuration
-  # attribute :job_survey_questions
+  attribute :job_survey_questions
 
   belongs_to :address
 end
