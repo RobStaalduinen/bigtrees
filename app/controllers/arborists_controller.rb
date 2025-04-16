@@ -91,7 +91,7 @@ class ArboristsController < ApplicationController
     end
 
     if params[:crew_member]
-      arborists = arborists.where(crew_member: params[:crew_member]).where.not(role: 'mechanic')
+      arborists = arborists.where.not(role: 'mechanic').where.not(email: %w[thearn@bigislandgroup.ca rob.staalduinen@gmail.com])
     end
 
     arborists

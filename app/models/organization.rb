@@ -18,6 +18,15 @@ class Organization < ActiveRecord::Base
     "#{email_author} <#{outgoing_quote_email}>"
   end
 
+  def feature_enabled?(feature)
+    return false if feature.blank?
+
+    # Check if the feature is enabled in the configuration
+    return true if configured_features[feature.to_s]
+
+    false
+  end
+
   def configured_features
     templates = YAML.load_file(Rails.root.join('app', 'configuration_templates.yml'))
 

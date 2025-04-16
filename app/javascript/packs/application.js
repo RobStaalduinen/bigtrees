@@ -152,6 +152,10 @@ Vue.filter('localizeDate', function(date) {
   return moment(date).format('MMMM Do, YYYY');
 })
 
+Vue.filter('localizeDateTime', function(date) {
+  return moment(date).format('MMMM Do, YYYY h:mm a');
+})
+
 // Pages
 import Hours from '../pages/hours.vue'
 import Customers from '../pages/customers.vue'

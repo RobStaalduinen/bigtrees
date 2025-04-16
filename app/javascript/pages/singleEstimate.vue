@@ -50,6 +50,10 @@
           <single-estimate-costs :estimate='estimate'></single-estimate-costs>
         </section>
 
+        <section class ='estimate-section' v-if='estimate.job'>
+          <single-estimate-job :estimate='estimate'></single-estimate-job>
+        </section>
+
         <section class ='estimate-section'>
           <single-estimate-trees :estimate='estimate'></single-estimate-trees>
         </section>
@@ -98,6 +102,7 @@ import Trees from '../components/trees/views/collapsed';
 import Followups from '../components/followups/views/collapsed';
 import EquipmentRequirements from '@/components/tools/views/collapsed';
 import Notes from '@/components/notes/views/collapsed';
+import Job from '@/components/job/views/collapsed';
 
 import EventBus from '@/store/eventBus';
 
@@ -116,7 +121,8 @@ export default {
     'single-estimate-trees': Trees,
     'single-estimate-followups': Followups,
     'single-estimate-equipment': EquipmentRequirements,
-    'single-estimate-notes': Notes
+    'single-estimate-notes': Notes,
+    'single-estimate-job': Job
   },
   data() {
     return {

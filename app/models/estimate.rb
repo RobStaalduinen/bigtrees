@@ -223,11 +223,11 @@ class Estimate < ActiveRecord::Base
 			:quote_sent
 		elsif(self.approved? && !self.work_scheduled?)
 			:approved
-		elsif(self.work_scheduled? && !self.job&.started?)
+		elsif(self.work_scheduled? && !self.job&.skipped? && !self.job&.started?)
 			:work_scheduled
 		elsif(self.job&.started? && !self.job&.completed?)
 			:work_started
-		elsif(self.job&.completed? && !self.invoice.sent?)
+		elsif((self.job&.skipped? || self.job&.completed?) && !self.invoice.sent?)
 			:work_completed
 		elsif(self.invoice.sent? && !self.invoice.paid?)
 			:final_invoice_sent

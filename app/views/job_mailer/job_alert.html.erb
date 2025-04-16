@@ -1,0 +1,31 @@
+<% if @job.completed? %>
+  Job at <%= @estimate.site.full_address %> has been completed by <%= @job.arborist.name %> <br>
+<% else %>
+  Job at <%= @estimate.site.full_address %> has been started by <%= @job.arborist.name %> <br>
+<% end %>
+
+<a href="<%=@estimate_link%>">View Estimate</a> <br><br>
+
+<% if @job.started? %>
+  <b>Job started at: </b><%= @job.started_at.strftime('%B %d, %Y at %I:%M %p') %> <br>
+<% end %>
+
+<% if @job.completed? %>
+  <b>Job finished at: </b><%= @job.completed_at.strftime('%B %d, %Y at %I:%M %p') %> <br>
+<% end %>
+
+<br>
+
+<% if !@job.completed? %>
+  <b>Entrance Survey </b> <br>
+  <% @job.job_survey_responses.each do |question, answer| %>
+    <%= question %>: <%= answer ? 'YES' : 'NO' %> <br>
+  <% end %>
+<% end %>
+
+<br>
+
+<b>Employees Present</b> <br>
+<% @job.assigned_arborist_names.each do |name| %>
+  <%= name %> <br>
+<% end %>

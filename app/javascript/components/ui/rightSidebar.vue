@@ -66,6 +66,7 @@ export default {
       this.$emit('cancelled');
     },
     broadcastShown() {
+      this.$emit('shown');
       EventBus.$emit('TOGGLE_SIDEBAR', this.id);
 
     }

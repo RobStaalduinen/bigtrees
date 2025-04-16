@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Start Job' submitText='Start' :onSubmit='startJob'>
+  <app-right-sidebar :id='id' title='Start Job' submitText='Start' :onSubmit='startJob' :alternateAction='skipJob' alternateActionText='Skip'>
     <template v-slot:content>
       <validation-observer ref="observer">
         <h6>Job Started At</h6>
@@ -75,7 +75,10 @@ export default {
       startDate: moment().format('YYYY-MM-DD'),
       startTime: moment().format('HH:mm'),
       organization: this.$store.state.organization,
-      surveyAnswers: {},
+      surveyAnswers: this.$store.state.organization.job_survey_questions.reduce((acc, question) => {
+        acc[question] = false;
+        return acc;
+      }, {}),
       assignableArborists: [],
       arboristAssignments: {},
       surveyError: false
@@ -86,23 +89,19 @@ export default {
       this.surveyError = false;
       let assignedIds = Object.keys(this.arboristAssignments).filter(key => this.arboristAssignments[key]);
 
-      const allQuestionsAnswered = this.organization.job_survey_questions.every(question => 
-        this.surveyAnswers[question] === true
-      );
-
-      if (!allQuestionsAnswered) {
-        this.surveyError = true;
-        EventBus.$emit('FORM_VALIDATION_FAILED');
-        return;
-      }
-
       let params = {
         job: {
           started_at: `${this.startDate} ${this.startTime}`,
-          job_survey_answers: this.surveyAnswers,
+          job_survey_responses: this.surveyAnswers,
           assigned_arborists: assignedIds
         }
       }
+
+      this.axiosPost(`/estimates/${this.estimate.id}/jobs`, params)
+        .then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+          this.$root.$emit('bv::toggle::collapse', this.id);
+        })
     },
     retrieveArborists() {
       this.axiosGet(`/arborists?crew_member=true`)
@@ -110,8 +109,12 @@ export default {
           this.assignableArborists = response.data.arborists;
         })
     },
-    skipStart() {
-
+    skipJob() {
+      this.axiosPost(`/estimates/${this.estimate.id}/jobs`, { job: { skipped: true } })
+        .then(response => {
+          EventBus.$emit('ESTIMATE_UPDATED', response.data);
+          this.$root.$emit('bv::toggle::collapse', this.id);
+        })
 
     }
   },

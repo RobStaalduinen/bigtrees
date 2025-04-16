@@ -80,6 +80,17 @@ class EstimatesController < ApplicationController
       customer_detail.update(customer_detail_params)
     end
 
+    if params[:job].present?
+      job = estimate.job || Job.new(estimate: estimate)
+      job.update(job_attributes)
+
+      if job_attributes[:assigned_arborists].present?
+        job_attributes[:assigned_arborists].each do |arborist_id|
+          JobAssignment.create(job: job, arborist_id: arborist_id)
+        end
+      end
+    end
+
 		render json: { estimate_id: estimate.id }
   end
 
@@ -147,7 +158,6 @@ class EstimatesController < ApplicationController
         :content,
         image_attributes: [ :image_url, :edited_url ]
       ],
-      job_attributes: [ :started_at, :completed_at ],
     )
     e_params[:is_unknown] ||= false
     e_params
