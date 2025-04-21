@@ -30,6 +30,6 @@ class Cost < ActiveRecord::Base
   end
 
   def set_discount
-    self.discount = true if amount < 0.0
+    self.discount = true if amount.to_f < 0.0
   end
 end

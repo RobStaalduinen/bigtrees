@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
   before_action :redirect_if_old
   before_action :set_organization
 
+  rescue_from StandardError do |e|
+    Sentry.capture_exception(e)
+    render json: { error: e.message }, status: :internal_server_error
+  end
+
   def redirect_if_old
     return unless Rails.env.production?
 

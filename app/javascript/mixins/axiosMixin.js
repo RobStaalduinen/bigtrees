@@ -1,22 +1,60 @@
 import axios from 'axios';
+import EventBus from '../store/eventBus';
 
 export default {
   methods: {
     axiosPut (endpoint, options) {
       this.setupAxios();
-      return axios.put(endpoint, options, { withCredentials: true });
+      return axios
+      .put(endpoint, options, { withCredentials: true })
+      .catch((error) => {
+        if (error.response) {
+          EventBus.$emit('API_ERROR', error);
+        }
+  
+        // Re-throw the error so the caller can handle it if needed
+        throw error;
+      });
     },
     axiosGet(endpoint, params = {}){
       this.setupAxios();
-      return axios.get(endpoint, { params: params, withCredentials: true });
+      return axios
+        .get(endpoint, { params: params, withCredentials: true })
+        .catch((error) => {
+          if (error.response && error.response.status === 500) {
+            EventBus.$emit('API_ERROR', error);
+          }
+    
+          // Re-throw the error so the caller can handle it if needed
+          throw error;
+        });
     },
     axiosPost(endpoint, options){
       this.setupAxios();
-      return axios.post(endpoint, options, { withCredentials: true });
+      
+      return axios
+      .post(endpoint, options, { withCredentials: true })
+      .catch((error) => {
+        if (error.response && error.response.status === 500) {
+          EventBus.$emit('API_ERROR', error);
+        }
+  
+        // Re-throw the error so the caller can handle it if needed
+        throw error;
+      });
     },
     axiosDelete(endpoint, options){
       this.setupAxios();
-      return axios.delete(endpoint, options, { withCredentials: true });
+      return axios
+        .delete(endpoint, options, { withCredentials: true })
+        .catch((error) => {
+          if (error.response && error.response.status === 500) {
+            EventBus.$emit('API_ERROR', error);
+          }
+    
+          // Re-throw the error so the caller can handle it if needed
+          throw error;
+        });
     },
     axiosImagePost(endpoint, formData){
       let options = { 'Content-Type': 'multipart/form-data' };
