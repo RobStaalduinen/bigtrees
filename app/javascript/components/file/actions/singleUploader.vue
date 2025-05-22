@@ -6,7 +6,9 @@
     </div>
 
     <div v-if='!url && uploading' class='file-field'>
-      <b-spinner id='app-loader-container'></b-spinner> <div class='file-name-field'>Uploading {{ fileName }}</div>
+      <b-spinner id='app-loader-container'></b-spinner> 
+      <div class='file-name-field'>Uploading {{ fileName }}</div>
+      <div v-if='completionPercentage'>{{ completionPercentage }}%</div>
     </div>
   </div>
 </template>
@@ -14,6 +16,7 @@
 <script>
 import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
 import { fileNameFromPath } from '@/utils/fileUtils';
+import imageCompression from 'browser-image-compression';
 
 export default {
   props: {
@@ -32,7 +35,8 @@ export default {
   data() {
     return {
       uploading: false,
-      url: null
+      url: null,
+      completionPercentage: null
     }
   },
   methods: {
@@ -43,13 +47,31 @@ export default {
     },
     uploadFile() {
       this.axiosGet('/files/new', { bucket_name: this.bucketName, filename: this.fileName }).then(response => {
-        const formData = signedUrlFormData(response.data.fields, this.imageToUpload);
+        // const formData = signedUrlFormData(response.data.fields, this.imageToUpload);
 
-        this.axiosImagePost(response.data.url, formData).then(response => {
-          this.url = parseImageUploadResponse(response);
-          this.uploading = false;
+        this.compressFile(this.imageToUpload).then(compressedFile => {
+          // formData.append('file', compressedFile);
+          console.log('Compressed File Size', compressedFile.size);
+          const formData = signedUrlFormData(response.data.fields, compressedFile);
+          
+          this.axiosImagePost(response.data.url, formData, this.handleProgress).then(response => {
+            this.url = parseImageUploadResponse(response);
+            this.uploading = false;
+          })
         })
       })
+    },
+    handleProgress(percentage) {
+      this.completionPercentage = percentage;
+    },
+    compressFile(file) {
+      const options = {
+        maxSizeMB: 1,          // target ≤1MB
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
+      };
+
+      return imageCompression(file, options)
     }
   },
   computed: {
@@ -92,7 +114,7 @@ export default {
   }
 
   .file-name-field {
-    max-width: 80%;
+    max-width: 70%;
     overflow: hidden;
   }
 

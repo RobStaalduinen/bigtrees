@@ -14,7 +14,7 @@
       <img
         v-for='(image, imageIndex) in images'
         :key='index + "_" + imageIndex'
-        :src='image.edited_image_url_sm || image.image_url_sm'
+        :src='image.edited_image_url || image.image_url'
         class='tree-image'
         @click='$emit("edit", image.id)'
       />

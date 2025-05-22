@@ -37,7 +37,14 @@ export default {
     queueFile() {
       if(this.initialImage != null) {
         this.uploadedFile = { uploadFinished: false };
-        this.selectedFile = new File([this.initialImage], this.initialImage.name);
+        this.selectedFile = new File(
+          [this.initialImage], 
+          this.initialImage.name,
+          {
+            type: this.initialImage.type,            
+            lastModified: this.initialImage.lastModified 
+          }
+        );
         this.$nextTick(() => {
           this.initialImage = null;
         })
