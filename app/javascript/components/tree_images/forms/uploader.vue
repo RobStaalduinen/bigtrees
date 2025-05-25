@@ -6,6 +6,7 @@
         <img v-if="!uploadingImage && imageUrl" class='image-preview' :src='imageUrl' />
       </div>
       <div :class='{"text-loading": uploadingImage}'>{{ file.name }}</div>
+      <div v-if='completionPercentage' id='completion-percentage'>({{ completionPercentage }}%)</div>
     </div>
 
     <b-icon v-if='!uploadingImage' id='delete-icon' icon='x-circle' @click="$emit('delete-image')"></b-icon>
@@ -13,6 +14,8 @@
 </template>
 
 <script>
+import imageCompression from 'browser-image-compression';
+
 export default {
   props: {
     file: {
@@ -23,7 +26,8 @@ export default {
   data() {
     return {
       uploadingImage: false,
-      imageUrl: null
+      imageUrl: null,
+      completionPercentage: null
     }
   },
   methods: {
@@ -40,17 +44,34 @@ export default {
       for ( var key in url_fields ) {
           formData.append(key, url_fields[key]);
       }
-      formData.append('file', this.file)
+      this.compressFile(this.file).then(compressedFile => {
+        console.log('Compressed File Size', compressedFile.size);
 
-      this.axiosImagePost(base_url, formData).then(response => {
-        var parseString = require('xml2js').parseString;
+        formData.append('file', this.file)
 
-        parseString(response.data, (err, result) => {
-          this.imageUrl = result.PostResponse.Location[0];
-          this.uploadingImage = false;
-        });
-      })
-    }
+        this.axiosImagePost(base_url, formData, this.handleProgress).then(response => {
+          var parseString = require('xml2js').parseString;
+
+          parseString(response.data, (err, result) => {
+            this.imageUrl = result.PostResponse.Location[0];
+            this.uploadingImage = false;
+          });
+        })
+      })      
+    },
+    compressFile(file) {
+      console.log(file);
+      const options = {
+        maxSizeMB: 1,          // target ≤1MB
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
+      };
+
+      return imageCompression(file, options)
+    },
+    handleProgress(percentage) {
+      this.completionPercentage = percentage;
+    },
   },
   mounted() {
     this.beginUpload();
@@ -101,5 +122,10 @@ export default {
 
   #image-content-left {
     margin-right: 8px;
+  }
+
+  #completion-percentage {
+    margin-left: 8px;
+    color: gray;
   }
 </style>

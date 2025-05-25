@@ -62,6 +62,10 @@ export default {
     EventBus.$on('FORM_VALIDATION_FAILED', () => {
       this.submitting = false;
     });
+
+    EventBus.$on('API_ERROR', () => {
+      this.submitting = false;
+    });
   }
 }
 </script>

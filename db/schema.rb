@@ -387,7 +387,6 @@ ActiveRecord::Schema.define(version: 2025_04_07_175934) do
   end
 
   create_table "tree_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "filename", null: false
     t.integer "tree_id"
     t.string "image_url"
     t.string "image_small_url"

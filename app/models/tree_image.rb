@@ -27,31 +27,31 @@ class TreeImage < ActiveRecord::Base
     "Estimate_#{e_id}_Tree_#{t_id}_Image_#{self.id}"
   end
 
-  def image_url_sm
-    # "#{imgix_url}?w=400"
-    image_url
-  end
+  # def image_url_sm
+  #   # "#{imgix_url}?w=400"
+  #   image_url
+  # end
 
-  def image_url_md
-    # "#{imgix_url}?w=800"
-    image_url
-  end
+  # def image_url_md
+  #   # "#{imgix_url}?w=800"
+  #   image_url
+  # end
 
-  def edited_image_url_sm
-    return nil unless edited_imgix_url
+  # def edited_image_url_sm
+  #   return nil unless edited_imgix_url
 
-    # "#{edited_imgix_url}?w=400"
+  #   # "#{edited_imgix_url}?w=400"
     
-    edited_imgix_url
-  end
+  #   edited_imgix_url
+  # end
 
-  def edited_image_url_md
-    return nil unless edited_imgix_url
+  # def edited_image_url_md
+  #   return nil unless edited_imgix_url
 
-    # "#{edited_imgix_url}?w=800"
+  #   # "#{edited_imgix_url}?w=800"
     
-    edited_imgix_url
-  end
+  #   edited_imgix_url
+  # end
 
   def update_image_url
     return unless image_url.blank? && asset.present?
