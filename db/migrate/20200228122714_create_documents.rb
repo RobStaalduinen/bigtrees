@@ -3,7 +3,7 @@ class CreateDocuments < ActiveRecord::Migration[5.2]
     create_table :documents do |t|
       t.belongs_to :arborist, index: true
       t.string :name
-      t.attachment :file
+      # t.attachment :file
 
       t.timestamps null: false
     end

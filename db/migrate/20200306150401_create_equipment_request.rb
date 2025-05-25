@@ -7,7 +7,7 @@ class CreateEquipmentRequest < ActiveRecord::Migration[5.2]
       t.string :category
       t.text :description
       t.string :state, default: 'submitted'
-      t.attachment :image
+      # t.attachment :image
 
       t.timestamps null: false
     end

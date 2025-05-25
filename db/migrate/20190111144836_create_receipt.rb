@@ -8,7 +8,7 @@ class CreateReceipt < ActiveRecord::Migration[5.2]
       t.string :payment_method
       t.string :description
       t.decimal :cost
-      t.attachment :photo
+      # t.attachment :photo
     end
   end
 end
