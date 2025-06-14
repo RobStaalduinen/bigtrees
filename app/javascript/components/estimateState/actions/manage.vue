@@ -6,21 +6,7 @@
 
         <app-input-field v-model="reason" name="reason" label="Reason (optional)" v-if="reasonAllowed()"/>
 
-        <b-form-group label="Current Tags">
-          <div class="tag-list">
-            <div class="tag-container" v-for="tag in estimateTags" :key="tag.id">
-              <app-tag :tag="tag" action="delete" @click="removeTag(tag)"/>
-            </div>
-          </div>
-        </b-form-group>
-
-        <b-form-group label="Addable Tags">
-          <div class="tag-list">
-            <div class="tag-container" v-for="tag in addableTags" :key="tag.id" @click="addTag(tag)">
-              <app-tag :tag="tag" action="add"/>
-            </div>
-          </div>
-        </b-form-group>
+        <app-manage-tags :id="id" :estimate="estimate" @tagsChanged="cacheTags"/>
       </template>
     </app-scrollable-sidebar>
 
@@ -28,8 +14,12 @@
 
 <script>
   import EventBus from '@/store/eventBus';
+  import ManageTags from '@/components/tags/views/manageEstimate.vue';
 
   export default {
+    components: {
+      'app-manage-tags': ManageTags
+    },
     props: {
       id: {
         required: true
@@ -63,34 +53,6 @@
       reasonAllowed() {
         return ['on_hold', 'unknown', 'cancelled'].includes(this.state);
       },
-      retrieveTags() {
-        this.axiosGet(`/organizations/${this.organization.id}/tags`)
-          .then(response => {
-            this.organizationTags = response.data.tags;
-            this.calculateAddableTags();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      addTag(tag) {
-        this.axiosPost(`/organizations/${this.organization.id}/taggings`, { estimate_id: this.estimate.id, tag_id: tag.id })
-          .then(response => {
-            if (response.status === 200) {
-              this.estimateTags.push(tag);
-              this.calculateAddableTags();
-            }
-          })
-      },
-      removeTag(tag) {
-        this.axiosDelete(`/organizations/${this.organization.id}/taggings?estimate_id=${this.estimate.id}&tag_id=${tag.id}`)
-          .then(response => {
-            if (response.status === 200) {
-              this.estimateTags = this.estimateTags.filter(estimateTag => estimateTag.id !== tag.id);
-              this.calculateAddableTags();
-            }
-          })
-      },
       updateEstimate() {
         let params = { estimate: { state: this.state, state_reason: this.reason } }
         if (!this.reasonAllowed()) {
@@ -109,37 +71,19 @@
       handleDone(){
         this.updateEstimate();
       },
-      calculateAddableTags() {
-        this.addableTags = this.organizationTags.filter(tag => {
-          return !this.estimateTags.some(estimateTag => estimateTag.id === tag.id);
-        });
+      cacheTags(newTags) {
+        this.estimateTags = newTags;
       }
-    },
-    mounted() {
-      this.retrieveTags();
     },
     watch: {
       'estimate.state'(newVal) {
         this.state = newVal;
-      },
-      'estimate.tags'(newVal) {
-        this.estimateTags = newVal;
-        this.calculateAddableTags();
       }
     }
   }
 </script>
 
 <style scoped>
-  .tag-list {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  }
 
-  .tag-container {
-    margin-right: 8px;
-    margin-bottom: 8px;
-  }
 
 </style>

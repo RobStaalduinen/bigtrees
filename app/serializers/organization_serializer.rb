@@ -23,6 +23,7 @@ class OrganizationSerializer < ApplicationSerializer
 
   attribute :configuration
   attribute :job_survey_questions
+  attribute :completion_survey_questions
 
   belongs_to :address
 end

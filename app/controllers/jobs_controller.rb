@@ -22,6 +22,13 @@ class JobsController < ApplicationController
     render json: estimate
   end
 
+  def update
+    job = estimate.job
+    job.update(job_params)
+
+    render json: estimate
+  end
+
   private
 
   def estimate
@@ -29,6 +36,6 @@ class JobsController < ApplicationController
   end
 
   def job_params
-    params.require(:job).permit(:started_at, :completed_at, :skipped, job_survey_responses: {})
+    params.require(:job).permit(:started_at, :completed_at, :completion_notes, :followup_year, :skipped, job_survey_responses: {}, completion_survey_responses: {})
   end
 end

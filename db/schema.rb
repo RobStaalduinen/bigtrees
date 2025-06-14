@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_25_180344) do
+ActiveRecord::Schema.define(version: 2025_05_31_182707) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -258,6 +258,9 @@ ActiveRecord::Schema.define(version: 2025_05_25_180344) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "arborist_id"
     t.boolean "skipped", default: false, null: false
+    t.json "completion_survey_responses"
+    t.text "completion_notes"
+    t.integer "followup_year"
     t.index ["estimate_id"], name: "index_jobs_on_estimate_id"
   end
 
@@ -305,6 +308,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_180344) do
     t.json "configuration"
     t.string "quote_redirect_link"
     t.json "job_survey_questions"
+    t.json "completion_survey_questions"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

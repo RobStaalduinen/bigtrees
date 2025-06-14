@@ -4,6 +4,9 @@ class JobSerializer < ApplicationSerializer
   attribute :started_at
   attribute :completed_at
   attribute :job_survey_responses
+  attribute :completion_survey_responses
+  attribute :completion_notes
+  attribute :followup_year
   attribute :lead_arborist_name
   attribute :assigned_arborist_names
   attribute :skipped

@@ -23,7 +23,23 @@
   <% end %>
 <% end %>
 
-<br>
+<% if @job.completed? %>
+  <b>Exit Survey </b> <br>
+  <% @job.completion_survey_responses.each do |question, answer| %>
+    <%= question %>: <%= answer ? 'YES' : 'NO' %> <br>
+  <% end %>
+
+  <br>
+
+  <b>Job Notes</b> <br>
+  <%= @job.completion_notes %>
+
+  <br><br>
+
+  <b>Followup Year: </b> <%= @job.followup_year || 'Never' %>
+<% end %>
+
+<br><br>
 
 <b>Employees Present</b> <br>
 <% @job.assigned_arborist_names.each do |name| %>

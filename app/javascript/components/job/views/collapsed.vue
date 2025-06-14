@@ -48,6 +48,40 @@
           </div>
         </div>
 
+        <div class='collapsed-row' v-if="estimate.job.completed_at">
+          <div class='collapsed-row-label'>
+            <b>Exit Survey</b>
+          </div>
+
+          <div class='collapsed-row-value entrance-survey'>
+            <span v-for='(value, question, index) in estimate.job.completion_survey_responses' :key='index'>
+              {{ question }}: <span class='survey-answer-label' :style="{ color: value ? 'green' : 'red' }">{{ value ? 'YES' : 'NO' }}</span><br>
+            </span>
+          </div>
+        </div>
+
+        <div class='collapsed-row' v-if="estimate.job.completed_at">
+          <div class='collapsed-row-label'>
+            <b>Arborist Notes</b>
+            <b-icon icon='pencil-square' class='app-icon edit-icon' @click="toggleUpdate()"></b-icon>
+          </div>
+
+          <div class='collapsed-row-value'>
+            {{ estimate.job.completion_notes }}
+          </div>
+        </div>
+
+
+        <div class='collapsed-row' v-if="estimate.job.completed_at">
+          <div class='collapsed-row-label'>
+            <b>Followup Year</b>
+          </div>
+
+          <div class='collapsed-row-value'>
+            {{ estimate.job.followup_year || 'Never' }} 
+          </div>
+        </div>
+
         <div class='collapsed-row'>
           <div class='collapsed-row-label'>
             <b>Survey Filled by</b>
@@ -59,16 +93,17 @@
         </div>
       </template>
     </app-collapsable>
-
+    <app-update-notes :estimate='estimate' id='update-notes'></app-update-notes>
     <!-- <app-edit-costs :estimate='estimate' id='edit-costs'></app-edit-costs> -->
   </div>
 </template>
 
 <script>
+import UpdateNotes from '@/components/job/actions/updateNotes.vue';
 
 export default {
   components: {
-
+    'app-update-notes': UpdateNotes
   },
   props: {
     estimate: {
@@ -92,7 +127,9 @@ export default {
       else if(job.completed_at) {
         return 'Completed';
       }
-
+    },
+    toggleUpdate() {
+      this.$root.$emit('bv::toggle::collapse', 'update-notes');
     }
   }
 }

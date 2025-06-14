@@ -8,7 +8,8 @@ module Roles
           estimates: permission_set(list: true, show: true, create: true, update: true, scope_level: 'organization'),
           customers: permission_set(show: true, create: true, update: true),
           notes: permission_set(create: true),
-          tags: permission_set(list: true)
+          tags: permission_set(list: true),
+          taggings: permission_set(list: true, show: true, create: true, update: true, delete: true, scope_level: 'organization'),
         }
       )
     end

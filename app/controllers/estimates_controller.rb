@@ -165,7 +165,7 @@ class EstimatesController < ApplicationController
 
   def job_attributes
     params.require(:job).permit(
-      :started_at, :completed_at, :job_survey_responses
+      :started_at, :completed_at, :job_survey_responses, :completion_notes
     )
   end
 
