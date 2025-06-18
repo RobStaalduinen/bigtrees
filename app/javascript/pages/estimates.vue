@@ -3,7 +3,7 @@
     <app-header title='Quotes'>
       <template v-slot:header-right>
         <div class="header-right">
-          <a @click='downloadTracker' v-if='hasPermission("estimates", "admin")'>
+          <a @click='openDownload' v-if='hasPermission("estimates", "admin")'>
             <b-icon icon='download'></b-icon>
             Tracker
           </a>
@@ -20,21 +20,37 @@
     </app-header>
 
     <app-estimate-list></app-estimate-list>
+
+    <b-modal
+      id="tracker-download"
+      size="md"
+      title="Download Tracker"
+      @hide="close"
+      ok-only
+      ok-title="Close"
+      >
+        <app-tracker-download></app-tracker-download>
+
+    </b-modal>
   </page-template>
 </template>
 
 <script>
 import EstimateList from '../components/estimates/list';
-import { store } from '@/store/store'
+import DownloadTracker from '../components/tracker/actions/filteredDownload.vue';
 
 export default {
   components: {
-    'app-estimate-list': EstimateList
+    'app-estimate-list': EstimateList,
+    'app-tracker-download': DownloadTracker,
   },
   methods: {
-    downloadTracker() {
-      this.axiosDownload('/trackers.xlsx', 'MasterTracker.xlsx')
-    }
+    openDownload() {
+      this.$bvModal.show('tracker-download');
+    },
+    close() {
+      this.$bvModal.hide('tracker-download');
+    },
   }
 }
 </script>

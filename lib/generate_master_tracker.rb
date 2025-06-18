@@ -40,15 +40,15 @@ class GenerateMasterTracker
       insert(worksheet, row, 1, estimate.status.gsub("_", " ").capitalize)
       insert(worksheet, row, 2, estimate.state.gsub("_", " ").capitalize)
 
-      insert(worksheet, row, 3, estimate.created_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 3, estimate.created_at.strftime("%Y-%m-%d")) rescue ""
       insert(worksheet, row, 4, estimate.created_at.strftime("%B")) rescue ""
       insert(worksheet, row, 5, estimate.created_at.strftime("%Y")) rescue ""
 
-      insert(worksheet, row, 6, estimate.work_start_date.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 6, estimate.work_start_date.strftime("%Y-%m-%d")) rescue ""
       insert(worksheet, row, 7, estimate.work_start_date.strftime("%B")) rescue ""
       insert(worksheet, row, 8, estimate.work_start_date.strftime("%Y")) rescue ""
       
-      insert(worksheet, row, 9, estimate.invoice.paid_at.strftime("%-d-%b-%Y")) rescue ""
+      insert(worksheet, row, 9, estimate.invoice.paid_at.strftime("%Y-%m-%d")) rescue ""
       insert(worksheet, row, 10, estimate.invoice.paid_at.strftime("%B")) rescue ""
       insert(worksheet, row, 11, estimate.invoice.paid_at.strftime("%Y")) rescue ""
 
@@ -76,6 +76,14 @@ class GenerateMasterTracker
       link = %Q{HYPERLINK("#{raw_link}","Estimate")}
       worksheet.add_cell(row, 37, '', link)
       worksheet[row][37].change_font_color('0000ff')
+
+      insert(worksheet, row, 39, estimate.arborist&.name)
+
+      insert(worksheet, row, 40, "Tags:")
+
+      estimate.tags.each_with_index do |tag, index|
+        insert(worksheet, row, 41 + index, tag.label)
+      end
 
     end
 

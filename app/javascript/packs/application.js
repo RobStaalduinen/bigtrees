@@ -23,6 +23,9 @@ import { extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
 import Editor from 'vue-image-markup';
 
+import "../stylesheets/custom_theme.scss";
+
+
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('Editor', Editor);

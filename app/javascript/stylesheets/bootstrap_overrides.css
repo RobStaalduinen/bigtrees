@@ -104,6 +104,11 @@ a:not([href]):not([class]) {
   border-color: var(--main-color);
 }
 
+.btn-primary {
+  background-color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+}
+
 .subtext {
   font-size: 0.8rem;
   color: #6c757d;
