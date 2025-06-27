@@ -7,7 +7,7 @@
         <app-search-field v-model='searchTerm'></app-search-field>
       </div>
       <app-button text='Reset' :click='resetFiltering'></app-button>
-      <app-button text='Filters' icon='filter' v-b-modal='"Filters"'></app-button>
+      <app-button text='Filters' icon='filter' :click="openFilters"></app-button>
     </div>
     <app-arrow-pagination :totalEntries='totalEntries' :perPage='perPage' v-model='page'></app-arrow-pagination>
   </div>
@@ -18,7 +18,7 @@
     <div v-if='error'>Something bad happened</div>
   </div>
 
-  <app-estimate-filters modalId='Filters' v-model='filters'></app-estimate-filters>
+  <app-estimate-filters id='filters' v-model='filters'></app-estimate-filters>
   <app-list-action-handler></app-list-action-handler>
 </div>
 
@@ -67,7 +67,9 @@ export default {
           page: this.page,
           per_page: this.perPage,
           created_after: this.filters.createdAfter,
-          status: this.filters.status
+          status: this.filters.status,
+          assigned_to: this.filters.assignedTo || 'everyone',
+          tag_ids: this.filters.tagIds || []
         }
     
 
@@ -85,6 +87,9 @@ export default {
             this.error = true;
           }
         )
+    },
+    openFilters() {
+      this.$root.$emit('bv::toggle::collapse', "filters");
     },
     changeFilters(new_filters) {
       this.filters = new_filters;

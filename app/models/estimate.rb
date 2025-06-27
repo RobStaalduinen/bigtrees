@@ -57,6 +57,9 @@ class Estimate < ActiveRecord::Base
   scope :with_customer, -> { where.not(customer: nil) }
   scope :pre_quote, -> { (price_required.or(pending_quote)).active }
 	scope :approved, -> { where(approved: true) }
+	scope :with_tags, ->(tag_ids) do
+		joins(:taggings).where(taggings: { tag_id: tag_ids }).distinct
+	end
 
   # Filters
   scope :created_after, -> (filter_string) do

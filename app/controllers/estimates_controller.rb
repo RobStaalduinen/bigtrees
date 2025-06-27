@@ -34,6 +34,15 @@ class EstimatesController < ApplicationController
     else
       @estimates = @estimates.order('estimates.id DESC')
     end
+
+    if params[:assigned_to] == 'me'
+      @estimates = @estimates.where(arborist: current_user)
+    end
+
+    if params[:tag_ids].present? && params[:tag_ids].any?
+      @estimates = @estimates.with_tags(params[:tag_ids])
+    end
+
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     @estimates = @estimates.paginate(page: params[:page], per_page: params[:per_page])

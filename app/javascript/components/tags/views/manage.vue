@@ -10,7 +10,7 @@
     </app-header>
 
     <div class='tag-description'>
-      You can define <b>up to 10</b> custom tags that can be added to estimates.
+      You can define <b>up to 20</b> custom tags that can be added to estimates.
     </div>
 
     <div class="custom-tag-container">
@@ -73,7 +73,7 @@
         return this.tags.filter(tag => !tag.system);
       },
       limitReached() {
-        return this.nonSystemTags.length >= 10;
+        return this.nonSystemTags.length >= 20;
       }
     },
     methods : {

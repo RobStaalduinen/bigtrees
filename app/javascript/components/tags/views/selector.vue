@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-form-group label="Current Tags">
+    <b-form-group label="With Tags:">
       <div class="tag-list">
-        <div class="tag-container" v-for="tag in estimateTags" :key="tag.id">
+        <div class="tag-container" v-for="tag in selectedTags" :key="tag.id">
           <app-tag :tag="tag" action="delete" @click="removeTag(tag)"/>
         </div>
       </div>
     </b-form-group>
 
-    <b-form-group label="Addable Tags">
+    <b-form-group label="Possible Tags">
       <div class="tag-list">
         <div class="tag-container" v-for="tag in addableTags" :key="tag.id" @click="addTag(tag)">
           <app-tag :tag="tag" action="add"/>
@@ -26,21 +26,27 @@
       id: {
         required: true
       },
-      estimate: {
-        required: true
+      value: {
+        type: Array,
+        default: () => []
       }
     },
     data() {
       return {
         organization: this.$store.state.organization,
         organizationTags: [],
+        selectedTags: [],
         addableTags: [],
-        estimateTags: this.estimate.tags,
       }
+    },
+    computed: {
+      selectedTagIds() {
+        return this.selectedTags.map(tag => tag.id);
+      } 
     },
     methods: {
       retrieveTags() {
-        this.axiosGet(`/organizations/${this.organization.id}/tags`)
+        return this.axiosGet(`/organizations/${this.organization.id}/tags`)
           .then(response => {
             this.organizationTags = response.data.tags;
             this.calculateAddableTags();
@@ -50,39 +56,34 @@
           });
       },
       addTag(tag) {
-        this.axiosPost(`/organizations/${this.organization.id}/taggings`, { estimate_id: this.estimate.id, tag_id: tag.id })
-          .then(response => {
-            if (response.status === 200) {
-              this.estimateTags.push(tag);
-              this.calculateAddableTags();
-              this.$emit('tagsChanged', this.estimateTags);
-            }
-          })
+       this.selectedTags.push(tag);
+       this.calculateAddableTags();
+       this.$emit('input', this.selectedTagIds);
       },
       removeTag(tag) {
-        this.axiosDelete(`/organizations/${this.organization.id}/taggings?estimate_id=${this.estimate.id}&tag_id=${tag.id}`)
-          .then(response => {
-            if (response.status === 200) {
-              this.estimateTags = this.estimateTags.filter(estimateTag => estimateTag.id !== tag.id);
-              this.calculateAddableTags();
-              this.$emit('tagsChanged', this.estimateTags);
-            }
-          })
+        this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+        this.calculateAddableTags();
+        this.$emit('input', this.selectedTagIds);
       },
       calculateAddableTags() {
         this.addableTags = this.organizationTags.filter(tag => {
-          return !this.estimateTags.some(estimateTag => estimateTag.id === tag.id);
+          return !this.selectedTags.some(selected => selected.id === tag.id);
         });
       }
     },
     mounted() {
-      this.retrieveTags();
-    },
-    watch: {
-      'estimate.tags'(newVal) {
-        this.estimateTags = newVal;
+      this.retrieveTags().then(() => {
+        console.log('Value:', this.value);
+        this.selectedTags = this.value.map(tagId => {
+          return this.organizationTags.find(tag => tag.id === tagId);
+        }).filter(tag => tag !== undefined);
+
+        console.log('Selected Tags:', this.selectedTags);
+
         this.calculateAddableTags();
-      }
+      });
+
+    
     }
   }
 </script>

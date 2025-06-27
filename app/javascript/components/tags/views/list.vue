@@ -5,8 +5,8 @@
     </div>
 
     <template v-if="shouldCollapse()">
-      <div class="tag-container"><app-tag :tag="tags[0]" :index="index" /></div>
-      <div class="tag-container"><app-tag :tag="tags[1]" :index="index" /></div>
+      <div class="tag-container"><app-tag :tag="tags[0]" /></div>
+      <div class="tag-container"><app-tag :tag="tags[1]" /></div>
       <div class="tag-container"><app-tag :tag="{ label: `+ ${tags.length - 2}`, colour: 'grey' }" /></div>
     </template>
   </div>

@@ -14,7 +14,7 @@ class JobMailer < ApplicationMailer
     @job = job
     @estimate = estimate
     @organization = estimate.organization
-    @estimate_link = Rails.application.routes.url_helpers.estimate_url(estimate, host: 'admin.bigtreeservices.ca')
+    @estimate_link = "https://admin.bigtreeservices.ca/admin/estimates/#{estimate.id}"
 
     mail(to: @organization.email, bcc: 'rob.staalduinen@gmail.com', subject: subject)
   end
