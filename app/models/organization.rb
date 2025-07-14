@@ -10,6 +10,8 @@ class Organization < ActiveRecord::Base
   has_many :quick_costs
   has_many :tags
 
+  has_one :nylas_account, dependent: :destroy
+
   def default_arborist
     arborists.where(role: ['admin', 'super_admin']).first
   end

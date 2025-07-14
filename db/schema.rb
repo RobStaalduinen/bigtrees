@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_31_182707) do
+ActiveRecord::Schema.define(version: 2025_07_14_122031) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 2025_05_31_182707) do
     t.index ["number"], name: "index_invoices_on_number"
   end
 
-  create_table "job_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "job_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "job_id", null: false
     t.bigint "arborist_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(version: 2025_05_31_182707) do
     t.index ["job_id"], name: "index_job_assignments_on_job_id"
   end
 
-  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "estimate_id", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
@@ -272,6 +272,17 @@ ActiveRecord::Schema.define(version: 2025_05_31_182707) do
     t.datetime "updated_at", null: false
     t.index ["arborist_id"], name: "index_notes_on_arborist_id"
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
+  end
+
+  create_table "nylas_accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.string "outgoing_email_address"
+    t.string "code"
+    t.string "grant_id"
+    t.json "raw_response"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_nylas_accounts_on_organization_id"
   end
 
   create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

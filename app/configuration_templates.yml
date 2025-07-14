@@ -6,3 +6,7 @@ job_notifications:
   description: 'Send email notifications when a job starts or completes'
   type: 'boolean'
   default: false
+outgoing_email:
+  description: 'Enable outgoing email functionality'
+  type: 'boolean'
+  default: false

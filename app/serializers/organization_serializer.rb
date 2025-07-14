@@ -25,5 +25,8 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :job_survey_questions
   attribute :completion_survey_questions
 
+  attribute :configuration
+
   belongs_to :address
+  has_one :nylas_account
 end

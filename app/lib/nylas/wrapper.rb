@@ -5,7 +5,7 @@ module Nylas
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],
-        callback_uri: 'http://localhost:4000/nylas_accounts/receive_grant',
+        callback_uri: 'https://smee.io/RKCvHxgH8wKETod2',
         api_key: ENV['NYLAS_API_KEY'],
         api_uri: ENV['NYLAS_API_URI']
       }
@@ -24,13 +24,11 @@ module Nylas
     end
 
     def exchange_code_for_token(code)
-      response = @client.auth.exchange_code_for_token(
+      @client.auth.exchange_code_for_token(
         code: code,
         client_id: @config[:client_id],
         redirect_uri: @config[:callback_uri]
       )
-
-      response[:grant_id]
     end
   end
 end
