@@ -81,6 +81,10 @@ gem 'devise'
 
 gem 'addressable'
 
+# Emails
+gem 'nylas'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

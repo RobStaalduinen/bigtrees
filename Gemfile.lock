@@ -153,6 +153,7 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.3.4)
     crass (1.0.6)
+    csv (3.3.5)
     daemons (1.4.1)
     date (3.4.1)
     delayed_job (4.1.13)
@@ -191,6 +192,10 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     htmlentities (4.3.4)
+    httparty (0.23.1)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     jmespath (1.6.2)
@@ -232,10 +237,16 @@ GEM
       net-smtp
     marcel (1.0.4)
     method_source (1.1.0)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2025.0701)
     mini_mime (1.1.5)
     mini_racer (0.16.0)
       libv8-node (~> 18.19.0.0)
     minitest (5.25.4)
+    multi_xml (0.7.2)
+      bigdecimal (~> 3.1)
     mysql2 (0.5.6)
     net-imap (0.5.2)
       date
@@ -264,6 +275,12 @@ GEM
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-linux)
       racc (~> 1.4)
+    nylas (6.5.0)
+      base64
+      httparty (~> 0.21)
+      mime-types (~> 3.5, >= 3.5.1)
+      ostruct (~> 0.6)
+      yajl-ruby (~> 1.4.3, >= 1.2.1)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
     pry (0.14.2)
@@ -423,6 +440,7 @@ GEM
       activesupport
     will_paginate (4.0.1)
     wkhtmltopdf-binary (0.12.6.5)
+    yajl-ruby (1.4.3)
     zeitwerk (2.7.1)
 
 PLATFORMS
@@ -479,6 +497,7 @@ DEPENDENCIES
   mini_racer
   mysql2
   nokogiri
+  nylas
   pry
   pry-byebug
   pundit

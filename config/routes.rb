@@ -106,6 +106,10 @@ Rails.application.routes.draw do
 
   resources :vue_test, only: [ :new ]
 
+  resources :nylas_accounts, only: [ :new ] do
+    post '/receive_grant', to: 'nylas_account#receive_grant', on: :collection
+  end
+
   devise_for :users, class_name: 'Arborist'
 
   get '/p/:customer_name', to: 'property_management#show'
