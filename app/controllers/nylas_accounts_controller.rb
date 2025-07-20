@@ -21,5 +21,7 @@ class NylasAccountsController < ApplicationController
     nylas_account.update(raw_response: response)
 
     puts "Received code: #{code}"
+
+    redirect_to "https://admin.bigtreeservices.ca/admin/estimates"
   end
 end

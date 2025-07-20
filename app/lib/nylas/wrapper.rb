@@ -5,7 +5,7 @@ module Nylas
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],
-        callback_uri: 'https://smee.io/RKCvHxgH8wKETod2',
+        callback_uri: 'https://admin.bigtreeservices.com/nylas_accounts/receive_grant',
         api_key: ENV['NYLAS_API_KEY'],
         api_uri: ENV['NYLAS_API_URI']
       }
