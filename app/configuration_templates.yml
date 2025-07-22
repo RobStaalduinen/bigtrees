@@ -10,3 +10,7 @@ outgoing_email:
   description: 'Enable outgoing email functionality'
   type: 'boolean'
   default: false
+job_email_alternate_send:
+  description: 'Use new sending methods for job emails'
+  type: 'boolean'
+  default: false

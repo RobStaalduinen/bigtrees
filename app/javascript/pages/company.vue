@@ -53,7 +53,18 @@ export default {
     }
   },
   mounted() {
+    // Check URL for 'section' query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionParam = urlParams.get('section')?.split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
+    // If section parameter exists and is in our options list, select it
+    if (sectionParam && this.options.includes(sectionParam)) {
+      this.selectedOption = sectionParam;
+    } else {
+      this.selectedOption = 'Information'; // Default selection
+    }
   },
   computed: {
     options() {

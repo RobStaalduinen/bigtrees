@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_07_14_122031) do
+ActiveRecord::Schema.define(version: 2025_07_21_075008) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(version: 2025_07_14_122031) do
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
-  create_table "nylas_accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "nylas_accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.string "outgoing_email_address"
     t.string "code"
@@ -282,6 +282,7 @@ ActiveRecord::Schema.define(version: 2025_07_14_122031) do
     t.json "raw_response"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "active", null: false
     t.index ["organization_id"], name: "index_nylas_accounts_on_organization_id"
   end
 

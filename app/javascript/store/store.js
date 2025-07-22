@@ -68,6 +68,14 @@ export const store = new Vuex.Store({
         })
 
       })
+    },
+    refreshOrganization({ commit }) {
+      let organization_id = localStorage.getItem('selectedOrganizationId') || null;
+      if (organization_id) {
+        return axiosFunc.get(`/organizations/${organization_id}`).then(response => {
+          commit('setOrganization', response.data.organization);
+        });
+      }
     }
   },
   getters: {
