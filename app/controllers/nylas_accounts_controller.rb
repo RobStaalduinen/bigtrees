@@ -11,7 +11,6 @@ class NylasAccountsController < ApplicationController
   def destroy
     nylas_account = NylasAccount.find(params[:id])
 
-    nylas_account.update(organization_id: 2)
     wrapper = Nylas::Wrapper.new
 
     wrapper.remove_grant(nylas_account) if !Rails.env.development?

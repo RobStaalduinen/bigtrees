@@ -57,7 +57,7 @@ module Nylas
     end
 
     def remove_grant(nylas_account)
-      @client.grants.delete(grant_id: nylas_account.grant_id)
+      @client.grants.destroy(grant_id: nylas_account.grant_id)
     end
 
     def auth_url
