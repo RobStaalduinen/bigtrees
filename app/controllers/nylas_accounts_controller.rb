@@ -29,8 +29,14 @@ class NylasAccountsController < ApplicationController
     response = Nylas::Wrapper.new.exchange_code_for_token(code)
 
     grant_id = response[:grant_id]
+    email = response[:email]
 
-    nylas_account.update(grant_id: grant_id, status: 'active', raw_response: response)
+    nylas_account.update(
+      grant_id: grant_id, 
+      status: 'active', 
+      outgoing_email_address: email, 
+      raw_response: response
+      )
 
     redirect_to "https://admin.bigtreeservices.ca/admin/company?section=outgoing_email"
   end
