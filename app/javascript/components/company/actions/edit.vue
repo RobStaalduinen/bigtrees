@@ -9,6 +9,12 @@
         />
 
         <app-input-field
+          v-model='editableCompany.legal_name'
+          label='Legal Name'
+          name='legal_name'
+        />
+
+        <app-input-field
           v-model='editableCompany.email'
           label='Email Address'
           name='email'

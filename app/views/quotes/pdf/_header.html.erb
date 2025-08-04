@@ -12,7 +12,7 @@
     <td class='address-cell'>
       <div stlye='width: 100%; display: flex; justify-content: end;'>
       <div>
-        <span class='company-name'><%= organization.name %></span> <br>
+        <span class='company-name'><%= organization.legal_name || organization.name %></span> <br>
         <%= organization.address.street %> <br>
         <%= [organization.address.city, organization.address.postal_code].join(", ") %><br>
         <%= organization.phone_number %>

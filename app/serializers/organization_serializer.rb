@@ -2,6 +2,7 @@
 
 class OrganizationSerializer < ApplicationSerializer
   attribute :name
+  attribute :legal_name
 
   attribute :phone_number
   attribute :website

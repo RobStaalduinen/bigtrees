@@ -17,6 +17,10 @@
         <div class='company-information-value'>{{ company.name }}</div>
       </div>
       <div class='company-information-row'>
+        <div class='company-information-label'>Legal Name:</div>
+        <div class='company-information-value'>{{ company.legal_name }}</div>
+      </div>
+      <div class='company-information-row'>
         <div class='company-information-label'>Email:</div>
         <div class='company-information-value'>{{ company.email }}</div>
       </div>
