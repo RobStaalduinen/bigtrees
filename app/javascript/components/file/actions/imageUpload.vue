@@ -53,11 +53,11 @@ export default {
     },
     'bucketName': {
       type: String,
-      default: 'documents'
+      default: 'tree_images'
     },
     'name': {
       type: String,
-      default: 'document'
+      default: 'tree_image'
     },
     'label': {
       type: String,

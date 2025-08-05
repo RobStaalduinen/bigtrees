@@ -70,7 +70,7 @@
 
     <app-image-markup
       v-if='editedId != null'
-      :imageUrl='displayedUrl'
+      :imageUrl='editorUrl'
       @cancel='editedId = null'
       :onSave='onEditSave'
     ></app-image-markup>
@@ -138,6 +138,14 @@ export default {
     },
     displayedUrl(){
       return this.imageVersion == 'edited' ? this.displayedImageDefinition.treeImage.edited_url : this.displayedImageDefinition.treeImage.url
+    },
+    editorUrl() {
+      let editorUrl = `/tree_images/${this.displayedImageDefinition.treeImage.id}`
+
+      if(this.imageVersion == 'edited') {
+        editorUrl += '?edited=true'
+      }
+      return editorUrl;
     }
   },
   methods: {

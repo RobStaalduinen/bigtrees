@@ -20,6 +20,25 @@ class TreeImagesController < ApplicationController
     render json: { url: presigned_url.url, fields: presigned_url.fields }, status: :ok
   end
 
+  def show
+    tree_image = TreeImage.find(params[:id])
+
+    if params[:edited] == 'true' && tree_image.edited_image_url.present?
+      image_url = tree_image.edited_image_url
+    else
+      image_url = tree_image.image_url
+    end
+    parsed_url = URI.parse(image_url)
+    key = URI.decode_www_form_component(parsed_url.path.sub(/^\//, ''))
+
+    obj = Aws::S3::Client.new(
+      region: ENV['FOG_REGION'],
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+    ).get_object(bucket: ENV['FOG_BUCKET'], key: key)
+    send_data obj.body.read, type: obj.content_type, disposition: 'inline'
+  end
+
   def create
     params[:images].each do |image|
       TreeImage.create(
