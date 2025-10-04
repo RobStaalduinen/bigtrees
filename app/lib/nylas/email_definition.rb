@@ -19,7 +19,7 @@ module Nylas
 
     def bcc_list
       if @bcc.is_a?(Array)
-        @bcc.map { |email| { email: email } }
+        @bcc.compact.map { |email| { email: email } }
       else
         [{ email: @bcc }]
       end

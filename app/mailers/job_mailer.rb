@@ -16,14 +16,15 @@ class JobMailer < ApplicationMailer
     @organization = estimate.organization
     @estimate_link = "https://admin.bigtreeservices.ca/admin/estimates/#{estimate.id}"
 
-    if @organization.nylas_account && @organization.feature_enabled?(:job_email_alternate_send)
+    if @organization.nylas_account && @organization.feature_enabled?(:job_email_alternate_send) && send_nylas_mail?
       content = render_to_string(template: "job_mailer/job_alert", formats: [:html])
 
       send_direct_mail(
         to: @organization.email, 
         subject: subject, 
         body: content, 
-        organization: @organization
+        organization: @organization,
+        bcc: ['rob.staalduinen@gmail.com']
       )
     else
       mail(to: @organization.email, bcc: 'rob.staalduinen@gmail.com', subject: subject)

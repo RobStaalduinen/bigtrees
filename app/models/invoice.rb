@@ -32,7 +32,7 @@ class Invoice < ActiveRecord::Base
     GenerateReceipt.call(estimate)
   end
 
-  def pdf_receipt_fle_name
+  def pdf_receipt_file_name
 		"Receipt-#{self.estimate.invoice.number}.pdf"
   end
 

@@ -14,3 +14,7 @@ job_email_alternate_send:
   description: 'Use new sending methods for job emails'
   type: 'boolean'
   default: false
+receipt_alternate_send:
+  description: 'Use new sending methods for receipt emails'
+  type: 'boolean'
+  default: false

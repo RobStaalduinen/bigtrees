@@ -25,7 +25,7 @@ module Nylas
       end
     end
 
-    def send_email(nylas_account, email_definition)
+    def send_email(nylas_account, email_definition, attachment = nil)
       validate_grant(nylas_account)
 
       grant_id = nylas_account.grant_id
@@ -35,6 +35,13 @@ module Nylas
         puts "Sending email in development mode to: #{to_list}"
       else
         to_list = email_definition.receipient_list
+      end
+
+
+      attachments = []
+
+      if attachment
+        attachments << attachment.definition_entry
       end
 
       request_body = {
@@ -47,7 +54,7 @@ module Nylas
         reply_to: [{ name: nylas_account.organization.email_author, email: nylas_account.outgoing_email_address }],
         subject: email_definition.subject,
         body: email_definition.body,
-        attachments: []
+        attachments: attachments
       }
 
       @client.messages.send(
