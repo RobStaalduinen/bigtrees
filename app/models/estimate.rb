@@ -50,7 +50,7 @@ class Estimate < ActiveRecord::Base
 	# scope :complete, -> { where(status: 8) }
 	scope :today, -> { incomplete.where(work_start_date: Date.today) }
 	# scope :active, -> { where(is_unknown: false).where("status < 8") }
-	scope :active, -> { in_progress }
+	scope :active, -> { in_progress.or(on_hold) }
   scope :no_followup, -> { where(followup_sent_at: nil) }
 	# scope :unknown, -> { where(is_unknown: true) }
 	scope :paid, -> { joins(:invoice).where(invoices: { paid: true }).uniq }
@@ -82,7 +82,7 @@ class Estimate < ActiveRecord::Base
   scope :for_status, -> (filter_string) do
     case filter_string
 		when 'active'
-			submitted.in_progress
+			submitted.in_progress.or(submitted.on_hold)
 		when 'needs_pricing'
 			submitted.in_progress.needs_costs
 		when 'pre_quote'
