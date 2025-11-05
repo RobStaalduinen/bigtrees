@@ -12,6 +12,10 @@
     <app-arrow-pagination :totalEntries='totalEntries' :perPage='perPage' v-model='page'></app-arrow-pagination>
   </div>
 
+  <div id='estimate-stats-container'>
+    <app-estimate-stats :filters="filters" :searchTerm="searchTerm"></app-estimate-stats>
+  </div>
+
   <div id='estimates-container'>
     <app-single-estimate v-for='estimate in estimates' :key='estimate.id' :estimate='estimate'></app-single-estimate>
     <app-loading-overlay v-if='loadingEstimates'></app-loading-overlay>
@@ -31,13 +35,15 @@ import Filters from './filters';
 import ListActionHandler from '@/components/estimate/utils/listActionHandler';
 import { mapState } from 'vuex'
 import EventBus from '@/store/eventBus'
+import EstimateStats from './stats';
 
 export default {
   components: {
     'app-single-estimate': SingleEstimate,
     'app-estimate-filters': Filters,
     'app-image-gallery': ImageGallery,
-    'app-list-action-handler': ListActionHandler
+    'app-list-action-handler': ListActionHandler,
+    'app-estimate-stats': EstimateStats
   },
   data() {
     return {

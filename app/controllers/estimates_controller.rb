@@ -27,21 +27,7 @@ class EstimatesController < ApplicationController
       includes(:arborist).
       includes(:tags)
 
-    @estimates = @estimates.created_after(params[:created_after]) if params[:created_after]
-    @estimates = @estimates.for_status(params[:status]) if params[:status]
-    if params[:only_mine]
-      @estimates = @estimates.where(arborist: current_user).order('work_start_date ASC')
-    else
-      @estimates = @estimates.order('estimates.id DESC')
-    end
-
-    if params[:assigned_to] == 'me'
-      @estimates = @estimates.where(arborist: current_user)
-    end
-
-    if params[:tag_ids].present? && params[:tag_ids].any?
-      @estimates = @estimates.with_tags(params[:tag_ids])
-    end
+    @estimates = filter_estimates(@estimates, params)
 
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
@@ -138,6 +124,32 @@ class EstimatesController < ApplicationController
     render json: {}
 	end
 
+  def stats
+    authorize Estimate, :index?
+
+    @estimates = policy_scope(Estimate).
+      in_progress.
+      joins(:customer).
+      joins(:site).
+      joins(:customer_detail).
+      joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
+      joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
+      joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id")
+
+    @estimates = filter_estimates(@estimates, params)
+    @estimates = search_estimates(@estimates, params[:q]) if params[:q]
+
+    stats = {
+      needs_costs: @estimates.needs_costs.count,
+      quote_sent: @estimates.quote_sent.count,
+      approved: @estimates.approved.count,
+      scheduled: @estimates.work_scheduled.count,
+      completed: @estimates.work_completed.count,
+      invoice_sent: @estimates.final_invoice_sent.count
+    }
+    render json: stats
+  end
+
   private
 
   def search_estimates(estimates, query)
@@ -202,5 +214,26 @@ class EstimatesController < ApplicationController
     params.require(:customer).permit(
      :name, :phone, :email
     )
+  end
+
+  def filter_estimates(estimates, params)
+    estimates = estimates.created_after(params[:created_after]) if params[:created_after]
+    estimates = estimates.for_status(params[:status]) if params[:status]
+
+    if params[:only_mine]
+      estimates = estimates.where(arborist: current_user).order('work_start_date ASC')
+    else
+      estimates = estimates.order('estimates.id DESC')
+    end
+
+    if params[:assigned_to] == 'me'
+      estimates = estimates.where(arborist: current_user)
+    end
+
+    if params[:tag_ids].present? && params[:tag_ids].any?
+      estimates = estimates.with_tags(params[:tag_ids])
+    end
+
+    estimates
   end
 end

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       put '/', to: 'jobs#update', on: :collection
     end
 
+    get '/stats', to: 'estimates#stats', on: :collection
     post '/cancel', to: 'estimates#cancel', on: :member
   end
 
