@@ -5,7 +5,17 @@ class NylasAccountsController < ApplicationController
   def new
     wrapper = Nylas::Wrapper.new
 
-    render json: { url: wrapper.auth_url }
+    render json: { url: wrapper.auth_url(OrganizationContext.current_organization) }
+  end
+
+  def show
+    nylas_account = NylasAccount.find(params[:id])
+
+    nylas_account.validate!
+
+    render json: nylas_account
+  rescue StandardError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   def destroy

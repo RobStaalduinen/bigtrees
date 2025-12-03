@@ -5,7 +5,7 @@ module Nylas
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],
-        callback_uri: 'https://admin.bigtreeservices.ca/nylas_accounts/receive_grant',
+        callback_uri: ENV['NYLAS_CALLBACK_URI'],
         api_key: ENV['NYLAS_API_KEY'],
         api_uri: ENV['NYLAS_API_URI']
       }
@@ -22,7 +22,12 @@ module Nylas
       if grant.nil? || grant.first[:grant_status] != 'valid'
         nylas_account.update(status: 'unsynced')
         raise "Email connection must be resynced"
+      else
+        nylas_account.update(status: 'active')
       end
+    rescue Nylas::NylasApiError => e
+      nylas_account.update(status: 'unsynced')
+
     end
 
     def send_email(nylas_account, email_definition, attachment = nil)
@@ -61,16 +66,19 @@ module Nylas
         identifier: grant_id,
         request_body: request_body
       )
+    rescue StandardError => e
+      raise "Failed to send email."
     end
 
     def remove_grant(nylas_account)
       @client.grants.destroy(grant_id: nylas_account.grant_id)
     end
 
-    def auth_url
+    def auth_url(organization)
       @client.auth.url_for_oauth2({
         client_id: @config[:client_id],
-        redirect_uri: @config[:callback_uri]
+        redirect_uri: @config[:callback_uri],
+        state: organization.id
       })
     end
 

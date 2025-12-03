@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       get '/receipt', to: 'quotes#receipt'
       get '/pdf', to: 'quotes#pdf', on: :collection
     end
-    resources :image_requests, only: [ :new, :create ]
     resources :quote_mailouts, only: [ :create ]
     resources :sites, only: [ :create, :edit, :update ]
     resources :costs, only: [ :new, :create ] do
@@ -95,6 +94,7 @@ Rails.application.routes.draw do
       delete '/', to: 'taggings#destroy', on: :collection
     end
 
+
     resources :configurations, only: [ :index, :update ]
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
@@ -107,7 +107,7 @@ Rails.application.routes.draw do
 
   resources :vue_test, only: [ :new ]
 
-  resources :nylas_accounts, only: [ :new, :destroy ] do
+  resources :nylas_accounts, only: [ :new, :show, :destroy ] do
     get '/receive_grant', to: 'nylas_accounts#receive_grant', on: :collection
   end
 

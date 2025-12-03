@@ -18,3 +18,7 @@ receipt_alternate_send:
   description: 'Use new sending methods for receipt emails'
   type: 'boolean'
   default: false
+quote_alternate_send:
+  description: 'Use new sending methods for quote emails'
+  type: 'boolean'
+  default: false

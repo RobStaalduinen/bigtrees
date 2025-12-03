@@ -17,7 +17,8 @@ export const store = new Vuex.Store({
       mySchedule: false
     },
     arborists: [],
-    organization: {}
+    organization: {},
+    email_status: 'active'
   },
   mutations: {
     setUser (state, user) {
@@ -44,6 +45,9 @@ export const store = new Vuex.Store({
         ...state.estimateSettings,
         ...payload
       }
+    },
+    setEmailStatus(state, payload) {
+      state.email_status = payload;
     }
   },
   actions: {
@@ -76,6 +80,22 @@ export const store = new Vuex.Store({
           commit('setOrganization', response.data.organization);
         });
       }
+    },
+    refreshEmailStatus({ commit }) {
+      if (!this.state.organization) {
+        return;
+      }
+
+      if(!this.state.organization.nylas_account) {
+        commit('setEmailStatus', 'none');
+        return;
+      }
+
+      return axiosFunc.get(`/nylas_accounts/${this.state.organization.nylas_account.id}`).then(response => {
+        console.log('email status response', response);
+        commit('setEmailStatus', response.data.nylas_account.status);
+        this.dispatch('refreshOrganization');
+      });
     }
   },
   getters: {

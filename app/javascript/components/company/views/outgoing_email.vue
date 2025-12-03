@@ -34,7 +34,11 @@
     data() {
       return {
         company: this.$store.state.organization,
-        nylasAccount: this.$store.state.organization.nylas_account,
+      }
+    },
+    computed:{
+      nylasAccount() {
+        return this.$store.state.organization.nylas_account;
       }
     },
     methods: {

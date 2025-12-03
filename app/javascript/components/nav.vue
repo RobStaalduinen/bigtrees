@@ -30,15 +30,20 @@
     <b-modal id='organization-modal' title='Change Organization' ok-title="Cancel" ok-only>
       <app-change-organization></app-change-organization>
     </b-modal>
+    <div id='email-status-container'>
+      <app-email-status></app-email-status>
+    </div>  
   </div>
 </template>
 
 <script>
 import ChangeOrganization from '@/components/organizations/actions/change.vue'
+import EmailStatus from '@/components/company/views/email_status.vue'
 
 export default {
   components: {
-    'app-change-organization': ChangeOrganization
+    'app-change-organization': ChangeOrganization,
+    'app-email-status': EmailStatus
   },
   computed: {
     userId() {

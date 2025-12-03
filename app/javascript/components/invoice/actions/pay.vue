@@ -36,7 +36,6 @@
 import InvoiceForm from '../forms/full';
 import EmailForm from '../../common/forms/templatedEmail';
 import EventBus from '@/store/eventBus'
-import { paymentReceived } from '@/components/estimate/utils/stateTransitions.js';
 import { PAYMENT_METHODS } from '@/constants';
 
 export default {
@@ -73,10 +72,17 @@ export default {
           email: this.emailDefinition
         }
 
-        paymentReceived(this.estimate, params).then(response => {
+        this.axiosPost(`/estimates/${this.estimate.id}/invoice_receipts`, params).then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);
           EventBus.$emit('ESTIMATE_UPDATED', response.data);
-        })
+        }).catch(error => {
+          console.error('Error processing payment:', error);
+        });
+
+        // paymentReceived(this.estimate, params).then(response => {
+        //   this.$root.$emit('bv::toggle::collapse', this.id);
+        //   EventBus.$emit('ESTIMATE_UPDATED', response.data);
+        // })
       })
     },
     updateEmailContent(new_email) {
