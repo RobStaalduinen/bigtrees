@@ -78,11 +78,6 @@ export default {
         }).catch(error => {
           console.error('Error processing payment:', error);
         });
-
-        // paymentReceived(this.estimate, params).then(response => {
-        //   this.$root.$emit('bv::toggle::collapse', this.id);
-        //   EventBus.$emit('ESTIMATE_UPDATED', response.data);
-        // })
       })
     },
     updateEmailContent(new_email) {
