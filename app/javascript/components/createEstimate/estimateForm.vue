@@ -74,12 +74,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      var allUploadsComplete = this.tasks.every(task => { return task.image == undefined || task.image.uploadCompleted == true })
-      if(!allUploadsComplete) {
-          this.validationErrorMessage = 'Wait for image uploads to finish and try again'
-          this.validationErrors = true;
-          return;
-      }
 
       this.submitForm();
 

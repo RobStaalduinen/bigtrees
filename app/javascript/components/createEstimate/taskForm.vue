@@ -5,7 +5,8 @@
         Task #{{ index + 1 }}
         <b-icon icon='trash-fill' v-if="tasks.length > 1" @click='deleteTask(index)'/>
       </div>
-      <app-single-image :value='task.image' @input='(payload) => updateImage(index, payload)'></app-single-image>
+      <!-- <app-single-image :value='task.image' @input='(payload) => updateImage(index, payload)'></app-single-image> -->
+      <app-file-upload :value='task.image.url' @input='(payload) => updateImage(index, payload)'></app-file-upload>
       <app-single-cost :value='task.cost' @input='(payload) => updateCosts(index, payload)'></app-single-cost>
     </div>
 
@@ -19,6 +20,7 @@
 
 <script>
   import SingleImageForm from '../tree_images/forms/single';
+  import FileUpload from '@/components/file/actions/upload';
   import SingleCost from '../costs/forms/single';
   import QuickCosts from '@/components/costs/widgets/quick';
 
@@ -26,6 +28,7 @@
   export default {
     components: {
       'app-single-image': SingleImageForm,
+      'app-file-upload': FileUpload,
       'app-single-cost': SingleCost,
       'app-quick-costs': QuickCosts
     },
@@ -40,7 +43,7 @@
         this.tasks.push(
           {
             key: Math.random().toString(36).substr(2, 9),
-            image: null,
+            image: { url: null },
             cost: { description: description, amount: amount }
           }
         )
@@ -57,12 +60,12 @@
       defaultTask() {
         return {
           key: Math.random().toString(36).substr(2, 9),
-          image: null,
+          image: { url: null },
           cost: { description: null, amount: null }
         }
       },
       updateImage(index, payload) {
-        this.tasks[index].image = { ...payload };
+        this.tasks[index].image.url = payload;
         this.$emit('input', this.tasks);
       },
       updateCosts(index, payload) {

@@ -8,7 +8,7 @@
     <div v-if='!url && uploading' class='file-field'>
       <b-spinner id='app-loader-container'></b-spinner> 
       <div class='file-name-field'>Uploading {{ fileName }}</div>
-      <div v-if='completionPercentage'>{{ completionPercentage }}%</div>
+      <div v-if='displayProgress && completionPercentage'>{{ completionPercentage }}%</div>
     </div>
   </div>
 </template>
@@ -30,6 +30,10 @@ export default {
     'bucketName': {
       type: String,
       default: 'documents'
+    },
+    'displayProgress': {
+      type: Boolean,
+      default: true
     }
   },
   data() {

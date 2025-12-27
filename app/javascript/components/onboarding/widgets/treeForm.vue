@@ -52,6 +52,8 @@
             @input='(url) => updateImage(index, url)'
             accept=".jpg, .jpeg, .png"
             :label="`Picture ${index + 1}`"
+            bucketName="tree_images"
+            :displayProgress="false"
           ></app-file-upload>
         </div>
       </b-form-group>
@@ -59,11 +61,11 @@
 </template>
 
 <script>
-import Uploader from '@/components/file/actions/imageUpload';
+import FileUpload from '@/components/file/actions/upload';
 
 export default {
   components: {
-    'app-file-upload': Uploader
+    'app-file-upload': FileUpload
   },
   props: ['treeNumber', 'value', 'stumpingOnly'],
   data() {
