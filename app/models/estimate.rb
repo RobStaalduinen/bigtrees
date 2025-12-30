@@ -10,7 +10,6 @@ class Estimate < ActiveRecord::Base
 
 	has_many :trees, dependent: :destroy
 	has_many :tree_images, dependent: :destroy
-	has_many :extra_costs, dependent: :destroy
   has_many :costs, dependent: :destroy
   has_many :notes, dependent: :destroy
 

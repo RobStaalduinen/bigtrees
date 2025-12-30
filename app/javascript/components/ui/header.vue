@@ -54,7 +54,7 @@ export default {
 
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     font-size: 14px;
   }
 

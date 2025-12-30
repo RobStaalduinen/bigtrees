@@ -3,7 +3,18 @@
     <app-header
       :title='getTitle()'
       :backLink='backLink()'
-    ></app-header>
+    >
+      <template v-slot:header-right>
+        <b-dropdown size="lg" variant="link" toggle-class="text-decoration-none" no-caret right>
+          <template #button-content>
+            <div class='menu-icon-container'>
+              <b-icon icon="three-dots" style="color: black"></b-icon>
+            </div>
+          </template>
+          <b-dropdown-item button @click="duplicate">Duplicate</b-dropdown-item>
+        </b-dropdown>
+      </template>
+    </app-header>
 
     <div v-if='estimate' id='estimate-body'>
 
@@ -178,6 +189,27 @@ export default {
       var title = "Estimate #" + this.estimate_id;
 
       return title;
+    },
+    duplicate() {
+      this.$bvModal.msgBoxConfirm('Create a new quote with the same customer and cost information?', {
+        title: 'Confirm Duplication',
+        size: 'md',
+        buttonSize: 'md',
+        okVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+      .then(value => {
+        if(value){
+          this.axiosPost(`/estimates/${this.estimate_id}/duplications`).then(response => {
+            this.$router.push(`/admin/estimates/${response.data.estimate_id}`);
+            window.location.reload();
+          })
+        }
+      })
     }
   }
 }
@@ -225,5 +257,15 @@ export default {
       position: relative;
       border: 1px lightgray solid;
     }
+  }
+
+  .menu-icon-container {
+    border: 1px solid #ccc;
+    border-radius: 25%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>

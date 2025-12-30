@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 
     get '/stats', to: 'estimates#stats', on: :collection
     post '/cancel', to: 'estimates#cancel', on: :member
+
+    resources :duplications, module: :estimates, only: [:create]
   end
 
   resources :sessions, only: [ :new, :create, :destroy ]
