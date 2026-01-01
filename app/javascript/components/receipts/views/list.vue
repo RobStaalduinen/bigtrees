@@ -28,6 +28,7 @@
             :toggleDetails='toggleModal'
             :toggleReject='toggleReject'
             :approveReceipt='approveReceipt'
+            :resetReceipt='resetReceipt'
           />
         </div>
       </div>
@@ -138,6 +139,13 @@ export default {
       this.displayedReceipt = this.receipts.filter(receipt => receipt.id == receipt_id)[0];
       this.$bvModal.hide(`receipt-modal`);
       this.$root.$emit('bv::toggle::collapse', 'reject-receipt');
+    },
+    resetReceipt(receipt_id) {
+      const params = { receipt: { state: 'pending', rejection_reason: null }};
+
+      this.axiosPut(`/receipts/${receipt_id}`, params).then(response => {
+        EventBus.$emit('RECEIPT_UPDATED');
+      })
     },
     close() {
       this.$bvModal.hide(`receipt-modal`);

@@ -1,5 +1,5 @@
 class Receipt {
-  constructor(receipt){
+  constructor(receipt) {
     this.receipt = receipt;
   }
 
@@ -9,6 +9,10 @@ class Receipt {
 
   canReject() {
     return this.receipt.state == 'pending' || this.receipt.state == 'approved'
+  }
+
+  canReset() {
+    return this.receipt.state == 'approved' || this.receipt.state == 'rejected'
   }
 }
 

@@ -35,6 +35,12 @@
               :onClick='approve'
             />
             <app-action-bar-item
+              name='Reset'
+              icon='arrow-counterclockwise'
+              v-if="receiptInfo.canReset() && hasPermission('receipts', 'admin')"
+              :onClick='reset'
+            />
+            <app-action-bar-item
               name='Details'
               icon='clipboard-plus'
               :onClick='() => toggleDetails(receipt.id)'
@@ -67,6 +73,10 @@ export default {
     'approveReceipt': {
       required: true,
       type: Function
+    },
+    'resetReceipt': {
+      required: true,
+      type: Function
     }
   },
   computed: {
@@ -77,6 +87,9 @@ export default {
   methods: {
     approve() {
       this.approveReceipt(this.receipt.id);
+    },
+    reset () {
+      this.resetReceipt(this.receipt.id);
     }
   }
 }

@@ -40,6 +40,11 @@
               icon='pencil-square'
               :onClick='editEmployee'
             />
+            <app-action-bar-item
+              name='Reset Password'
+              icon='key'
+              :onClick='resetPassword'
+            />
 
             <app-action-bar-item
               name='Remove'
@@ -75,6 +80,20 @@ export default {
     removeEmployee() {
       confirm("Are you sure you want to remove this employee from your company?")
       EventBus.$emit('REMOVE_EMPLOYEE', this.employee);
+    },
+    resetPassword() {
+      if(!confirm("Are you sure you want to reset this employee's password?")) {
+        return;
+      }
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let password = "";
+      for (let i = 0; i < 10; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      this.axiosPut(`/arborists/${this.employee.id}/update_password`, { password: password }).then(response => {
+        alert(`Password for ${this.employee.name} reset to: ${password}`);
+      })
     }
   }
 }
