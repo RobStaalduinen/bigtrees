@@ -4,8 +4,6 @@ class TreeImage < ActiveRecord::Base
   belongs_to :tree
   belongs_to :estimate
 
-  after_save :update_image_url
-
   def url
     image_url
   end
@@ -52,10 +50,4 @@ class TreeImage < ActiveRecord::Base
     
   #   edited_imgix_url
   # end
-
-  def update_image_url
-    return unless image_url.blank? && asset.present?
-
-    self.update_attribute(:image_url, asset.url)
-  end
 end
