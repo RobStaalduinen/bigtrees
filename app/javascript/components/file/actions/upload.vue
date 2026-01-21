@@ -88,6 +88,10 @@ export default {
       this.completionPercentage = percentage;
     },
     compressFile(file) {
+      if (!file.type.match(/image\/*/)) {
+        return Promise.resolve(file);
+      }
+
       const options = {
         maxSizeMB: 1,          // target ≤1MB
         maxWidthOrHeight: 1024,
