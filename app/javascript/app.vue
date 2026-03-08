@@ -1,5 +1,6 @@
 <template>
   <div>
+    <app-update-banner></app-update-banner>
     <router-view v-if='signedIn'></router-view>
     <app-notificaiton-box></app-notificaiton-box>
     <app-error-handler></app-error-handler>

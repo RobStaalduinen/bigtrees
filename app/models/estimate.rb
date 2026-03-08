@@ -137,8 +137,8 @@ class Estimate < ActiveRecord::Base
 	end
 
 	def additional_message
-    return 'Picture Request Sent' if read_attribute(:status).to_i < 4 && picture_request_sent_at.present?
-    return 'No Response Followup Sent' if read_attribute(:status).to_i < 4 && followup_sent_at.present?
+    return 'Picture Request Sent' if read_attribute(:status).to_i < 40 && picture_request_sent_at.present?
+    return 'No Response Followup Sent' if read_attribute(:status).to_i < 40 && followup_sent_at.present?
 	end
 
 	def quote_sent?
@@ -198,10 +198,6 @@ class Estimate < ActiveRecord::Base
 
 	def final?
 		self.invoice.present? && self.invoice.paid?
-	end
-
-	def can_resend_quote?
-		true
 	end
 
 	def paid?
@@ -267,16 +263,6 @@ class Estimate < ActiveRecord::Base
 			self.cancelled_at = nil
 		end
 	end
-
-	# def process_tags(old_status, new_status)
-	# 	if %w[needs_arborist pending_quote quote_sent work_scheduled].include?(new_status.to_s) && old_status.to_s != new_status.to_s
-	# 		self.taggings.joins(:tag).where(tags: { label: 'Site Visit' }).destroy_all
-	# 	end
-
-	# 	if old_status.to_sym != new_status.to_sym
-	# 		self.taggings.joins(:tag).where(tags: { label: 'Pending Permit' }).destroy_all
-	# 	end
-	# end
 
   def site_visit_required
     status.to_s == 'needs_costs' && site_visit

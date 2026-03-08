@@ -74,6 +74,7 @@ import RightSidebarForm from '../components/ui/rightSidebarForm.vue';
 import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue';
 import Tag from '../components/ui/tag.vue'
 import ColourPicker from '../components/ui/colourPicker.vue';
+import UpdateBanner from '../components/ui/updateBanner.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -90,6 +91,7 @@ Vue.component('app-right-sidebar-form', RightSidebarForm)
 Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
 Vue.component('app-tag', Tag);
 Vue.component('app-colour-picker', ColourPicker);
+Vue.component('app-update-banner', UpdateBanner);
 
 
 // Form components
