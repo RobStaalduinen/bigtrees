@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: tree_images
+#
+#  id                 :integer          not null, primary key
+#  asset_file_name    :string(255)
+#  asset_content_type :string(255)
+#  asset_file_size    :integer
+#  asset_updated_at   :datetime
+#  tree_id            :integer
+#  image_url          :string(255)
+#  image_small_url    :string(255)
+#  edited_image_url   :string(255)
+#  estimate_id        :integer
+#
 class TreeImage < ActiveRecord::Base
   BUCKET_URL = 'https://bigtreecare.s3.amazonaws.com'
   IMGIX_CDN = 'https://bigtrees.imgix.net'

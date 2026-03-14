@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: costs
+#
+#  id          :integer          not null, primary key
+#  estimate_id :integer
+#  amount      :float(24)
+#  description :string(255)
+#  discount    :boolean          default(FALSE)
+#
 class Cost < ActiveRecord::Base
   belongs_to :estimate
 

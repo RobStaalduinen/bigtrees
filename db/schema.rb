@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_08_04_170656) do
+ActiveRecord::Schema.define(version: 2026_03_14_174445) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2025_08_04_170656) do
     t.boolean "active", default: true
     t.float "hourly_rate"
     t.boolean "can_manage_estimates", default: false
-    t.integer "organization_id"
     t.string "role", default: "arborist"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
