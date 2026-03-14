@@ -12,15 +12,7 @@ class EstimatesController < ApplicationController
       return
     end
 
-    @estimates = policy_scope(Estimate)
-
-    @estimates = @estimates.
-      joins(:customer).
-      joins(:site).
-      joins(:customer_detail).
-      joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
-      joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
-      joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id").
+    @estimates = base_estimate_query.
       includes(site: [:address]).
       includes(:customer_detail).
       includes(:customer).
@@ -55,38 +47,18 @@ class EstimatesController < ApplicationController
   def create
     authorize Estimate, :create?
 
-    estimate = Estimate.new(estimate_params)
-    org = OrganizationContext.current_organization
+    estimate = Estimates::Create.call(
+      estimate_params:        estimate_params,
+      site_params:            params[:site].present? ? site_params : nil,
+      customer_params:        params[:customer].present? ? customer_params : nil,
+      customer_detail_params: params[:customer].present? ? customer_detail_params : nil,
+      job_attributes:         params[:job].present? ? job_attributes : nil,
+      org:                    OrganizationContext.current_organization,
+      current_user:           current_user,
+      policy_scope:           policy_scope(Customer)
+    )
 
-    estimate.arborist = current_user.organization_memberships.exists?(organization: org) ? current_user : org.default_arborist
-    estimate.organization = org
-    estimate.save
-
-    if params[:site].present?
-      site = estimate.site || Site.new(estimate: estimate)
-      site.update(site_params)
-    end
-
-    if params[:customer].present?
-      customer = policy_scope(Customer).find_by(id: customer_params[:id]) || Customer.create(customer_params)
-      estimate.update(customer: customer)
-
-      customer_detail = estimate.customer_detail || CustomerDetail.new(estimate: estimate)
-      customer_detail.update(customer_detail_params)
-    end
-
-    if params[:job].present?
-      job = estimate.job || Job.new(estimate: estimate)
-      job.update(job_attributes)
-
-      if job_attributes[:assigned_arborists].present?
-        job_attributes[:assigned_arborists].each do |arborist_id|
-          JobAssignment.create(job: job, arborist_id: arborist_id)
-        end
-      end
-    end
-
-		render json: { estimate_id: estimate.id }
+    render json: { estimate_id: estimate.id }
   end
 
   def update
@@ -118,7 +90,7 @@ class EstimatesController < ApplicationController
 	def cancel
 		authorize Estimate, :update?
 
-		@estimate = Estimate.find(params[:id])
+		@estimate = policy_scope(Estimate).find(params[:id])
 		@estimate.update(state: 'cancelled')
 
     render json: {}
@@ -127,14 +99,7 @@ class EstimatesController < ApplicationController
   def stats
     authorize Estimate, :index?
 
-    @estimates = policy_scope(Estimate).
-      in_progress.
-      joins(:customer).
-      joins(:site).
-      joins(:customer_detail).
-      joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)").
-      joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)").
-      joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id")
+    @estimates = base_estimate_query.in_progress
 
     @estimates = filter_estimates(@estimates, params)
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
@@ -151,6 +116,16 @@ class EstimatesController < ApplicationController
   end
 
   private
+
+  def base_estimate_query
+    policy_scope(Estimate)
+      .joins(:customer)
+      .joins(:site)
+      .joins(:customer_detail)
+      .joins("LEFT JOIN addresses site_addresses ON (site_addresses.addressable_type = 'Site' AND site_addresses.addressable_id = sites.id AND sites.estimate_id = estimates.id)")
+      .joins("LEFT JOIN addresses customer_addresses ON (customer_addresses.addressable_type = 'CustomerDetail' AND customer_addresses.addressable_id = customer_details.id AND customer_details.estimate_id = estimates.id)")
+      .joins("LEFT JOIN invoices on invoices.estimate_id = estimates.id")
+  end
 
   def search_estimates(estimates, query)
     estimates.where(
