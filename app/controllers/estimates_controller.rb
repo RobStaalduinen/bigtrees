@@ -58,7 +58,7 @@ class EstimatesController < ApplicationController
     estimate = Estimate.new(estimate_params)
     org = OrganizationContext.current_organization
 
-    estimate.arborist = current_user.organization_id == org.id ? current_user : org.default_arborist
+    estimate.arborist = current_user.organization_memberships.exists?(organization: org) ? current_user : org.default_arborist
     estimate.organization = org
     estimate.save
 
@@ -119,7 +119,7 @@ class EstimatesController < ApplicationController
 		authorize Estimate, :update?
 
 		@estimate = Estimate.find(params[:id])
-		@estimate.update(cancelled_at: Date.today)
+		@estimate.update(state: 'cancelled')
 
     render json: {}
 	end
