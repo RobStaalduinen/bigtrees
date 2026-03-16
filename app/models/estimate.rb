@@ -136,7 +136,7 @@ class Estimate < ActiveRecord::Base
 		when 'on_hold'
 			submitted.on_hold
 		when 'completed'
-			submitted.done
+			submitted.completed
 		when 'cancelled'
 			cancelled
     end

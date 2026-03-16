@@ -105,11 +105,11 @@ class EstimatesController < ApplicationController
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     stats = {
-      needs_costs: @estimates.needs_costs.count,
+      quoting: @estimates.needs_costs.count + @estimates.pending_quote.count,
       quote_sent: @estimates.quote_sent.count,
       approved: @estimates.approved.count,
       scheduled: @estimates.work_scheduled.count,
-      completed: @estimates.work_completed.count,
+      working: @estimates.work_started.count + @estimates.work_completed.count,
       invoice_sent: @estimates.final_invoice_sent.count
     }
     render json: stats

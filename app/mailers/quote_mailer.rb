@@ -14,7 +14,7 @@ class QuoteMailer < ApplicationMailer
 			attachments[estimate.pdf_file_name] = File.read(file)
     end
 
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:quote_alternate_send)
+		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
 			attachment = include_quote ?  Nylas::Attachment.new(name: estimate.pdf_file_name, file_path: file) : nil
 			content = render_to_string(template: "quote_mailer/quote_email", formats: [:html])
 

@@ -12,7 +12,7 @@ class EstimateMailer < ApplicationMailer
 
     subject = "#{@organization.name} - BigTree Estimate Request from " + @estimate.customer.name
 
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:quote_alternate_send)
+		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
 			content = render_to_string(template: "estimate_mailer/estimate_alert", formats: [:html])
 			send_direct_mail(
         to: @organization.email,
@@ -31,8 +31,8 @@ class EstimateMailer < ApplicationMailer
 
     subject = "#{@organization.name} - Commercial Quote Request from " + contact_params[:name]
 
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:quote_alternate_send)
-		
+		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
+
 			content = render_to_string(template: "estimate_mailer/commercial_quote_request", formats: [:html])
 			send_direct_mail(
 				to: @organization.email,

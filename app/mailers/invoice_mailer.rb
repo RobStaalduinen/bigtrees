@@ -10,7 +10,7 @@ class InvoiceMailer < ApplicationMailer
 		@organization = estimate.organization
 		file = invoice.pdf_receipt
 		
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:receipt_alternate_send)
+		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
 			
 			attachment = Nylas::Attachment.new(name: invoice.pdf_receipt_file_name, file_path: file)
 			content = render_to_string(template: "invoice_mailer/receipt", formats: [:html])

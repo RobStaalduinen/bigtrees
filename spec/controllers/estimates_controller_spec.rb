@@ -443,14 +443,14 @@ RSpec.describe EstimatesController, type: :controller do
       get :stats, format: :json
       body = JSON.parse(response.body)
       expect(response).to have_http_status(:ok)
-      expect(body.keys).to match_array(%w[needs_costs quote_sent approved scheduled completed invoice_sent])
+      expect(body.keys).to match_array(%w[quoting quote_sent approved scheduled working invoice_sent])
     end
 
     it 'counts in_progress estimates in each bucket' do
       get :stats, format: :json
       body = JSON.parse(response.body)
-      # Estimate has no costs → needs_costs status
-      expect(body['needs_costs']).to eq(1)
+      # Estimate has no costs → quoting status
+      expect(body['quoting']).to eq(1)
     end
 
     it 'excludes completed (done-state) estimates' do
@@ -458,7 +458,7 @@ RSpec.describe EstimatesController, type: :controller do
 
       get :stats, format: :json
       body = JSON.parse(response.body)
-      expect(body['needs_costs']).to eq(0)
+      expect(body['quoting']).to eq(0)
     end
 
     context 'when not signed in' do

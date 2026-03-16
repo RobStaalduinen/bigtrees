@@ -69,7 +69,7 @@ export default {
   computed: {
     options() {
       let baseOptions = ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates', 'Tags', 'Settings'];
-      if (this.organization.configuration && this.organization.configuration.outgoing_email) {
+      if (this.organization.configured_features && this.organization.configured_features.use_connected_email) {
         baseOptions.push('Outgoing Email');
       }
 
