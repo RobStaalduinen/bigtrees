@@ -32,7 +32,9 @@ class NylasAccountsController < ApplicationController
   end
 
   def receive_grant
-    nylas_account = Organization.first.nylas_account || NylasAccount.create(organization: Organization.first)
+    organization_id = params[:state]
+    organization = Organization.find(organization_id)
+    nylas_account = organization.nylas_account || NylasAccount.create(organization:)
     code = params[:code]
 
     nylas_account.update(code: code)
@@ -48,6 +50,6 @@ class NylasAccountsController < ApplicationController
       raw_response: response
       )
 
-    redirect_to "https://admin.bigtreeservices.ca/admin/company?section=outgoing_email"
+    redirect_to "/admin/company?section=outgoing_email"
   end
 end
