@@ -75,6 +75,10 @@ const STEPS = {
     actionLabel: 'Complete Job',
     inputComponent: 'estimate-complete-job'
   },
+  'work_paused': {
+    actionLabel: 'Start Job',
+    inputComponent: 'estimate-start-job'
+  },
   'work_completed': {
     actionLabel: 'Send Invoice',
     inputComponent: 'estimate-send-invoice'

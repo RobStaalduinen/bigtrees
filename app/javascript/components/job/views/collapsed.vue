@@ -5,100 +5,75 @@
         <b>Job</b> &nbsp; - {{ jobStatus() }}
       </template>
 
-      <template v-slot:content v-if="!estimate.job.skipped">
-        <div class='collapsed-row'>
-          <div class='collapsed-row-label'>
-            <b>Started At</b>
-          </div>
-
-          <div class='collapsed-row-value'>
-            {{ estimate.job.started_at | localizeDateTime }}
-          </div>
-        </div>
-        <div class='collapsed-row' v-if="estimate.job.completed_at">
-          <div class='collapsed-row-label'>
-            <b>Completed At</b>
-          </div>
-
-          <div class='collapsed-row-value'>
-            {{ estimate.job.completed_at | localizeDateTime }}
-          </div>
+      <template v-slot:content>
+        <div v-if="estimate.jobs.length === 0">
+          <p>No visits recorded.</p>
         </div>
 
-        <div class='collapsed-row'>
-          <div class='collapsed-row-label'>
-            <b>Crew on site</b>
+        <div v-for="(job, index) in estimate.jobs" :key="job.id" class="visit-card">
+
+          <div class="visit-header">
+            <span class="visit-title">Visit #{{ index + 1 }}</span>
+            <span class="visit-lead">{{ job.lead_arborist_name }}</span>
           </div>
 
-          <div class='collapsed-row-value'>
-            {{ estimate.job.assigned_arborist_names.join(', ') }}
-          </div>
-        </div>
+          <div class="visit-body">
+            <div class="visit-timeline">
+              <span>{{ formatVisitTime(job.started_at) }}</span>
+              <span v-if="job.completed_at" class="timeline-separator">→</span>
+              <span v-if="job.completed_at">{{ formatVisitTime(job.completed_at) }}</span>
+              <span v-if="job.completed_at" class="timeline-duration">({{ hoursWorked(job) }} hrs)</span>
+              <span v-else class="timeline-active">In progress</span>
+            </div>
 
-        <div class='collapsed-row'>
-          <div class='collapsed-row-label'>
-            <b>Entrance Survey</b>
-          </div>
+            <div v-if="job.assigned_arborist_names.length > 0" class="visit-section">
+              <div class="section-label">Crew on site</div>
+              <div class="section-content">{{ job.assigned_arborist_names.join(', ') }}</div>
+            </div>
 
-          <div class='collapsed-row-value entrance-survey'>
-            <span v-for='(value, question, index) in estimate.job.job_survey_responses' :key='index'>
-              {{ question }}: <span class='survey-answer-label' :style="{ color: value ? 'green' : 'red' }">{{ value ? 'YES' : 'NO' }}</span><br>
-            </span>
-    
-          </div>
-        </div>
+            <div class="visit-section">
+              <div class="section-label">Entrance Survey</div>
+              <div class="section-content survey-responses">
+                <span v-for='(value, question, i) in job.job_survey_responses' :key='i'>
+                  {{ question }}: <span :style="{ color: value ? 'green' : 'red', fontWeight: 'bold' }">{{ value ? 'YES' : 'NO' }}</span><br>
+                </span>
+              </div>
+            </div>
 
-        <div class='collapsed-row' v-if="estimate.job.completed_at">
-          <div class='collapsed-row-label'>
-            <b>Exit Survey</b>
-          </div>
+            <template v-if="job.completed_at">
+              <div class="visit-section">
+                <div class="section-label">Exit Survey</div>
+                <div class="section-content survey-responses">
+                  <span v-for='(value, question, i) in job.completion_survey_responses' :key='i'>
+                    {{ question }}: <span :style="{ color: value ? 'green' : 'red', fontWeight: 'bold' }">{{ value ? 'YES' : 'NO' }}</span><br>
+                  </span>
+                </div>
+              </div>
 
-          <div class='collapsed-row-value entrance-survey'>
-            <span v-for='(value, question, index) in estimate.job.completion_survey_responses' :key='index'>
-              {{ question }}: <span class='survey-answer-label' :style="{ color: value ? 'green' : 'red' }">{{ value ? 'YES' : 'NO' }}</span><br>
-            </span>
-          </div>
-        </div>
+              <div class="visit-section">
+                <div class="section-label">
+                  Arborist Notes
+                  <b-icon v-if="index === estimate.jobs.length - 1" icon='pencil-square' class='app-icon edit-icon' @click="toggleUpdate()"></b-icon>
+                </div>
+                <div class="section-content">{{ job.completion_notes || '—' }}</div>
+              </div>
 
-        <div class='collapsed-row' v-if="estimate.job.completed_at">
-          <div class='collapsed-row-label'>
-            <b>Arborist Notes</b>
-            <b-icon icon='pencil-square' class='app-icon edit-icon' @click="toggleUpdate()"></b-icon>
-          </div>
-
-          <div class='collapsed-row-value'>
-            {{ estimate.job.completion_notes }}
-          </div>
-        </div>
-
-
-        <div class='collapsed-row' v-if="estimate.job.completed_at">
-          <div class='collapsed-row-label'>
-            <b>Followup Year</b>
-          </div>
-
-          <div class='collapsed-row-value'>
-            {{ estimate.job.followup_year || 'Never' }} 
-          </div>
-        </div>
-
-        <div class='collapsed-row'>
-          <div class='collapsed-row-label'>
-            <b>Survey Filled by</b>
+              <div class="visit-section">
+                <div class="section-label">Followup Year</div>
+                <div class="section-content">{{ job.followup_year || 'Never' }}</div>
+              </div>
+            </template>
           </div>
 
-          <div class='collapsed-row-value'>
-            {{ estimate.job.lead_arborist_name }}
-          </div>
         </div>
       </template>
     </app-collapsable>
     <app-update-notes :estimate='estimate' id='update-notes'></app-update-notes>
-    <!-- <app-edit-costs :estimate='estimate' id='edit-costs'></app-edit-costs> -->
   </div>
 </template>
 
 <script>
+import moment from 'moment';
 import UpdateNotes from '@/components/job/actions/updateNotes.vue';
 
 export default {
@@ -112,21 +87,29 @@ export default {
   },
   methods: {
     jobStatus() {
-      let job = this.estimate.job;
+      const jobs = this.estimate.jobs;
 
-      if(job.skipped) {
-        return 'Submission skipped';
-      }
-
-      if(!job || !job.started_at) {
+      if (!jobs || jobs.length === 0) {
         return 'Not Started';
       }
-      else if(!job.completed_at) {
-        return 'Started';
+
+      const activeJob = jobs.find(j => j.started_at && !j.completed_at);
+      if (activeJob) {
+        return 'In Progress';
       }
-      else if(job.completed_at) {
+
+      if (this.estimate.work_complete) {
         return 'Completed';
       }
+
+      return 'Paused';
+    },
+    formatVisitTime(date) {
+      return moment(date).format('MMM Do, YYYY h:mm a');
+    },
+    hoursWorked(job) {
+      const duration = moment(job.completed_at).diff(moment(job.started_at), 'minutes');
+      return (duration / 60).toFixed(2);
     },
     toggleUpdate() {
       this.$root.$emit('bv::toggle::collapse', 'update-notes');
@@ -136,28 +119,78 @@ export default {
 </script>
 
 <style scoped>
-.collapsed-row {
+.visit-card {
+  font-size: 0.88em;
+  background-color: #f4f4f4;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.visit-header {
   display: flex;
-  padding: 0.5rem 0;
-}
-.collapsed-row-label {
-  font-weight: bold;
-  width: 30%;
-  text-align: right;
-}
-.collapsed-row-value {
-  font-weight: normal;
-  width: 70%;
-  text-align: left;
-  padding-left: 1rem;
+  justify-content: space-between;
+  align-items: baseline;
+  background-color: #e0e0e0;
+  padding: 0.45rem 1rem;
 }
 
-.entrance-survey {
-  font-size: 0.9em;
+.visit-title {
+  font-weight: bold;
+  font-size: 1.05em;
 }
 
-.survey-answer-label {
-  font-weight: bold;
-  color: green;
+.visit-lead {
+  color: #555;
+  font-style: italic;
+}
+
+.visit-body {
+  padding: 0.5rem 1rem 0.75rem;
+}
+
+.visit-timeline {
+  font-size: 0.82em;
+  color: #444;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.timeline-separator {
+  color: #999;
+}
+
+.timeline-duration {
+  color: #666;
+  font-style: italic;
+}
+
+.timeline-active {
+  color: #2a7d2a;
+  font-style: italic;
+}
+
+.visit-section {
+  margin-top: 0.5rem;
+}
+
+.section-label {
+  font-weight: 800;
+  color: #444;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.15rem;
+}
+
+.section-content {
+  color: #222;
+}
+
+.survey-responses {
+  line-height: 1.6;
 }
 </style>

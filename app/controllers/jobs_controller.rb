@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class JobsController < ApplicationController
-  
+
   def create
-    job = estimate.job || Job.new(estimate: estimate)
+    job = estimate.jobs.build
 
     job.arborist = current_user
 
@@ -16,15 +16,22 @@ class JobsController < ApplicationController
     end
 
     estimate.save # Update status
-    
-    JobMailer.job_alert(job, estimate).deliver_now if estimate.organization.feature_enabled?(:job_notifications) if !job.skipped?
+
+    JobMailer.job_alert(job, estimate).deliver_now if estimate.organization.feature_enabled?(:job_notifications)
 
     render json: estimate
   end
 
   def update
-    job = estimate.job
+    job = estimate.jobs.find(params[:id])
     job.update(job_params)
+
+    if params[:work_complete].present?
+      estimate.work_complete = true
+      estimate.save
+    else
+      estimate.save
+    end
 
     render json: estimate
   end
@@ -36,6 +43,6 @@ class JobsController < ApplicationController
   end
 
   def job_params
-    params.require(:job).permit(:started_at, :completed_at, :completion_notes, :followup_year, :skipped, job_survey_responses: {}, completion_survey_responses: {})
+    params.require(:job).permit(:started_at, :completed_at, :completion_notes, :followup_year, job_survey_responses: {}, completion_survey_responses: {})
   end
 end

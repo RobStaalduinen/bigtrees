@@ -22,6 +22,14 @@
 
           <h6>Exit Survey</h6>
 
+          <app-checkbox-highlight
+            id='survey-checkbox-all-tasks'
+            label='Job Complete - No additional visit needed'
+            v-model='allTasksComplete'
+            :checkedValue='true'
+            label_id='survey-label'
+          />
+
           <div v-for='(question, index) in organization.completion_survey_questions' :key='index'>
             <app-checkbox-highlight
                 :id='`survey-checkbox-${index}`'
@@ -58,6 +66,7 @@
             :estimate="estimate"
           />
 
+
       </validation-observer>
     </template>
   </app-right-sidebar>
@@ -92,6 +101,7 @@ export default {
       }, {}),
       notes: '',
       revisit: 'Never',
+      allTasksComplete: false,
     }
   },
   computed: {
@@ -110,6 +120,8 @@ export default {
     completeJob() {
       this.surveyError = false;
 
+      const activeJob = this.estimate.jobs.find(j => j.started_at && !j.completed_at);
+
       let params = {
         job: {
           completed_at: `${this.completedDate} ${this.completedTime}`,
@@ -124,7 +136,11 @@ export default {
         params.job.followup_year = null;
       }
 
-      this.axiosPost(`/estimates/${this.estimate.id}/jobs`, params)
+      if (this.allTasksComplete) {
+        params.work_complete = true;
+      }
+
+      this.axiosPut(`/estimates/${this.estimate.id}/jobs/${activeJob.id}`, params)
         .then(response => {
           EventBus.$emit('ESTIMATE_UPDATED', response.data);
           this.$root.$emit('bv::toggle::collapse', this.id);

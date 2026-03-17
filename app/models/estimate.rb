@@ -61,7 +61,7 @@ class Estimate < ActiveRecord::Base
 	has_one :invoice, dependent: :destroy
   has_one :site, dependent: :destroy
   has_one :customer_detail, dependent: :destroy
-	has_one :job, dependent: :destroy
+	has_many :jobs, dependent: :destroy
 
 	belongs_to :customer
 	belongs_to :arborist
@@ -70,7 +70,6 @@ class Estimate < ActiveRecord::Base
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments
   accepts_nested_attributes_for :notes
-	accepts_nested_attributes_for :job
 
 	scope :submitted, -> { where(submission_completed: true) }
 	scope :incomplete, -> { active.where("status < 40") }
@@ -159,6 +158,7 @@ class Estimate < ActiveRecord::Base
 		approved: 40,
 		work_scheduled: 50,
 		work_started: 55,
+		work_paused: 57,
 		work_completed: 60,
 		final_invoice_sent: 70,
 		completed: 80
@@ -260,12 +260,14 @@ class Estimate < ActiveRecord::Base
 			:quote_sent
 		elsif(self.approved? && !self.work_scheduled?)
 			:approved
-		elsif(self.work_scheduled? && !self.job&.skipped? && !self.job&.started?)
-			:work_scheduled
-		elsif(self.job&.started? && !self.job&.completed?)
-			:work_started
-		elsif((self.job&.skipped? || self.job&.completed?) && !self.invoice.sent?)
+		elsif(self.work_complete? && !self.invoice.sent?)
 			:work_completed
+		elsif(self.work_scheduled? && !self.jobs.any?(&:started?))
+			:work_scheduled
+		elsif(self.jobs.any? { |j| j.started? && !j.completed? })
+			:work_started
+		elsif(self.jobs.any? && !self.work_complete? && !self.invoice.sent?)
+			:work_paused
 		elsif(self.invoice.sent? && !self.invoice.paid?)
 			:final_invoice_sent
 		elsif(self.invoice.paid?)

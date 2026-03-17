@@ -110,12 +110,11 @@ export default {
         })
     },
     skipJob() {
-      this.axiosPost(`/estimates/${this.estimate.id}/jobs`, { job: { skipped: true } })
+      this.axiosPut(`/estimates/${this.estimate.id}`, { estimate: { work_complete: true } })
         .then(response => {
           EventBus.$emit('ESTIMATE_UPDATED', response.data);
           this.$root.$emit('bv::toggle::collapse', this.id);
         })
-
     }
   },
   watch: {

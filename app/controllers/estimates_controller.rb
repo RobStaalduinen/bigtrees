@@ -148,7 +148,7 @@ class EstimatesController < ApplicationController
 
   def estimate_params
     e_params = params.require(:estimate).permit(
-      :tree_quantity, :state, :state_reason, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed, :skip_schedule, :cancelled_at, :pending_permit, :approved,
+      :tree_quantity, :state, :state_reason, :status, :arborist_id, :is_unknown, :work_start_date, :work_end_date, :quote_sent_date, :submission_completed, :skip_schedule, :cancelled_at, :pending_permit, :approved, :work_complete,
       equipment_assignments_attributes: [ :vehicle_id ],
       notes_attributes: [
         :content,

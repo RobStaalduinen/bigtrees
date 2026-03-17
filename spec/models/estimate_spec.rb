@@ -84,10 +84,21 @@ RSpec.describe Estimate, type: :model do
       end
     end
 
-    context 'when the job is completed and the invoice has not been sent' do
-      it 'sets status to work_completed' do
+    context 'when the job is completed but work_complete is false' do
+      it 'sets status to work_paused' do
         estimate = build_estimate(quote_sent_date: Date.today, approved: true,
                                   work_start_date: Date.today)
+        estimate.costs.create!(description: 'Tree removal', amount: 500)
+        Job.create!(estimate: estimate, started_at: Time.now, completed_at: Time.now)
+        estimate.set_status
+        expect(estimate.status).to eq('work_paused')
+      end
+    end
+
+    context 'when the job is completed and work_complete is true' do
+      it 'sets status to work_completed' do
+        estimate = build_estimate(quote_sent_date: Date.today, approved: true,
+                                  work_start_date: Date.today, work_complete: true)
         estimate.costs.create!(description: 'Tree removal', amount: 500)
         Job.create!(estimate: estimate, started_at: Time.now, completed_at: Time.now)
         estimate.set_status
@@ -95,12 +106,11 @@ RSpec.describe Estimate, type: :model do
       end
     end
 
-    context 'when the job is skipped and the invoice has not been sent' do
+    context 'when work_complete is set with no job (skip flow)' do
       it 'sets status to work_completed' do
         estimate = build_estimate(quote_sent_date: Date.today, approved: true,
-                                  work_start_date: Date.today)
+                                  work_start_date: Date.today, work_complete: true)
         estimate.costs.create!(description: 'Tree removal', amount: 500)
-        Job.create!(estimate: estimate, skipped: true)
         estimate.set_status
         expect(estimate.status).to eq('work_completed')
       end

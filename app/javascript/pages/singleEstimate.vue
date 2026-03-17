@@ -61,7 +61,7 @@
           <single-estimate-costs :estimate='estimate'></single-estimate-costs>
         </section>
 
-        <section class ='estimate-section' v-if='estimate.job'>
+        <section class ='estimate-section' v-if='estimate.jobs.length > 0'>
           <single-estimate-job :estimate='estimate'></single-estimate-job>
         </section>
 

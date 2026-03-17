@@ -26,9 +26,7 @@ Rails.application.routes.draw do
       post '/bulk_update', to: 'equipment_assignments#bulk_update', on: :collection
     end
     resources :notes, only: [ :create ]
-    resources :jobs, only: [ :create ] do
-      put '/', to: 'jobs#update', on: :collection
-    end
+    resources :jobs, only: [ :create, :update ]
 
     get '/stats', to: 'estimates#stats', on: :collection
     post '/cancel', to: 'estimates#cancel', on: :member

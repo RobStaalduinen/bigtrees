@@ -65,6 +65,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :hst
   attribute :total_cost_with_tax
   attribute :site_visit_required
+  attribute :work_complete
 
   # Associations
   belongs_to :arborist
@@ -72,7 +73,7 @@ class EstimateSerializer < ApplicationSerializer
   has_one :site, include_nested_associations: true
   has_one :invoice
   has_one :customer_detail
-  has_one :job
+  has_many :jobs
   has_many :costs
   has_many :trees
   has_many :tree_images
