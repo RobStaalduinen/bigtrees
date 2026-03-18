@@ -39,4 +39,8 @@ class Job < ActiveRecord::Base
   def assigned_arborist_names
     self.assigned_arborists.map(&:name)
   end
+
+  def assigned_arborist_ids
+    job_assignments.map(&:arborist_id)
+  end
 end

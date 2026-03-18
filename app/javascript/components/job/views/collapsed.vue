@@ -14,7 +14,15 @@
 
           <div class="visit-header">
             <span class="visit-title">Visit #{{ index + 1 }}</span>
-            <span class="visit-lead">{{ job.lead_arborist_name }}</span>
+            <div class="visit-header-right">
+              <span class="visit-lead">{{ job.lead_arborist_name }}</span>
+              <b-icon
+                v-if="canEditJob(job)"
+                icon='pencil-square'
+                class='app-icon edit-icon'
+                @click="toggleEdit(job.id)"
+              ></b-icon>
+            </div>
           </div>
 
           <div class="visit-body">
@@ -51,10 +59,7 @@
               </div>
 
               <div class="visit-section">
-                <div class="section-label">
-                  Arborist Notes
-                  <b-icon v-if="index === estimate.jobs.length - 1" icon='pencil-square' class='app-icon edit-icon' @click="toggleUpdate()"></b-icon>
-                </div>
+                <div class="section-label">Arborist Notes</div>
                 <div class="section-content">{{ job.completion_notes || '—' }}</div>
               </div>
 
@@ -68,17 +73,24 @@
         </div>
       </template>
     </app-collapsable>
-    <app-update-notes :estimate='estimate' id='update-notes'></app-update-notes>
+
+    <app-edit-job
+      v-for="job in estimate.jobs"
+      :key="`edit-sidebar-${job.id}`"
+      :id="`edit-job-${job.id}`"
+      :estimate="estimate"
+      :job="job"
+    />
   </div>
 </template>
 
 <script>
 import moment from 'moment';
-import UpdateNotes from '@/components/job/actions/updateNotes.vue';
+import EditJob from '@/components/job/actions/editJob.vue';
 
 export default {
   components: {
-    'app-update-notes': UpdateNotes
+    'app-edit-job': EditJob
   },
   props: {
     estimate: {
@@ -104,15 +116,26 @@ export default {
 
       return 'Paused';
     },
+    canEditJob(job) {
+      const role = this.$store.state.user.role;
+      const userId = this.$store.state.user.user_id;
+      const status = this.estimate.status;
+      const invoiced = ['final_invoice_sent', 'completed'].includes(status);
+      const editableStatuses = ['work_started', 'work_paused', 'work_completed'];
+
+      if (invoiced) return false;
+      if (['admin', 'super_admin'].includes(role)) return true;
+      return job.arborist_id === userId && editableStatuses.includes(status);
+    },
+    toggleEdit(jobId) {
+      this.$root.$emit('bv::toggle::collapse', `edit-job-${jobId}`);
+    },
     formatVisitTime(date) {
-      return moment(date).format('MMM Do, YYYY h:mm a');
+      return moment.utc(date).format('MMM Do, YYYY h:mm a');
     },
     hoursWorked(job) {
       const duration = moment(job.completed_at).diff(moment(job.started_at), 'minutes');
       return (duration / 60).toFixed(2);
-    },
-    toggleUpdate() {
-      this.$root.$emit('bv::toggle::collapse', 'update-notes');
     }
   }
 }
@@ -130,7 +153,7 @@ export default {
 .visit-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   background-color: #e0e0e0;
   padding: 0.45rem 1rem;
 }
@@ -140,9 +163,19 @@ export default {
   font-size: 1.05em;
 }
 
+.visit-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .visit-lead {
   color: #555;
   font-style: italic;
+}
+
+.edit-icon {
+  cursor: pointer;
 }
 
 .visit-body {
