@@ -29,6 +29,8 @@ class JobsController < ApplicationController
       render json: { error: 'Unauthorized' }, status: :forbidden and return
     end
 
+    newly_completed = job.completed_at.nil? && params[:job][:completed_at].present?
+
     job.update(job_params)
 
     if params[:job][:assigned_arborists].present?
@@ -43,6 +45,10 @@ class JobsController < ApplicationController
     end
 
     estimate.save
+
+    if newly_completed && estimate.organization.feature_enabled?(:job_notifications)
+      JobMailer.job_alert(job, estimate).deliver_now
+    end
 
     render json: estimate
   end

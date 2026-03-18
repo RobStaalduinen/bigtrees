@@ -37,6 +37,10 @@
   <br><br>
 
   <b>Followup Year: </b> <%= @job.followup_year || 'Never' %>
+
+  <br><br>
+
+  <b>All Estimate Work Completed: </b> <%= @estimate.work_complete? ? 'YES' : 'NO' %>
 <% end %>
 
 <br><br>
