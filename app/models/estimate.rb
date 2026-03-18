@@ -128,8 +128,12 @@ class Estimate < ActiveRecord::Base
 			submitted.in_progress.sent
 		when 'to_pay'
 			submitted.in_progress.pending_payment
+		when 'approved'
+			submitted.in_progress.where(status: :approved)
 		when 'scheduled'
-			submitted.in_progress.scheduled.or(submitted.in_progress.approved)
+			submitted.in_progress.where(status: :work_scheduled)
+		when 'working'
+			submitted.in_progress.where(status: [:work_started, :work_paused, :work_completed])
 		when 'unknown'
 			submitted.unknown
 		when 'on_hold'

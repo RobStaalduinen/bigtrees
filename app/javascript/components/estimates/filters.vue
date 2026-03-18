@@ -88,7 +88,9 @@ export default {
         { value: 'pre_quote', text: 'Quote Needed' },
         { value: 'awaiting_response', text: 'Awaiting Customer Response' },
         { value: 'to_pay', text: 'To Pay' },
-        { value: 'scheduled', text: 'Approved and Scheduled' },
+        { value: 'approved', text: 'Approved' },
+        { value: 'scheduled', text: 'Scheduled' },
+        { value: 'working', text: 'Working' },
         { value: 'unknown', text: 'Unknown' },
         { value: 'cancelled', text: 'Cancelled' }
       ],
