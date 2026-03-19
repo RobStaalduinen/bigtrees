@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ── Prerequisites ──────────────────────────────────────────────────────────────
+
+check_cmd() {
+  if ! command -v "$1" &>/dev/null; then
+    echo "ERROR: '$1' not found."
+    case "$1" in
+      aws)   echo "  Install: brew install awscli" ;;
+      node)  echo "  Install: https://nodejs.org or via nvm" ;;
+      yarn)  echo "  Install: npm install -g yarn" ;;
+    esac
+    exit 1
+  fi
+}
+
+check_cmd aws
+check_cmd node
+check_cmd yarn
+
+# ── AWS credentials from config/application.yml ────────────────────────────────
+
+APP_YML="$(dirname "$0")/../config/application.yml"
+if [[ ! -f "$APP_YML" ]]; then
+  echo "ERROR: config/application.yml not found"
+  exit 1
+fi
+
+extract_yml_value() {
+  local key="$1"
+  grep "^[[:space:]]*${key}:" "$APP_YML" | head -1 | sed "s/.*${key}:[[:space:]]*//" | tr -d '"' | tr -d "'"
+}
+
+export AWS_ACCESS_KEY_ID
+AWS_ACCESS_KEY_ID="$(extract_yml_value AWS_ACCESS_KEY_ID)"
+export AWS_SECRET_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY="$(extract_yml_value AWS_SECRET_ACCESS_KEY)"
+export AWS_DEFAULT_REGION
+AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+
+if [[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]]; then
+  echo "ERROR: AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY not found in config/application.yml"
+  exit 1
+fi
+
+# ── Build ID ───────────────────────────────────────────────────────────────────
+
+GIT_SHA="$(git rev-parse --short HEAD 2>/dev/null || echo "nogit")"
+TIMESTAMP="$(date -u '+%Y%m%d-%H%M%S')"
+BUILD_ID="${GIT_SHA}-${TIMESTAMP}"
+BUILT_AT="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+S3_BUCKET="big-tree-deploys"
+S3_BUILD_PREFIX="s3://${S3_BUCKET}/${BUILD_ID}"
+S3_BASE_URL="https://${S3_BUCKET}.s3.amazonaws.com/${BUILD_ID}"
+
+echo "──────────────────────────────────────────"
+echo "  BigTrees Build & Upload"
+echo "  Build ID: ${BUILD_ID}"
+echo "──────────────────────────────────────────"
+
+# ── Webpack production build ───────────────────────────────────────────────────
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+echo ""
+echo "→ Running Webpacker production build..."
+cd "$PROJECT_ROOT"
+NODE_ENV=production ./bin/webpack
+
+PACKS_DIR="${PROJECT_ROOT}/public/packs"
+WEBPACK_MANIFEST="${PACKS_DIR}/manifest.json"
+
+if [[ ! -f "$WEBPACK_MANIFEST" ]]; then
+  echo "ERROR: Webpack manifest not found at ${WEBPACK_MANIFEST}"
+  exit 1
+fi
+
+echo "  Build complete: ${PACKS_DIR}"
+
+# ── Extract bundle paths from webpack manifest ─────────────────────────────────
+
+# Webpack manifest maps "application.js" -> "/packs/js/application-<hash>.js"
+# We extract the filename and form the full S3 URL.
+
+bundle_url() {
+  local entry="$1"  # e.g. "application.js"
+  local rel_path
+  rel_path="$(python3 -c "
+import json, sys
+m = json.load(open('${WEBPACK_MANIFEST}'))
+key = '${entry}'
+print(m.get(key, m.get('js/' + key, '')))
+" 2>/dev/null || true)"
+
+  if [[ -z "$rel_path" ]]; then
+    echo ""
+    return
+  fi
+
+  # rel_path is like /packs/js/application-abc123.js — strip leading /packs/
+  local file_part="${rel_path#/packs/}"
+  echo "${S3_BASE_URL}/${file_part}"
+}
+
+APP_URL="$(bundle_url "application.js")"
+ONBOARDING_URL="$(bundle_url "onboarding.js")"
+PROPERTY_URL="$(bundle_url "property_management.js")"
+
+# ── Upload packs to S3 ─────────────────────────────────────────────────────────
+
+echo ""
+echo "→ Uploading packs to ${S3_BUILD_PREFIX}/ ..."
+aws s3 sync "${PACKS_DIR}" "${S3_BUILD_PREFIX}/" --delete
+
+echo "  Upload complete."
+
+# ── Write build_manifest.json into the Rails app ───────────────────────────────
+
+MANIFEST_PATH="${PROJECT_ROOT}/config/build_manifest.json"
+cat > "$MANIFEST_PATH" <<MANIFEST
+{
+  "build_id": "${BUILD_ID}",
+  "built_at": "${BUILT_AT}",
+  "bundles": {
+    "application": "${APP_URL}",
+    "onboarding": "${ONBOARDING_URL}",
+    "property_management": "${PROPERTY_URL}"
+  }
+}
+MANIFEST
+
+echo ""
+echo "→ Wrote config/build_manifest.json"
+
+# ── Summary ────────────────────────────────────────────────────────────────────
+
+echo ""
+echo "──────────────────────────────────────────"
+echo "  Done!"
+echo "  Build ID : ${BUILD_ID}"
+echo "  S3 path  : ${S3_BUILD_PREFIX}/"
+echo "  Manifest : config/build_manifest.json"
+echo "──────────────────────────────────────────"

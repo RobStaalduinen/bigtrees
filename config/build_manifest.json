@@ -1,0 +1,9 @@
+{
+  "build_id": "4df0b5a-20260319-132834",
+  "built_at": "2026-03-19T13:28:34Z",
+  "bundles": {
+    "application": "https://big-tree-deploys.s3.amazonaws.com/4df0b5a-20260319-132834/js/application-bbe6f3874e8ab47b3f37.js",
+    "onboarding": "https://big-tree-deploys.s3.amazonaws.com/4df0b5a-20260319-132834/js/onboarding-4e816a7c99f9a29dd912.js",
+    "property_management": "https://big-tree-deploys.s3.amazonaws.com/4df0b5a-20260319-132834/js/property_management-92fdfb8b8f1757d1a746.js"
+  }
+}

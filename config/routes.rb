@@ -116,6 +116,8 @@ Rails.application.routes.draw do
   get '/p/:customer_name', to: 'property_management#show'
   post '/p/:customer_name', to: 'property_management#create'
 
+  get '/build_manifest', to: 'build_manifest#show'
+
   get '/admin/*path', to: 'admin#index'
 
   get ':controller/:action'
