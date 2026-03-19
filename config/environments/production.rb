@@ -79,7 +79,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_deliveries = true
 
-  config.action_mailer.default_url_options = { :host => "admin.bigtreeservices.ca" }
+  config.action_mailer.default_url_options = { :host => "bigtreecare.ca" }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
@@ -87,12 +87,12 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address => 'smtp.sendgrid.net',
     :port => 587,
-    :domain => 'admin.bigtreeservices.ca',
+    :domain => 'bigtreecare.ca',
     :user_name => 'apikey',
     :password => ENV['SENDGRID_API_KEY'],
     :authentication => 'plain',
     :enable_starttls_auto => true
   }
 
-  Rails.application.routes.default_url_options = { host: 'admin.bigtreeservices.ca' }
+  Rails.application.routes.default_url_options = { host: 'bigtreecare.ca' }
 end
