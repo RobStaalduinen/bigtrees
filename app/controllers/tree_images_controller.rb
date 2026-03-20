@@ -72,6 +72,8 @@ class TreeImagesController < ApplicationController
 
     if params[:images].present? && params[:images].any?
       params[:images].each do |image|
+        next if image.blank?
+        
         TreeImage.create(
           tree: tree,
           estimate_id: params[:estimate_id],

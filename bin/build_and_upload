@@ -82,11 +82,11 @@ echo "  Build complete: ${PACKS_DIR}"
 
 # ── Extract bundle paths from webpack manifest ─────────────────────────────────
 
-# Webpack manifest maps "application.js" -> "/packs/js/application-<hash>.js"
+# Webpack manifest maps "admin.js" -> "/packs/js/admin-<hash>.js"
 # We extract the filename and form the full S3 URL.
 
 bundle_url() {
-  local entry="$1"  # e.g. "application.js"
+  local entry="$1"  # e.g. "admin.js"
   local rel_path
   rel_path="$(python3 -c "
 import json, sys
@@ -105,7 +105,7 @@ print(m.get(key, m.get('js/' + key, '')))
   echo "${S3_BASE_URL}/${file_part}"
 }
 
-APP_URL="$(bundle_url "application.js")"
+APP_URL="$(bundle_url "admin.js")"
 ONBOARDING_URL="$(bundle_url "onboarding.js")"
 PROPERTY_URL="$(bundle_url "property_management.js")"
 
@@ -125,7 +125,7 @@ cat > "$MANIFEST_PATH" <<MANIFEST
   "build_id": "${BUILD_ID}",
   "built_at": "${BUILT_AT}",
   "bundles": {
-    "application": "${APP_URL}",
+    "admin": "${APP_URL}",
     "onboarding": "${ONBOARDING_URL}",
     "property_management": "${PROPERTY_URL}"
   }

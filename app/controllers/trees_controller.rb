@@ -24,6 +24,8 @@ class TreesController < ApplicationController
       )
 
       tree[:tree_images_attributes]&.each do |image|
+        next unless image[:image_url].present?
+        
         TreeImage.create(
           tree: new_tree,
           estimate: estimate,

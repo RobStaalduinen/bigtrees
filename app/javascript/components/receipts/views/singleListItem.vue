@@ -14,7 +14,7 @@
 
         <div class='list-item-content'>
           <div class='list-item-content-row'><b>Submitter: </b> {{ receipt.arborist.name }}</div>
-          <div class='list-item-content-row'><b>Cost: </b> {{ `$ ${receipt.cost}` }}</div>
+          <div class='list-item-content-row'><b>Cost: </b> {{ receipt.cost | currency }}</div>
           <div class='list-item-content-row'><b>Description: </b> {{ receipt.description }}</div>
         </div>
       </template>

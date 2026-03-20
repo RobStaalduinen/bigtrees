@@ -41,7 +41,7 @@
           </div>
 
           <div class='modal-row'><b>Date:</b> {{ displayedReceipt.date }}</div>
-          <div class='modal-row'><b>Cost:</b> {{ `$ ${displayedReceipt.cost}` }}</div>
+          <div class='modal-row'><b>Cost:</b> {{ displayedReceipt.cost | currency }}</div>
           <div class='modal-row'><b>Category:</b> {{ capitalize(displayedReceipt.category) }}</div>
           <div class='modal-row'><b>Job:</b> {{ displayedReceipt.job }}</div>
           <div class='modal-row'><b>Vehicle:</b> {{ displayedReceipt.vehicle ? displayedReceipt.vehicle.name : 'None' }}</div>

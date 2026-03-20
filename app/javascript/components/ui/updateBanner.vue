@@ -29,7 +29,7 @@ export default {
       try {
         const response = await fetch(MANIFEST_URL, { cache: 'no-store' });
         const manifest = await response.json();
-        return manifest['application.js'];
+        return manifest['admin.js'];
       } catch {
         return null;
       }
