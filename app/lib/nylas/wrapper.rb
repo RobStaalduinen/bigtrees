@@ -49,14 +49,16 @@ module Nylas
         attachments << attachment.definition_entry
       end
 
+      author = email_definition.outgoing_name.present? ? email_definition.outgoing_name : nylas_account.organization.email_author
+
       request_body = {
         to: to_list,
         from: [{
-          name: nylas_account.organization.email_author,
+          name: author,
           email: nylas_account.outgoing_email_address
         }],
         bcc: email_definition.bcc_list,
-        reply_to: [{ name: nylas_account.organization.email_author, email: nylas_account.outgoing_email_address }],
+        reply_to: [{ name: author, email: nylas_account.outgoing_email_address }],
         subject: email_definition.subject,
         body: email_definition.body,
         attachments: attachments
