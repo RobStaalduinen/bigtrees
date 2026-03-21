@@ -19,6 +19,7 @@
         <b-dropdown-item to="/admin/equipment" v-if='permissions.canList("equipment_requests")'>Repair Requests</b-dropdown-item>
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
         <b-dropdown-item to='/admin/company' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
+        <b-dropdown-item to='/admin/organizations' v-if='$store.state.user.user_id === 14'>Organizations</b-dropdown-item>
         <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
             <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
             <b-dropdown-item v-if="hasMultipleCompanies()" @click='changeOrganization'>Change Company</b-dropdown-item>

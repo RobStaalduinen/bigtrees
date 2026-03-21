@@ -173,6 +173,7 @@ import Receipts from '../pages/receipts.vue';
 import Vehicles from '../pages/vehicles.vue'
 import Employees from '../pages/employees.vue';
 import Company from '../pages/company.vue';
+import Organizations from '../pages/organizations.vue';
 import Schedule from '../pages/schedule.vue';
 
 import { store } from '../store/store.js';
@@ -231,6 +232,10 @@ const routes = [
       authRequired: true,
       permission: { page: 'organizations', permission_type: 'admin' }
     }
+  },
+  {
+    path: '/admin/organizations',
+    component: Organizations
   }
 
 ]

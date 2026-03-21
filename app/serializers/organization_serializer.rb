@@ -58,6 +58,7 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :completion_survey_questions
 
   attribute :configured_features
+  attribute :arborists_count
 
   belongs_to :address
   has_one :nylas_account

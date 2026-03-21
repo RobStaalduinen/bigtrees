@@ -19,6 +19,10 @@ class Authorization {
     return this.hasPermission(page, 'delete')
   }
 
+  canCreate(page) {
+    return this.hasPermission(page, 'create')
+  }
+
   canAdmin(page) {
     return this.hasPermission(page, 'admin')
   }
