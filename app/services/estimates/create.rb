@@ -54,7 +54,7 @@ module Estimates
     end
 
     def create_job(estimate)
-      job = estimate.job || Job.new(estimate: estimate)
+      job = Job.new(estimate: estimate)
       job.update(@job_attributes)
 
       if @job_attributes[:assigned_arborists].present?
