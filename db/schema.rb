@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_03_22_182759) do
+ActiveRecord::Schema.define(version: 2026_03_22_200000) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 2026_03_22_182759) do
     t.string "state_reason"
     t.boolean "approved", default: false
     t.boolean "work_complete", default: false, null: false
+    t.string "source"
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"

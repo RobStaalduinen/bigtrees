@@ -36,6 +36,7 @@
 #  state                   :string(255)      default("in_progress"), not null
 #  state_reason            :string(255)
 #  approved                :boolean          default(FALSE)
+#  source                  :string(255)
 #
 class Estimate < ActiveRecord::Base
 
@@ -151,6 +152,11 @@ class Estimate < ActiveRecord::Base
 		done: 'done',
 		unknown: 'unknown',
 		cancelled: 'cancelled'
+	}
+
+	enum source: {
+		admin_form: 'admin_form',
+		customer_form: 'customer_form'
 	}
 
 

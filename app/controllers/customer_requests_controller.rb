@@ -17,7 +17,7 @@ class CustomerRequestsController < ApplicationController
     organization = Organization.find_by(short_name: params[:organization_shortname])
 
     Estimate.transaction do
-      estimate = Estimate.create(organization: organization, submission_completed: true)
+      estimate = Estimate.create(organization: organization, submission_completed: true, source: :customer_form)
 
       if params[:site_visit]
         estimate.site_visit = true 

@@ -21,6 +21,7 @@ module Estimates
       estimate = Estimate.new(@estimate_params)
       estimate.arborist     = arborist_for(estimate)
       estimate.organization = @org
+      estimate.source       = :admin_form
       estimate.save
 
       create_site(estimate)       if @site_params.present?
