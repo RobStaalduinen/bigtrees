@@ -1,6 +1,10 @@
 <template>
   <page-template>
-    <app-header title='Organizations'></app-header>
+    <app-header title='Organizations'>
+      <template v-slot:header-right>
+        <a v-b-toggle.create-organization v-if='$store.state.authorization.canCreate("organizations")'>New</a>
+      </template>
+    </app-header>
 
     <div v-for='organization in organizations' :key='organization.id' class='organization-wrapper'>
       <app-collapsable-list-item :id='`organization-${organization.id}`'>
@@ -32,6 +36,7 @@
         </template>
 
         <template v-slot:collapsed>
+          <app-organization-stats :stats='statsMap[organization.id]'></app-organization-stats>
           <app-collapsable-action-bar>
             <template v-slot:content>
             </template>
@@ -39,14 +44,24 @@
         </template>
       </app-collapsable-list-item>
     </div>
+    <app-create-organization id='create-organization'></app-create-organization>
   </page-template>
 </template>
 
 <script>
+import EventBus from '@/store/eventBus';
+import CreateOrganization from '@/components/organizations/actions/create';
+import OrganizationStats from '@/components/organizations/views/stats';
+
 export default {
+  components: {
+    'app-create-organization': CreateOrganization,
+    'app-organization-stats': OrganizationStats
+  },
   data() {
     return {
-      organizations: []
+      organizations: [],
+      statsMap: {}
     }
   },
   methods: {
@@ -54,14 +69,28 @@ export default {
       this.axiosGet('/organizations').then(response => {
         this.organizations = response.data.organizations;
       })
+    },
+    retrieveStats() {
+      this.axiosGet('/organizations/stats').then(response => {
+        this.statsMap = response.data.stats.reduce((map, entry) => {
+          map[entry.id] = entry;
+          return map;
+        }, {});
+      })
     }
   },
   mounted() {
-    if (this.$store.state.user.user_id !== 14) {
+    if (this.$store.state.user.user_id !== 14 && !this.$store.state.authorization.canCreate('organizations')) {
       this.$router.push({ name: 'hours' });
       return;
     }
     this.retrieveOrganizations();
+    this.retrieveStats();
+
+    EventBus.$on('ORGANIZATION_CREATED', () => {
+      this.retrieveOrganizations();
+      this.retrieveStats();
+    });
   }
 }
 </script>

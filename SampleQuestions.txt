@@ -1,0 +1,9 @@
+start_questions: ["If necessary, I have made contact with the homeowner",
+   "Crew understands the work required",
+   "Crew is aware if the hazards on site",
+   "Crew is wearing proper safety gear",
+   "If necessary, traffic control is properly set up",
+   "Are power lines present?"]
+
+
+completion_questions: ["The customer is happy with the work.", "The customer paid on site."]

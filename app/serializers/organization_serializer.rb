@@ -51,6 +51,7 @@ class OrganizationSerializer < ApplicationSerializer
 
   attribute :logo_url
   attribute :condensed_logo_url
+  attribute :monthly_cost
   attribute :quote_redirect_link
 
   attribute :configuration

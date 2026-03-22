@@ -35,6 +35,11 @@ extend('required', {
   message: 'This field is required'
 });
 
+extend('email', {
+  ...email,
+  message: 'Please enter a valid email address'
+});
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

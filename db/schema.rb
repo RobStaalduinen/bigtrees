@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_03_20_180257) do
+ActiveRecord::Schema.define(version: 2026_03_22_182759) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.boolean "crew_member", default: true
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -63,6 +65,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.float "amount"
     t.string "description"
     t.boolean "discount", default: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "customer_details", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -85,6 +89,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.string "preferred_contact"
     t.integer "address_id"
     t.string "short_name"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["email"], name: "index_customers_on_email"
     t.index ["name"], name: "index_customers_on_name"
     t.index ["phone"], name: "index_customers_on_phone"
@@ -236,6 +242,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.boolean "discount", default: false
     t.date "sent_at"
     t.date "paid_at"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_invoices_on_estimate_id"
     t.index ["number"], name: "index_invoices_on_number"
   end
@@ -322,6 +330,7 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.json "job_survey_questions"
     t.json "completion_survey_questions"
     t.string "legal_name"
+    t.float "monthly_cost", default: 0.0
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -358,6 +367,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.string "state", default: "pending"
     t.string "rejection_reason"
     t.integer "organization_id"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["state"], name: "index_receipts_on_state"
   end
 
@@ -421,6 +432,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.string "image_small_url"
     t.string "edited_image_url"
     t.integer "estimate_id"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "trees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -433,6 +446,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.boolean "stump_removal"
     t.boolean "in_backyard", default: false
     t.string "job_type"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_trees_on_estimate_id"
   end
 
@@ -444,6 +459,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
   create_table "vehicles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.integer "organization_id"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["name"], name: "index_vehicles_on_name"
   end
 
@@ -467,6 +484,8 @@ ActiveRecord::Schema.define(version: 2026_03_20_180257) do
     t.float "hourly_rate"
     t.integer "payout_id"
     t.integer "organization_id"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["arborist_id"], name: "index_work_records_on_arborist_id"
   end
 

@@ -40,6 +40,8 @@ class Organization < ActiveRecord::Base
   has_many :estimates
   has_many :quick_costs
   has_many :tags
+  has_many :receipts
+  has_many :work_records
 
   has_one :nylas_account, dependent: :destroy
 

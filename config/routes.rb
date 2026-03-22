@@ -85,8 +85,9 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
-  resources :organizations, only: [ :index, :show, :update ] do
+  resources :organizations, only: [ :index, :show, :create, :update ] do
     get 'public/:short_name', to: 'organizations#public', on: :collection
+    get :stats, on: :collection
 
     resources :quick_costs, only: [ :index, :create, :update, :destroy ]
     resources :tags, only: [ :index, :create, :update, :destroy ]
