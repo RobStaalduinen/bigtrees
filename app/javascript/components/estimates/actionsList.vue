@@ -36,6 +36,10 @@
       Send to Team
     </b-dropdown-item>
 
+    <b-dropdown-item @click='reopenJob' v-if="estimate.status == 'work_completed'">
+      Re-Open Job
+    </b-dropdown-item>
+
     <b-dropdown-item @click='triggerAction("change_status")' v-if="estimate.state != 'completed'">
       Status and Tags
     </b-dropdown-item>
@@ -71,6 +75,11 @@ export default {
     },
     triggerAction(name) {
       EventBus.$emit('ESTIMATE_TRIGGER_ACTION', name, this.estimate.id);
+    },
+    reopenJob() {
+      this.axiosPut(`/estimates/${this.estimate.id}`, { estimate: { work_complete: false } }).then(response => {
+        EventBus.$emit('ESTIMATE_UPDATED', response.data);
+      });
     }
   },
   watch: {
