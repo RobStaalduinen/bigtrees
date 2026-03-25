@@ -21,15 +21,16 @@
           <hr/>
 
           <h6>Status</h6>
+          <p class="status-subheading">Is the quoted job finished? Or will more visits be required to handle stumps, log pickup, further trimming etc.</p>
 
           <div class="status-radio-group">
-            <label class="status-radio-option" :class="{ active: !allTasksComplete }">
-              <input type="radio" :value="false" v-model="allTasksComplete" />
-              Followup visits needed
-            </label>
             <label class="status-radio-option" :class="{ active: allTasksComplete }">
               <input type="radio" :value="true" v-model="allTasksComplete" />
-              No further work required &mdash; Job Complete
+              All quoted work complete
+            </label>
+            <label class="status-radio-option" :class="{ active: !allTasksComplete }">
+              <input type="radio" :value="false" v-model="allTasksComplete" />
+              More work required
             </label>
           </div>
 
@@ -173,6 +174,12 @@ export default {
   .survey-subtext {
     font-size: 0.9em;
     color: #6c757d;
+  }
+
+  .status-subheading {
+    font-size: 0.75em;
+    color: #6c757d;
+    margin-bottom: 10px;
   }
 
   .status-radio-group {
