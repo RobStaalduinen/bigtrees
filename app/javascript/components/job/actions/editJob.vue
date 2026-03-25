@@ -92,13 +92,17 @@
 
         <template v-if="showJobCompleteCheckbox">
           <hr/>
-          <app-checkbox-highlight
-            id='edit-all-tasks-complete'
-            label='Job Complete - No additional visit needed'
-            v-model='allTasksComplete'
-            :checkedValue='true'
-            label_id='survey-label'
-          />
+          <h6>Status</h6>
+          <div class="status-radio-group">
+            <label class="status-radio-option" :class="{ active: !allTasksComplete }">
+              <input type="radio" :value="false" v-model="allTasksComplete" />
+              Followup visits needed
+            </label>
+            <label class="status-radio-option" :class="{ active: allTasksComplete }">
+              <input type="radio" :value="true" v-model="allTasksComplete" />
+              No further work required &mdash; Job Complete
+            </label>
+          </div>
         </template>
 
       </validation-observer>
@@ -237,5 +241,44 @@ export default {
   font-size: 0.8em;
   font-weight: normal;
   color: #6c757d;
+}
+
+.status-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.status-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: normal;
+  margin-bottom: 0;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.status-radio-option:hover {
+  border-color: #adb5bd;
+  background-color: #f8f9fa;
+}
+
+.status-radio-option.active {
+  border-color: var(--main-color);
+  background-color: rgba(138, 0, 0, 0.07);
+  color: var(--main-color);
+  font-weight: 500;
+}
+
+.status-radio-option input[type="radio"] {
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--main-color);
 }
 </style>
