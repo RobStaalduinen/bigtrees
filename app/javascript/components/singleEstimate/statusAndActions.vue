@@ -68,15 +68,15 @@ const STEPS = {
     inputComponent: 'estimate-schedule-quote'
   },
   'work_scheduled': {
-    actionLabel: 'Start Job',
+    actionLabel: 'Start Work Report',
     inputComponent: 'estimate-start-job'
   },
   'work_started': {
-    actionLabel: 'Complete Job',
+    actionLabel: 'Complete Work Report',
     inputComponent: 'estimate-complete-job'
   },
   'work_paused': {
-    actionLabel: 'Start Job',
+    actionLabel: 'Start Work Report',
     inputComponent: 'estimate-start-job'
   },
   'work_completed': {
