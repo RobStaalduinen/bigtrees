@@ -36,7 +36,6 @@
 #  state                   :string(255)      default("in_progress"), not null
 #  state_reason            :string(255)
 #  approved                :boolean          default(FALSE)
-#  source                  :string(255)
 #
 class Estimate < ActiveRecord::Base
 
@@ -272,11 +271,11 @@ class Estimate < ActiveRecord::Base
 			:approved
 		elsif(self.work_complete? && !self.invoice.sent?)
 			:work_completed
-		elsif(self.work_scheduled? && !self.jobs.any?(&:started?))
+		elsif(!self.work_complete? && self.work_scheduled? && !self.jobs.any?(&:started?))
 			:work_scheduled
-		elsif(self.jobs.any? { |j| j.started? && !j.completed? })
+		elsif(!self.work_complete? && self.jobs.any? { |j| j.started? && !j.completed? })
 			:work_started
-		elsif(self.jobs.any? && !self.work_complete? && !self.invoice.sent?)
+		elsif(!self.work_complete? && self.jobs.any? && !self.work_complete? && !self.invoice.sent?)
 			:work_paused
 		elsif(self.invoice.sent? && !self.invoice.paid?)
 			:final_invoice_sent
@@ -322,5 +321,10 @@ class Estimate < ActiveRecord::Base
 	def add_system_tag(tag_name)
 		tag = organization.tags.find_by(label: tag_name)
 		self.taggings.create(tag: tag)
+	end
+
+	def invoice_sent_or_skipped?
+		self.invoice.sent? || self.skip_schedule
+		self.invoice.present? && self.invoice.paid?
 	end
 end
