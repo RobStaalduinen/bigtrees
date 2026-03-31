@@ -87,18 +87,67 @@ export default {
     handleProgress(percentage) {
       this.completionPercentage = percentage;
     },
-    compressFile(file) {
+    resizeImage(file) {
+      return new Promise((resolve, reject) => {
+        const MAX_DIMENSION = 1920;
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+
+          if (img.width <= MAX_DIMENSION && img.height <= MAX_DIMENSION) {
+            resolve(file);
+            return;
+          }
+
+          let { width, height } = img;
+          if (width > height) {
+            height = Math.round((height * MAX_DIMENSION) / width);
+            width = MAX_DIMENSION;
+          } else {
+            width = Math.round((width * MAX_DIMENSION) / height);
+            height = MAX_DIMENSION;
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(blob => {
+            if (!blob) { reject(new Error('Canvas resize failed')); return; }
+            resolve(new File([blob], file.name, { type: file.type }));
+          }, file.type);
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error('Image could not be loaded for resize'));
+        };
+
+        img.src = objectUrl;
+      });
+    },
+    async compressFile(file) {
       if (!file.type.match(/image\/*/)) {
-        return Promise.resolve(file);
+        return file;
       }
 
-      const options = {
-        maxSizeMB: 1,          // target ≤1MB
-        maxWidthOrHeight: 1024,
-        useWebWorker: true,
-      };
+      try {
+        const resized = await this.resizeImage(file);
 
-      return imageCompression(file, options)
+        const options = {
+          maxSizeMB: 1,          // target ≤1MB
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+
+        return await imageCompression(resized, options);
+      } catch (e) {
+        console.warn('Image resize/compression failed, uploading original:', e);
+        return file;
+      }
     }
   },
   computed: {
