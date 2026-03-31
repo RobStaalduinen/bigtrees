@@ -10,14 +10,9 @@
       </div>
     </div>
 
-    <div class='image-row'>
-      <img
-        v-for='(image, imageIndex) in images'
-        :key='index + "_" + imageIndex'
-        :src='image.edited_image_url || image.image_url'
-        class='tree-image'
-        @click='$emit("edit", image.id)'
-      />
+    <div class='image-row' :class="{ 'drop-zone--active': isDragging }">
+      <slot name='images' />
+      <p v-if='isDragging && !hasImages' class='drop-hint'>Drop here</p>
     </div>
   </div>
 </template>
@@ -35,10 +30,16 @@ export default {
       required: false,
       type: Object
     },
-    'images': {
-      required: true,
-      type: Array
-    }
+    'isDragging': {
+      required: false,
+      type: Boolean,
+      default: false
+    },
+    'hasImages': {
+      required: false,
+      type: Boolean,
+      default: false
+    },
   },
   methods: {
     taskHeader(index, tree) {
@@ -78,17 +79,26 @@ export default {
   }
 
   .image-row {
-    display: flex;
     width: 100%;
-    overflow: scroll;
     padding-bottom: 8px;
     border-width: 0 0 1px 0;
     border-color: grey;
     border-style: solid;
+    min-height: 40px;
+    transition: border-color 0.15s, min-height 0.15s;
   }
 
-  .tree-image {
-    max-width: 30%;
-    margin-right: 8px;
+  .drop-zone--active {
+    border: 2px dashed #4a90d9;
+    border-radius: 4px;
+    min-height: 80px;
+  }
+
+
+  .drop-hint {
+    color: #9b9b9b;
+    font-size: 13px;
+    margin: 0;
+    padding: 0 8px;
   }
 </style>

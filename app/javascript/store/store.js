@@ -92,7 +92,6 @@ export const store = new Vuex.Store({
       }
 
       return axiosFunc.get(`/nylas_accounts/${this.state.organization.nylas_account.id}`).then(response => {
-        console.log('email status response', response);
         commit('setEmailStatus', response.data.nylas_account.status);
         this.dispatch('refreshOrganization');
       });
