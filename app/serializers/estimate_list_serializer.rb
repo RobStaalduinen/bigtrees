@@ -23,7 +23,7 @@ class EstimateListSerializer < ApplicationSerializer
   attribute :site_visit_required
 
   # Associations
-  belongs_to :arborist
+  belongs_to :arborist, serializer: ArboristListSerializer
 
   belongs_to :customer, serializer: CustomerListSerializer
 
