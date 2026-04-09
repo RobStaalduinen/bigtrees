@@ -1,5 +1,7 @@
 module Nylas
   class Attachment
+    attr_reader :name, :type, :file_path
+
     def initialize(name:, type: 'application.pdf', file_path:)
       @name = name
       @type = type
