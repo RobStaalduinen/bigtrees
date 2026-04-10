@@ -19,6 +19,8 @@
                 group='tree-images'
                 :animation='150'
                 :force-fallback='true'
+                :delay='200'
+                :delay-on-touch-only='false'
                 ghost-class='image-ghost'
                 chosen-class='image-chosen'
                 drag-class='image-drag'
@@ -63,6 +65,7 @@ import CreateTask from '@/components/trees/actions/create';
 import ImageGallery from '@/components/tree_images/views/galleryModal';
 import SingleRow from './singleRow';
 import ImageThumb from '@/components/tree_images/forms/imageThumb';
+import EventBus from '@/store/eventBus';
 
 export default {
   components: {
