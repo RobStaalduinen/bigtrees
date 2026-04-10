@@ -19,7 +19,7 @@ class QuoteMailer < ApplicationMailer
 			content = render_to_string(template: "quote_mailer/quote_email", formats: [:html])
 
 			send_direct_mail(
-        to: email, 
+			to: email, 
         subject: subject, 
         body: content, 
         organization: @organization,
