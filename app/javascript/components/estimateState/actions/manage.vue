@@ -54,6 +54,7 @@
         return ['on_hold', 'unknown', 'cancelled'].includes(this.state);
       },
       updateEstimate() {
+        console.log("Updating.");
         let params = { estimate: { state: this.state, state_reason: this.reason } }
         if (!this.reasonAllowed()) {
           this.reason = null;
