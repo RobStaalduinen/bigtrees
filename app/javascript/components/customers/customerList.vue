@@ -1,15 +1,12 @@
 <template>
   <div>
     <div id='search-container'>
-      <app-search-field v-model='searchTerm'></app-search-field>
+      <div id='search-field-container'>
+        <app-search-field v-model='searchTerm'></app-search-field>
+      </div>
+      <app-button text='Reset' :click='resetSearch'></app-button>
     </div>
-    <app-pagination 
-      v-model='currentPage'
-      :totalRows='totalCustomers'
-    >
-    </app-pagination>
-
-    <hr>
+    <app-arrow-pagination :totalEntries='totalCustomers' :perPage='perPage' v-model='currentPage' class='pagination-control'></app-arrow-pagination>
 
     <div class='list-container' v-if='customers != null'>
       <div id='loading-overlay' v-if='loadingCustomers'>
@@ -33,7 +30,8 @@ export default {
       customers: null,
       totalCustomers: 0,
       searchTerm: null,
-      currentPage: 1
+      currentPage: 1,
+      perPage: 30
     }
   },
   methods: {
@@ -46,6 +44,10 @@ export default {
             this.totalCustomers = response.data['total_entries'];
             this.loadingCustomers = false;
           })
+    },
+    resetSearch() {
+      this.searchTerm = null;
+      this.currentPage = 1;
     }
   },
   mounted() {
@@ -53,6 +55,7 @@ export default {
   },
   watch: {
     searchTerm: function(){
+      this.currentPage = 1;
       this.retrieveCustomers();
     },
     currentPage: function(){
@@ -71,6 +74,7 @@ export default {
 
   .pagination-control {
     width: 100%;
+    margin-bottom: 8px;
   }
   
   #loading-overlay{
@@ -86,6 +90,12 @@ export default {
 
   #search-container {
     margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #search-field-container {
+    width: 60%;
   }
 
 </style>

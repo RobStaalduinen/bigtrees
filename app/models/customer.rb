@@ -34,7 +34,7 @@ class Customer < ActiveRecord::Base
   # end
 
   def recent_estimate_id
-    estimates.order('id DESC').first&.id
+    last_estimate&.id
   end
 
   def customer_address
@@ -62,5 +62,28 @@ class Customer < ActiveRecord::Base
 
   def downcase_fields
     self.email&.downcase!
+  end
+
+  def estimate_count
+    estimates.size
+  end
+
+  def formatted_address
+    return nil unless address.present?
+    [address.street, address.city, address.postal_code].compact.reject(&:empty?).join(', ').presence
+  end
+
+  def last_estimate_status
+    last_estimate&.formatted_status
+  end
+
+  def last_activity_date
+    last_estimate&.created_at&.to_date
+  end
+
+  private
+
+  def last_estimate
+    @last_estimate ||= estimates.max_by(&:id)
   end
 end

@@ -6,7 +6,7 @@ class CustomersController < ApplicationController
   def index
     authorize Customer, :index?
 
-    @customers = policy_scope(Customer).order('customers.id DESC').includes(:estimates)
+    @customers = policy_scope(Customer).order('customers.id DESC').includes(:estimates, :address)
     if params[:q]
       @customers = @customers.where(
         'LOWER(name) LIKE :value OR LOWER(email) LIKE :value',
@@ -16,7 +16,7 @@ class CustomersController < ApplicationController
 
     @customers = @customers.paginate(page: params[:page], per_page: params[:per_page])
 
-    json_customers = @customers.map { |customer| CustomerSerializer.new(customer).as_json }
+    json_customers = @customers.map { |customer| CustomerListSerializer.new(customer).as_json }
     
     render json: { customers: json_customers, total_entries: @customers.total_entries }
   end
