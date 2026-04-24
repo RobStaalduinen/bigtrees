@@ -23,7 +23,7 @@ class GenerateMasterTracker
     SQL
 
     estimates = estimates
-                .includes(:trees, :arborist, :invoice, :customer, :site, :job)
+                .includes(:trees, :arborist, :invoice, :customer, :site, :jobs)
                 .order("estimates.created_at ASC, status DESC")
                 .joins("LEFT OUTER JOIN #{cost_subquery} ON cost_totals.estimate_id = estimates.id")
                 .joins("LEFT OUTER JOIN trees ON trees.estimate_id = estimates.id")
@@ -52,7 +52,9 @@ class GenerateMasterTracker
       insert(worksheet, row, 10, estimate.invoice.paid_at.strftime("%B")) rescue ""
       insert(worksheet, row, 11, estimate.invoice.paid_at.strftime("%Y")) rescue ""
 
-      insert(worksheet, row, 12, estimate.job&.followup_year)
+      followup_year = estimate.jobs.where("followup_year IS NOT NULL").order(followup_year: :desc).limit(1).pluck(:followup_year).first
+
+      insert(worksheet, row, 12, followup_year)
       insert(worksheet, row, 13, customer.name)
       insert(worksheet, row, 14, estimate.street || estimate.site&.address&.street)
       insert(worksheet, row, 15, estimate.city || estimate.site&.address&.city)
