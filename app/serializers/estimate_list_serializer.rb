@@ -25,7 +25,7 @@ class EstimateListSerializer < ApplicationSerializer
   # Associations
   belongs_to :arborist, serializer: ArboristListSerializer
 
-  belongs_to :customer, serializer: CustomerListSerializer
+  belongs_to :customer, serializer: CustomerBasicSerializer
 
   has_many :tags
   
