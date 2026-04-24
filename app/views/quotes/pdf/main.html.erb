@@ -1,12 +1,12 @@
 <% estimate ||= @estimate %>
 <% organization ||= estimate.organization %>
-<% is_receipt ||= false %>
+<% compressed_view ||= false %>
 
 <div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/quote', estimate: estimate, organization: organization, is_receipt: is_receipt %>
+  <%= render 'quotes/pdf/quote', estimate: estimate, organization: organization, compressed_view: compressed_view %>
 </div>
 
-<% unless is_receipt %>
+<% unless compressed_view %>
   <%= render 'quotes/pdf/images', estimate: estimate, organization: organization  %>
 
 

@@ -1,10 +1,10 @@
 <%= render 'quotes/pdf/header', organization: organization %>
 
 <div class='estimate-header'>
-  <% if estimate.invoice&.number&.present? && !is_receipt %>
-    <b>Invoice #<%= estimate.invoice.number %></b>
-  <% elsif estimate.invoice&.number&.present? && is_receipt %>
+  <% if estimate.invoice&.number&.present? && estimate.invoice.paid? %>
     <b>Receipt for Invoice #<%= estimate.invoice.number %></b>
+  <% elsif estimate.invoice&.number&.present? %>
+    <b>Invoice #<%= estimate.invoice.number %></b>
   <% else %>
     <b>Quote</b>
   <% end %>
@@ -42,7 +42,7 @@
   </tr>
 </table>
 
-<%= render 'quotes/pdf/cost_summary', estimate: estimate, include_method: is_receipt %>
+<%= render 'quotes/pdf/cost_summary', estimate: estimate, include_method: estimate.invoice&.paid? %>
 
 <table class='signature-row'>
   <tr>
