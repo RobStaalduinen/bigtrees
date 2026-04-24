@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_03_22_200000) do
+ActiveRecord::Schema.define(version: 2026_04_24_000001) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.string "contact_method", null: false
     t.string "contact_type", limit: 20
     t.string "status", limit: 50, null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "arborists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -67,6 +69,7 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.boolean "discount", default: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["estimate_id"], name: "index_costs_on_estimate_id"
   end
 
   create_table "customer_details", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -141,6 +144,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.integer "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_equipment_assignments_on_estimate_id"
+    t.index ["vehicle_id"], name: "index_equipment_assignments_on_vehicle_id"
   end
 
   create_table "equipment_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -161,7 +166,11 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.string "resolution_notes"
     t.integer "mechanic_id"
     t.integer "organization_id"
+    t.index ["arborist_id"], name: "index_equipment_requests_on_arborist_id"
+    t.index ["mechanic_id"], name: "index_equipment_requests_on_mechanic_id"
+    t.index ["organization_id"], name: "index_equipment_requests_on_organization_id"
     t.index ["resolver_id"], name: "index_equipment_requests_on_resolver_id"
+    t.index ["state"], name: "index_equipment_requests_on_state"
   end
 
   create_table "estimates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -206,7 +215,10 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.index ["customer_id"], name: "index_estimates_on_customer_id"
     t.index ["followup_sent_at"], name: "index_estimates_on_followup_sent_at"
     t.index ["is_unknown"], name: "index_estimates_on_is_unknown"
+    t.index ["organization_id", "state"], name: "index_estimates_on_organization_id_and_state"
+    t.index ["organization_id"], name: "index_estimates_on_organization_id"
     t.index ["picture_request_sent_at"], name: "index_estimates_on_picture_request_sent_at"
+    t.index ["state"], name: "index_estimates_on_state"
     t.index ["status"], name: "index_estimates_on_status"
     t.index ["submission_completed"], name: "index_estimates_on_submission_completed"
   end
@@ -217,12 +229,15 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["vehicle_id"], name: "index_expirations_on_vehicle_id"
   end
 
   create_table "extra_costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.decimal "amount", precision: 10
     t.string "description"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_extra_costs_on_estimate_id"
   end
 
@@ -233,6 +248,7 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.string "edited_image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable"
   end
 
   create_table "invoices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -270,6 +286,7 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.json "completion_survey_responses"
     t.text "completion_notes"
     t.integer "followup_year"
+    t.index ["arborist_id"], name: "index_jobs_on_arborist_id"
     t.index ["estimate_id"], name: "index_jobs_on_estimate_id"
   end
 
@@ -370,12 +387,17 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.integer "organization_id"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["arborist_id"], name: "index_receipts_on_arborist_id"
+    t.index ["organization_id", "state"], name: "index_receipts_on_organization_id_and_state"
+    t.index ["organization_id"], name: "index_receipts_on_organization_id"
     t.index ["state"], name: "index_receipts_on_state"
   end
 
   create_table "site_config", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "attribute_name", null: false
     t.string "attribute_value", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "site_stats", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -383,6 +405,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.integer "appointments_started", default: 0, null: false
     t.string "month", limit: 20, null: false
     t.string "year", limit: 10
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "sites", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -399,6 +423,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.boolean "survey_filled_out", default: false
     t.boolean "visit_consent", default: false
     t.text "visit_times"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["city"], name: "index_sites_on_city"
     t.index ["estimate_id"], name: "index_sites_on_estimate_id"
     t.index ["street"], name: "index_sites_on_street"
@@ -435,6 +461,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.integer "estimate_id"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["estimate_id"], name: "index_tree_images_on_estimate_id"
+    t.index ["tree_id"], name: "index_tree_images_on_tree_id"
   end
 
   create_table "trees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -455,6 +483,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "username", limit: 50, null: false
     t.string "session_token", limit: 100, null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "vehicles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -463,6 +493,7 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["name"], name: "index_vehicles_on_name"
+    t.index ["organization_id"], name: "index_vehicles_on_organization_id"
   end
 
   create_table "work_actions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -473,6 +504,8 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.text "info"
     t.float "cost"
     t.string "status", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "work_records", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -488,6 +521,9 @@ ActiveRecord::Schema.define(version: 2026_03_22_200000) do
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["arborist_id"], name: "index_work_records_on_arborist_id"
+    t.index ["organization_id", "date"], name: "index_work_records_on_organization_id_and_date"
+    t.index ["organization_id"], name: "index_work_records_on_organization_id"
+    t.index ["payout_id"], name: "index_work_records_on_payout_id"
   end
 
 end
