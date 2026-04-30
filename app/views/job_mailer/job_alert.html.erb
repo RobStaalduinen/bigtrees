@@ -1,5 +1,5 @@
 <% if @job.completed? %>
-  Job at <%= @estimate.site.full_address %> has been completed by <%= @job.arborist.name %> <br>
+  Job at <%= @estimate.site.full_address %> has been completed by <%= @job.completing_arborist_name %> <br>
 <% else %>
   Job at <%= @estimate.site.full_address %> has been started by <%= @job.arborist.name %> <br>
 <% end %>

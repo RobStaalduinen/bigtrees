@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_04_24_000001) do
+ActiveRecord::Schema.define(version: 2026_04_30_000000) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -286,7 +286,9 @@ ActiveRecord::Schema.define(version: 2026_04_24_000001) do
     t.json "completion_survey_responses"
     t.text "completion_notes"
     t.integer "followup_year"
+    t.integer "completed_by_id"
     t.index ["arborist_id"], name: "index_jobs_on_arborist_id"
+    t.index ["completed_by_id"], name: "index_jobs_on_completed_by_id"
     t.index ["estimate_id"], name: "index_jobs_on_estimate_id"
   end
 

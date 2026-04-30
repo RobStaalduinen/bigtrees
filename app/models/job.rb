@@ -20,6 +20,7 @@
 class Job < ActiveRecord::Base
   belongs_to :estimate
   belongs_to :arborist
+  belongs_to :completed_by, class_name: 'Arborist', foreign_key: :completed_by_id, optional: true
 
   has_many :job_assignments
   has_many :assigned_arborists, through: :job_assignments, source: :arborist
@@ -34,6 +35,10 @@ class Job < ActiveRecord::Base
 
   def lead_arborist_name
     self.arborist&.name
+  end
+
+  def completing_arborist_name
+    (completed_by || arborist)&.name
   end
 
   def assigned_arborist_names

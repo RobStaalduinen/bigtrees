@@ -25,7 +25,9 @@ class JobSerializer < ApplicationSerializer
   attribute :completion_notes
   attribute :followup_year
   attribute :arborist_id
+  attribute :completed_by_id
   attribute :lead_arborist_name
+  attribute :completing_arborist_name
   attribute :assigned_arborist_names
   attribute :assigned_arborist_ids
   attribute :skipped

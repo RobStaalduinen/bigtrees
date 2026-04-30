@@ -5,11 +5,17 @@ class JobMailer < ApplicationMailer
   def job_alert(job, estimate)
     return unless estimate.organization.feature_enabled?(:job_notifications)
 
-    if job.completed?
-      subject = "Job at #{estimate.site.full_address} Completed by #{job.arborist.name}"
+    subject_prefix = "#{estimate.customer_detail.name} - #{estimate.site&.address&.city}"
+
+    subject_suffix = if job.completed? && estimate.work_complete?
+      "Complete"
+    elsif job.completed? && !estimate.work_complete?
+      "Paused"
     else
-      subject = "Job at #{estimate.site.full_address} Started by #{job.arborist.name}"
+      "Started"
     end
+
+    subject = "#{subject_prefix} - #{subject_suffix}"
 
     @job = job
     @estimate = estimate

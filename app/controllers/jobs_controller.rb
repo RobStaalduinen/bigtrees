@@ -31,6 +31,7 @@ class JobsController < ApplicationController
 
     newly_completed = job.completed_at.nil? && params[:job][:completed_at].present?
 
+    job.completed_by = current_user if newly_completed
     job.update(job_params)
 
     if params[:job][:assigned_arborists].present?
@@ -62,8 +63,7 @@ class JobsController < ApplicationController
   def can_edit_job?(job)
     editable_statuses = %w[work_started work_paused work_completed]
     is_admin = %w[admin super_admin].include?(current_user.role)
-    is_submitter = job.arborist_id == current_user.id && editable_statuses.include?(estimate.status)
-    is_admin || is_submitter
+    is_admin || editable_statuses.include?(estimate.status)
   end
 
   def job_params

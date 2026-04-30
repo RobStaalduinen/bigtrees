@@ -15,7 +15,7 @@
           <div class="visit-header">
             <span class="visit-title">Visit #{{ index + 1 }}</span>
             <div class="visit-header-right">
-              <span class="visit-lead">{{ job.lead_arborist_name }}</span>
+              <span class="visit-lead">{{ job.completed_at ? job.completing_arborist_name : job.lead_arborist_name }}</span>
               <b-icon
                 v-if="canEditJob(job)"
                 icon='pencil-square'
@@ -118,14 +118,13 @@ export default {
     },
     canEditJob(job) {
       const role = this.$store.state.user.role;
-      const userId = this.$store.state.user.user_id;
       const status = this.estimate.status;
       const invoiced = ['final_invoice_sent', 'completed'].includes(status);
       const editableStatuses = ['work_started', 'work_paused', 'work_completed'];
 
       if (invoiced) return false;
       if (['admin', 'super_admin'].includes(role)) return true;
-      return job.arborist_id === userId && editableStatuses.includes(status);
+      return editableStatuses.includes(status);
     },
     toggleEdit(jobId) {
       this.$root.$emit('bv::toggle::collapse', `edit-job-${jobId}`);
