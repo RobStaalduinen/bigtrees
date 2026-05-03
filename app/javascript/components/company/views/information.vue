@@ -85,6 +85,10 @@
         <div class='company-information-label'>Quote BCC:</div>
         <div class='company-information-value'>{{ company.quote_bcc }}</div>
       </div>
+      <div class='company-information-row'>
+        <div class='company-information-label'>Email Signature:</div>
+        <div class='company-information-value email-signature-value'>{{ company.email_signature }}</div>
+      </div>
     </div>
 
     <app-edit-company id='edit-company' :company='company' v-if="company"></app-edit-company>
@@ -123,6 +127,10 @@
 
   .company-information-value {
     width: 50%;
+  }
+
+  .email-signature-value {
+    white-space: pre-wrap;
   }
 
   .company-section-header{

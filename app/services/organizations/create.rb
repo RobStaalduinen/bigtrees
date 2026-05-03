@@ -38,6 +38,8 @@ module Organizations
         populate_survey_questions
         create_default_tags
         create_admin_arborist
+
+        OrganizationCreator::EmailTemplateCreator.new(@organization).seed_email_templates
       end
 
       { organization: @organization, temporary_password: @temporary_password }

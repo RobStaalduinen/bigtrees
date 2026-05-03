@@ -86,10 +86,11 @@
           name='quote_bcc'
         />
 
-        <app-input-field
+        <app-text-area
           v-model='editableCompany.email_signature'
           label='Email Signature'
           name='email_signature'
+          :rows='4'
         />
       </div>
     </template>

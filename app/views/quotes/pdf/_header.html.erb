@@ -1,13 +1,19 @@
 <table class='header-table'>
   <tr>
     <td class='logo-cell'>
-      <div class='logo-box'>
-        <% if organization.id == 2%>
-          <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
+        <% if organization.id == 2 %>
+          <div class='logo-box'>
+            <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
+          </div>
+        <% elsif organization.id == 1 %>
+          <div class='logo-box'>
+            <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
+          </div>
         <% else %>
-          <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
+          <div class='logo-box'>
+            <img src="<%= organization.logo_url %>" class='pdf-logo'>
+          </div>
         <% end %>
-      </div>
     </td>
     <td class='address-cell'>
       <div stlye='width: 100%; display: flex; justify-content: end;'>
