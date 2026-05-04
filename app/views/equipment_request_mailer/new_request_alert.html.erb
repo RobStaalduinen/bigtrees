@@ -1,0 +1,13 @@
+A new Equipment Repair/Maintenance Request has been submitted by <%= @equipment_request.arborist.name %>. <br><br>
+
+<b>Category: </b><%= @equipment_request.category.humanize %> <br>
+<b>Submitted at: </b><%= @equipment_request.submitted_at.strftime('%B %d, %Y') %> <br>
+
+<% if @equipment_request.vehicle.present? %>
+  <b>Vehicle: </b><%= @equipment_request.vehicle.name %> <br>
+<% end %>
+
+<br>
+
+<b>Description:</b> <br>
+<%= @equipment_request.description %>

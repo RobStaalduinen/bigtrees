@@ -8,24 +8,19 @@ class InvoiceMailer < ApplicationMailer
 		invoice = estimate.invoice
 		@content = content
 		@organization = estimate.organization
-		file = invoice.pdf_receipt
-		
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
-			
-			attachment = Nylas::Attachment.new(name: invoice.pdf_receipt_file_name, file_path: file)
-			content = render_to_string(template: "invoice_mailer/receipt", formats: [:html])
+		return unless @organization.nylas_account
 
-      send_direct_mail(
-        to: email, 
-        subject: subject, 
-        body: content, 
-        organization: @organization,
-				attachment: attachment,
-        bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc]
-      )
-		else
-			attachments[invoice.pdf_receipt_file_name] = File.read(file)
-			mail(to: email, from: estimate.organization.quote_author, subject: subject, bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc])
-		end
+		file = invoice.pdf_receipt
+		attachment = Nylas::Attachment.new(name: invoice.pdf_receipt_file_name, file_path: file)
+		content = render_to_string(template: "invoice_mailer/receipt", formats: [:html])
+
+		send_direct_mail(
+			to: email,
+			subject: subject,
+			body: content,
+			organization: @organization,
+			attachment: attachment,
+			bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc]
+		)
 	end
 end

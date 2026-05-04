@@ -8,7 +8,7 @@ class DeviseMailer < Devise::Mailer
                          .includes(:nylas_account)
                          .find { |org| org.nylas_account&.active? }
 
-    if organization && send_nylas_mail?
+    if organization
       subject = 'Reset your Big Tree Admin password'
       content = render_to_string(
         template: 'devise/mailer/reset_password_instructions',

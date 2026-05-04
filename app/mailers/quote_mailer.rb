@@ -8,26 +8,19 @@ class QuoteMailer < ApplicationMailer
 	def quote_email(estimate, email, subject, content, include_quote = true)
 		@content = content
 		@organization = estimate.organization
+		return unless @organization.nylas_account
 
-		if include_quote
-			file = estimate.pdf_quote
-			attachments[estimate.pdf_file_name] = File.read(file)
-    end
+		file = include_quote ? estimate.pdf_quote : nil
+		attachment = include_quote ? Nylas::Attachment.new(name: estimate.pdf_file_name, file_path: file) : nil
+		content = render_to_string(template: "quote_mailer/quote_email", formats: [:html])
 
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
-			attachment = include_quote ?  Nylas::Attachment.new(name: estimate.pdf_file_name, file_path: file) : nil
-			content = render_to_string(template: "quote_mailer/quote_email", formats: [:html])
-
-			send_direct_mail(
-			to: email, 
-        subject: subject, 
-        body: content, 
-        organization: @organization,
-				attachment: attachment,
-        bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc]
-      )
-		else
-			mail(to: email, from: estimate.organization.quote_author, subject: subject, bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc].compact)
-		end
+		send_direct_mail(
+			to: email,
+			subject: subject,
+			body: content,
+			organization: @organization,
+			attachment: attachment,
+			bcc: ['rob.staalduinen@gmail.com', estimate.organization.quote_bcc]
+		)
 	end
 end

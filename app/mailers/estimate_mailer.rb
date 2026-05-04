@@ -9,40 +9,31 @@ class EstimateMailer < ApplicationMailer
 	def estimate_alert(estimate_id)
 		@estimate = Estimate.find_by_id(estimate_id)
     @organization = @estimate.organization
+    return unless @organization.nylas_account
 
     subject = "#{@organization.name} - BigTree Estimate Request from " + @estimate.customer.name
-
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
-			content = render_to_string(template: "estimate_mailer/estimate_alert", formats: [:html])
-			send_direct_mail(
-        to: @organization.email,
-        subject: subject,
-        body: content,
-        organization: @organization
-      )
-		else
-			mail(to: @organization.email, bcc: 'rob.staalduinen@gmail.com', subject: subject)
-		end
+		content = render_to_string(template: "estimate_mailer/estimate_alert", formats: [:html])
+		send_direct_mail(
+      to: @organization.email,
+      subject: subject,
+      body: content,
+      organization: @organization
+    )
 	end
 
   def commercial_quote_request(organization, contact_params)
     @organization = organization
     @contact_params = contact_params
+    return unless @organization.nylas_account
 
     subject = "#{@organization.name} - Commercial Quote Request from " + contact_params[:name]
-
-		if @organization.nylas_account && send_nylas_mail? && @organization.feature_enabled?(:use_connected_email)
-
-			content = render_to_string(template: "estimate_mailer/commercial_quote_request", formats: [:html])
-			send_direct_mail(
-				to: @organization.email,
-				subject: subject,
-				body: content,
-				organization: @organization
-			)
-		else
-			mail(to: @organization.email, bcc: 'rob.staalduinen@gmail.com', subject: subject)
-		end
+		content = render_to_string(template: "estimate_mailer/commercial_quote_request", formats: [:html])
+		send_direct_mail(
+			to: @organization.email,
+			subject: subject,
+			body: content,
+			organization: @organization
+		)
   end
 
 	def test_email(recipient)
