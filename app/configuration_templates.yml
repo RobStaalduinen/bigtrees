@@ -10,6 +10,10 @@ use_connected_email:
   description: 'Send emails via connected Nylas account'
   type: 'boolean'
   default: true
+receipt_notifications:
+  description: 'Send email notifications to the organization when a new receipt is submitted'
+  type: 'boolean'
+  default: false
 equipment_repair_notifications:
   description: 'Send email notifications to the organization when a new Equipment Repair/Maintenance Request is submitted'
   type: 'boolean'

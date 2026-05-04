@@ -33,7 +33,10 @@ class ReceiptsController < ApplicationController
     receipt = current_user.receipts.new(receipt_params)
     receipt.date ||= Date.today
     receipt.save
-    # receipt.update(approved: true) if current_user.admin?
+
+    if receipt.persisted? && receipt.organization.feature_enabled?(:receipt_notifications)
+      ReceiptMailer.new_receipt_alert(receipt).deliver_now
+    end
 
     render json: receipt
   end

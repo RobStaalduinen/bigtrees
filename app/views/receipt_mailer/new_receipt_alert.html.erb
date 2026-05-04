@@ -1,0 +1,19 @@
+A new receipt has been submitted by <%= @receipt.arborist.name %>. <br><br>
+
+<b>Category: </b><%= @receipt.category %> <br>
+<b>Date: </b><%= @receipt.date.strftime('%B %d, %Y') %> <br>
+<b>Amount: </b>$<%= '%.2f' % @receipt.cost %> <br>
+<b>Payment Method: </b><%= @receipt.payment_method %> <br>
+
+<% if @receipt.job.present? %>
+  <b>Job: </b><%= @receipt.job %> <br>
+<% end %>
+
+<% if @receipt.vehicle.present? %>
+  <b>Vehicle: </b><%= @receipt.vehicle.name %> <br>
+<% end %>
+
+<br>
+
+<b>Description:</b> <br>
+<%= @receipt.description %>
