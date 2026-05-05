@@ -97,6 +97,7 @@ Rails.application.routes.draw do
 
 
     resources :configurations, only: [ :index, :update ]
+    resources :notification_configurations, only: [ :index, :update ]
   end
   scope 'organizations/:organization_shortname', as: 'organization_shortname' do
     resources :requests, only: [:new], to: 'customer_requests#org_scoped'

@@ -7,7 +7,7 @@ class EquipmentRequestMailer < ApplicationMailer
 
   def new_request_alert(equipment_request)
     @organization = equipment_request.organization
-    return unless @organization.feature_enabled?(:equipment_repair_notifications)
+    return unless @organization.notification_enabled?(:equipment_repair)
     return unless @organization.nylas_account
 
     @equipment_request = equipment_request

@@ -3,7 +3,7 @@ class JobMailer < ApplicationMailer
   default from: 'Big Tree Care <no-reply@bigtreeservices.ca>'
 
   def job_alert(job, estimate)
-    return unless estimate.organization.feature_enabled?(:job_notifications)
+    return unless estimate.organization.notification_enabled?(:job)
 
     @organization = estimate.organization
     return unless @organization.nylas_account

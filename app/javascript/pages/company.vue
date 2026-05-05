@@ -19,6 +19,7 @@
       <app-email-templates v-if='selectedOption === "Email Templates"'></app-email-templates>
       <app-manage-tags v-if='selectedOption === "Tags"' :organization_id="organization.id"></app-manage-tags>
       <app-company-settings v-if='selectedOption === "Settings"'></app-company-settings>
+      <app-notification-settings v-if='selectedOption === "Notification Preferences"'></app-notification-settings>
       <app-outgoing-email v-if='selectedOption === "Outgoing Email"'></app-outgoing-email>
     </div>
   </page-template>
@@ -33,6 +34,7 @@ import QuickCosts from '../components/quick_costs/views/list.vue';
 import EmailTemplates from '../components/emailTemplates/views/list.vue';
 import ManageTags from '../components/tags/views/manage.vue';
 import Settings from '../components/company/views/settings.vue';
+import NotificationSettings from '../components/company/views/notification_settings.vue';
 import OutgoingEmail from '../components/company/views/outgoing_email.vue';
 
 export default {
@@ -44,6 +46,7 @@ export default {
     'app-email-templates': EmailTemplates,
     'app-manage-tags': ManageTags,
     'app-company-settings': Settings,
+    'app-notification-settings': NotificationSettings,
     'app-outgoing-email': OutgoingEmail
   },
   data() {
@@ -68,7 +71,7 @@ export default {
   },
   computed: {
     options() {
-      let baseOptions = ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates', 'Tags', 'Settings'];
+      let baseOptions = ['Information', 'Employees', 'Equipment', 'Quick Costs', 'Email Templates', 'Tags', 'Settings', 'Notification Preferences'];
       if (this.organization.configured_features && this.organization.configured_features.use_connected_email) {
         baseOptions.push('Outgoing Email');
       }

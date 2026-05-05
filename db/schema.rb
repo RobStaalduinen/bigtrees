@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_04_30_000000) do
+ActiveRecord::Schema.define(version: 2026_05_04_000000) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 2026_04_30_000000) do
     t.json "completion_survey_questions"
     t.string "legal_name"
     t.float "monthly_cost", default: 0.0
+    t.json "notification_configuration"
   end
 
   create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

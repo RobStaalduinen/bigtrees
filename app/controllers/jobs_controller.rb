@@ -17,7 +17,7 @@ class JobsController < ApplicationController
 
     estimate.save # Update status
 
-    JobMailer.job_alert(job, estimate).deliver_now if estimate.organization.feature_enabled?(:job_notifications)
+    JobMailer.job_alert(job, estimate).deliver_now if estimate.organization.notification_enabled?(:job)
 
     render json: estimate
   end
@@ -47,7 +47,7 @@ class JobsController < ApplicationController
 
     estimate.save
 
-    if newly_completed && estimate.organization.feature_enabled?(:job_notifications)
+    if newly_completed && estimate.organization.notification_enabled?(:job)
       JobMailer.job_alert(job, estimate).deliver_now
     end
 

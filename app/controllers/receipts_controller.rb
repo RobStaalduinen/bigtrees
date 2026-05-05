@@ -34,7 +34,7 @@ class ReceiptsController < ApplicationController
     receipt.date ||= Date.today
     receipt.save
 
-    if receipt.persisted? && receipt.organization.feature_enabled?(:receipt_notifications)
+    if receipt.persisted? && receipt.organization.notification_enabled?(:receipt)
       ReceiptMailer.new_receipt_alert(receipt).deliver_now
     end
 

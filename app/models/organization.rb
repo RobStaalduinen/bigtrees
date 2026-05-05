@@ -73,4 +73,25 @@ class Organization < ActiveRecord::Base
       hash[name] = config['default']
     end.merge(configuration || {})
   end
+
+  def notification_enabled?(notification)
+    return false if notification.blank?
+
+    return true if configured_notifications[notification.to_s]
+
+    false
+  end
+
+  def parsed_notification_configuration
+    value = notification_configuration
+    value.is_a?(String) ? JSON.parse(value) : (value || {})
+  end
+
+  def configured_notifications
+    templates = YAML.load_file(Rails.root.join('app', 'notification_templates.yml'))
+
+    templates.each_with_object({}) do |(name, config), hash|
+      hash[name] = config['default']
+    end.merge(parsed_notification_configuration)
+  end
 end

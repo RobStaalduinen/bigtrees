@@ -29,7 +29,7 @@ class EquipmentRequestsController < ApplicationController
     @equipment_request.submitted_at = Time.now
     @equipment_request.save
 
-    if @equipment_request.persisted? && @equipment_request.organization.feature_enabled?(:equipment_repair_notifications)
+    if @equipment_request.persisted? && @equipment_request.organization.notification_enabled?(:equipment_repair)
       EquipmentRequestMailer.new_request_alert(@equipment_request).deliver_now
     end
 

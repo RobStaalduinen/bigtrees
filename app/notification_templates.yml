@@ -1,0 +1,12 @@
+job:
+  description: 'Send email notifications when a job starts or completes'
+  type: 'boolean'
+  default: false
+equipment_repair:
+  description: 'Send email notifications when a new Equipment Repair/Maintenance Request is submitted'
+  type: 'boolean'
+  default: false
+receipt:
+  description: 'Send email notifications when a new receipt is submitted'
+  type: 'boolean'
+  default: false

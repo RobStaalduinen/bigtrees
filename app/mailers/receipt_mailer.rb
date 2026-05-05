@@ -1,7 +1,7 @@
 class ReceiptMailer < ApplicationMailer
   def new_receipt_alert(receipt)
     @organization = receipt.organization
-    return unless @organization.feature_enabled?(:receipt_notifications)
+    return unless @organization.notification_enabled?(:receipt)
     return unless @organization.nylas_account
 
     @receipt = receipt
