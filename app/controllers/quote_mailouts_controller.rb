@@ -1,4 +1,6 @@
 class QuoteMailoutsController < ApplicationController
+  include CustomerEmailRecordable
+
   layout 'admin'
 
   before_action :signed_in_user
@@ -19,12 +21,19 @@ class QuoteMailoutsController < ApplicationController
   private
 
   def send_email
-    QuoteMailer.quote_email(
+    response = QuoteMailer.new.quote_email(
       @estimate,
       params[:dest_email],
       params[:subject],
       params[:content]
-  ).deliver_now
+    )
+
+    record_customer_email(
+      estimate: @estimate,
+      template_key: params[:template_key],
+      nylas_response: response,
+      recipient_email: params[:dest_email]
+    )
   end
 
   def estimate_params

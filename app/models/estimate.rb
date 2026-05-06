@@ -62,6 +62,7 @@ class Estimate < ActiveRecord::Base
   has_one :site, dependent: :destroy
   has_one :customer_detail, dependent: :destroy
 	has_many :jobs, dependent: :destroy
+	has_many :email_records, dependent: :destroy
 
 	belongs_to :customer
 	belongs_to :arborist

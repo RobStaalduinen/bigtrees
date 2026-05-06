@@ -69,7 +69,7 @@ export default {
         var params = {
           invoice: { payment_method: this.payment_method },
           send_receipt: this.sendReceipt,
-          email: this.emailDefinition
+          email: { ...this.emailDefinition, template_key: 'receipt_mailout' }
         }
 
         this.axiosPost(`/estimates/${this.estimate.id}/invoice_receipts`, params).then(response => {

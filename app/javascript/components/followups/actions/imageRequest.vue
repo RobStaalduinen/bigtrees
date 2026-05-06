@@ -43,6 +43,7 @@ export default {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject,
+        template_key: 'image_request',
         picture_request_sent_at: moment().format('YYYY-MM-DD'),
         include_quote: false
       }

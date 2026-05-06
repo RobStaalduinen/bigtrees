@@ -57,7 +57,8 @@ export default {
         estimate: { work_completion_date: this.workCompletionDate },
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
-        subject: this.emailDefinition.subject
+        subject: this.emailDefinition.subject,
+        template_key: 'invoice_mailout'
       }
 
       this.$refs.observer.validate().then(success => {

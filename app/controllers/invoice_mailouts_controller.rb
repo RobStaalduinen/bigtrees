@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class InvoiceMailoutsController < ApplicationController
+  include CustomerEmailRecordable
+
   before_action :signed_in_user
 
   def create
@@ -26,7 +28,14 @@ class InvoiceMailoutsController < ApplicationController
 
     return if params[:skip_mail]
 
-    QuoteMailer.quote_email(estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
+    response = QuoteMailer.new.quote_email(estimate, params[:dest_email], params[:subject], params[:content])
+
+    record_customer_email(
+      estimate: estimate,
+      template_key: params[:template_key],
+      nylas_response: response,
+      recipient_email: params[:dest_email]
+    )
   end
 
   def estimate

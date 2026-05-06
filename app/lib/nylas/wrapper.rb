@@ -5,6 +5,19 @@ require 'securerandom'
 
 module Nylas
   class Wrapper
+    # Pulls the Nylas message id out of a `send_email` return value.
+    # The SDK's `messages.send` returns a `[Hash, request_id]` tuple, while the
+    # multipart path returns the raw `{"data" => {...}}` JSON body.
+    def self.extract_message_id(response)
+      return nil unless response
+
+      data = response.is_a?(Array) ? response.first : response
+      data = data['data'] || data[:data] if data.is_a?(Hash) && (data['data'] || data[:data])
+      return nil unless data.is_a?(Hash)
+
+      data[:id] || data['id']
+    end
+
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],

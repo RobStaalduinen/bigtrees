@@ -1,4 +1,6 @@
 class InvoicesController < ApplicationController
+  include CustomerEmailRecordable
+
   layout 'admin'
   before_action :signed_in_user
 
@@ -41,11 +43,25 @@ class InvoicesController < ApplicationController
   private
 
   def send_final_invoice
-    QuoteMailer.quote_email(estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
+    response = QuoteMailer.new.quote_email(estimate, params[:dest_email], params[:subject], params[:content])
+
+    record_customer_email(
+      estimate: estimate,
+      template_key: params[:template_key],
+      nylas_response: response,
+      recipient_email: params[:dest_email]
+    )
   end
 
   def send_payment_receipt
-    InvoiceMailer.receipt(estimate, params[:dest_email], params[:subject], params[:content]).deliver_now
+    response = InvoiceMailer.new.receipt(estimate, params[:dest_email], params[:subject], params[:content])
+
+    record_customer_email(
+      estimate: estimate,
+      template_key: params[:template_key],
+      nylas_response: response,
+      recipient_email: params[:dest_email]
+    )
   end
 
   def invoice_params

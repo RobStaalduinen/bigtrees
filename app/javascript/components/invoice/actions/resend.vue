@@ -39,7 +39,8 @@ export default {
       var params = {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
-        subject: this.emailDefinition.subject
+        subject: this.emailDefinition.subject,
+        template_key: 'invoice_mailout'
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);

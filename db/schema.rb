@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_05_04_000000) do
+ActiveRecord::Schema.define(version: 2026_05_05_000000) do
 
   create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "street"
@@ -126,6 +126,23 @@ ActiveRecord::Schema.define(version: 2026_05_04_000000) do
     t.date "expires_at"
     t.string "url"
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
+  end
+
+  create_table "email_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "estimate_id", null: false
+    t.integer "arborist_id"
+    t.integer "organization_id"
+    t.string "template_key", null: false
+    t.string "recipient_email"
+    t.string "nylas_message_id"
+    t.datetime "sent_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["arborist_id"], name: "index_email_records_on_arborist_id"
+    t.index ["estimate_id"], name: "index_email_records_on_estimate_id"
+    t.index ["nylas_message_id"], name: "index_email_records_on_nylas_message_id"
+    t.index ["organization_id"], name: "index_email_records_on_organization_id"
+    t.index ["template_key"], name: "index_email_records_on_template_key"
   end
 
   create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -529,4 +546,7 @@ ActiveRecord::Schema.define(version: 2026_05_04_000000) do
     t.index ["payout_id"], name: "index_work_records_on_payout_id"
   end
 
+  add_foreign_key "email_records", "arborists"
+  add_foreign_key "email_records", "estimates"
+  add_foreign_key "email_records", "organizations"
 end
