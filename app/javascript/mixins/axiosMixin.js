@@ -56,19 +56,6 @@ export default {
           throw error;
         });
     },
-    axiosImagePost(endpoint, formData, onProgress = null) {
-      // let options = { 'Content-Type': 'multipart/form-data' };
-      return axios.post(endpoint, formData, { 
-        onUploadProgress: e => {
-          const pct = Math.round((e.loaded * 100) / e.total);
-          console.log('Upload progress:', pct);
-          if (onProgress) {
-            onProgress(pct);
-          }
-        },
-        headers: {} 
-      });
-    },
     axiosDownload(endpoint, fileName) {
       this.setupAxios();
       let options = { responseType: 'blob'}
@@ -86,12 +73,6 @@ export default {
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
       })
-    },
-    axiosBase64ImagePost(endpoint, image) {
-      let options = {
-        'Content-Type': 'image/png',
-        'Content-Encoding': 'base64'
-      };
     },
     setupAxios() {
       axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content;

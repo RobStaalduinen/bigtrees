@@ -1,23 +1,38 @@
 <template>
   <div>
-    <div v-if='url && !uploading' class='file-field'>
+    <!-- Success state -->
+    <div v-if="jobStatus === 'success'" class="file-field">
       <div class="file-info-container">
         <img v-if="isImage" :src="url" class="image-thumbnail" />
-        <div class='file-name-field'>{{ fileName }}</div>
+        <div class="file-name-field">{{ fileName }}</div>
       </div>
-      <b-icon id='delete-icon' icon='x-circle' @click="removeFile"></b-icon>
+      <b-icon id="delete-icon" icon="x-circle" @click="removeFile"></b-icon>
     </div>
 
-    <div v-if='!url && uploading' class='file-field'>
-      <b-spinner id='app-loader-container'></b-spinner> 
-      <div class='file-name-field'>Uploading {{ fileName }}</div>
-      <div v-if='displayProgress && completionPercentage'>{{ completionPercentage }}%</div>
+    <!-- In-progress state -->
+    <div v-else-if="inProgress" class="file-field">
+      <b-spinner id="app-loader-container"></b-spinner>
+      <div class="file-name-field">{{ statusLabel }}</div>
+      <div v-if="displayProgress && progress">{{ progress }}%</div>
     </div>
 
-    <div v-if='!url && !uploading'>
+    <!-- Error state -->
+    <div v-else-if="hasError" class="file-field file-field--error">
+      <div class="file-info-container">
+        <b-icon icon="exclamation-triangle" class="error-icon"></b-icon>
+        <div class="file-name-field">{{ errorMessage }}</div>
+      </div>
+      <div class="file-field__actions">
+        <b-icon v-if="jobStatus === 'retryableError'" icon="arrow-clockwise" class="retry-icon" @click="retry"></b-icon>
+        <b-icon icon="x-circle" id="delete-icon" @click="removeFile"></b-icon>
+      </div>
+    </div>
+
+    <!-- Idle: file picker -->
+    <div v-else>
       <b-form-file
-        :id='id'
-        :name='name'
+        :id="id"
+        :name="name"
         v-model="imageToUpload"
         placeholder="Choose a file..."
         :accept="accept"
@@ -27,208 +42,152 @@
 </template>
 
 <script>
-import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
+import { UploadJob } from '@/services/UploadJob';
 import { fileNameFromPath } from '@/utils/fileUtils';
-import imageCompression from 'browser-image-compression';
+
+const IN_PROGRESS = new Set(['compressing', 'preparing', 'uploading', 'finalizing']);
 
 export default {
   props: {
-    'id': {
-      required: false,
-      type: String
-    },
-    'value': {
-      required: false
-    },
-    'accept': {
-      type: String
-    },
-    'bucketName': {
-      type: String,
-      default: 'documents'
-    },
-    'name': {
-      type: String,
-      default: 'document'
-    },
-    'displayProgress': {
-      type: Boolean,
-      default: true
-    }
+    id:             { required: false, type: String },
+    value:          { required: false },
+    accept:         { type: String },
+    bucketName:     { type: String, default: 'documents' },
+    name:           { type: String, default: 'document' },
+    displayProgress:{ type: Boolean, default: true }
   },
   data() {
     return {
-      url: this.value,
+      url:          this.value,
       imageToUpload: null,
-      uploading: false,
-      completionPercentage: null
+      job:          null,
+      jobStatus:    'idle',
+      progress:     0,
+      jobError:     null,
+    };
+  },
+  computed: {
+    inProgress() { return IN_PROGRESS.has(this.jobStatus); },
+    hasError()   { return this.jobStatus === 'retryableError' || this.jobStatus === 'fatalError'; },
+    statusLabel() {
+      const labels = { compressing: 'Compressing…', preparing: 'Preparing…', uploading: 'Uploading…', finalizing: 'Finalizing…' };
+      return `${labels[this.jobStatus] ?? 'Uploading…'} ${this.fileName}`;
+    },
+    errorMessage() { return this.jobError?.message ?? 'Upload failed.'; },
+    fileName() {
+      if (this.url) return fileNameFromPath(this.url);
+      return this.imageToUpload?.name ?? '';
+    },
+    isImage() {
+      const ext = this.fileName.split('.').pop().toLowerCase();
+      return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
     }
   },
   methods: {
     removeFile() {
+      if (this.job) { this.job.abort(); this._unsub?.(); this.job = null; }
       this.url = null;
-      this.uploading = false;
+      this.imageToUpload = null;
+      this.jobStatus = 'idle';
       this.$emit('input', null);
+      this.$emit('upload-status-changed', false);
     },
-    uploadFile() {
-      this.axiosGet('/files/new', { bucket_name: this.bucketName, filename: this.fileName }).then(response => {
-        this.compressFile(this.imageToUpload).then(compressedFile => {
-          const formData = signedUrlFormData(response.data.fields, compressedFile);
-          
-          this.axiosImagePost(response.data.url, formData, this.handleProgress).then(response => {
-            let url = parseImageUploadResponse(response);
-            this.url = url;
-            this.uploading = false;
-            this.$emit('input', url);
-          })
-        })
-      })
-    },
-    handleProgress(percentage) {
-      this.completionPercentage = percentage;
-    },
-    resizeImage(file) {
-      return new Promise((resolve, reject) => {
-        const MAX_DIMENSION = 1920;
-        const img = new Image();
-        const objectUrl = URL.createObjectURL(file);
-
-        img.onload = () => {
-          URL.revokeObjectURL(objectUrl);
-
-          if (img.width <= MAX_DIMENSION && img.height <= MAX_DIMENSION) {
-            resolve(file);
-            return;
-          }
-
-          let { width, height } = img;
-          if (width > height) {
-            height = Math.round((height * MAX_DIMENSION) / width);
-            width = MAX_DIMENSION;
-          } else {
-            width = Math.round((width * MAX_DIMENSION) / height);
-            height = MAX_DIMENSION;
-          }
-
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-
-          canvas.toBlob(blob => {
-            if (!blob) { reject(new Error('Canvas resize failed')); return; }
-            resolve(new File([blob], file.name, { type: file.type }));
-          }, file.type);
-        };
-
-        img.onerror = () => {
-          URL.revokeObjectURL(objectUrl);
-          reject(new Error('Image could not be loaded for resize'));
-        };
-
-        img.src = objectUrl;
+    retry() { this.job?.retry(); },
+    _startJob(file) {
+      if (this._unsub) this._unsub();
+      if (this.job) this.job.abort();
+      this.job = new UploadJob(file, { bucketName: this.bucketName });
+      this._unsub = this.job.on(j => {
+        this.jobStatus = j.status;
+        this.progress  = j.progress;
+        this.jobError  = j.error;
+        if (j.status === 'success') {
+          this.url = j.url;
+          this.$emit('input', j.url);
+        }
+        const uploading = IN_PROGRESS.has(j.status);
+        this.$emit('upload-status-changed', uploading);
+        if (j.status === 'retryableError' || j.status === 'fatalError') {
+          this.$emit('upload-error', j.error);
+        }
       });
-    },
-    async compressFile(file) {
-      if (!file.type.match(/image\/*/)) {
-        return file;
-      }
-
-      try {
-        const resized = await this.resizeImage(file);
-
-        const options = {
-          maxSizeMB: 1,          // target ≤1MB
-          maxWidthOrHeight: 1024,
-          useWebWorker: true,
-        };
-
-        return await imageCompression(resized, options);
-      } catch (e) {
-        console.warn('Image resize/compression failed, uploading original:', e);
-        return file;
-      }
-    }
-  },
-  computed: {
-    fileName() {
-      if(this.url != null) {
-        return fileNameFromPath(this.url);
-      }
-      else if(this.imageToUpload != null){
-        return this.imageToUpload.name;
-      }
-      else {
-        return ''
-      }
-    },
-    isImage() {
-      if (!this.fileName) return false;
-      const extension = this.fileName.split('.').pop().toLowerCase();
-      return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension);
+      this.job.start();
     }
   },
   watch: {
-    value() {
-      this.url = this.value;
-    },
-    imageToUpload() {
-      this.uploading = true
-      this.uploadFile();
-    },
-    uploading() {
-      this.$emit('upload-status-changed', this.uploading)
+    value() { this.url = this.value; },
+    imageToUpload(file) {
+      if (!file) return;
+      this._startJob(file);
     }
+  },
+  beforeDestroy() {
+    if (this._unsub) this._unsub();
   }
 }
 </script>
 
 <style scoped>
-  .file-field {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.file-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px lightgray solid;
+}
 
-    padding: 8px;
-    border: 1px lightgray solid;
-  }
+.file-field--error {
+  border-color: #dc3545;
+}
 
-  .file-name-field {
-    max-width: 80%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.file-name-field {
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  .image-thumbnail {
-    height: 40px;
-    width: 40px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-right: 8px; 
-  }
+.image-thumbnail {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 8px;
+}
 
-  #delete-icon {
-    color: var(--main-color);
-    font-size: 22px;
-  }
+#delete-icon {
+  color: var(--main-color);
+  font-size: 22px;
+  cursor: pointer;
+}
 
-  #app-loader-container {
-    margin-right: 8px;
-    color: var(--main-color);
-  }
+.retry-icon {
+  color: var(--main-color);
+  font-size: 20px;
+  cursor: pointer;
+}
 
-  .file-info-container {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    max-width: 80%;
-  }
+.error-icon {
+  color: #dc3545;
+  font-size: 18px;
+  margin-right: 8px;
+}
 
-  .thumbnail {
-    height: 40px;
-    width: 40px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
+#app-loader-container {
+  margin-right: 8px;
+  color: var(--main-color);
+}
+
+.file-info-container {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  max-width: 80%;
+}
+
+.file-field__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 </style>

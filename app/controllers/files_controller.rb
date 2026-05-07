@@ -11,12 +11,18 @@ class FilesController < ApplicationController
     ).bucket(ENV['FOG_BUCKET'])
 
     presigned_url = s3_bucket.presigned_post(
-      key: "#{params[:bucket_name]}/#{Rails.env}/#{SecureRandom.uuid}/#{params[:filename]}",
+      key: "#{params[:bucket_name]}/#{Rails.env}/#{SecureRandom.uuid}/#{sanitize_filename(params[:filename])}",
       success_action_status: '201',
       acl: 'public-read',
       signature_expiration: (Time.now.utc + 15.minutes)
     )
 
     render json: { url: presigned_url.url, fields: presigned_url.fields }, status: :ok
+  end
+
+  private
+
+  def sanitize_filename(name)
+    name.gsub(/[^\w\-.]/, '_')
   end
 end

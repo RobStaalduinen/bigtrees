@@ -93,6 +93,7 @@ import EventBus from '@/store/eventBus'
 import Markup from './markup';
 import { base64ToBlob } from '@/utils/fileUtils';
 import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
+import { postWithRetry } from '@/services/uploadClient';
 import { Tree, TreeImage } from '@/models';
 import EditTask from '@/components/tree_images/actions/editTask'
 
@@ -189,20 +190,21 @@ export default {
       this.$bvModal.hide('edit-task-modal');
       EventBus.$emit('ESTIMATE_UPDATED', updatedImage);
     },
-    onEditSave(image_base64) {
-      this.axiosGet('/tree_images/new', { filename: 'edited' }).then(response => {
-        const formData = signedUrlFormData(response.data.fields, base64ToBlob(image_base64));
-
-        this.axiosImagePost(response.data.url, formData).then(imgResponse => {
-          var params = { edited_image_url: parseImageUploadResponse(imgResponse) };
-
-          this.axiosPut(`/tree_images/${this.editedId}?estimate_id=${this.estimate.id}`, params).then(response => {
-            this.changeImageVersion('edited');
-            EventBus.$emit('ESTIMATE_UPDATED', response.data);
-            this.toggleEdit(null, null);
-          })
-        })
-      })
+    async onEditSave(image_base64) {
+      const abort = new AbortController();
+      const blob = base64ToBlob(image_base64);
+      const imgResponse = await postWithRetry({
+        resolveTarget: async () => {
+          const resp = await this.axiosGet('/tree_images/new', { filename: 'edited' });
+          return { url: resp.data.url, formData: signedUrlFormData(resp.data.fields, blob) };
+        },
+        signal: abort.signal,
+      });
+      const params = { edited_image_url: parseImageUploadResponse(imgResponse) };
+      const resp = await this.axiosPut(`/tree_images/${this.editedId}?estimate_id=${this.estimate.id}`, params);
+      this.changeImageVersion('edited');
+      EventBus.$emit('ESTIMATE_UPDATED', resp.data);
+      this.toggleEdit(null, null);
     },
     setImageById(imageId) {
       this.displayedImage = imageId != null ? this.findImageById(imageId) : 1;

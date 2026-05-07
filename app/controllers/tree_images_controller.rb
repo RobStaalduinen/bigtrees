@@ -11,7 +11,7 @@ class TreeImagesController < ApplicationController
     ).bucket(ENV['FOG_BUCKET'])
 
     presigned_url = s3_bucket.presigned_post(
-      key: "tree_images/#{Rails.env}/#{SecureRandom.uuid}/#{params[:filename]}",
+      key: "tree_images/#{Rails.env}/#{SecureRandom.uuid}/#{sanitize_filename(params[:filename])}",
       success_action_status: '201',
       acl: 'public-read',
       signature_expiration: (Time.now.utc + 15.minutes)
@@ -102,6 +102,10 @@ class TreeImagesController < ApplicationController
   end
 
   def tree_image_params
-  params.permit(:tree_id, :image_url, :edited_image_url)
+    params.permit(:tree_id, :image_url, :edited_image_url)
+  end
+
+  def sanitize_filename(name)
+    name.gsub(/[^\w\-.]/, '_')
   end
 end

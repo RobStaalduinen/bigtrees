@@ -1,105 +1,25 @@
 <template>
-  <div>
-    <b-form-file
-      :id='id'
-      multple
-      :name='name'
-      v-model="images"
-      placeholder="Choose a file..."
-      :accept="accept"
-      multiple
-      class="text-nowrap text-truncate"
-    ></b-form-file>
-
-    <div v-for='(image, index) in images' :key='index' class='file-upload-container'>
-      <app-single-uploader
-        :id='index'
-        :imageToUpload='image'
-        :bucketName='bucketName'
-        @upload-status-changed='(event) => handleUpload(index, event)'
-        @deleted='removeFile(index)'
-      ></app-single-uploader>
-    </div>
-  </div>
+  <upload-list
+    :id="id"
+    :name="name"
+    :accept="accept"
+    :bucketName="bucketName"
+    :value="value"
+    @input="$emit('input', $event)"
+  ></upload-list>
 </template>
 
 <script>
-
-import SingleUploader from './singleUploader.vue';
+import UploadList from '../uploadList.vue';
 
 export default {
-  components: {
-    'app-single-uploader': SingleUploader
-  },
+  components: { 'upload-list': UploadList },
   props: {
-    'id': {
-      required: false,
-      type: String
-    },
-    'value': {
-      required: true
-    },
-    'accept': {
-      type: String
-    },
-    'bucketName': {
-      type: String,
-      default: 'documents'
-    },
-    'name': {
-      type: String,
-      default: 'document'
-    }
-  },
-  data() {
-    return {
-      images: [],
-    }
-  },
-  methods: {
-    removeFile(id) {
-      this.images.splice(id, 1);
-    },
-    handleUpload(id, uploadData) {
-      this.images[id] = uploadData;
-      this.$emit('input', this.images);
-    }
-  },
-  computed: {
-
-  },
-  watch: {
-
+    id:         { type: String,  required: false },
+    name:       { type: String,  default: 'document' },
+    accept:     { type: String,  required: false },
+    bucketName: { type: String,  default: 'documents' },
+    value:      { required: true }
   }
 }
 </script>
-
-<style scoped>
-  .file-field {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 8px;
-    border: 1px lightgray solid;
-  }
-
-  .file-upload-container {
-    margin-top: 8px;
-  }
-
-  .file-name-field {
-    max-width: 80%;
-    overflow: hidden;
-  }
-
-  #delete-icon {
-    color: var(--main-color);
-    font-size: 22px;
-  }
-
-  #app-loader-container {
-    margin-right: 8px;
-    color: var(--main-color);
-  }
-</style>

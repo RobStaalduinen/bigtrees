@@ -85,6 +85,13 @@ Rails.application.routes.draw do
   end
 
   resources :files, only: [ :new ]
+
+  namespace :uploads do
+    resources :multipart, only: [:create, :destroy], param: :upload_id, constraints: { upload_id: /[^\/]+/ } do
+      post :parts,    on: :member
+      post :complete, on: :member
+    end
+  end
   resources :organizations, only: [ :index, :show, :create, :update ] do
     get 'public/:short_name', to: 'organizations#public', on: :collection
     get :stats, on: :collection

@@ -56,6 +56,7 @@
               accept=".jpg, .jpeg, .png"
               bucketName='receipts'
               @upload-status-changed='handleUploadStatus'
+              @upload-error='handleUploadError'
             ></app-file-upload>
           </div>
 
@@ -91,6 +92,7 @@ export default {
       errorMessage: null,
       vehicles: [],
       uploading: false,
+      uploadErrored: false,
       paymentMethods: ['Corporate Card', 'Personal Cash'],
       jobs: ['Big Trees', 'Big Properties', 'Big Stumps'],
       organization: this.$store.state.organization
@@ -119,16 +121,22 @@ export default {
           return;
         }
 
-        if(!this.uploading && !this.image_url) {
-          this.errorMessage = 'Please upload an image of the receipt';
+        if (this.uploadErrored) {
+          this.errorMessage = 'The image upload failed — retry or remove it before submitting.';
           EventBus.$emit('FORM_VALIDATION_FAILED');
-          return
+          return;
         }
 
-        if(this.uploading && !this.image_url) {
+        if (!this.uploading && !this.image_url) {
+          this.errorMessage = 'Please upload an image of the receipt';
+          EventBus.$emit('FORM_VALIDATION_FAILED');
+          return;
+        }
+
+        if (this.uploading && !this.image_url) {
           this.errorMessage = 'Please wait for upload to finish before submitting';
           EventBus.$emit('FORM_VALIDATION_FAILED');
-          return
+          return;
         }
 
         let params = { receipt: {
@@ -166,9 +174,16 @@ export default {
       this.job = 'Big Trees';
       this.cost = null;
       this.image_url = null;
+      this.uploading = false;
+      this.uploadErrored = false;
+      this.errorMessage = null;
     },
-    handleUploadStatus(uploadStatus) {
-      this.uploading = uploadStatus;
+    handleUploadStatus(uploading) {
+      this.uploading = uploading;
+      if (uploading) this.uploadErrored = false;
+    },
+    handleUploadError() {
+      this.uploadErrored = true;
     }
   },
   mounted() {

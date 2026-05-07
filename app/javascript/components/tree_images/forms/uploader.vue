@@ -1,131 +1,131 @@
 <template>
-  <div id='file-field'>
-    <div id='file-content-left'>
-      <div id='image-content-left'>
-        <app-loader v-if="uploadingImage"></app-loader>
-        <img v-if="!uploadingImage && imageUrl" class='image-preview' :src='imageUrl' />
+  <div id="file-field" :class="{ 'file-field--error': hasError }">
+    <div id="file-content-left">
+      <div id="image-content-left">
+        <app-loader v-if="inProgress"></app-loader>
+        <img v-if="!inProgress && imageUrl" class="image-preview" :src="imageUrl" />
+        <b-icon v-if="hasError" icon="exclamation-triangle" class="error-icon"></b-icon>
       </div>
-      <div :class='{"text-loading": uploadingImage}'>{{ file.name }}</div>
-      <div v-if='completionPercentage' id='completion-percentage'>({{ completionPercentage }}%)</div>
+      <div :class="{ 'text-loading': inProgress }">{{ file.name }}</div>
+      <div v-if="inProgress && progress" id="completion-percentage">({{ progress }}%)</div>
+      <div v-if="hasError" class="error-msg">{{ errorMessage }}</div>
     </div>
 
-    <b-icon v-if='!uploadingImage' id='delete-icon' icon='x-circle' @click="$emit('delete-image')"></b-icon>
+    <div class="actions">
+      <b-icon v-if="hasError && status === 'retryableError'" icon="arrow-clockwise" class="retry-icon" @click="retry"></b-icon>
+      <b-icon v-if="!inProgress" id="delete-icon" icon="x-circle" @click="$emit('delete-image')"></b-icon>
+    </div>
   </div>
 </template>
 
 <script>
-import imageCompression from 'browser-image-compression';
+import { UploadJob } from '@/services/UploadJob';
+
+const IN_PROGRESS = new Set(['compressing', 'preparing', 'uploading', 'finalizing']);
 
 export default {
   props: {
-    file: {
-      type: File,
-      required: true
-    }
+    file: { type: File, required: true }
   },
   data() {
     return {
-      uploadingImage: false,
+      status:   'idle',
+      progress: 0,
       imageUrl: null,
-      completionPercentage: null
-    }
-  },
-  methods: {
-    beginUpload() {
-      this.uploadingImage = true
-      var fileParams = { filename: this.file.name }
-      this.axiosGet('/tree_images/new', fileParams).then(response => {
-        var urlResponse = response.data
-        this.uploadImage(urlResponse.url, urlResponse.fields)
-      })
-    },
-    uploadImage(base_url, url_fields) {
-      const formData = new FormData();
-      for ( var key in url_fields ) {
-          formData.append(key, url_fields[key]);
-      }
-      this.compressFile(this.file).then(compressedFile => {
-        console.log('Compressed File Size', compressedFile.size);
-
-        formData.append('file', this.file)
-
-        this.axiosImagePost(base_url, formData, this.handleProgress).then(response => {
-          var parseString = require('xml2js').parseString;
-
-          parseString(response.data, (err, result) => {
-            this.imageUrl = result.PostResponse.Location[0];
-            this.uploadingImage = false;
-          });
-        })
-      })      
-    },
-    compressFile(file) {
-      console.log(file);
-      const options = {
-        maxSizeMB: 1,          // target ≤1MB
-        maxWidthOrHeight: 1024,
-        useWebWorker: true,
-      };
-
-      return imageCompression(file, options)
-    },
-    handleProgress(percentage) {
-      this.completionPercentage = percentage;
-    },
-  },
-  mounted() {
-    this.beginUpload();
+      jobError: null,
+      job:      null,
+    };
   },
   computed: {
-    fileResponse: function() {
-      return {
-        url: this.imageUrl,
-        uploadCompleted: !this.uploadingImage
-      }
-    }
+    inProgress()   { return IN_PROGRESS.has(this.status); },
+    hasError()     { return this.status === 'retryableError' || this.status === 'fatalError'; },
+    errorMessage() { return this.jobError?.message ?? 'Upload failed.'; },
   },
-  watch: {
-    fileResponse: function() {
-      this.$emit('input', this.fileResponse);
-    }
+  methods: {
+    retry() { this.job?.retry(); }
+  },
+  mounted() {
+    this.job = new UploadJob(this.file, {
+      bucketName:  'tree_images',
+      presignPath: '/tree_images/new',
+    });
+    this._unsub = this.job.on(j => {
+      this.status   = j.status;
+      this.progress = j.progress;
+      this.jobError = j.error;
+      if (j.status === 'success') this.imageUrl = j.url;
+      this.$emit('input', { url: j.url, uploadCompleted: j.status === 'success' });
+    });
+    this.job.start();
+  },
+  beforeDestroy() {
+    if (this._unsub) this._unsub();
   }
 }
 </script>
 
 <style>
-  #file-field {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8px 0;
-    padding: 8px;
-    border: 1px lightgray solid;
-    font-size: 14px;
-  }
+#file-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px lightgray solid;
+  font-size: 14px;
+}
 
-  .text-loading {
-    color: gray;
-  }
+.file-field--error {
+  border-color: #dc3545;
+}
 
-  #delete-icon {
-    color: var(--main-color);
-    font-size: 22px;
-  }
+.text-loading {
+  color: gray;
+}
 
-  .image-preview {
-    max-width: 50px;
-  }
+.error-icon {
+  color: #dc3545;
+  font-size: 18px;
+}
 
-  #file-content-left {
-    display: flex;
-  }
+.error-msg {
+  font-size: 12px;
+  color: #dc3545;
+  margin-left: 8px;
+}
 
-  #image-content-left {
-    margin-right: 8px;
-  }
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-  #completion-percentage {
-    margin-left: 8px;
-    color: gray;
-  }
+#delete-icon {
+  color: var(--main-color);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.retry-icon {
+  color: var(--main-color);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.image-preview {
+  max-width: 50px;
+}
+
+#file-content-left {
+  display: flex;
+}
+
+#image-content-left {
+  margin-right: 8px;
+}
+
+#completion-percentage {
+  margin-left: 8px;
+  color: gray;
+}
 </style>

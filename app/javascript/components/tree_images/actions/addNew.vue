@@ -31,6 +31,7 @@
 import SingleImage from '../forms/single';
 import MultiImage from '@/components/file/actions/multiUpload';
 import EventBus from '@/store/eventBus';
+import { uploadGuard } from '@/utils/uploadValidation';
 
 export default {
   components: {
@@ -87,36 +88,12 @@ export default {
       }
     },
     validate() {
-      if(this.images.length == 0){
-        this.validationErrorMessage = 'Please add at least one image';
+      const guard = uploadGuard(this.images);
+      if (!guard.ok) {
+        this.validationErrorMessage = guard.message;
         EventBus.$emit('FORM_VALIDATION_FAILED');
         return false;
       }
-      
-      for(var i = 0; i < this.images.length; i++){
-        if(this.images[i].uploading == true){
-          this.validationErrorMessage = 'Wait for image uploads to finish and try again';
-          EventBus.$emit('FORM_VALIDATION_FAILED');
-          return false;
-        }
-      }
-
-      return true;
-
-      var image = this.image;
-
-      if(image.uploadCompleted == null){
-        this.validationErrorMessage = 'Pleae add an image';
-        EventBus.$emit('FORM_VALIDATION_FAILED');
-        return false;
-      }
-
-      if(image.uploadCompleted == false){
-        this.validationErrorMessage = 'Wait for image uploads to finish and try again';
-        EventBus.$emit('FORM_VALIDATION_FAILED');
-        return false;
-      }
-
       this.validationErrorMessage = null;
       return true;
     }

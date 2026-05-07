@@ -1,134 +1,48 @@
 <template>
-  <div>
-    <div v-if='url && !uploading' class='file-field'>
-      <div class='file-name-field'>{{ fileName }}</div>
-      <b-icon id='delete-icon' icon='x-circle' @click="removeFile"></b-icon>
-    </div>
-
-    <div v-if='!url && uploading' class='file-field'>
-      <b-spinner id='app-loader-container'></b-spinner> 
-      <div class='file-name-field'>Uploading {{ fileName }}</div>
-      <div v-if='displayProgress && completionPercentage'>{{ completionPercentage }}%</div>
-    </div>
-  </div>
+  <upload-item v-if="job" :job="job" @remove="onRemove"></upload-item>
 </template>
 
 <script>
-import { signedUrlFormData, parseImageUploadResponse } from '@/utils/awsS3Utils';
-import { fileNameFromPath } from '@/utils/fileUtils';
-import imageCompression from 'browser-image-compression';
+import { UploadJob } from '@/services/UploadJob';
+import UploadItemComponent from '../uploadItem.vue';
 
 export default {
+  components: { 'upload-item': UploadItemComponent },
   props: {
-    'id': {
-      required: false,
-      type: Number
-    },
-    'imageToUpload': {
-      required: true
-    },
-    'bucketName': {
-      type: String,
-      default: 'documents'
-    },
-    'displayProgress': {
-      type: Boolean,
-      default: true
-    }
+    id:           { required: false },
+    imageToUpload:{ required: true },
+    bucketName:   { type: String, default: 'documents' },
+    displayProgress: { type: Boolean, default: true }
   },
   data() {
-    return {
-      uploading: false,
-      url: null,
-      completionPercentage: null
-    }
+    return { job: null };
   },
   methods: {
-    removeFile() {
-      this.url = null;
-      this.uploading = false;
-      this.$emit('deleted', { id: this.id } );
+    onRemove() {
+      if (this.job) this.job.abort();
+      this.job = null;
+      this.$emit('deleted', { id: this.id });
     },
-    uploadFile() {
-      this.axiosGet('/files/new', { bucket_name: this.bucketName, filename: this.fileName }).then(response => {
-        // const formData = signedUrlFormData(response.data.fields, this.imageToUpload);
-
-        this.compressFile(this.imageToUpload).then(compressedFile => {
-          // formData.append('file', compressedFile);
-          console.log('Compressed File Size', compressedFile.size);
-          const formData = signedUrlFormData(response.data.fields, compressedFile);
-          
-          this.axiosImagePost(response.data.url, formData, this.handleProgress).then(response => {
-            this.url = parseImageUploadResponse(response);
-            this.uploading = false;
-          })
-        })
-      })
-    },
-    handleProgress(percentage) {
-      this.completionPercentage = percentage;
-    },
-    compressFile(file) {
-      const options = {
-        maxSizeMB: 1,          // target ≤1MB
-        maxWidthOrHeight: 1024,
-        useWebWorker: true,
-      };
-
-      return imageCompression(file, options)
-    }
-  },
-  computed: {
-    fileName() {
-      if(this.url != null) {
-        return fileNameFromPath(this.url);
-      }
-      else if(this.imageToUpload != null){
-        return this.imageToUpload.name;
-      }
-      else {
-        return ''
-      }
-    }
-  },
-  watch: {
-    uploading() {
-      this.$emit('upload-status-changed', { id: this.id, uploading: this.uploading, url: this.url })
-    },
-    imageToUpload() {
-      this.uploading = true
-      this.uploadFile();
+    _sync(j) {
+      this.$emit('upload-status-changed', { id: this.id, uploading: j.status !== 'success' && j.status !== 'fatalError', url: j.url });
     }
   },
   mounted() {
-    this.uploading = true
-    this.uploadFile();
+    this.job = new UploadJob(this.imageToUpload, { bucketName: this.bucketName });
+    this._unsub = this.job.on(this._sync);
+    this.job.start();
+  },
+  beforeDestroy() {
+    if (this._unsub) this._unsub();
+  },
+  watch: {
+    imageToUpload(file) {
+      if (this._unsub) this._unsub();
+      if (this.job) this.job.abort();
+      this.job = new UploadJob(file, { bucketName: this.bucketName });
+      this._unsub = this.job.on(this._sync);
+      this.job.start();
+    }
   }
 }
 </script>
-
-<style scoped>
-  .file-field {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 8px;
-    border: 1px lightgray solid;
-  }
-
-  .file-name-field {
-    max-width: 70%;
-    overflow: hidden;
-  }
-
-  #delete-icon {
-    color: var(--main-color);
-    font-size: 22px;
-  }
-
-  #app-loader-container {
-    margin-right: 8px;
-    color: var(--main-color);
-  }
-</style>
