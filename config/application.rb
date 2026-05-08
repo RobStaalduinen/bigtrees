@@ -8,14 +8,12 @@ Bundler.require(*Rails.groups)
 
 module Bigtrees
   class Application < Rails::Application
+    config.load_defaults 6.0
 
     Rails.application.config.assets.precompile += %w( jquery-1.11.3.js pdf_styles.css )
 
     Rails.application.config.autoload_paths += Dir[Rails.root.join('lib')]
-    Rails.application.config.autoload_paths += Dir[Rails.root.join('lib', "{*/}")]
-
     Rails.application.config.eager_load_paths +=  Dir[Rails.root.join('lib')]
-    Rails.application.config.eager_load_paths +=  Dir[Rails.root.join('lib', "{*/}")]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

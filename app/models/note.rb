@@ -17,7 +17,7 @@ class Note < ActiveRecord::Base
   belongs_to :estimate
   belongs_to :author, class_name: 'Arborist', foreign_key: :arborist_id
 
-  before_save :set_default_author
+  before_validation :set_default_author
 
   def set_default_author
     self.author ||= estimate.arborist

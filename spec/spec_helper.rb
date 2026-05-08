@@ -14,6 +14,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'logger' # Must precede factory_bot_rails on Rails 6.0 + concurrent-ruby 1.3.5+
 require 'factory_bot_rails'
 
 RSpec.configure do |config|

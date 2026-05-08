@@ -15,7 +15,7 @@
 #
 class WorkRecord < ActiveRecord::Base
   belongs_to :arborist
-  belongs_to :payout
+  belongs_to :payout, optional: true
   belongs_to :organization
 
   before_save :set_hourly_rate

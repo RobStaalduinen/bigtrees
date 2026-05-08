@@ -19,7 +19,7 @@
 #
 class Job < ActiveRecord::Base
   belongs_to :estimate
-  belongs_to :arborist
+  belongs_to :arborist, optional: true
   belongs_to :completed_by, class_name: 'Arborist', foreign_key: :completed_by_id, optional: true
 
   has_many :job_assignments
