@@ -79,6 +79,26 @@ module Nylas
       raise "Failed to send email."
     end
 
+    def remove_grant(nylas_account)
+      @client.grants.destroy(grant_id: nylas_account.grant_id)
+    end
+
+    def auth_url(organization)
+      @client.auth.url_for_oauth2({
+        client_id: @config[:client_id],
+        redirect_uri: @config[:callback_uri],
+        state: organization.id
+      })
+    end
+
+    def exchange_code_for_token(code)
+      @client.auth.exchange_code_for_token(
+        code: code,
+        client_id: @config[:client_id],
+        redirect_uri: @config[:callback_uri]
+      )
+    end
+
     private
 
     def send_email_multipart(grant_id, to_list, author, from_email, email_definition, attachment)
@@ -120,26 +140,6 @@ module Nylas
       raise "Failed to send email." unless response.code.to_i == 200
 
       JSON.parse(response.body)
-    end
-
-    def remove_grant(nylas_account)
-      @client.grants.destroy(grant_id: nylas_account.grant_id)
-    end
-
-    def auth_url(organization)
-      @client.auth.url_for_oauth2({
-        client_id: @config[:client_id],
-        redirect_uri: @config[:callback_uri],
-        state: organization.id
-      })
-    end
-
-    def exchange_code_for_token(code)
-      @client.auth.exchange_code_for_token(
-        code: code,
-        client_id: @config[:client_id],
-        redirect_uri: @config[:callback_uri]
-      )
     end
   end
 end
