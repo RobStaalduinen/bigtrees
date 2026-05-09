@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Bigtrees
   class Application < Rails::Application
-    config.load_defaults 6.0
+    config.load_defaults 6.1
 
     Rails.application.config.assets.precompile += %w( jquery-1.11.3.js pdf_styles.css )
 
