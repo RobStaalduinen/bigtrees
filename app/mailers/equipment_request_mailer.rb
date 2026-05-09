@@ -1,7 +1,7 @@
 class EquipmentRequestMailer < ApplicationMailer
 	default from: 'Tyler, Big Tree Services <tbrewer@bigislandgroup.ca>'
 
-	add_template_helper(ApplicationHelper)
+	helper ApplicationHelper
 	include Rails.application.routes.url_helpers
 	include ActionView::Helpers::UrlHelper
 

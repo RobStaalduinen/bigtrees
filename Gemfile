@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 6.1.7'
 gem 'responders'
 
 # Use SCSS for stylesheets
@@ -61,14 +61,14 @@ gem 'aasm'
 gem 'nokogiri'
 
 # VUE SETUP
-gem 'webpacker'
+gem 'shakapacker', '~> 7.0'
 # gem 'foreman'
 
 gem 'rack-cors'
 gem 'will_paginate'
 
 # PDF Generation
-gem 'wicked_pdf', '=2.1.0'
+gem 'wicked_pdf', '~> 2.8'
 gem 'wkhtmltopdf-binary', '=0.12.6.5'
 
 # Serialization

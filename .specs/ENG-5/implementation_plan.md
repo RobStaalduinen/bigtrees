@@ -70,9 +70,11 @@ These were confirmed during exploration and shape the plan:
 
 Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
-### Step 0 — Pre-flight hygiene (still on Rails 6.0)
+### Step 0 — Pre-flight hygiene (still on Rails 6.0) ✅
 
 **Goal:** Get the codebase into a known-clean state so each upgrade PR's diff is purely the upgrade.
+
+**Completed 2026-05-08.** 9 gem patch bumps; Logger workaround in `config/boot.rb` and `spec/spec_helper.rb` (Rails 6 + concurrent-ruby 1.3.5+ NameError); `config.load_defaults 6.0` added; belongs_to audit triggered by load_defaults flip — `optional: true` added to `Estimate.customer`, `Job.arborist`, `Receipt.vehicle`, `WorkRecord.payout`; `Note.set_default_author` callback moved from `before_save` → `before_validation`; redundant `lib/{*/}` autoload root removed (was making Zeitwerk expect non-namespaced constants). 165 specs green, `zeitwerk:check` clean.
 
 1. Branch `chore/rails-upgrade-prep` off master.
 2. Run `bundle outdated` and snapshot output. Bump *patch versions only* of non-Rails gems where safe (sentry-ruby, devise, pundit, factory_bot_rails, rspec-rails, etc.). Goal is to get to gem versions that are documented to support both Rails 6 and Rails 7+, so subsequent steps don't conflate "Rails moved" with "this gem moved."
@@ -87,9 +89,11 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 ---
 
-### Step 1 — Rails 6.0 → 6.1
+### Step 1 — Rails 6.0 → 6.1 ✅
 
 **Goal:** Move to 6.1 on its own defaults.
+
+**Completed 2026-05-08.** Rails bumped to 6.1.7.10. Removed deprecated `:controller/:action` catchall routes. Replaced `add_template_helper(ApplicationHelper)` with `helper ApplicationHelper` in 4 mailers (equipment_request, estimate, quote, invoice). Added minimal `config/storage.yml` stub (ActiveStorage eager-load mandatory in 6.1; app still uses custom S3, not ActiveStorage). Created `config/initializers/new_framework_defaults_6_1.rb` manually with all values commented out (interactive `app:update` not runnable in non-TTY). Fixed `include Pundit` → `include Pundit::Authorization` in `application_controller.rb` while we were here. `config.load_defaults` left at **6.0**; flipping to 6.1 is the soak-and-then-PR follow-up. 165 specs green; `zeitwerk:check` clean.
 
 1. `Gemfile:5` → `gem 'rails', '~> 6.1.7'`. Pin patch precisely on the lock.
 2. `bundle update rails`. Address bundler conflicts; `webpacker` 5.x is fine here, no change needed.
@@ -111,9 +115,11 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 ---
 
-### Step 2 — Webpacker → Shakapacker (still on Rails 6.1)
+### Step 2 — Webpacker → Shakapacker (still on Rails 6.1) ✅
 
 **Goal:** Replace `webpacker` with `shakapacker` so Rails 7 is reachable. No Vue or pack content changes.
+
+**Completed 2026-05-08 (browser-verified).** Shakapacker 7.2.3 replaces Webpacker 5; wicked_pdf bumped 2.1.0 → 2.8.2 (2.1 had a hard `Webpacker::VERSION` reference that broke under the alias). Webpack 5 + babel + postcss + sass build infrastructure now declared explicitly in `package.json` (17 new deps that Webpacker bundled implicitly); `babel.config.js` simplified to a 5-line wrapper around Shakapacker's preset. `config/webpacker.yml` → `config/shakapacker.yml` (renamed + restructured for Shakapacker 7 keys; dev_server block uses webpack-dev-server 4 API — `client.overlay: { errors: true, warnings: false }` so Sass deprecation noise doesn't cover the page). `config/webpack/{development,production,test,environment,alias}.js` and `loaders/vue.js` removed; replaced by single `config/webpack/webpack.config.js`. Vue rule must be `unshift`-ed to front of `module.rules` so VueLoaderPlugin matches it before catchall JS rule. CSS/SCSS/.vue extensions explicitly added to `resolve.extensions` (Shakapacker hardcodes JS-only; Webpacker had them). `resolve.fallback` configured for `buffer`, `timers-browserify`, `stream-browserify` polyfills (xml2js + sax need them under webpack 5). `webpack.ProvidePlugin({ process: require.resolve('process/browser') })` for libs that reference the `process` global without `require()` (vue-pdf, axios). sass-loader configured with `quietDeps: true` + `silenceDeprecations` for Bootstrap 4 SCSS noise (legacy-js-api, import, global-builtin, color-functions, slash-div, if-function). `bin/webpack` and `bin/webpack-dev-server` updated to require shakapacker + Logger workaround. **Production deploy requires Node ≥14 (Webpack 5 floor); user on Node 20 LTS via nvm.** All 3 packs build clean (admin, onboarding, property_management; 0 errors, 1 pre-existing Vue v-for lint); rspec 165/0; manifest.json correct; admin SPA renders in browser.
 
 1. `Gemfile`: replace `gem 'webpacker'` (line 64) with `gem 'shakapacker', '~> 7.3'`.
 2. `package.json`: replace `"@rails/webpacker": "4.3.0"` with `"shakapacker": "^7.3"`. Update `webpack-dev-server` to `^4` (Shakapacker 7 expects webpack-dev-server 4). Run `yarn install`.

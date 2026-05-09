@@ -128,12 +128,4 @@ Rails.application.routes.draw do
   get '/build_manifest', to: 'build_manifest#show'
 
   get '/admin/*path', to: 'admin#index'
-
-  get ':controller/:action'
-
-  put ':controller/:action'
-
-  post ':controller/:action'
-
-  patch ':controller/:action'
 end

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include UserHelper
-  include Pundit
+  include Pundit::Authorization
 
   before_action :redirect_if_old
   before_action :set_organization
