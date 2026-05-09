@@ -146,7 +146,7 @@ class Estimate < ActiveRecord::Base
     end
   end
 
-	enum state: {
+	enum :state, {
 		in_progress: 'in_progress',
 		on_hold: 'on_hold',
 		done: 'done',
@@ -154,13 +154,13 @@ class Estimate < ActiveRecord::Base
 		cancelled: 'cancelled'
 	}
 
-	enum source: {
+	enum :source, {
 		admin_form: 'admin_form',
 		customer_form: 'customer_form'
 	}
 
 
-	enum status: {
+	enum :status, {
 		needs_costs: 0,
 		needs_arborist: 10,
 		pending_quote: 20,

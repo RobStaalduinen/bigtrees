@@ -23,7 +23,7 @@ class Tree < ActiveRecord::Base
 
   scope :stumping_possible, -> { where(work_type: [0,3,4,5]) }
 
-  enum work_type: {
+  enum :work_type, {
     removal: 0,
     trim: 1,
     broken_limbs: 2,

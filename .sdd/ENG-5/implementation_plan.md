@@ -207,9 +207,13 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 ---
 
-### Step 6 — Rails 7.2 → 8.0
+### Step 6 — Rails 7.2 → 8.0 ✅
 
 **Goal:** Move to 8.0. We do *not* install Solid Queue in this PR — that's step 7. We just want the framework upgrade to be reviewable on its own.
+
+**Completed 2026-05-09.** Rails 7.2.3 → 8.0.5, plus `load_defaults 7.2 → 8.0` in same pass per engineer call. **Enum keyword-argument syntax hard-removed in 8.0** (already deprecated under 7.2): rspec failed to even load `estimate_spec.rb` with `ArgumentError: wrong number of arguments (given 0, expected 1..2)`. Mechanical fix to 6 callsites — `enum status: { ... }` → `enum :status, { ... }`: `app/models/estimate.rb` (3 enums: `state`, `source`, `status`), `app/models/tree.rb` (`work_type`), `app/models/receipt.rb` (`state`), and one I missed initially because no spec exercises it — `app/models/nylas_account.rb:20` (`status`); caught by `zeitwerk:check` eager-load. `delayed_job_active_record 4.1.11` still loads cleanly on Rails 8 (DJ adapter still active — kept on purpose to isolate framework upgrade from step 7's Solid Queue swap). `app:update` generated `config/initializers/new_framework_defaults_8_0.rb` with 3 small flags (`to_time_preserves_timezone = :zone`, `strict_freshness = true`, `Regexp.timeout = 1`) — all auto-activated by load_defaults 8.0; no spec impact. Cleaned up generator artifacts: deleted `config/cable.yml`, `config/puma.rb` (Puma not installed), `bin/dev` (we use `rails s` + separate webpack-dev-server, not a Procfile.dev), 3 ActiveStorage migrations. Kept `public/400.html` (new in 8.0, harmless boilerplate alongside existing 404/422/500 pages). Plan-flagged 8.0 risk items that did NOT materialize: AR callback ordering changes (`run_after_transaction_callbacks_in_order_defined` actually a 7.1 default, dormant since), `before_committed_on_all_records` (not an 8.0 default — would only activate if explicitly set in framework_defaults_7_1), `sprockets-rails 3.5+` requirement (lifted via bundle update with no fight). 165 specs green, zero deprecation warnings, zeitwerk clean, boot clean, AR connects to MySQL, routes load.
+
+**Note for step 7 (Solid Queue):** the plan referenced `config/application.rb:32` for the `config.active_job.queue_adapter = :delayed_job` line. After the upgrade churn, the line is at a different position — grep, don't trust the line number.
 
 1. `gem 'rails', '~> 8.0.1'`, `bundle update rails`, `bin/rails app:update`, hand-merge.
 2. Expected breakages:

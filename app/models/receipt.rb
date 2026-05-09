@@ -32,7 +32,7 @@ class Receipt < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :unapproved, -> { where(approved: false) }
 
-  enum state: {
+  enum :state, {
     pending: 'pending',
     approved: 'approved',
     rejected: 'rejected'
