@@ -142,7 +142,9 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 ---
 
-### Step 3 — Rails 6.1 → 7.0
+### Step 3 — Rails 6.1 → 7.0 ✅
+
+**Completed 2026-05-09.** Rails bumped 6.1.7.10 → 7.0.10. `bin/rails app:update` run non-interactively with overwrites declined; resulting new files reviewed manually. Generated `config/initializers/new_framework_defaults_7_0.rb` (all values commented out). Two standard 7.0 initializers landed alongside as commented-out boilerplate: `content_security_policy.rb`, `permissions_policy.rb`. `db/schema.rb` now declares `ActiveRecord::Schema[6.1].define(...)` (Rails 7's schema-format marker; stays at `[6.1]` until next dump under 7). Deleted `config/cable.yml` (no ActionCable) and 3 ActiveStorage migrations (no `active_storage_*` tables in this app — would have failed). Plan-flagged `sass-rails 5.x` ↔ `sprockets 4` collision did **not** materialize: `sass-rails 5.1.0` + `sprockets 3.7.5` continue to resolve cleanly under Rails 7.0; left untouched. `twitter-bootstrap-rails 5.0.0` and `active_model_serializers 0.10.16` both eager-load clean. 165 specs green, zero deprecation warnings, `zeitwerk:check` clean, `bin/rails routes` loads, dev boot clean. **Follow-up `load_defaults 7.0` flip done in same pass per engineer call** — see notes below the verification block.
 
 **Goal:** Move to 7.0. This is the biggest minor in terms of framework defaults (form helper changes, ActiveSupport::Encrypted serializer, new `config.action_view.button_to_generates_button_tag`).
 
@@ -165,11 +167,13 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 **Files touched:** `Gemfile`, `Gemfile.lock`, `config/application.rb`, `config/environments/*.rb`, `config/initializers/new_framework_defaults_7_0.rb` (new).
 
+**`load_defaults 7.0` flip — bundled into same pass (2026-05-09).** Per engineer call (small user base, ok to compress soak cadence). All Rails 7.0 framework defaults activated: `button_to_generates_button_tag = true`, `key_generator_hash_digest_class = SHA256` (invalidates all existing signed/encrypted cookies — every logged-in user logged out at deploy), `hash_digest_class = SHA256` (Etag/cache-key invalidation — first request post-deploy is a one-time miss), `partial_inserts = false`, `automatic_scope_inversing = true`, `raise_on_open_redirects = true`, RFC4122 UUIDs, new default security headers, etc. 165 specs green, zero deprecation warnings, zeitwerk clean, boot clean. Open-redirect flag not fixed: `app/controllers/customers_controller.rb:48` (`redirect_to params[:customer][:redirect_location]`) will raise `ActionController::Redirecting::UnsafeRedirectError` if the param is set to an off-host URL — admin SPA goes through JSON, not HTML, so this branch is rarely (if ever) exercised; documented for separate fix.
+
 ---
 
-### Step 4 — Rails 7.0 → 7.1
+### Step 4 — Rails 7.0 → 7.1 ✅
 
-**Goal:** Move to 7.1. Smaller diff than 7.0.
+**Completed 2026-05-09.** Rails 7.0.10 → 7.1.6, plus `load_defaults 7.0 → 7.1` in same pass per engineer call. **Unforeseen dep bump:** `rspec-rails 5.1.2 → 7.1.1` was required — rspec-rails 5.x's view-rendering internals are incompatible with actionview 7.1 (initial run had 56 controller spec failures with stack traces pointing at `actionview-7.1.6/lib/action_view/path_set.rb:19`; fix was `bundle update rspec-rails`). Fixed one rspec deprecation while there: `config.fixture_path = "..."` (singular) → `config.fixture_paths = ["..."]` (plural array) in `spec/rails_helper.rb:42`; the line is dead code anyway since the app uses FactoryBot, not fixtures, but the plural form silences the 7.1 deprecation. Generated `config/initializers/new_framework_defaults_7_1.rb` (all values commented out). One persistent deprecation now firing under 7.1: **`Rails.application.secrets` is deprecated, will be removed in 7.2** — the `secret_key_base` from `config/secrets.yml` is being read at boot. Plan flags this as a step 5 (Rails 7.2) item where it becomes a hard removal; not blocking 7.1 since it's still just a warning. 165 specs green, zeitwerk clean, boot clean. Plan noted `active_record.run_after_transaction_callbacks_in_order_defined = true` as an 8.0 concern — actually a 7.1 default; auto-activated by this defaults flip with no spec impact.
 
 1. `gem 'rails', '~> 7.1.5'`, `bundle update rails`, `bin/rails app:update`, hand-merge.
 2. Expected breakages:
