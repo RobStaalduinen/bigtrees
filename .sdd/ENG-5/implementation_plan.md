@@ -188,9 +188,11 @@ Each numbered step below is one PR, one branch, one deploy. Don't combine.
 
 ---
 
-### Step 5 — Rails 7.1 → 7.2
+### Step 5 — Rails 7.1 → 7.2 ✅
 
 **Goal:** Move to 7.2. This is the LTS-ish stop and the smallest minor.
+
+**Completed 2026-05-09.** Rails 7.1.6 → 7.2.3, plus `load_defaults 7.1 → 7.2` in same pass per engineer call. **`Rails.application.secrets` self-resolved:** the loud 3x-per-boot deprecation under 7.1 is silent under 7.2 — Rails 7.2 stops reading `config/secrets.yml` entirely; `secret_key_base` resolves via `ENV["SECRET_KEY_BASE"]` (provided by Figaro in production) or an auto-generated tmp key in dev/test. No code change was needed; `secrets.yml` is now inert (deletion deferred to step 8 per plan). `app:update` generated `config/initializers/new_framework_defaults_7_2.rb` (5 small flags, all commented out: `enqueue_after_transaction_commit`, `web_image_content_types`, `validate_migration_timestamps`, `postgresql_adapter_decode_dates`, `yjit = true`). Cleaned up generator artifacts: deleted `config/cable.yml` and `config/puma.rb` (Puma is not installed — Webrick is the dev server), 3 ActiveStorage migrations. Kept `public/icon.png`, `public/icon.svg`, `public/406-unsupported-browser.html` as harmless Rails 7.2 boilerplate (the project's actual favicon set under `public/apple-touch-icon*` is unchanged). 165 specs green, zeitwerk clean, boot clean. **5 enum keyword-argument deprecations now firing**: `app/models/estimate.rb:149,157,163`, `app/models/tree.rb:26`, `app/models/receipt.rb:35` — old syntax `enum status: { ... }`, new syntax `enum :status, { ... }`. These become hard errors at Rails 8.0; trivial mechanical fix planned for step 6.
 
 1. `gem 'rails', '~> 7.2.2'`, `bundle update rails`, `bin/rails app:update`, hand-merge.
 2. Expected breakages:
