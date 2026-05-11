@@ -51,6 +51,15 @@ config.module.rules.unshift({
   use: [{ loader: 'vue-loader' }]
 })
 
+// Suppress the dev-server runtime error overlay (we read console/server logs instead).
+// Compile errors still show.
+if (config.devServer) {
+  config.devServer.client = {
+    ...(config.devServer.client || {}),
+    overlay: { errors: true, warnings: false, runtimeErrors: false }
+  }
+}
+
 // Vue loader plugin
 config.plugins.push(new VueLoaderPlugin())
 

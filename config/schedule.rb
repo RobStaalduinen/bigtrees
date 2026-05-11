@@ -20,8 +20,3 @@
 # Learn more: http://github.com/javan/whenever
 
 job_type :bin, 'cd :path/bin && :task'
-
-
-every 3.hours do
-  command "cd /var/www/bigtrees/current && RAILS_ENV=production bin/delayed_job -n 2 restart"
-end

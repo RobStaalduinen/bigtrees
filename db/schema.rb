@@ -2,21 +2,20 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
-
-  create_table "addresses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+ActiveRecord::Schema[8.0].define(version: 2026_05_09_190000) do
+  create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "addressable_id"
     t.string "addressable_type"
     t.string "postal_code"
@@ -26,7 +25,7 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.index ["street"], name: "index_addresses_on_street"
   end
 
-  create_table "appointments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "appointments", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.string "date_submitted", null: false
     t.string "name", null: false
@@ -36,11 +35,11 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.string "contact_method", null: false
     t.string "contact_type", limit: 20
     t.string "status", limit: 50, null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "arborists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "arborists", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name", null: false
     t.string "certification"
     t.string "phone_number"
@@ -56,88 +55,88 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "can_manage_estimates", default: false
     t.string "role", default: "arborist"
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
+    t.datetime "reset_password_sent_at", precision: nil
     t.boolean "crew_member", default: true
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "costs", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.float "amount"
     t.string "description"
     t.boolean "discount", default: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_costs_on_estimate_id"
   end
 
-  create_table "customer_details", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "customer_details", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.string "name"
     t.string "email"
     t.string "phone"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_customer_details_on_email"
     t.index ["estimate_id"], name: "index_customer_details_on_estimate_id"
     t.index ["name"], name: "index_customer_details_on_name"
     t.index ["phone"], name: "index_customer_details_on_phone"
   end
 
-  create_table "customers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "customers", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "phone"
     t.string "preferred_contact"
     t.integer "address_id"
     t.string "short_name"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["email"], name: "index_customers_on_email"
     t.index ["name"], name: "index_customers_on_name"
     t.index ["phone"], name: "index_customers_on_phone"
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delayed_jobs", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
     t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
+    t.datetime "run_at", precision: nil
+    t.datetime "locked_at", precision: nil
+    t.datetime "failed_at", precision: nil
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "documents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "documents", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "arborist_id"
     t.string "name"
     t.string "file_file_name"
     t.string "file_content_type"
     t.integer "file_file_size"
-    t.datetime "file_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "file_updated_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.date "expires_at"
     t.string "url"
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
   end
 
-  create_table "email_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "email_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "estimate_id", null: false
     t.integer "arborist_id"
     t.integer "organization_id"
     t.string "template_key", null: false
     t.string "recipient_email"
     t.string "nylas_message_id"
-    t.datetime "sent_at", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "sent_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["arborist_id"], name: "index_email_records_on_arborist_id"
     t.index ["estimate_id"], name: "index_email_records_on_estimate_id"
     t.index ["nylas_message_id"], name: "index_email_records_on_nylas_message_id"
@@ -145,27 +144,27 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.index ["template_key"], name: "index_email_records_on_template_key"
   end
 
-  create_table "email_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "email_templates", charset: "latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "key"
     t.string "subject"
     t.text "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["key"], name: "index_email_templates_on_key"
     t.index ["organization_id"], name: "index_email_templates_on_organization_id"
   end
 
-  create_table "equipment_assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "equipment_assignments", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "vehicle_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["estimate_id"], name: "index_equipment_assignments_on_estimate_id"
     t.index ["vehicle_id"], name: "index_equipment_assignments_on_vehicle_id"
   end
 
-  create_table "equipment_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "equipment_requests", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "arborist_id"
     t.integer "vehicle_id"
     t.date "submitted_at"
@@ -175,9 +174,9 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.string "image_file_name"
     t.string "image_content_type"
     t.integer "image_file_size"
-    t.datetime "image_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "image_updated_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "image_url"
     t.integer "resolver_id"
     t.string "resolution_notes"
@@ -190,7 +189,7 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.index ["state"], name: "index_equipment_requests_on_state"
   end
 
-  create_table "estimates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "estimates", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "tree_quantity", default: 1
     t.string "street"
     t.string "city"
@@ -199,8 +198,8 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "breakables", default: false
     t.boolean "wood_removal", default: false
     t.integer "status", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "submission_completed", default: false
     t.date "quote_sent_date"
     t.date "quote_accepted_date"
@@ -214,7 +213,7 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "is_unknown", default: false
     t.integer "customer_id"
     t.date "picture_request_sent_at"
-    t.datetime "followup_sent_at"
+    t.datetime "followup_sent_at", precision: nil
     t.date "work_end_date"
     t.date "work_completion_date"
     t.boolean "skip_schedule"
@@ -240,35 +239,35 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.index ["submission_completed"], name: "index_estimates_on_submission_completed"
   end
 
-  create_table "expirations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "expirations", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "vehicle_id"
     t.string "name"
     t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["vehicle_id"], name: "index_expirations_on_vehicle_id"
   end
 
-  create_table "extra_costs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "extra_costs", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.decimal "amount", precision: 10
     t.string "description"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_extra_costs_on_estimate_id"
   end
 
-  create_table "images", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "images", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "imageable_id"
     t.string "imageable_type"
     t.string "image_url"
     t.string "edited_image_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable"
   end
 
-  create_table "invoices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "invoices", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.string "number"
     t.string "payment_method"
@@ -276,28 +275,28 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "discount", default: false
     t.date "sent_at"
     t.date "paid_at"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_invoices_on_estimate_id"
     t.index ["number"], name: "index_invoices_on_number"
   end
 
-  create_table "job_assignments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "job_assignments", charset: "latin1", force: :cascade do |t|
     t.bigint "job_id", null: false
     t.bigint "arborist_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["arborist_id"], name: "index_job_assignments_on_arborist_id"
     t.index ["job_id"], name: "index_job_assignments_on_job_id"
   end
 
-  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "jobs", charset: "latin1", force: :cascade do |t|
     t.bigint "estimate_id", null: false
-    t.datetime "started_at"
-    t.datetime "completed_at"
+    t.datetime "started_at", precision: nil
+    t.datetime "completed_at", precision: nil
     t.json "job_survey_responses"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "arborist_id"
     t.boolean "skipped", default: false, null: false
     t.json "completion_survey_responses"
@@ -309,42 +308,42 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.index ["estimate_id"], name: "index_jobs_on_estimate_id"
   end
 
-  create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "notes", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "arborist_id"
     t.text "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["arborist_id"], name: "index_notes_on_arborist_id"
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
 
-  create_table "nylas_accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "nylas_accounts", charset: "latin1", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.string "outgoing_email_address"
     t.string "code"
     t.string "grant_id"
     t.json "raw_response"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "status", default: "active", null: false
     t.index ["organization_id"], name: "index_nylas_accounts_on_organization_id"
   end
 
-  create_table "organization_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "organization_memberships", charset: "latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.bigint "arborist_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.float "hourly_rate", default: 0.0
     t.index ["arborist_id"], name: "index_organization_memberships_on_arborist_id"
     t.index ["organization_id"], name: "index_organization_memberships_on_organization_id"
   end
 
-  create_table "organizations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "organizations", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "phone_number"
     t.string "website"
     t.string "email"
@@ -371,23 +370,23 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.json "notification_configuration"
   end
 
-  create_table "payouts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "payouts", id: :integer, charset: "latin1", force: :cascade do |t|
     t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "quick_costs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "quick_costs", charset: "latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label"
     t.string "content"
     t.decimal "default_cost", precision: 8, scale: 2, default: "0.0"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_quick_costs_on_organization_id"
   end
 
-  create_table "receipts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "receipts", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "arborist_id"
     t.date "date"
     t.string "category"
@@ -398,38 +397,38 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.string "photo_file_name"
     t.string "photo_content_type"
     t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.datetime "photo_updated_at", precision: nil
     t.integer "vehicle_id"
     t.boolean "approved", default: false
     t.string "image_url"
     t.string "state", default: "pending"
     t.string "rejection_reason"
     t.integer "organization_id"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["arborist_id"], name: "index_receipts_on_arborist_id"
     t.index ["organization_id", "state"], name: "index_receipts_on_organization_id_and_state"
     t.index ["organization_id"], name: "index_receipts_on_organization_id"
     t.index ["state"], name: "index_receipts_on_state"
   end
 
-  create_table "site_config", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "site_config", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "attribute_name", null: false
     t.string "attribute_value", null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "site_stats", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "site_stats", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimates_started", default: 0, null: false
     t.integer "appointments_started", default: 0, null: false
     t.string "month", limit: 20, null: false
     t.string "year", limit: 10
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "sites", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "sites", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.string "street"
     t.string "city"
@@ -443,49 +442,170 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "survey_filled_out", default: false
     t.boolean "visit_consent", default: false
     t.text "visit_times"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["city"], name: "index_sites_on_city"
     t.index ["estimate_id"], name: "index_sites_on_estimate_id"
     t.index ["street"], name: "index_sites_on_street"
   end
 
-  create_table "taggings", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "solid_queue_blocked_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "queue_name", null: false
+    t.integer "priority", default: 0, null: false
+    t.string "concurrency_key", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["concurrency_key", "priority", "job_id"], name: "index_solid_queue_blocked_executions_for_release"
+    t.index ["expires_at", "concurrency_key"], name: "index_solid_queue_blocked_executions_for_maintenance"
+    t.index ["job_id"], name: "index_solid_queue_blocked_executions_on_job_id", unique: true
+  end
+
+  create_table "solid_queue_claimed_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.bigint "process_id"
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_claimed_executions_on_job_id", unique: true
+    t.index ["process_id", "job_id"], name: "index_solid_queue_claimed_executions_on_process_id_and_job_id"
+  end
+
+  create_table "solid_queue_failed_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.text "error"
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_failed_executions_on_job_id", unique: true
+  end
+
+  create_table "solid_queue_jobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "queue_name", null: false
+    t.string "class_name", null: false
+    t.text "arguments"
+    t.integer "priority", default: 0, null: false
+    t.string "active_job_id"
+    t.datetime "scheduled_at"
+    t.datetime "finished_at"
+    t.string "concurrency_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active_job_id"], name: "index_solid_queue_jobs_on_active_job_id"
+    t.index ["class_name"], name: "index_solid_queue_jobs_on_class_name"
+    t.index ["finished_at"], name: "index_solid_queue_jobs_on_finished_at"
+    t.index ["queue_name", "finished_at"], name: "index_solid_queue_jobs_for_filtering"
+    t.index ["scheduled_at", "finished_at"], name: "index_solid_queue_jobs_for_alerting"
+  end
+
+  create_table "solid_queue_pauses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "queue_name", null: false
+    t.datetime "created_at", null: false
+    t.index ["queue_name"], name: "index_solid_queue_pauses_on_queue_name", unique: true
+  end
+
+  create_table "solid_queue_processes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "kind", null: false
+    t.datetime "last_heartbeat_at", null: false
+    t.bigint "supervisor_id"
+    t.integer "pid", null: false
+    t.string "hostname"
+    t.text "metadata"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.index ["last_heartbeat_at"], name: "index_solid_queue_processes_on_last_heartbeat_at"
+    t.index ["name", "supervisor_id"], name: "index_solid_queue_processes_on_name_and_supervisor_id", unique: true
+    t.index ["supervisor_id"], name: "index_solid_queue_processes_on_supervisor_id"
+  end
+
+  create_table "solid_queue_ready_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "queue_name", null: false
+    t.integer "priority", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_ready_executions_on_job_id", unique: true
+    t.index ["priority", "job_id"], name: "index_solid_queue_poll_all"
+    t.index ["queue_name", "priority", "job_id"], name: "index_solid_queue_poll_by_queue"
+  end
+
+  create_table "solid_queue_recurring_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "task_key", null: false
+    t.datetime "run_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
+    t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
+  end
+
+  create_table "solid_queue_recurring_tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "schedule", null: false
+    t.string "command", limit: 2048
+    t.string "class_name"
+    t.text "arguments"
+    t.string "queue_name"
+    t.integer "priority", default: 0
+    t.boolean "static", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_solid_queue_recurring_tasks_on_key", unique: true
+    t.index ["static"], name: "index_solid_queue_recurring_tasks_on_static"
+  end
+
+  create_table "solid_queue_scheduled_executions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "queue_name", null: false
+    t.integer "priority", default: 0, null: false
+    t.datetime "scheduled_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_scheduled_executions_on_job_id", unique: true
+    t.index ["scheduled_at", "priority", "job_id"], name: "index_solid_queue_dispatch_all"
+  end
+
+  create_table "solid_queue_semaphores", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.integer "value", default: 1, null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_solid_queue_semaphores_on_expires_at"
+    t.index ["key", "value"], name: "index_solid_queue_semaphores_on_key_and_value"
+    t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
+  end
+
+  create_table "taggings", charset: "latin1", force: :cascade do |t|
     t.bigint "estimate_id"
     t.bigint "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["estimate_id"], name: "index_taggings_on_estimate_id"
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
   end
 
-  create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "tags", charset: "latin1", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "label", null: false
     t.string "colour", null: false
     t.boolean "system", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
 
-  create_table "tree_images", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "tree_images", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "asset_file_name"
     t.string "asset_content_type"
     t.integer "asset_file_size"
-    t.datetime "asset_updated_at"
+    t.datetime "asset_updated_at", precision: nil
     t.integer "tree_id"
     t.string "image_url"
     t.string "image_small_url"
     t.string "edited_image_url"
     t.integer "estimate_id"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_tree_images_on_estimate_id"
     t.index ["tree_id"], name: "index_tree_images_on_tree_id"
   end
 
-  create_table "trees", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "trees", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id"
     t.integer "work_type", default: 0
     t.integer "sequence", default: 0
@@ -495,28 +615,28 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.boolean "stump_removal"
     t.boolean "in_backyard", default: false
     t.string "job_type"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["estimate_id"], name: "index_trees_on_estimate_id"
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "username", limit: 50, null: false
     t.string "session_token", limit: 100, null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "vehicles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "vehicles", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.integer "organization_id"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["name"], name: "index_vehicles_on_name"
     t.index ["organization_id"], name: "index_vehicles_on_organization_id"
   end
 
-  create_table "work_actions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "work_actions", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id", null: false
     t.string "work_type", null: false
     t.integer "tree_index", null: false
@@ -524,11 +644,11 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.text "info"
     t.float "cost"
     t.string "status", null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "work_records", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "work_records", id: :integer, charset: "latin1", force: :cascade do |t|
     t.integer "arborist_id"
     t.date "date"
     t.float "hours"
@@ -538,8 +658,8 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
     t.float "hourly_rate"
     t.integer "payout_id"
     t.integer "organization_id"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["arborist_id"], name: "index_work_records_on_arborist_id"
     t.index ["organization_id", "date"], name: "index_work_records_on_organization_id_and_date"
     t.index ["organization_id"], name: "index_work_records_on_organization_id"
@@ -549,4 +669,10 @@ ActiveRecord::Schema[6.1].define(version: 2026_05_05_000000) do
   add_foreign_key "email_records", "arborists"
   add_foreign_key "email_records", "estimates"
   add_foreign_key "email_records", "organizations"
+  add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 end

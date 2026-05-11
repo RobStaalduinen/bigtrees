@@ -148,9 +148,6 @@ GEM
       sshkit (~> 1.2)
     capistrano-upload-config (0.9.0)
       capistrano (>= 3.0)
-    capistrano3-delayed-job (1.7.6)
-      capistrano (~> 3.0, >= 3.0.0)
-      daemons (~> 1.3)
     case_transform (0.2)
       activesupport
     caxlsx (4.2.0)
@@ -194,6 +191,8 @@ GEM
     drb (2.2.3)
     erb (6.0.4)
     erubi (1.13.1)
+    et-orbi (1.4.0)
+      tzinfo
     execjs (2.10.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
@@ -214,6 +213,9 @@ GEM
       thor (>= 0.14.0, < 2)
     font-awesome-rails (4.7.0.9)
       railties (>= 3.2, < 9.0)
+    fugit (1.12.1)
+      et-orbi (~> 1.4)
+      raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
     htmlentities (4.3.4)
@@ -343,6 +345,7 @@ GEM
     public_suffix (6.0.1)
     pundit (2.4.0)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.8.1)
     rack (2.2.23)
     rack-cors (2.0.2)
@@ -456,6 +459,13 @@ GEM
       semantic_range (>= 2.3.0)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
+    solid_queue (1.4.0)
+      activejob (>= 7.1)
+      activerecord (>= 7.1)
+      concurrent-ruby (>= 1.3.1)
+      fugit (~> 1.11)
+      railties (>= 7.1)
+      thor (>= 1.3.1)
     spoon (0.0.6)
       ffi
     spreadsheet (1.3.5)
@@ -553,7 +563,6 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1)
   capistrano-rvm
   capistrano-upload-config
-  capistrano3-delayed-job
   caxlsx
   caxlsx_rails
   coffee-rails
@@ -589,6 +598,7 @@ DEPENDENCIES
   sentry-ruby
   shakapacker (~> 7.0)
   shoulda-matchers
+  solid_queue (~> 1.0)
   spreadsheet
   turbolinks
   twitter-bootstrap-rails

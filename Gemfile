@@ -36,6 +36,8 @@ gem 'figaro'
 gem 'daemons'
 gem 'delayed_job_active_record'
 
+gem 'solid_queue', '~> 1.0'
+
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'whenever', require: false
@@ -119,7 +121,6 @@ group :development do
   gem 'capistrano-npm'
   gem 'capistrano-passenger'
   gem 'capistrano-figaro-yml'
-  gem 'capistrano3-delayed-job'
   gem 'capistrano-rails-console'
   gem 'capistrano-db-tasks', '0.4', require: false
   gem 'capistrano-nc', '~> 0.1'
