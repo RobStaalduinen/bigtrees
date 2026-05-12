@@ -356,6 +356,11 @@ export default {
   font-weight: 600;
 }
 
+#onboarding-container .form-group > label {
+  font-size: inherit !important;
+  margin-bottom: 8px !important;
+}
+
 .form-subtext {
   color: grey;
   font-size: 14px;
@@ -376,20 +381,18 @@ export default {
 
 .onboarding-form-radio-single {
   width: auto;
-  display: flex;
-  align-items: center;
-  margin-right: 32px
+  margin-right: 32px;
 }
 
-.onboarding-form-radio-single > label{
-  width: 100%;
+.onboarding-form-radio-single .custom-control-label {
   margin-bottom: 0;
-  padding: 4px;
-  padding-left: 12px;
+  cursor: pointer;
 }
 
-.onboarding-form-radio-single > input {
-  margin: 0;
+.onboarding-form-radio-single .custom-control-label::before,
+.onboarding-form-radio-single .custom-control-label::after {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #onboarding-logo {

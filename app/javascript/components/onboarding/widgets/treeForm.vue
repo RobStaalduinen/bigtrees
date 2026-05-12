@@ -159,11 +159,11 @@ export default {
 </script>
 
 <style>
-.custom-file-label {
-  display: none;
-}
-
 .tree-image-uploader {
   margin-bottom: 8px;
+}
+
+#textarea::placeholder {
+  font-size: 14px;
 }
 </style>

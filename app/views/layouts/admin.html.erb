@@ -35,31 +35,11 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
-	<script>
-		$('body').on('hidden.bs.modal', '.modal', function () {
-			$(this).removeData('bs.modal');
-		});
-	</script>
-
-      
-
       <div id = "main-box">
         <%= render 'layouts/admin/header' %>
         <%= yield %>
         <%= render 'layouts/common/footer' %>
       </div>
-
-      
-
-
-
-		<div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-				</div>
-			</div>
-		</div>
 
 </body>
 </html>

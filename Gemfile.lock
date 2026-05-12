@@ -169,7 +169,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    commonjs (0.2.7)
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
     crass (1.0.6)
@@ -242,12 +241,6 @@ GEM
     launchy (3.0.1)
       addressable (~> 2.8)
       childprocess (~> 5.0)
-    less (2.6.0)
-      commonjs (~> 0.2.7)
-    less-rails (4.0.0)
-      actionpack (>= 4)
-      less (~> 2.6.0)
-      sprockets (>= 2)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     libreconv (0.9.1)
@@ -497,11 +490,6 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    twitter-bootstrap-rails (5.3.0)
-      actionpack (>= 5.0, < 9.0)
-      execjs (~> 2.7)
-      less-rails (~> 4.0)
-      railties (>= 5.0, < 9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.1)
@@ -601,7 +589,6 @@ DEPENDENCIES
   solid_queue (~> 1.0)
   spreadsheet
   turbolinks
-  twitter-bootstrap-rails
   uglifier (>= 1.3.0)
   webrick
   whenever

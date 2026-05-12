@@ -75,24 +75,23 @@ export default {
 
   border: 1px solid var(--main-color);
   border-radius: 5px;
-  display: flex;
-  align-items: center;
+  padding: 8px 12px 8px 36px;
 }
 
 .quantity-radio:hover {
   background-color: #efefef;
 }
 
-.quantity-radio > label{
+.quantity-radio .custom-control-label {
   width: 100%;
-  margin-bottom: 0;
-  padding: 4px;
-  padding-left: 12px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.quantity-radio > input {
-  margin: 0;
-  margin-left: 8px
+.quantity-radio .custom-control-label::before,
+.quantity-radio .custom-control-label::after {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 input[type='radio']:checked:after {

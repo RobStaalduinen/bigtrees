@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 button {
@@ -64,8 +64,8 @@ a {
 }
 
 .container {
-  padding-left: 8px !important;
-  padding-right: 8px !important;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {

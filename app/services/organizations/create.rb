@@ -3,7 +3,7 @@
 module Organizations
   class Create
     JOB_SURVEY_QUESTIONS = [
-      'If necessary, I have made contact with the homeowner',
+      'I have made contact with the homeowner',
       'Crew understands the work required',
       'Crew is aware if the hazards on site',
       'Crew is wearing proper safety gear',

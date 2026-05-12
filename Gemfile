@@ -42,7 +42,6 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'whenever', require: false
 
-gem 'twitter-bootstrap-rails'
 gem 'mini_racer'
 gem 'mysql2'
 gem 'jquery-ui-rails'

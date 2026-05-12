@@ -4,3 +4,7 @@ $primary: #0c2141;
 // If using BootstrapVue:
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-vue/src/index.scss";
+
+body {
+  font-family: 'Roboto', sans-serif !important;
+}

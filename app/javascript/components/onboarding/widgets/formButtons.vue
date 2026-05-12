@@ -98,7 +98,7 @@ export default {
 
   #back-button{
     border-width: 0;
-    padding: 4px 16px;
+    padding: 8px 20px;
     display: flex;
     align-items: center;
 
@@ -116,7 +116,7 @@ export default {
     background-color: var(--main-color);
     border-radius: 5px;
     border-width: 0;
-    padding: 4px 16px;
+    padding: 8px 20px;
     display: flex;
     align-items: center;
   }
