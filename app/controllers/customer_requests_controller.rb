@@ -17,41 +17,36 @@ class CustomerRequestsController < ApplicationController
     organization = Organization.find_by(short_name: params[:organization_shortname])
 
     Estimate.transaction do
-      estimate = Estimate.create(organization: organization, submission_completed: true, source: :customer_form)
+      estimate = Estimate.new(
+        organization: organization,
+        submission_completed: true,
+        source: :customer_form,
+        arborist: organization.default_arborist,
+        site_visit: params[:site_visit].present?,
+      )
 
-      if params[:site_visit]
-        estimate.site_visit = true 
-        estimate.add_system_tag('Site Visit')
-      end
-
-      estimate.arborist = organization.default_arborist
-
-      estimate.create_site(site_params)
-
-      customer = Customer.find_or_create_by_params(customer_params)
-      estimate.customer = customer
-
-      estimate.create_customer_detail(customer_params)
+      estimate.build_site(site_params)
+      estimate.customer = Customer.find_or_create_by_params(customer_params)
+      estimate.build_customer_detail(customer_params)
 
       tree_params.each do |tree_entry|
-        tree = Tree.create(estimate: estimate, **tree_entry.except(:images))
+        tree = estimate.trees.build(tree_entry.except(:images))
 
         tree_entry[:images]&.each do |image_url|
-          tree.tree_images.create(image_url: image_url, estimate: estimate)
+          tree.tree_images.build(image_url: image_url, estimate: estimate)
         end
       end
 
       estimate.save!
 
-      if estimate.persisted?
-        EstimateMailer.estimate_alert(estimate).deliver_now
+      estimate.add_system_tag('Site Visit') if params[:site_visit]
 
+      EstimateMailer.estimate_alert(estimate).deliver_now
 
-        render json: {
-          estimate_id: estimate.id,
-          redirect_url: '/main/thank-you-estimate'
-        }
-      end
+      render json: {
+        estimate_id: estimate.id,
+        redirect_url: '/main/thank-you-estimate'
+      }
     end
   end
 

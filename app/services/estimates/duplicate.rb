@@ -14,6 +14,8 @@ module Estimates
       ActiveRecord::Base.transaction do
         new_estimate = @original_estimate.dup
         new_estimate.status = :needs_costs
+        new_estimate.state = :in_progress
+        new_estimate.state_reason = nil
         new_estimate.submission_completed = true
         new_estimate.quote_sent_date = nil
         new_estimate.quote_accepted_date = nil
@@ -22,6 +24,10 @@ module Estimates
         new_estimate.work_completion_date = nil
         new_estimate.cancelled_at = nil
         new_estimate.approved = false
+        new_estimate.work_complete = false
+        new_estimate.is_unknown = false
+        new_estimate.picture_request_sent_at = nil
+        new_estimate.followup_sent_at = nil
         new_estimate.created_at = Time.current
         new_estimate.updated_at = Time.current
         new_estimate.save!

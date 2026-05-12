@@ -127,7 +127,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_09_190000) do
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
   end
 
-  create_table "email_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "email_records", charset: "latin1", force: :cascade do |t|
     t.integer "estimate_id", null: false
     t.integer "arborist_id"
     t.integer "organization_id"
