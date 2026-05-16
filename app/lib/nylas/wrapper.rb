@@ -46,8 +46,14 @@ module Nylas
 
     end
 
-    def send_email(nylas_account, email_definition, attachment = nil)
-      validate_grant(nylas_account)
+    def send_email(nylas_account, email_definition, attachment = nil, use_test_grant: Rails.env.development?)
+      if use_test_grant
+        grant_id = ENV['TEST_NYLAS_GRANT_ID']
+        raise "TEST_NYLAS_GRANT_ID is not configured" if grant_id.blank?
+      else
+        validate_grant(nylas_account)
+        grant_id = nylas_account.grant_id
+      end
 
       if Rails.env.development?
         to_list = [ { email: 'rob.staalduinen@gmail.com'} ]
@@ -59,7 +65,7 @@ module Nylas
       author = email_definition.outgoing_name.present? ? email_definition.outgoing_name : nylas_account.organization.email_author
 
       if attachment
-        send_email_multipart(nylas_account.grant_id, to_list, author, nylas_account.outgoing_email_address, email_definition, attachment)
+        send_email_multipart(grant_id, to_list, author, nylas_account.outgoing_email_address, email_definition, attachment)
       else
         request_body = {
           to: to_list,
@@ -71,7 +77,7 @@ module Nylas
         }
 
         @client.messages.send(
-          identifier: nylas_account.grant_id,
+          identifier: grant_id,
           request_body: request_body
         )
       end
