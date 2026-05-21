@@ -1,6 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.19.2"
 
+ENV['SECRET_KEY_BASE_DUMMY'] ||= '1'
+
 set :application, 'bigtrees'
 set :repo_url, 'git@github.com:RobStaalduinen/bigtrees.git'
 set :branch, 'master'
