@@ -128,6 +128,7 @@ group :development do
   gem 'capistrano-rake', require: false
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-rvm'
+  gem 'capistrano-local-precompile', require: false
   # gem 'cap-ec2'
   gem 'rbnacl'
   gem 'webrick'

@@ -123,6 +123,8 @@ GEM
     capistrano-figaro-yml (1.0.5)
       capistrano (~> 3.1)
       sshkit (~> 1.2, >= 1.2.0)
+    capistrano-local-precompile (1.2.0)
+      capistrano (>= 3.8)
     capistrano-maintenance (1.2.1)
       capistrano (>= 3.0)
     capistrano-nc (0.2.0)
@@ -541,6 +543,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-db-tasks (= 0.4)
   capistrano-figaro-yml
+  capistrano-local-precompile
   capistrano-maintenance
   capistrano-nc (~> 0.1)
   capistrano-npm

@@ -1,5 +1,11 @@
 require 'json'
 
+server '98.93.41.206',
+       port: 22,
+       user: 'ubuntu',
+       roles: [:web, :app, :db],
+       primary: true
+
 set :rails_env, :production
 set :branch, 'master'
 set :user, 'deploy'
