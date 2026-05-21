@@ -31,6 +31,11 @@ require 'capistrano-nc/nc'
 require 'capistrano/upload-config'
 require 'capistrano/rake'
 require 'capistrano/rbenv'
+
+# Shim: Dir.exists? was removed in Ruby 3.3, but capistrano-local-precompile 1.2.0
+# (unmaintained upstream) still calls it. Restore the alias before loading the gem.
+Dir.singleton_class.send(:alias_method, :exists?, :exist?) unless Dir.respond_to?(:exists?)
+
 require 'capistrano/local_precompile'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined

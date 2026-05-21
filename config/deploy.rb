@@ -10,6 +10,11 @@ set :deploy_to, '/var/www/bigtrees'
 set :rvm_map_bins, %w{gem rake ruby rails bundle}
 set :rbenv_ruby, '3.3.1'
 
+# Assets are precompiled locally and rsynced via capistrano-local-precompile.
+# Empty :assets_roles disables the remote precompile from capistrano/rails/assets
+# (the server has no webpack/yarn build chain and doesn't need one).
+set :assets_roles, []
+
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies
 
