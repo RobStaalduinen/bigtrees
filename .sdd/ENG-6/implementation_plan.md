@@ -339,7 +339,7 @@ sudo ufw status
 ```
 
 ### 2.8 systemd unit for solid_queue **(done)**
-Create `/etc/systemd/system/solid_queue.service`:
+Create `/etc/systemd/system/bigtrees-solid-queue.service`:
 ```ini
 [Unit]
 Description=Solid Queue worker for BigTrees
@@ -661,10 +661,10 @@ Remove the `/etc/hosts` entry when done.
 ### 6.4 Enable solid_queue service
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable solid_queue
-sudo systemctl start solid_queue
-sudo systemctl status solid_queue
-journalctl -u solid_queue -f  # tail logs
+sudo systemctl enable bigtrees-solid-queue
+sudo systemctl start bigtrees-solid-queue
+sudo systemctl status bigtrees-solid-queue
+journalctl -u bigtrees-solid-queue -f  # tail logs
 ```
 
 ### 6.5 Set up whenever cron

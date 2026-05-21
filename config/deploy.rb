@@ -15,6 +15,10 @@ set :rbenv_ruby, '3.3.1'
 # (the server has no webpack/yarn build chain and doesn't need one).
 set :assets_roles, []
 
+# Restart Passenger by touching tmp/restart.txt. Avoids the hang at log_revision
+# caused by `passenger-config restart-app` holding SSH channel file descriptors.
+set :passenger_restart_with_touch, true
+
 # set :npm_roles, :web
 # set :npm_flags, '--silent --no-progress' # by default --production is included but we need devDependencies
 

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   root 'sessions#new'
 
+  get '/health', to: ->(_env) { [200, { 'Content-Type' => 'text/plain' }, ['ok']] }
+
   get '/admin/admin_panel', to: redirect('/estimates')
   # get '/arborists/:id', to: redirect { |params, request| "/admin/users/#{request.params[:id]}" }
 
