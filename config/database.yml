@@ -10,3 +10,12 @@ test:
   database: bigtrees_test
   pool: 5
   username: root
+
+production:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: bigtrees
+  username: <%= ENV.fetch('DB_USER', 'unused') %>
+  password: <%= ENV.fetch('DB_PASS', 'unused') %>
+  host:     <%= ENV.fetch('DB_HOST', '127.0.0.1') %>
+  pool: 5
