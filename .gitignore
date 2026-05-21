@@ -30,6 +30,7 @@ public/system
 .ruby-gemset
 .nvmrc
 
+/public/assets
 /public/packs
 /public/packs-test
 /node_modules

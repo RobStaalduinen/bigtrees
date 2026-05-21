@@ -7,8 +7,8 @@ gem 'responders'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# Use Terser as compressor for JavaScript assets (ES6+ aware; replaced ES5-only Uglifier on Rails 7+)
+gem 'terser', '~> 1.2'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
