@@ -9,6 +9,7 @@
 #  content         :text(65535)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  category        :string(255)      default("default"), not null
 #
 class EmailTemplate < ActiveRecord::Base
   belongs_to :organization

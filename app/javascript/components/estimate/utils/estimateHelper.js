@@ -26,6 +26,10 @@ class EstimateHelper {
       this.estimate.status == 'work_scheduled'
     )
   }
+
+  canSendSchedulingEmail() {
+    return ['approved', 'work_scheduled', 'work_started', 'work_paused'].includes(this.estimate.status);
+  }
 }
 
 export { EstimateHelper }

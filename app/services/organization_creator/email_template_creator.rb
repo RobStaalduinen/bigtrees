@@ -13,6 +13,8 @@ class OrganizationCreator
       create_no_response
       create_image_request
       create_approval_mailout
+      create_48_hour_notice
+      create_crew_on_the_way
     end
 
     private
@@ -34,12 +36,12 @@ class OrganizationCreator
 
     def create_no_response
       content = "Hi [FIRST_NAME],\n\nI didn't hear back from you regarding the tree work so I figured I would follow up just in case. Please feel free to email me or call me anytime if you have any questions. You can reach me at #{@organization.phone_number}. \n\nIf you have any concerns about the timing or price of your job, I would be more than happy to discuss them with you. \n\nOnce again, thanks for your time and consideration. \n\nHave a great day.\n\n"
-      create_email_template('no_response', 'Your [ORGANIZATION_NAME] Job', content)
+      create_email_template('no_response', 'Your [ORGANIZATION_NAME] Job', content, category: 'followup')
     end
 
     def create_image_request
       content = "Hi [FIRST_NAME],\n\nI have reviewed your job request, and it definitely sounds like something we can take care of. However, I need a bit more information before I can provide a firm quote.\n\nWe have two options... \n\n1.You can text or email me a picture of the tree(s) or stump(s) that need the work and I will respond asap with a quote.\n\nOR \n\n2. We can schedule a meeting to go over the work together. It's our busy season, so evenings are usually best.\n\nFeel free to call me at #{@organization.phone_number}.\n\nThanks,\n[SIGNATURE]\n"
-      create_email_template('image_request', 'Your [ORGANIZATION_NAME] Job', content)
+      create_email_template('image_request', 'Your [ORGANIZATION_NAME] Job', content, category: 'followup')
     end
 
     def create_approval_mailout
@@ -52,10 +54,29 @@ class OrganizationCreator
       create_email_template('approval_mailout', 'Your [ORGANIZATION_NAME] Job', content)
     end
 
-    def create_email_template(key, subject, content)
+    def create_48_hour_notice
+      content = "Hi [FIRST_NAME],\n\n" \
+                "This is a quick update to let you know that your tree service is scheduled to take place within the next 48 hours, weather permitting.\n\n" \
+                "For safety and efficiency, we kindly ask that the area be kept clear of any obstacles, including pet waste.\n" \
+                "We'll send one final confirmation before our crew heads out to your property.\n\n" \
+                "If you have any questions, feel free to reach out.\n\n" \
+                "Thanks again,\n[SIGNATURE]\n"
+      create_email_template('48_hour_notice', 'Your [ORGANIZATION_NAME] Job', content, category: 'scheduling')
+    end
+
+    def create_crew_on_the_way
+      content = "Hi [FIRST_NAME],\n\n" \
+                "This is to confirm that your tree service is scheduled for today. Please make sure there is access to the tree and vehicles have been moved from the driveway if necessary.\n\n" \
+                "We look forward to completing your tree work.\n\n" \
+                "Best regards,\n[SIGNATURE]\n"
+      create_email_template('crew_on_the_way', 'Your [ORGANIZATION_NAME] Job', content, category: 'scheduling')
+    end
+
+    def create_email_template(key, subject, content, category: 'default')
       @organization.email_templates.find_or_create_by(key: key) do |t|
         t.subject = subject
         t.content = content
+        t.category = category
       end
     end
   end

@@ -16,6 +16,10 @@
       Send Followup
     </b-dropdown-item>
 
+    <b-dropdown-item @click='triggerAction("send_schedule_email")' v-if='estimateHelper.canSendSchedulingEmail()'>
+      Send Schedule Email
+    </b-dropdown-item>
+
     <!-- <b-dropdown-item @click='triggerAction("send_quote")' v-if='estimateHelper.canSendQuote()'>
       Send Quote
     </b-dropdown-item>
