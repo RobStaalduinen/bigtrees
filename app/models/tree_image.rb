@@ -16,7 +16,7 @@
 class TreeImage < ActiveRecord::Base
   BUCKET_URL = 'https://bigtreecare.s3.amazonaws.com'
   IMGIX_CDN = 'https://bigtrees.imgix.net'
-  belongs_to :tree
+  belongs_to :tree, required: false
   belongs_to :estimate
 
   def url
