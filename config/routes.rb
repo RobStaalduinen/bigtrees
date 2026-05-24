@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post '/create_single', to: 'costs#create_single', on: :collection
       post '/update', to: 'costs#update', on: :collection, as: :update
     end
+    resources :approval_mailouts, only: [ :create ]
     resources :invoice_mailouts, only: [ :create ]
     resources :invoice_receipts, only: [ :create ]
     resources :followups, only: [ :create ]

@@ -12,6 +12,7 @@ class OrganizationCreator
       create_receipt_mailout
       create_no_response
       create_image_request
+      create_approval_mailout
     end
 
     private
@@ -41,8 +42,21 @@ class OrganizationCreator
       create_email_template('image_request', 'Your [ORGANIZATION_NAME] Job', content)
     end
 
+    def create_approval_mailout
+      content = "Hi [FIRST_NAME],\n\n" \
+                "We're pleased to let you know that your tree service is scheduled and our plan is to complete the work within 10 business days, weather permitting. If the job requires a permit, rest assured we are working on it and you will be made aware of the progress.\n\n" \
+                "Our team will monitor weather conditions throughout the week. We'll be in touch with an update 1-2 days in advance as the schedule becomes more clear. Wind, rain, sickness and equipment delays factor in to every day - please be patient with us as we navigate our schedule as efficiently as possible.\n\n" \
+                "No action is required on your part at this time.\n\n" \
+                "Thank you, and we look forward to working with you!\n\n" \
+                "Best regards,\n[SIGNATURE]\n"
+      create_email_template('approval_mailout', 'Your [ORGANIZATION_NAME] Job', content)
+    end
+
     def create_email_template(key, subject, content)
-      @organization.email_templates.create(key: key, subject: subject, content: content)
+      @organization.email_templates.find_or_create_by(key: key) do |t|
+        t.subject = subject
+        t.content = content
+      end
     end
   end
 end
