@@ -22,6 +22,8 @@
       validationRules='required'
     ></app-input-field>
 
+    <slot name='pre-body'></slot>
+
     <b-form-group
       label="Email Body"
       label-for="email-body"

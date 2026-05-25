@@ -10,13 +10,18 @@ class EmailTemplatesController < ApplicationController
   def create
     title = params.dig(:email_template, :title).to_s
     key = EmailTemplate.slugify_title(title)
+    category = params.dig(:email_template, :category).to_s
 
     if key.blank?
       return render json: { title: ["can't be blank"] }, status: :unprocessable_entity
     end
 
+    unless EmailTemplate::USER_MANAGED_CATEGORIES.include?(category)
+      return render json: { category: ["must be one of #{EmailTemplate::USER_MANAGED_CATEGORIES.join(', ')}"] }, status: :unprocessable_entity
+    end
+
     email_template = OrganizationContext.current_organization.email_templates.build(
-      email_template_params.merge(key: key, category: 'scheduling')
+      email_template_params.merge(key: key, category: category)
     )
 
     if email_template.save
@@ -41,8 +46,8 @@ class EmailTemplatesController < ApplicationController
 
     return head :not_found unless email_template
 
-    if email_template.category != 'scheduling'
-      return render json: { category: ['only scheduling templates can be deleted'] }, status: :unprocessable_entity
+    unless EmailTemplate::USER_MANAGED_CATEGORIES.include?(email_template.category)
+      return render json: { category: ['this template cannot be deleted'] }, status: :unprocessable_entity
     end
 
     email_template.destroy

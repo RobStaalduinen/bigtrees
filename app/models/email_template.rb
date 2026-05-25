@@ -19,6 +19,7 @@ class EmailTemplate < ActiveRecord::Base
   }
 
   CATEGORIES = %w[default followup scheduling].freeze
+  USER_MANAGED_CATEGORIES = %w[followup scheduling].freeze
 
   validates :key, presence: true, uniqueness: { scope: :organization_id }
   validates :category, inclusion: { in: CATEGORIES }

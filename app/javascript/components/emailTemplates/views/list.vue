@@ -4,9 +4,9 @@
         <div class="email-template-group-header">
           <div class="email-template-group-title">{{ group.label }}</div>
           <a
-            v-if="group.category === 'scheduling'"
+            v-if="group.userManaged"
             class="email-template-new"
-            @click="openCreate"
+            @click="openCreate(group.category)"
           >
             New
           </a>
@@ -36,14 +36,16 @@
             </div>
 
             <div class='single-estimate-link-row'>
-              <div class='single-estimate-link'>
-                <b-icon icon='pencil-square' class='app-icon' @click="editTemplate(emailTemplate)"></b-icon>
-                <b-icon
-                  v-if="emailTemplate.category === 'scheduling'"
-                  icon='trash'
-                  class='app-icon'
-                  @click="deleteTemplate(emailTemplate)"
-                ></b-icon>
+              <div class='single-estimate-link template-actions'>
+                <b-icon icon='pencil-square' class='app-icon template-action-icon' @click="editTemplate(emailTemplate)"></b-icon>
+                <template v-if="userManagedCategories.includes(emailTemplate.category)">
+                  <div class='template-action-divider'></div>
+                  <b-icon
+                    icon='trash'
+                    class='app-icon template-action-icon'
+                    @click="deleteTemplate(emailTemplate)"
+                  ></b-icon>
+                </template>
               </div>
             </div>
           </template>
@@ -51,7 +53,16 @@
       </div>
 
       <app-template-update id='template-update' :emailTemplate='templateToEdit' @changed='retrieveEmailTemplates' />
-      <app-template-create id='template-create' @changed='retrieveEmailTemplates' />
+      <app-template-create
+        id='template-create-followup'
+        category='followup'
+        @changed='retrieveEmailTemplates'
+      />
+      <app-template-create
+        id='template-create-scheduling'
+        category='scheduling'
+        @changed='retrieveEmailTemplates'
+      />
 
     </div>
 </template>
@@ -62,9 +73,9 @@ import TemplateUpdate from '@/components/emailTemplates/actions/update';
 import TemplateCreate from '@/components/emailTemplates/actions/create';
 
 const GROUP_DEFINITIONS = [
-  { category: 'default', label: 'System' },
-  { category: 'followup', label: 'Followup' },
-  { category: 'scheduling', label: 'Scheduling' }
+  { category: 'default', label: 'System', userManaged: false },
+  { category: 'followup', label: 'Followup', userManaged: true },
+  { category: 'scheduling', label: 'Scheduling', userManaged: true }
 ];
 
 export default {
@@ -84,6 +95,9 @@ export default {
         ...group,
         templates: this.emailTemplates.filter(t => t.category === group.category)
       }));
+    },
+    userManagedCategories() {
+      return GROUP_DEFINITIONS.filter(g => g.userManaged).map(g => g.category);
     }
   },
   methods: {
@@ -96,8 +110,8 @@ export default {
       this.templateToEdit = template;
       this.$root.$emit('bv::toggle::collapse', 'template-update');
     },
-    openCreate() {
-      this.$root.$emit('bv::toggle::collapse', 'template-create');
+    openCreate(category) {
+      this.$root.$emit('bv::toggle::collapse', `template-create-${category}`);
     },
     deleteTemplate(template) {
       if (confirm(`Delete the "${this.formatTitle(template.key)}" template?`)) {
@@ -164,5 +178,20 @@ export default {
 
 .email-body {
   white-space: pre-line;
+}
+
+.template-actions {
+  display: flex;
+  align-items: center;
+}
+
+.template-action-icon {
+  margin: 0 12px;
+}
+
+.template-action-divider {
+  width: 1px;
+  height: 18px;
+  background-color: #ccc;
 }
 </style>

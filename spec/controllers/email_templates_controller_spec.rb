@@ -10,12 +10,13 @@ RSpec.describe EmailTemplatesController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:valid_params) do
+    let(:base_params) do
       {
         email_template: {
           title: 'One Week Heads-Up',
           subject: 'See you soon',
-          content: 'Hi [FIRST_NAME], we will see you next week.'
+          content: 'Hi [FIRST_NAME], we will see you next week.',
+          category: 'scheduling'
         },
         format: :json
       }
@@ -23,7 +24,7 @@ RSpec.describe EmailTemplatesController, type: :controller do
 
     it 'creates a scheduling template with a slugified key' do
       expect {
-        post :create, params: valid_params
+        post :create, params: base_params
       }.to change(EmailTemplate, :count).by(1)
 
       template = EmailTemplate.last
@@ -34,13 +35,36 @@ RSpec.describe EmailTemplatesController, type: :controller do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'ignores any category sent by the client' do
-      post :create, params: valid_params.deep_merge(email_template: { category: 'default' })
-      expect(EmailTemplate.last.category).to eq('scheduling')
+    it 'creates a followup template when category=followup is supplied' do
+      post :create, params: base_params.deep_merge(email_template: { category: 'followup', title: 'Second Attempt' })
+
+      expect(response).to have_http_status(:ok)
+      template = EmailTemplate.last
+      expect(template.category).to eq('followup')
+      expect(template.key).to eq('second_attempt')
+    end
+
+    it 'rejects creating a default-category template' do
+      expect {
+        post :create, params: base_params.deep_merge(email_template: { category: 'default' })
+      }.not_to change(EmailTemplate, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'rejects creating a template with no category' do
+      params = base_params.deep_dup
+      params[:email_template].delete(:category)
+
+      expect {
+        post :create, params: params
+      }.not_to change(EmailTemplate, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it 'returns 422 when the title is blank' do
-      post :create, params: valid_params.deep_merge(email_template: { title: '   ' })
+      post :create, params: base_params.deep_merge(email_template: { title: '   ' })
       expect(response).to have_http_status(:unprocessable_entity)
     end
 
@@ -53,7 +77,7 @@ RSpec.describe EmailTemplatesController, type: :controller do
       )
 
       expect {
-        post :create, params: valid_params
+        post :create, params: base_params
       }.not_to change(EmailTemplate, :count)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -67,6 +91,15 @@ RSpec.describe EmailTemplatesController, type: :controller do
         subject: 'See you soon',
         content: 'Hi',
         category: 'scheduling'
+      )
+    end
+
+    let!(:followup_template) do
+      organization.email_templates.create!(
+        key: 'second_attempt',
+        subject: 'Following up again',
+        content: 'Hi',
+        category: 'followup'
       )
     end
 
@@ -87,7 +120,15 @@ RSpec.describe EmailTemplatesController, type: :controller do
       expect(response).to have_http_status(:no_content)
     end
 
-    it 'refuses to delete a non-scheduling template' do
+    it 'deletes a followup template' do
+      expect {
+        delete :destroy, params: { id: followup_template.key, format: :json }
+      }.to change(EmailTemplate, :count).by(-1)
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'refuses to delete a default-category template' do
       expect {
         delete :destroy, params: { id: default_template.key, format: :json }
       }.not_to change(EmailTemplate, :count)

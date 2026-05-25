@@ -20,11 +20,7 @@ class EstimateHelper {
   }
 
   canSendFollowup() {
-    return (this.estimate.status == 'pending_quote' ||
-      this.estimate.status == 'needs_costs' ||
-      this.estimate.status == 'quote_sent' ||
-      this.estimate.status == 'work_scheduled'
-    )
+    return true;
   }
 
   canSendSchedulingEmail() {

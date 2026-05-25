@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='New Scheduling Template' submitText='Create' :onSubmit='createTemplate' @cancelled="reset">
+  <app-right-sidebar :id='id' :title='sidebarTitle' submitText='Create' :onSubmit='createTemplate' @cancelled="reset">
     <template v-slot:content>
       <validation-observer ref="observer">
         <app-input-field
@@ -34,10 +34,19 @@
 
 import EventBus from '@/store/eventBus';
 
+const CATEGORY_LABELS = {
+  followup: 'Followup',
+  scheduling: 'Scheduling'
+};
+
 export default {
   props: {
     id: {
       required: true
+    },
+    category: {
+      required: true,
+      type: String
     }
   },
   data() {
@@ -45,6 +54,12 @@ export default {
       title: null,
       subject: null,
       content: null
+    }
+  },
+  computed: {
+    sidebarTitle() {
+      const label = CATEGORY_LABELS[this.category] || 'Email';
+      return `New ${label} Template`;
     }
   },
   methods: {
@@ -60,6 +75,7 @@ export default {
             title: this.title,
             subject: this.subject,
             content: this.content,
+            category: this.category
           }
         }).then(response => {
           this.$root.$emit('bv::toggle::collapse', this.id);

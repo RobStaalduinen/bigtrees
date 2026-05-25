@@ -5,26 +5,25 @@ class FollowupsController < ApplicationController
 
   before_action :signed_in_user
 
+  TEMPLATE_TIMESTAMP_FIELDS = {
+    'no_response' => :followup_sent_at,
+    'image_request' => :picture_request_sent_at
+  }.freeze
+
   def create
     authorize Estimate, :update?
 
-    send_email unless params[:skip]
+    template = policy_scope(EmailTemplate).find_by(key: params[:template_key], category: 'followup')
+    if template.nil?
+      return render json: { error: 'invalid followup template' }, status: :unprocessable_entity
+    end
 
-    estimate.update(estimate_params)
-
-    render json: estimate
-  end
-
-  private
-
-  def send_email
-    should_include_quote = params[:include_quote] == true
     response = QuoteMailer.new.quote_email(
       estimate,
       params[:dest_email],
       params[:subject],
       params[:content],
-      should_include_quote
+      include_quote?
     )
 
     record_customer_email(
@@ -33,13 +32,23 @@ class FollowupsController < ApplicationController
       nylas_response: response,
       recipient_email: params[:dest_email]
     )
+
+    estimate.update(timestamp_field => Time.current)
+
+    render json: estimate
+  end
+
+  private
+
+  def include_quote?
+    ActiveModel::Type::Boolean.new.cast(params[:include_quote])
+  end
+
+  def timestamp_field
+    TEMPLATE_TIMESTAMP_FIELDS[params[:template_key]] || :followup_sent_at
   end
 
   def estimate
     @estimate ||= policy_scope(Estimate).find(params[:estimate_id])
-  end
-
-  def estimate_params
-    params.permit(:followup_sent_at, :picture_request_sent_at)
   end
 end
