@@ -21,15 +21,16 @@ RSpec.describe OrganizationCreator::EmailTemplateCreator do
       expect(template.subject).to eq('Your [ORGANIZATION_NAME] Job')
     end
 
-    it 'tags scheduling templates with category=scheduling and other templates with category=default' do
+    it 'tags templates with their expected categories' do
       creator.seed_email_templates
       scheduling_keys = organization.email_templates.where(category: 'scheduling').pluck(:key)
+      followup_keys = organization.email_templates.where(category: 'followup').pluck(:key)
       default_keys = organization.email_templates.where(category: 'default').pluck(:key)
 
       expect(scheduling_keys).to contain_exactly('48_hour_notice', 'crew_on_the_way')
+      expect(followup_keys).to contain_exactly('no_response', 'image_request')
       expect(default_keys).to contain_exactly(
-        'quote_mailout', 'invoice_mailout', 'receipt_mailout',
-        'no_response', 'image_request', 'approval_mailout'
+        'quote_mailout', 'invoice_mailout', 'receipt_mailout', 'approval_mailout'
       )
     end
 

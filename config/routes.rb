@@ -115,7 +115,7 @@ Rails.application.routes.draw do
   end
 
   resources :customer_requests, only: [ :new, :create ]
-  resources :email_templates, only: [ :index, :show, :update ]
+  resources :email_templates, only: [ :index, :show, :create, :update, :destroy ]
   resources :commercial_requests, only: [ :create ]
 
   resources :vue_test, only: [ :new ]
