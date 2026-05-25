@@ -1,6 +1,6 @@
 <template>
   <page-template>
-    <app-header title='Organizations'>
+    <app-header title='Organization Management'>
       <template v-slot:header-right>
         <a v-b-toggle.create-organization v-if='$store.state.authorization.canCreate("organizations")'>New</a>
       </template>
