@@ -15,6 +15,7 @@ class OrganizationCreator
       create_approval_mailout
       create_48_hour_notice
       create_crew_on_the_way
+      create_job_progress
     end
 
     private
@@ -70,6 +71,14 @@ class OrganizationCreator
                 "We look forward to completing your tree work.\n\n" \
                 "Best regards,\n[SIGNATURE]\n"
       create_email_template('crew_on_the_way', 'Your [ORGANIZATION_NAME] Job', content, category: 'scheduling')
+    end
+
+    def create_job_progress
+      content = "Hi [FIRST_NAME],\n\n" \
+                "A significant portion of the project was completed today. We will continue with the remaining work asap. Log pickup and Stump Grinding requires different vehicles and equipment so those are typically completed a day or so following the tree work. We apologize for any inconvenience. If anybody wants the logs, let them take them - it's easier on our backs!\n\n" \
+                "We look forward to completing your tree work.\n\n" \
+                "Best regards,\n[SIGNATURE]\n"
+      create_email_template('job_progress', 'Your [ORGANIZATION_NAME] Job', content)
     end
 
     def create_email_template(key, subject, content, category: 'default')

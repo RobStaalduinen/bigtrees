@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     end
     resources :approval_mailouts, only: [ :create ]
     resources :scheduling_mailouts, only: [ :create ]
+    resources :job_progress_mailouts, only: [ :create ]
     resources :invoice_mailouts, only: [ :create ]
     resources :invoice_receipts, only: [ :create ]
     resources :followups, only: [ :create ]
