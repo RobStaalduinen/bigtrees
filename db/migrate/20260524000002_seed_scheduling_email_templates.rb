@@ -1,5 +1,7 @@
 class SeedSchedulingEmailTemplates < ActiveRecord::Migration[6.0]
   def up
+    EmailTemplate.reset_column_information
+
     Organization.find_each do |org|
       OrganizationCreator::EmailTemplateCreator.new(org).seed_email_templates
     end
