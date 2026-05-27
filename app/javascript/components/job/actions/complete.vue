@@ -34,6 +34,24 @@
             </label>
           </div>
 
+          <template v-if='!allTasksComplete'>
+            <h6 class="progress-email-heading">Progress Email</h6>
+            <app-conditional-box
+              v-model='sendProgressEmail'
+              conditionName='Send Job Progress email'
+              id='send-job-progress-email'
+              class='form-box'
+            >
+              <app-templated-email-form
+                v-if='sendProgressEmail'
+                :value='progressEmailDefinition'
+                @changed='payload => handleProgressEmailChange(payload)'
+                template='job_progress'
+                :estimate='estimate'
+              />
+            </app-conditional-box>
+          </template>
+
           <hr/>
 
           <h6>Exit Survey</h6>
@@ -84,11 +102,13 @@
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
 import ManageTags from '@/components/tags/views/manageEstimate.vue';
+import TemplatedEmailForm from '@/components/common/forms/templatedEmail';
 
 
 export default {
   components: {
-    'app-manage-tags': ManageTags
+    'app-manage-tags': ManageTags,
+    'app-templated-email-form': TemplatedEmailForm
   },
   props: {
     id: {
@@ -110,6 +130,8 @@ export default {
       notes: '',
       revisit: 'Never',
       allTasksComplete: false,
+      sendProgressEmail: false,
+      progressEmailDefinition: null,
     }
   },
   computed: {
@@ -150,9 +172,26 @@ export default {
 
       this.axiosPut(`/estimates/${this.estimate.id}/jobs/${activeJob.id}`, params)
         .then(response => {
+          return this.sendJobProgressEmail().then(() => response);
+        })
+        .then(response => {
           EventBus.$emit('ESTIMATE_UPDATED', response.data);
           this.$root.$emit('bv::toggle::collapse', this.id);
         })
+    },
+    sendJobProgressEmail() {
+      if (this.allTasksComplete || !this.sendProgressEmail || !this.progressEmailDefinition) {
+        return Promise.resolve();
+      }
+
+      return this.axiosPost(`/estimates/${this.estimate.id}/job_progress_mailouts`, {
+        dest_email: this.progressEmailDefinition.email,
+        subject: this.progressEmailDefinition.subject,
+        content: this.progressEmailDefinition.content
+      });
+    },
+    handleProgressEmailChange(payload) {
+      this.progressEmailDefinition = { ...payload }
     },
     handleShown() {
       this.completedDate = moment().format('YYYY-MM-DD');
@@ -219,5 +258,13 @@ export default {
     margin: 0;
     flex-shrink: 0;
     accent-color: var(--main-color);
+  }
+
+  .form-box {
+    margin-bottom: 16px;
+  }
+
+  .progress-email-heading {
+    margin-top: 16px;
   }
 </style>

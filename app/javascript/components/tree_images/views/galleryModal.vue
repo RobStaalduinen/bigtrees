@@ -169,7 +169,22 @@ export default {
     },
     closeModal() {
       this.display = false;
-      document.documentElement.style.overflow = 'auto'
+      this.unlockScroll();
+    },
+    lockScroll() {
+      document.documentElement.style.overflow = 'hidden';
+    },
+    unlockScroll() {
+      document.documentElement.style.overflow = '';
+    },
+    handleToggleGallery(payload) {
+      if(payload.estimate_id != null && payload.estimate_id != this.estimate.id) {
+        return;
+      }
+      this.setImageById(payload.image_id);
+      this.setInitialImageVersion();
+      this.lockScroll();
+      this.display = true;
     },
     setInitialImageVersion(){
       this.imageVersion = this.hasEdit ? 'edited' : 'original'
@@ -222,15 +237,13 @@ export default {
     }
   },
   mounted() {
-    EventBus.$on('TOGGLE_IMAGE_GALLERY', (payload) => {
-      if(payload.estimate_id != null && payload.estimate_id != this.estimate.id) {
-        return;
-      }
-      this.setImageById(payload.image_id);
-      this.setInitialImageVersion();
-      document.documentElement.style.overflow = 'hidden'
-      this.display = true;
-    });
+    EventBus.$on('TOGGLE_IMAGE_GALLERY', this.handleToggleGallery);
+  },
+  beforeDestroy() {
+    EventBus.$off('TOGGLE_IMAGE_GALLERY', this.handleToggleGallery);
+    if(this.display) {
+      this.unlockScroll();
+    }
   }
 }
 </script>

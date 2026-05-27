@@ -22,6 +22,8 @@
       validationRules='required'
     ></app-input-field>
 
+    <slot name='pre-body'></slot>
+
     <b-form-group
       label="Email Body"
       label-for="email-body"
@@ -88,6 +90,13 @@ export default {
       else {
         this.emailBody = this.estimateMailer.defaultContent(this.baseContent)
       }
+    },
+    loadTemplate() {
+      if(!this.template) { return; }
+      this.axiosGet(`/email_templates/${this.template}`).then(response => {
+        this.baseContent = response.data.email_template.content;
+        this.updateEmailDefinition(response.data.email_template.parsed_subject);
+      })
     }
   },
   watch: {
@@ -99,13 +108,15 @@ export default {
     },
     contentOptions() {
       this.updateEmailDefinition(this.emailSubject);
+    },
+    template(newKey, oldKey) {
+      if(newKey !== oldKey) {
+        this.loadTemplate();
+      }
     }
   },
   mounted(){
-    this.axiosGet(`/email_templates/${this.template}`).then (response => {
-      this.baseContent = response.data.email_template.content;
-      this.updateEmailDefinition(response.data.email_template.parsed_subject);
-    })
+    this.loadTemplate();
   }
 }
 </script>

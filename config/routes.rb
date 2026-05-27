@@ -21,9 +21,13 @@ Rails.application.routes.draw do
       post '/create_single', to: 'costs#create_single', on: :collection
       post '/update', to: 'costs#update', on: :collection, as: :update
     end
+    resources :approval_mailouts, only: [ :create ]
+    resources :scheduling_mailouts, only: [ :create ]
+    resources :job_progress_mailouts, only: [ :create ]
     resources :invoice_mailouts, only: [ :create ]
     resources :invoice_receipts, only: [ :create ]
     resources :followups, only: [ :create ]
+    resources :email_records, only: [ :index ]
     resources :equipment_assignments, only: [ ] do
       post '/bulk_update', to: 'equipment_assignments#bulk_update', on: :collection
     end
@@ -113,7 +117,7 @@ Rails.application.routes.draw do
   end
 
   resources :customer_requests, only: [ :new, :create ]
-  resources :email_templates, only: [ :index, :show, :update ]
+  resources :email_templates, only: [ :index, :show, :create, :update, :destroy ]
   resources :commercial_requests, only: [ :create ]
 
   resources :vue_test, only: [ :new ]

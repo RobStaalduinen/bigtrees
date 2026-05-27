@@ -49,8 +49,31 @@
         v-model='emailTeam'
         conditionName='Email Team'
         id='email-team'
+        class='form-box'
       >
-        <app-email-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-form>
+        <app-email-arborist-form :value='emailDefinition' @changed='payload => handleChange(payload)'></app-email-arborist-form>
+      </app-conditional-box>
+
+      <app-conditional-box
+        v-if='schedulingTemplates.length > 0'
+        v-model='emailCustomer'
+        conditionName='Email Customer'
+        id='email-customer'
+      >
+        <app-select-field
+          label='Schedule Template'
+          v-model='selectedTemplateKey'
+          name='scheduleTemplate'
+          :options='templateOptions'
+          validationRules='required'
+        />
+        <app-templated-email-form
+          v-if='selectedTemplateKey'
+          :value='customerEmailDefinition'
+          @changed='payload => handleCustomerEmailChange(payload)'
+          :template='selectedTemplateKey'
+          :estimate='estimate'
+        />
       </app-conditional-box>
 
     </validation-observer>
@@ -60,12 +83,14 @@
 
 <script>
 import EventBus from '@/store/eventBus'
-import EmailForm from '../../common/forms/emailArboristSelect';
+import EmailArboristForm from '../../common/forms/emailArboristSelect';
+import TemplatedEmailForm from '../../common/forms/templatedEmail';
 import { EmailDefinition } from '@/models';
 
 export default {
   components: {
-    'app-email-form': EmailForm
+    'app-email-arborist-form': EmailArboristForm,
+    'app-templated-email-form': TemplatedEmailForm
   },
   props: {
     id: {
@@ -81,9 +106,13 @@ export default {
       work_end_date: this.estimate.work_end_date,
       lead_arborist: null,
       emailTeam: false,
+      emailCustomer: false,
       scheduleWork: false,
       submitting: false,
-      emailDefinition: null
+      emailDefinition: null,
+      customerEmailDefinition: null,
+      schedulingTemplates: [],
+      selectedTemplateKey: null
     }
   },
   methods: {
@@ -115,7 +144,10 @@ export default {
         }
 
         this.axiosPut(`/estimates/${this.estimate.id}`, params).then(response => {
-          this.sendQuoteMailout().then(res => {
+          Promise.all([
+            this.sendQuoteMailout(),
+            this.sendSchedulingMailout()
+          ]).then(() => {
             this.$root.$emit('bv::toggle::collapse', this.id);
             EventBus.$emit('ESTIMATE_UPDATED', response.data);
             this.submitting = false;
@@ -147,6 +179,9 @@ export default {
     handleChange(new_email) {
       this.emailDefinition = { ...new_email }
     },
+    handleCustomerEmailChange(new_email) {
+      this.customerEmailDefinition = { ...new_email }
+    },
     sendQuoteMailout() {
       if(!this.emailTeam) { return Promise.resolve(1); }
 
@@ -157,6 +192,18 @@ export default {
       }
 
       return this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params);
+    },
+    sendSchedulingMailout() {
+      if(!this.emailCustomer || !this.customerEmailDefinition || !this.selectedTemplateKey) {
+        return Promise.resolve(1);
+      }
+
+      return this.axiosPost(`/estimates/${this.estimate.id}/scheduling_mailouts`, {
+        dest_email: this.customerEmailDefinition.email,
+        subject: this.customerEmailDefinition.subject,
+        content: this.customerEmailDefinition.content,
+        template_key: this.selectedTemplateKey
+      });
     }
   },
   computed: {
@@ -166,10 +213,23 @@ export default {
           return this.arboristValue(arborist);
         }
       }).filter(arborist => !!arborist);;
+    },
+    templateOptions() {
+      return this.schedulingTemplates.map(t => ({
+        value: t.key,
+        text: t.key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
+      }));
     }
   },
   mounted() {
     this.lead_arborist = this.estimate.arborist.id;
+
+    this.axiosGet('/email_templates').then(response => {
+      this.schedulingTemplates = response.data.email_templates.filter(t => t.category === 'scheduling');
+      if (this.schedulingTemplates.length > 0) {
+        this.selectedTemplateKey = this.schedulingTemplates[0].key;
+      }
+    });
   },
   watch: {
     estimate: {

@@ -78,7 +78,7 @@
         </section>
 
         <section class ='estimate-section'>
-          <single-estimate-followups :estimate='estimate'></single-estimate-followups>
+          <single-estimate-email-history :estimate='estimate'></single-estimate-email-history>
         </section>
 
         <section class ='estimate-section'>
@@ -110,7 +110,7 @@ import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
 import Costs from '../components/costs/views/collapsed';
 import Trees from '../components/trees/views/collapsed';
-import Followups from '../components/followups/views/collapsed';
+import EmailHistory from '../components/emailHistory/views/collapsed';
 import EquipmentRequirements from '@/components/tools/views/collapsed';
 import Notes from '@/components/notes/views/collapsed';
 import Job from '@/components/job/views/collapsed';
@@ -130,7 +130,7 @@ export default {
     'single-estimate-quotes': Quote,
     'single-estimate-costs': Costs,
     'single-estimate-trees': Trees,
-    'single-estimate-followups': Followups,
+    'single-estimate-email-history': EmailHistory,
     'single-estimate-equipment': EquipmentRequirements,
     'single-estimate-notes': Notes,
     'single-estimate-job': Job

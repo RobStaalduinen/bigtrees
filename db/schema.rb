@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_09_190000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_25_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -151,6 +151,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_09_190000) do
     t.text "content"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "category", default: "default", null: false
+    t.index ["category"], name: "index_email_templates_on_category"
     t.index ["key"], name: "index_email_templates_on_key"
     t.index ["organization_id"], name: "index_email_templates_on_organization_id"
   end
