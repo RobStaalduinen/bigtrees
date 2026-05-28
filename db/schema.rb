@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_25_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_28_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -93,6 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_25_000000) do
     t.string "short_name"
     t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "priority", default: 3, null: false
     t.index ["email"], name: "index_customers_on_email"
     t.index ["name"], name: "index_customers_on_name"
     t.index ["phone"], name: "index_customers_on_phone"

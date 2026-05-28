@@ -9,6 +9,7 @@
 #  preferred_contact :string(255)
 #  address_id        :integer
 #  short_name        :string(255)
+#  priority          :integer          default(3), not null
 #
 class Customer < ActiveRecord::Base
   include SingleAddressable

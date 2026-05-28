@@ -11,11 +11,13 @@
 #  preferred_contact :string(255)
 #  address_id        :integer
 #  short_name        :string(255)
+#  priority          :integer          default(3), not null
 #
 class CustomerSerializer < ApplicationSerializer
   attribute :name
   attribute :email
   attribute :phone
+  attribute :priority
 
   attribute :recent_estimate_id
 

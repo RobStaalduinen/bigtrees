@@ -21,15 +21,44 @@
       name='phone'
       label='Phone Number'
     ></app-input-field>
-  </div>  
+
+    <app-select-field
+      v-if='showPriority'
+      :value='value.priority'
+      @input="(value) => update('priority', value)"
+      name='priority'
+      label='Priority'
+      :options='priorityOptions'
+    ></app-select-field>
+  </div>
 </template>
 
 <script>
+import SelectField from '../form/selectField';
+
 export default {
-  props: ['value'],
+  components: {
+    'app-select-field': SelectField
+  },
+  props: {
+    value: {
+      required: true
+    },
+    showPriority: {
+      type: Boolean,
+      default: false
+    }
+  },
   data(){
     return {
-      workingCustomer: {}
+      workingCustomer: {},
+      priorityOptions: [
+        { value: 1, text: '1 — Highest' },
+        { value: 2, text: '2' },
+        { value: 3, text: '3' },
+        { value: 4, text: '4' },
+        { value: 5, text: '5 — Lowest' }
+      ]
     }
   },
   methods: {

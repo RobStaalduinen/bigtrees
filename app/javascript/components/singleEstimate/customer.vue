@@ -3,6 +3,7 @@
     <app-collapsable :id='collapsableName'>
       <template v-slot:title>
         <b>{{ isParentCustomer ? 'Parent Customer:' : 'Display Customer:' }}</b> &nbsp; {{ customerDetails.name }}
+        <span v-if='isParentCustomer && customerDetails.priority' class='priority-badge' :class='priorityBadgeClass'>Prio {{ customerDetails.priority }}</span>
       </template>
 
       <template v-slot:content>
@@ -50,7 +51,7 @@
 
     <app-right-sidebar :id='collapsableName + "-edit"' title='Edit Customer' submitText='Save' :onSubmit='updateCustomer'>
       <template v-slot:content>
-        <app-customer-form v-model='customerDetails'> </app-customer-form>
+        <app-customer-form v-model='customerDetails' :showPriority='isParentCustomer'> </app-customer-form>
 
         <b-form-group label="Update Display Customer" v-if='isParentCustomer'>
           <b-form-checkbox
@@ -91,6 +92,9 @@ export default {
   computed: {
     collapsableName() {
       return this.isParentCustomer ? 'parent-customer-collapse' : 'customer-collapse'
+    },
+    priorityBadgeClass() {
+      return `priority-badge-${this.customerDetails.priority}`
     }
   },
   methods: {
@@ -135,4 +139,36 @@ export default {
 </script>
 
 <style scoped>
+  .priority-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75em;
+    font-weight: 700;
+    color: #3a2e15;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  .priority-badge-1 {
+    background: linear-gradient(135deg, #ffe066 0%, #d4af37 100%);
+  }
+
+  .priority-badge-2 {
+    background: linear-gradient(135deg, #f5e7a8 0%, #e0c46c 100%);
+  }
+
+  .priority-badge-3 {
+    background: linear-gradient(135deg, #e8e8e8 0%, #b8b8b8 100%);
+  }
+
+  .priority-badge-4 {
+    background: linear-gradient(135deg, #dcae84 0%, #b8763e 100%);
+    color: #2e1a0a;
+  }
+
+  .priority-badge-5 {
+    background: linear-gradient(135deg, #c68a52 0%, #8b4e1f 100%);
+    color: #ffffff;
+  }
 </style>
