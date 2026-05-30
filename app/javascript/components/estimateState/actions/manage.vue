@@ -6,6 +6,8 @@
 
         <app-input-field v-model="reason" name="reason" label="Reason (optional)" v-if="reasonAllowed()"/>
 
+        <app-select-field v-model="difficulty" :options="difficultyOptions" label="Difficulty" name="difficulty"/>
+
         <app-manage-tags :id="id" :estimate="estimate" @tagsChanged="cacheTags"/>
       </template>
     </app-scrollable-sidebar>
@@ -35,7 +37,8 @@
         addableTags: [],
         estimateTags: this.estimate.tags,
         state: this.estimate.state,
-        reason: this.estimate.state_reason
+        reason: this.estimate.state_reason,
+        difficulty: this.estimate.difficulty
       }
     },
     computed: {
@@ -47,7 +50,13 @@
           };
         });
       },
-
+      difficultyOptions() {
+        return [
+          { value: 'easy', text: 'Easy' },
+          { value: 'medium', text: 'Medium' },
+          { value: 'hard', text: 'Hard' }
+        ];
+      }
     },
     methods: {
       reasonAllowed() {
@@ -55,7 +64,7 @@
       },
       updateEstimate() {
         console.log("Updating.");
-        let params = { estimate: { state: this.state, state_reason: this.reason } }
+        let params = { estimate: { state: this.state, state_reason: this.reason, difficulty: this.difficulty } }
         if (!this.reasonAllowed()) {
           this.reason = null;
           params.estimate.state_reason = null;
@@ -65,7 +74,7 @@
           .then(response => {
             if (response.status === 200) {
               this.$root.$emit('bv::toggle::collapse', this.id);
-              EventBus.$emit('ESTIMATE_UPDATED', { state: this.state, state_reason: this.reason, tags: this.estimateTags });
+              EventBus.$emit('ESTIMATE_UPDATED', { state: this.state, state_reason: this.reason, difficulty: this.difficulty, tags: this.estimateTags });
             }
           })
       },
@@ -79,6 +88,9 @@
     watch: {
       'estimate.state'(newVal) {
         this.state = newVal;
+      },
+      'estimate.difficulty'(newVal) {
+        this.difficulty = newVal;
       }
     }
   }

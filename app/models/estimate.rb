@@ -154,6 +154,12 @@ class Estimate < ActiveRecord::Base
 		cancelled: 'cancelled'
 	}
 
+	enum :difficulty, {
+		easy: 'easy',
+		medium: 'medium',
+		hard: 'hard'
+	}
+
 	enum :source, {
 		admin_form: 'admin_form',
 		customer_form: 'customer_form'

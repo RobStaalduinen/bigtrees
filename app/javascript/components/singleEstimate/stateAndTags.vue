@@ -22,6 +22,13 @@
           </div>
 
           <div class='title-sub-row'>
+            <div class="title-label"><b>Difficulty: </b></div>
+            <div class="title-right">
+              {{ formatDifficulty(estimate.difficulty) }}
+            </div>
+          </div>
+
+          <div class='title-sub-row'>
             <div class="title-label"><b>Tags: </b></div>
             <div class="title-right" v-if="estimate.tags.length > 0">
               <app-tag-list :tags='estimate.tags' />
@@ -61,6 +68,9 @@ export default {
   methods: {
     formatState(state) {
       return state.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    },
+    formatDifficulty(difficulty) {
+      return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
     }
   }
 }
