@@ -198,7 +198,7 @@ class EstimatesController < ApplicationController
     if params[:only_mine]
       estimates = estimates.where(arborist: current_user).order('work_start_date ASC')
     else
-      estimates = estimates.order('estimates.id DESC')
+      estimates = sort_estimates(estimates, params[:sort_by])
     end
 
     if params[:assigned_to] == 'me'
@@ -210,5 +210,14 @@ class EstimatesController < ApplicationController
     end
 
     estimates
+  end
+
+  def sort_estimates(estimates, sort_by)
+    case sort_by
+    when 'priority'
+      estimates.order('customers.priority ASC, estimates.id DESC')
+    else
+      estimates.order('estimates.id DESC')
+    end
   end
 end

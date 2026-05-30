@@ -54,7 +54,7 @@ export default {
       page: null,
       totalEntries: 1,
       status: 'active',
-      filters: { status: 'active', createdAfter: 'one_year' },
+      filters: { status: 'active', createdAfter: 'one_year', sortBy: 'date' },
       filteringLoaded: false
     }
   },
@@ -75,7 +75,8 @@ export default {
           created_after: this.filters.createdAfter,
           status: this.filters.status,
           assigned_to: this.filters.assignedTo || 'everyone',
-          tag_ids: this.filters.tagIds || []
+          tag_ids: this.filters.tagIds || [],
+          sort_by: this.filters.sortBy || 'date'
         }
     
 
@@ -114,12 +115,13 @@ export default {
       if(presetFilters != null) {
         this.page = presetFilters.page || 1;
         this.searchTerm = presetFilters.searchTerm;
-        this.filters = presetFilters.filters || { status: 'active', createdAfter: 'one_year' };
+        this.filters = presetFilters.filters || { status: 'active', createdAfter: 'one_year', sortBy: 'date' };
+        this.filters.sortBy = this.filters.sortBy || 'date';
       }
       else {
         this.page = 1;
         this.searchTerm = null;
-        this.filters = { status: 'active', createdAfter: 'one_year' }
+        this.filters = { status: 'active', createdAfter: 'one_year', sortBy: 'date' }
       }
 
       setTimeout(() => { this.filteringLoaded = true }, 1)
@@ -127,7 +129,7 @@ export default {
     resetFiltering() {
       this.searchTerm = null;
       this.page = 1;
-      this.filters = { createdAfter: 'one_year', status: 'active' };
+      this.filters = { createdAfter: 'one_year', status: 'active', sortBy: 'date' };
     }
   },
   mounted() {

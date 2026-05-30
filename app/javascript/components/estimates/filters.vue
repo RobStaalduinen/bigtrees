@@ -27,6 +27,13 @@
   >
     <template v-slot:content>
       <b-form-group
+        label="Sort By"
+        label-for="sort_by"
+      >
+        <b-form-select v-model="sortBy" :options="sortOptions" @change="changeFilters()"></b-form-select>
+      </b-form-group>
+
+      <b-form-group
         label="Assigned To"
         label-for="assigned_to"
       >
@@ -73,13 +80,18 @@ export default {
         return {
           status: 'active',
           createdAfter: 'forever',
-          tagIds: []
+          tagIds: [],
+          sortBy: 'date'
         }
       }
     }
   },
   data() {
     return {
+      sortOptions: [
+        { value: 'date', text: 'Date (newest first)' },
+        { value: 'priority', text: 'Priority (highest first)' }
+      ],
       statusOptions: [
         { value: 'all', text: 'All' },
         { value: 'active', text: 'Active' },
@@ -104,7 +116,8 @@ export default {
       status: null,
       createdAfter: null,
       tagIds: [],
-      assignedTo: 'everyone'
+      assignedTo: 'everyone',
+      sortBy: 'date'
     }
 
   },
@@ -113,6 +126,7 @@ export default {
     this.assignedTo = this.value.assignedTo || 'everyone';
     this.status = this.value.status;
     this.createdAfter = this.value.createdAfter;
+    this.sortBy = this.value.sortBy || 'date';
   },
   methods: {
     close(){
@@ -124,7 +138,7 @@ export default {
       // localStorage.setItem('estimateFilterStatus', JSON.stringify(this.filterObject()));
     },
     filterObject() {
-      return { status: this.status, createdAfter: this.createdAfter, tagIds: this.tagIds, assignedTo: this.assignedTo };
+      return { status: this.status, createdAfter: this.createdAfter, tagIds: this.tagIds, assignedTo: this.assignedTo, sortBy: this.sortBy };
     }
   },
   watch: {
@@ -133,6 +147,7 @@ export default {
       this.createdAfter = this.value.createdAfter;
       this.tagIds = this.value.tagIds || [];
       this.assignedTo = this.value.assignedTo || 'everyone';
+      this.sortBy = this.value.sortBy || 'date';
     },
     tagIds() {
       this.$emit('input', this.filterObject());
