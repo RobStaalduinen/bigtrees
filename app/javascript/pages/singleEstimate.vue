@@ -18,17 +18,11 @@
 
     <div v-if='estimate' id='estimate-body'>
 
+      <section class='estimate-header-section'>
+        <single-estimate-header :estimate='estimate'></single-estimate-header>
+      </section>
+
       <div id='estimate-body-left'>
-        <section class='estimate-section mobile-only'>
-          <single-estimate-owner
-            :estimate='estimate'
-          ></single-estimate-owner>
-        </section>
-
-        <section class='estimate-section'>
-          <single-estimate-state :estimate='estimate'></single-estimate-state>
-        </section>
-
         <section class='estimate-section'>
           <single-estimate-timeline :estimate='estimate'></single-estimate-timeline>
         </section>
@@ -70,13 +64,7 @@
         </section>
       </div>
 
-      <div id='estimate-body-left'>
-        <section class='estimate-section desktop-only'>
-          <single-estimate-owner
-            :estimate='estimate'
-          ></single-estimate-owner>
-        </section>
-
+      <div id='estimate-body-right'>
         <section class ='estimate-section'>
           <single-estimate-email-history :estimate='estimate'></single-estimate-email-history>
         </section>
@@ -100,11 +88,10 @@
 
 <script>
 import Timeline from '../components/estimate/views/timelineCollapsed';
-import Owner from '../components/singleEstimate/owner';
+import Header from '../components/singleEstimate/header';
 import Customer from '../components/singleEstimate/customer';
 import Addresses from '../components/singleEstimate/addresses';
 import StatusAndActions from '../components/singleEstimate/statusAndActions';
-import StateAndTags from '../components/singleEstimate/stateAndTags';
 import Site from '../components/singleEstimate/site';
 import Invoice from '../components/invoice/views/summary';
 import Quote from '../components/quote/views/collapsed';
@@ -120,11 +107,10 @@ import EventBus from '@/store/eventBus';
 export default {
   components: {
     'single-estimate-timeline': Timeline,
-    'single-estimate-owner': Owner,
+    'single-estimate-header': Header,
     'single-estimate-customer': Customer,
     'single-estimate-addresses': Addresses,
     'single-estimate-actions': StatusAndActions,
-    'single-estimate-state': StateAndTags,
     'single-estimate-site': Site,
     'single-estimate-invoice': Invoice,
     'single-estimate-quotes': Quote,
@@ -234,20 +220,45 @@ export default {
     z-index: 20;
   }
 
+  /* Pull the metadata band flush under the app-header and let it run
+     edge-to-edge of the viewport on mobile so it reads as one header unit. */
+  .estimate-header-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: -16px;
+    margin-bottom: 16px;
+  }
+
   @media(min-width: 760px) {
     #estimate-body {
       display: flex;
+      flex-wrap: wrap;
+    }
+
+    .estimate-header-section {
+      /* break out of #estimate-body's 8px padding so edges align with the app-header */
+      width: calc(100% + 16px);
+      position: static;
+      left: auto;
+      right: auto;
+      margin-left: -8px;
+      margin-right: -8px;
+      flex: 0 0 calc(100% + 16px);
     }
 
     #estimate-body-left {
-      width: 50%;
+      width: calc(50% - 16px);
       display: flex;
       flex-direction: column;
       margin-right: 16px;
     }
 
     #estimate-body-right {
-      width: 50%;
+      width: calc(50% - 16px);
       display: flex;
       flex-direction: column;
       margin-left: 16px;

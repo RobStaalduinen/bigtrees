@@ -82,6 +82,7 @@ module Nylas
         )
       end
     rescue StandardError => e
+      Sentry.capture_exception(e)
       raise "Failed to send email."
     end
 
