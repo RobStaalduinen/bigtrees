@@ -2,6 +2,14 @@ class ApplicationController < ActionController::Base
   include UserHelper
   include Pundit::Authorization
 
+  # TEMPORARY (added 2026-06-01): CSRF protection disabled while we migrate from
+  # cookie-based auth to header-based token auth, which removes the need for it.
+  # SameSite=Lax (Rails 8 default) still blocks cross-site POST/PUT/DELETE since
+  # the auth cookie isn't sent on those. Residual gaps: state-changing GETs and
+  # same-site (sibling-subdomain) XSS. REMOVE this line once the auth migration
+  # lands and header auth is the only path. See .sdd/ENG-9/spec.md
+  skip_forgery_protection
+
   before_action :redirect_if_old
   before_action :set_organization
 
