@@ -23,6 +23,13 @@ class EstimateListSerializer < ApplicationSerializer
   attribute :additional_message
   attribute :site_visit_required
 
+  # Most recent email sent to the customer (from the email_records association,
+  # eager-loaded in the controller so this stays in-memory / no N+1).
+  attribute :last_email do
+    record = object.email_records.max_by(&:sent_at)
+    { template_key: record.template_key, sent_at: record.sent_at } if record
+  end
+
   # Associations
   belongs_to :arborist, serializer: ArboristListSerializer
 

@@ -54,6 +54,13 @@
         <b-form-select v-model="createdAfter" :options="createdOptions" @change="changeFilters()"></b-form-select>
       </b-form-group>
 
+      <b-form-group
+        label="Difficulty"
+        label-for="difficulty"
+      >
+        <b-form-select v-model="difficulty" :options="difficultyOptions" @change="changeFilters()"></b-form-select>
+      </b-form-group>
+
       <app-tag-selector
         id="tag-selector"
         v-model="tagIds"
@@ -81,7 +88,8 @@ export default {
           status: 'active',
           createdAfter: 'forever',
           tagIds: [],
-          sortBy: 'date'
+          sortBy: 'date',
+          difficulty: 'all'
         }
       }
     }
@@ -90,7 +98,15 @@ export default {
     return {
       sortOptions: [
         { value: 'date', text: 'Date (newest first)' },
-        { value: 'priority', text: 'Priority (highest first)' }
+        { value: 'priority', text: 'Priority (highest first)' },
+        { value: 'difficulty_high', text: 'Difficulty (highest first)' },
+        { value: 'difficulty_low', text: 'Difficulty (lowest first)' }
+      ],
+      difficultyOptions: [
+        { value: 'all', text: 'All' },
+        { value: 'easy', text: 'Easy' },
+        { value: 'medium', text: 'Medium' },
+        { value: 'hard', text: 'Hard' }
       ],
       statusOptions: [
         { value: 'all', text: 'All' },
@@ -117,7 +133,8 @@ export default {
       createdAfter: null,
       tagIds: [],
       assignedTo: 'everyone',
-      sortBy: 'date'
+      sortBy: 'date',
+      difficulty: 'all'
     }
 
   },
@@ -127,6 +144,7 @@ export default {
     this.status = this.value.status;
     this.createdAfter = this.value.createdAfter;
     this.sortBy = this.value.sortBy || 'date';
+    this.difficulty = this.value.difficulty || 'all';
   },
   methods: {
     close(){
@@ -138,7 +156,7 @@ export default {
       // localStorage.setItem('estimateFilterStatus', JSON.stringify(this.filterObject()));
     },
     filterObject() {
-      return { status: this.status, createdAfter: this.createdAfter, tagIds: this.tagIds, assignedTo: this.assignedTo, sortBy: this.sortBy };
+      return { status: this.status, createdAfter: this.createdAfter, tagIds: this.tagIds, assignedTo: this.assignedTo, sortBy: this.sortBy, difficulty: this.difficulty };
     }
   },
   watch: {
@@ -148,6 +166,7 @@ export default {
       this.tagIds = this.value.tagIds || [];
       this.assignedTo = this.value.assignedTo || 'everyone';
       this.sortBy = this.value.sortBy || 'date';
+      this.difficulty = this.value.difficulty || 'all';
     },
     tagIds() {
       this.$emit('input', this.filterObject());

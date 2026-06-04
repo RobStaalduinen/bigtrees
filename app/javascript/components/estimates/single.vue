@@ -1,11 +1,31 @@
 <template>
   <div class='shadow-box-entry estimate'>
-    <div class='estimate-header'>
-      <div class='estimate-header-name'>{{ estimate.customer_detail.name }}</div>
-      <div v-if='estimate.state == "unknown"' class='estimate-unknown-header'>Unknown</div>
-      <div v-if='estimate.state === "on_hold"' class='estimate-unknown-header'>On Hold</div>
-      <div v-if='estimate.state == "cancelled"' class='estimate-unknown-header'>Cancelled</div>
-      <div class='estimate-header-status'>{{ estimate.formatted_status }}</div>
+    <!-- Header doubles as the link into the quote -->
+    <router-link class='estimate-header' :to='estimateLink'>
+      <div class='estimate-header-left'>
+        <span class='estimate-header-name'>{{ estimate.customer_detail.name }}</span>
+        <span v-if='priority' class='priority-badge' :class='priorityBadgeClass'>Prio {{ priority }}</span>
+      </div>
+      <div class='estimate-header-right'>
+        <span class='estimate-status'>
+          <span class='dot' :class='stateDotClass'></span>
+          {{ estimate.formatted_status }}
+        </span>
+        <b-icon icon='chevron-right' class='estimate-chevron'></b-icon>
+      </div>
+    </router-link>
+
+    <!-- Meta strip: difficulty + last email action -->
+    <div class='estimate-meta'>
+      <span class='difficulty' :class='difficultyClass'>
+        <b-icon icon='bar-chart-fill'></b-icon>
+        {{ formattedDifficulty }}
+      </span>
+      <span class='email-chip' :class="{ 'email-chip-empty': !lastEmail }">
+        <b-icon :icon="lastEmail ? 'envelope-fill' : 'envelope'"></b-icon>
+        <template v-if='lastEmail'><b>{{ formatKey(lastEmail.template_key) }}</b> · {{ lastEmail.sent_at | moment('from', 'now') }}</template>
+        <template v-else>No email sent yet</template>
+      </span>
     </div>
 
     <div class='estimate-body'>
@@ -14,26 +34,21 @@
         {{ estimate.work_start_date | localizeDate }} - {{ estimate.work_end_date | localizeDate }}
       </div>
 
-      <div class='contact-row'>
-        <div class='estimate-body-row' v-if='estimate.customer.name != estimate.customer_detail.name'>
-          <span>Parent Customer: &nbsp;</span>
-          {{ estimate.customer.name }}
-        </div>
+      <div class='estimate-parent' v-if='estimate.customer.name != estimate.customer_detail.name'>
+        Parent: {{ estimate.customer.name }}
       </div>
 
-      <div class='contact-row'>
-        <div class='estimate-body-row' v-if='estimate.site && estimate.site.address'>
-          <b-icon icon='globe' class='contact-icon'></b-icon>
-          <a :href="'http://maps.google.com/?q=' + encodeURIComponent(estimate.site.address.full_address)" target='_blank'>
-            {{ estimate.site.address.full_address }}
-          </a>
-        </div>
-        <div class='estimate-additional-message' v-if='estimate.additional_message != null'>{{ estimate.additional_message }}</div>
+      <div class='estimate-body-row' v-if='estimate.site && estimate.site.address'>
+        <b-icon icon='globe' class='contact-icon'></b-icon>
+        <a :href="'http://maps.google.com/?q=' + encodeURIComponent(estimate.site.address.full_address)" target='_blank'>
+          {{ estimate.site.address.full_address }}
+        </a>
       </div>
+
       <div class='estimate-body-row'>
         <b-icon icon='telephone' class='contact-icon'></b-icon>
         <a :href="'tel:' + estimate.customer_detail.phone">{{ estimate.customer_detail.phone }}</a>
-        <b-icon icon='envelope' class='contact-icon' id='email-row'></b-icon>
+        <b-icon icon='envelope' class='contact-icon email-icon'></b-icon>
         <a :href="'mailto:' + estimate.customer_detail.email">{{ estimate.customer_detail.email }}</a>
       </div>
     </div>
@@ -45,10 +60,6 @@
 
       <div class='estimate-footer-right'>
         <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
-
-        <router-link class='estimate-link' :to='"/admin/estimates/" + estimate.id'>
-          Details
-        </router-link>
       </div>
     </div>
 
@@ -58,7 +69,6 @@
 <script>
 import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
-import EventBus from '@/store/eventBus'
 import { mapState } from 'vuex'
 import TagList from '@/components/tags/views/list.vue'
 
@@ -74,12 +84,42 @@ export default {
     'app-estimate-actions-list': ActionsList,
     'app-tag-list': TagList
   },
-  computed: mapState({
-    mySchedule: state => state.estimateSettings.mySchedule
-  }),
-  methods:
-  {
-
+  computed: {
+    ...mapState({
+      mySchedule: state => state.estimateSettings.mySchedule
+    }),
+    estimateLink() {
+      return `/admin/estimates/${this.estimate.id}`;
+    },
+    priority() {
+      return this.estimate.customer && this.estimate.customer.priority;
+    },
+    priorityBadgeClass() {
+      return `priority-badge-${this.priority}`;
+    },
+    stateDotClass() {
+      return `dot-state-${this.estimate.state}`;
+    },
+    difficultyClass() {
+      return `difficulty-${this.estimate.difficulty}`;
+    },
+    formattedDifficulty() {
+      const d = this.estimate.difficulty || '';
+      return d.charAt(0).toUpperCase() + d.slice(1);
+    },
+    // Most recent email sent to the customer, from the email_records association
+    // (serialized as { template_key, sent_at }).
+    lastEmail() {
+      return this.estimate.last_email || null;
+    }
+  },
+  methods: {
+    // Humanize a template_key, e.g. "quote_mailout" -> "Quote Mailout".
+    // Mirrors the formatting used in the Email History view.
+    formatKey(key) {
+      if (!key) { return ''; }
+      return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    }
   }
 }
 </script>
@@ -93,98 +133,175 @@ export default {
     font-size: 12px;
   }
 
+  /* ---- Header (tap target into the quote) ---- */
   .estimate-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #eee;
+    color: inherit;
+    text-decoration: none;
+  }
 
-    border-width: 0 0 1px 0;
-    border-color: lightgray;
-    border-style: solid;
+  .estimate-header:hover {
+    background-color: #fcf7f7;
+  }
 
-    margin-bottom: 8px;
+  .estimate-header-left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
   }
 
   .estimate-header-name {
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--main-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .estimate-header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+
+  .estimate-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--secondary-red);
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .estimate-chevron {
+    color: #bbb;
+    font-size: 13px;
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .dot-state-in_progress { background-color: #3b82f6; }
+  .dot-state-on_hold     { background-color: #f59e0b; }
+  .dot-state-done        { background-color: #10b981; }
+  .dot-state-unknown     { background-color: #9ca3af; }
+  .dot-state-cancelled   { background-color: #ef4444; }
+
+  /* ---- Priority badge (mirrors the detail header) ---- */
+  .priority-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.78em;
+    font-weight: 700;
+    color: #3a2e15;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+  }
+
+  .priority-badge-1 { background: linear-gradient(135deg, #ffe066, #d4af37); }
+  .priority-badge-2 { background: linear-gradient(135deg, #f5e7a8, #e0c46c); }
+  .priority-badge-3 { background: linear-gradient(135deg, #e8e8e8, #b8b8b8); }
+  .priority-badge-4 { background: linear-gradient(135deg, #dcae84, #b8763e); color: #2e1a0a; }
+  .priority-badge-5 { background: linear-gradient(135deg, #c68a52, #8b4e1f); color: #fff; }
+
+  /* ---- Meta strip ---- */
+  .estimate-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 5px 10px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+
+  .difficulty {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
     font-weight: 600;
-    padding: 4px;
   }
 
-  .estimate-additional-message {
-    font-size: 10px;
-    display: flex;
+  .difficulty-easy   { background: #e6f7f0; color: #0b7a55; border: 1px solid #b8e8d5; }
+  .difficulty-medium { background: #fdf2e0; color: #b9740c; border: 1px solid #f3dcae; }
+  .difficulty-hard   { background: #fdeaea; color: #cc2a2a; border: 1px solid #f4c3c3; }
+
+  .email-chip {
+    display: inline-flex;
     align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: #555;
   }
 
-  .estimate-unknown-header {
-    display: flex;
-    align-items: center;
-    font-style: italic;
-  }
+  .email-chip >>> .b-icon { color: #9a9a9a; }
+  .email-chip b { color: #444; font-weight: 600; }
+  .email-chip-empty { color: #aaa; }
 
-  .estimate-header-status {
-    background-color: var(--secondary-red);
-    color: white;
-    min-width: 30%;
-    display: flex;
-    justify-content: center;
-    padding: 4px;
-  }
-
+  /* ---- Body ---- */
   .estimate-body {
     display: flex;
     flex-direction: column;
-    font-size: 12px;
-    padding-left: 4px;
-
-    border-width: 0 0 1px 0;
-    border-color: lightgray;
-    border-style: solid;
+    gap: 4px;
+    padding: 6px 10px;
   }
 
   .estimate-body-row {
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
   }
 
-  .contact-row {
-    display: flex;
-    justify-content: space-between;
-    padding-right: 6px;
-    align-items: flex-start;
-  }
-
-  #email-row{
-    margin-left: 12px;
+  .estimate-parent {
+    color: #777;
+    font-size: 11px;
   }
 
   .contact-icon {
     color: var(--main-color);
-    margin-right: 4px;
+    margin-right: 6px;
   }
 
+  .email-icon {
+    margin-left: 16px;
+  }
+
+  /* ---- Footer ---- */
   .estimate-footer {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-left: 10px;
   }
 
   .estimate-footer-left {
     display: flex;
     align-items: center;
-    padding-left: 8px;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px 0;
   }
 
   .estimate-footer-right {
     display: flex;
     justify-content: flex-end;
   }
-
-  .estimate-link {
-    padding: 6px 12px;
-
-    border-width: 0 0 0 1px;
-    border-color: lightgray;
-    border-style: solid;
-  }
-
 </style>

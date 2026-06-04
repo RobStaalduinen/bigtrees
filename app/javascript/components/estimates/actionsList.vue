@@ -1,9 +1,13 @@
 <template>
   <b-nav-item-dropdown
     id="actions-dropdown"
-    text="Actions"
     right
+    no-caret
   >
+    <template #button-content>
+      <b-icon icon="three-dots" aria-hidden="true"></b-icon>
+      <span class="sr-only">Actions</span>
+    </template>
     <!-- <b-dropdown-item v-if="!estimate.is_unknown" @click='updateStatus(true)'>
       Move to Unknown
     </b-dropdown-item>
@@ -97,9 +101,24 @@ export default {
 <style scoped>
   #actions-dropdown {
     display: block;
+    list-style: none;
   }
 
-  #actions-dropdown >>> a {
+  /* The dropdown toggle is the ⋯ tap target */
+  #actions-dropdown >>> .dropdown-toggle {
+    padding: 8px 14px;
+    color: var(--main-color);
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 4px;
+  }
+
+  #actions-dropdown >>> .dropdown-toggle:hover {
+    background-color: #f0e8e8;
+  }
+
+  /* Individual action items */
+  #actions-dropdown >>> .dropdown-item {
     padding: 6px 12px;
   }
 </style>

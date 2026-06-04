@@ -1,23 +1,26 @@
 <template>
   <div id="tag-list">
-    <div class="tag-container" v-for="(tag, index) in tags" :key="tag.id" v-if="!shouldCollapse()">
-      <app-tag :tag="tag" :index="index" />
-    </div>
-
     <template v-if="shouldCollapse()">
-      <div class="tag-container"><app-tag :tag="tags[0]" /></div>
-      <div class="tag-container"><app-tag :tag="tags[1]" /></div>
+      <div class="tag-container" v-for="tag in tags.slice(0, visibleCount)" :key="tag.id">
+        <app-tag :tag="tag" />
+      </div>
       <div class="collapsed-more-container">
         <app-tag
-          :tag="{ label: `+ ${tags.length - 2}`, colour: 'grey' }"
+          :tag="{ label: `+ ${tags.length - visibleCount}`, colour: 'grey' }"
           class="more-tag"
           @click="togglePopover"
         />
         <div v-if="showPopover" class="tag-popover" @click="showPopover = false">
-          <div class="tag-container" v-for="tag in tags.slice(2)" :key="tag.id">
+          <div class="tag-container" v-for="tag in tags.slice(visibleCount)" :key="tag.id">
             <app-tag :tag="tag" />
           </div>
         </div>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="tag-container" v-for="(tag, index) in tags" :key="tag.id">
+        <app-tag :tag="tag" :index="index" />
       </div>
     </template>
   </div>
@@ -38,12 +41,13 @@ export default {
   },
   data() {
     return {
-      showPopover: false
+      showPopover: false,
+      visibleCount: 3
     }
   },
   methods: {
     shouldCollapse() {
-      return this.collapsed && this.tags.length > 2
+      return this.collapsed && this.tags.length > this.visibleCount
     },
     togglePopover() {
       this.showPopover = !this.showPopover

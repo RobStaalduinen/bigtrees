@@ -17,7 +17,8 @@ class EstimatesController < ApplicationController
       includes(:customer_detail).
       includes(:customer).
       includes(:arborist).
-      includes(:tags)
+      includes(:tags).
+      includes(:email_records)
 
     @estimates = filter_estimates(@estimates, params)
 
@@ -209,6 +210,10 @@ class EstimatesController < ApplicationController
       estimates = estimates.with_tags(params[:tag_ids])
     end
 
+    if params[:difficulty].present? && params[:difficulty] != 'all'
+      estimates = estimates.where(difficulty: params[:difficulty])
+    end
+
     estimates
   end
 
@@ -216,6 +221,10 @@ class EstimatesController < ApplicationController
     case sort_by
     when 'priority'
       estimates.order('customers.priority ASC, estimates.id DESC')
+    when 'difficulty_high'
+      estimates.order(Arel.sql("estimates.difficulty IS NULL, FIELD(estimates.difficulty, 'easy', 'medium', 'hard') DESC, estimates.id DESC"))
+    when 'difficulty_low'
+      estimates.order(Arel.sql("estimates.difficulty IS NULL, FIELD(estimates.difficulty, 'easy', 'medium', 'hard') ASC, estimates.id DESC"))
     else
       estimates.order('estimates.id DESC')
     end

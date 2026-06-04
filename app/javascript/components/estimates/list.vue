@@ -76,7 +76,8 @@ export default {
           status: this.filters.status,
           assigned_to: this.filters.assignedTo || 'everyone',
           tag_ids: this.filters.tagIds || [],
-          sort_by: this.filters.sortBy || 'date'
+          sort_by: this.filters.sortBy || 'date',
+          difficulty: this.filters.difficulty || 'all'
         }
     
 
