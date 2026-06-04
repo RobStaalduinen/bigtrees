@@ -1,26 +1,38 @@
 <template>
-  <div>
-    <b-form-group label="With Tags:">
-      <div class="tag-list">
-        <div class="tag-container" v-for="tag in selectedTags" :key="tag.id">
-          <app-tag :tag="tag" action="delete" @click="removeTag(tag)"/>
-        </div>
-      </div>
-    </b-form-group>
+  <div class="tag-selector">
+    <div class="chips">
+      <app-tag
+        v-for="tag in selectedTags"
+        :key="tag.id"
+        :tag="tag"
+        action="delete"
+        @click="removeTag(tag)"
+      />
+      <button
+        type="button"
+        class="add-tag"
+        :class="{ on: showPicker }"
+        @click="togglePicker"
+      >+ Add tag</button>
+    </div>
 
-    <b-form-group label="Possible Tags">
-      <div class="tag-list">
-        <div class="tag-container" v-for="tag in addableTags" :key="tag.id" @click="addTag(tag)">
-          <app-tag :tag="tag" action="add"/>
-        </div>
+    <div v-if="showPicker" class="tag-picker">
+      <div class="picker-title">Add a tag</div>
+      <div v-if="addableTags.length" class="chips">
+        <app-tag
+          v-for="tag in addableTags"
+          :key="tag.id"
+          :tag="tag"
+          action="add"
+          @click="addTag(tag)"
+        />
       </div>
-    </b-form-group>
+      <div v-else class="picker-empty">All tags added</div>
+    </div>
   </div>
 </template>
 
 <script>
-  import EventBus from '@/store/eventBus';
-
   export default {
     props: {
       id: {
@@ -37,12 +49,13 @@
         organizationTags: [],
         selectedTags: [],
         addableTags: [],
+        showPicker: false
       }
     },
     computed: {
       selectedTagIds() {
         return this.selectedTags.map(tag => tag.id);
-      } 
+      }
     },
     methods: {
       retrieveTags() {
@@ -55,10 +68,14 @@
             console.log(error);
           });
       },
+      togglePicker() {
+        this.showPicker = !this.showPicker;
+      },
       addTag(tag) {
        this.selectedTags.push(tag);
        this.calculateAddableTags();
        this.$emit('input', this.selectedTagIds);
+       // keep the picker open so several tags can be added in a row
       },
       removeTag(tag) {
         this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
@@ -73,31 +90,70 @@
     },
     mounted() {
       this.retrieveTags().then(() => {
-        console.log('Value:', this.value);
         this.selectedTags = this.value.map(tagId => {
           return this.organizationTags.find(tag => tag.id === tagId);
         }).filter(tag => tag !== undefined);
 
-        console.log('Selected Tags:', this.selectedTags);
-
         this.calculateAddableTags();
       });
-
-    
     }
   }
 </script>
 
 <style scoped>
-  .tag-list {
-    width: 100%;
+  .tag-selector {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .chips {
     display: flex;
     flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
   }
 
-  .tag-container {
-    margin-right: 8px;
-    margin-bottom: 8px;
+  .add-tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px dashed #bbb;
+    color: #666;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2px 9px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    cursor: pointer;
   }
 
+  .add-tag:hover,
+  .add-tag.on {
+    border-color: var(--main-color);
+    color: var(--main-color);
+  }
+
+  .tag-picker {
+    margin-top: 8px;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fbfbfb;
+  }
+
+  .picker-title {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+
+  .tag-picker .chips {
+    justify-content: flex-start;
+  }
+
+  .picker-empty {
+    font-size: 12px;
+    color: #999;
+  }
 </style>

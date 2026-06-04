@@ -6,7 +6,7 @@
     </div>
 
     <div id='submission'>
-      <b-button type='submit' class='inverse-button sidebar-button' @click='cancel'>Cancel</b-button>
+      <b-button type='submit' class='inverse-button sidebar-button' v-if='!hideCancel' @click='cancel'>Cancel</b-button>
       <b-button type='submit' class='inverse-button sidebar-button' v-if='alternateAction' @click='() => alternateAction()'>
         {{ alternateActionText }}
       </b-button>
@@ -47,6 +47,11 @@ export default {
     validate: {
       required: false,
       type: Function
+    },
+    hideCancel: {
+      required: false,
+      type: Boolean,
+      default: false
     }
   },
   methods: {

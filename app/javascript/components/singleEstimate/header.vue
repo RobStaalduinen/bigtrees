@@ -1,19 +1,23 @@
 <template>
   <div class='estimate-header'>
     <div class='chips-row'>
-      <span class='pill' v-b-toggle.edit-owner-sidebar role='button'>
-        <b-icon icon='person-fill' class='pill-icon'/>
-        <span class='pill-key'>Owner:</span>
-        <span class='pill-value'>{{ estimate.arborist.name }}</span>
-      </span>
-    </div>
+      <app-meta-pill
+        icon='person-fill'
+        :text='estimate.arborist.name'
+        icon-color='var(--main-color)'
+        clickable
+        v-b-toggle.edit-owner-sidebar
+        role='button'
+      />
 
-    <div class='chips-row'>
-      <span class='pill' v-b-toggle.edit-state-sidebar role='button'>
-        <span class='dot' :class='stateDotClass'></span>
-        <span class='pill-key'>State:</span>
-        <span class='pill-value'>{{ formatState(estimate.state) }}</span>
-      </span>
+      <app-meta-pill
+        icon='circle-fill'
+        :text='formatState(estimate.state)'
+        :icon-color='stateColor'
+        clickable
+        v-b-toggle.edit-state-sidebar
+        role='button'
+      />
 
       <span class='reason-info' v-if='estimate.state_reason' :id='reasonId' role='button' tabindex='0'>
         <b-icon icon='info-circle'/>
@@ -23,11 +27,15 @@
         {{ estimate.state_reason }}
       </b-popover>
 
-      <span class='pill' v-b-toggle.edit-difficulty-sidebar role='button'>
-        <span class='dot' :class='difficultyDotClass'></span>
-        <span class='pill-key'>Difficulty:</span>
-        <span class='pill-value'>{{ formatDifficulty(estimate.difficulty) }}</span>
-      </span>
+      <app-meta-pill
+        icon='bar-chart-fill'
+        :text='estimate.difficulty'
+        :fill='estimate.difficulty'
+        capitalize
+        clickable
+        v-b-toggle.edit-difficulty-sidebar
+        role='button'
+      />
     </div>
 
     <div class='tags-row' v-b-toggle.edit-tags-sidebar role='button'>
@@ -49,13 +57,23 @@ import EditState from '@/components/estimateState/actions/editState.vue';
 import EditDifficulty from '@/components/estimateState/actions/editDifficulty.vue';
 import EditTags from '@/components/tags/views/editEstimateTags.vue';
 import EditOwner from '@/components/singleEstimate/editOwner.vue';
+import MetaPill from '@/components/estimates/metaPill.vue';
+
+const STATE_COLORS = {
+  in_progress: '#3b82f6',
+  on_hold:     '#f59e0b',
+  done:        '#10b981',
+  unknown:     '#9ca3af',
+  cancelled:   '#ef4444'
+};
 
 export default {
   components: {
     'app-edit-state': EditState,
     'app-edit-difficulty': EditDifficulty,
     'app-edit-tags': EditTags,
-    'app-edit-owner': EditOwner
+    'app-edit-owner': EditOwner,
+    'app-meta-pill': MetaPill
   },
   props: {
     estimate: { required: true, type: Object }
@@ -64,19 +82,13 @@ export default {
     reasonId() {
       return `state-reason-${this.estimate.id}`;
     },
-    stateDotClass() {
-      return `dot-state-${this.estimate.state}`;
-    },
-    difficultyDotClass() {
-      return `dot-difficulty-${this.estimate.difficulty}`;
+    stateColor() {
+      return STATE_COLORS[this.estimate.state] || '#9ca3af';
     }
   },
   methods: {
     formatState(state) {
       return state.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    },
-    formatDifficulty(difficulty) {
-      return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
     }
   }
 }
@@ -113,48 +125,6 @@ export default {
     align-items: center;
     gap: 8px;
   }
-
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background-color: white;
-    border: 1px solid #d8d8d8;
-    border-radius: 999px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-
-  .pill:hover {
-    border-color: var(--main-color);
-  }
-
-  .pill-key {
-    font-weight: 600;
-  }
-
-  .pill-icon {
-    color: var(--main-color);
-  }
-
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .dot-state-in_progress { background-color: #3b82f6; }
-  .dot-state-on_hold     { background-color: #f59e0b; }
-  .dot-state-done        { background-color: #10b981; }
-  .dot-state-unknown     { background-color: #9ca3af; }
-  .dot-state-cancelled   { background-color: #ef4444; }
-
-  .dot-difficulty-easy   { background-color: #10b981; }
-  .dot-difficulty-medium { background-color: #f59e0b; }
-  .dot-difficulty-hard   { background-color: #ef4444; }
 
   .reason-info {
     display: inline-flex;

@@ -1,7 +1,7 @@
 <template>
   <div class="stats-container">
     <div v-for="(value, key) in stats" :key="key" class="stat-item">
-      <span class="stat-label"><b>{{ key.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') }}:</b></span>
+      <span class="stat-label">{{ labelFor(key) }}</span>
       <span class="stat-value">{{ value }}</span>
     </div>
   </div>
@@ -21,10 +21,22 @@ export default {
   },
   data() {
     return {
-      stats: {}
+      stats: {},
+      labelMap: {
+        quoting: 'Quoting',
+        quote_sent: 'Sent',
+        approved: 'Approved',
+        scheduled: 'Scheduled',
+        working: 'Working',
+        invoice_sent: 'Invoiced'
+      }
     }
   },
   methods: {
+    labelFor(key) {
+      return this.labelMap[key] ||
+        key.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    },
     fetchStats() {
       var params = {
           created_after: this.filters.createdAfter,
@@ -71,18 +83,39 @@ export default {
 <style scoped>
 .stats-container {
   display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 8pt;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
 }
 
 .stat-item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 4px;
+  padding: 6px 4px;
+  border-left: 1px solid #f0eeee;
 }
 
+.stat-item:first-child {
+  border-left: none;
+}
 
+.stat-label {
+  font-size: 9.5px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.stat-value {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--main-color);
+  line-height: 1.1;
+  margin-top: 2px;
+}
 </style>

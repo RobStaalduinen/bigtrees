@@ -17,10 +17,7 @@
 
     <!-- Meta strip: difficulty + last email action -->
     <div class='estimate-meta'>
-      <span class='difficulty' :class='difficultyClass'>
-        <b-icon icon='bar-chart-fill'></b-icon>
-        {{ formattedDifficulty }}
-      </span>
+      <app-meta-pill icon='bar-chart-fill' :text='estimate.difficulty' :fill='estimate.difficulty' capitalize></app-meta-pill>
       <span class='email-chip' :class="{ 'email-chip-empty': !lastEmail }">
         <b-icon :icon="lastEmail ? 'envelope-fill' : 'envelope'"></b-icon>
         <template v-if='lastEmail'><b>{{ formatKey(lastEmail.template_key) }}</b> · {{ lastEmail.sent_at | moment('from', 'now') }}</template>
@@ -71,6 +68,7 @@ import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
 import { mapState } from 'vuex'
 import TagList from '@/components/tags/views/list.vue'
+import MetaPill from './metaPill.vue'
 
 export default {
   props: {
@@ -82,7 +80,8 @@ export default {
   components: {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList,
-    'app-tag-list': TagList
+    'app-tag-list': TagList,
+    'app-meta-pill': MetaPill
   },
   computed: {
     ...mapState({
@@ -99,13 +98,6 @@ export default {
     },
     stateDotClass() {
       return `dot-state-${this.estimate.state}`;
-    },
-    difficultyClass() {
-      return `difficulty-${this.estimate.difficulty}`;
-    },
-    formattedDifficulty() {
-      const d = this.estimate.difficulty || '';
-      return d.charAt(0).toUpperCase() + d.slice(1);
     },
     // Most recent email sent to the customer, from the email_records association
     // (serialized as { template_key, sent_at }).
@@ -229,20 +221,6 @@ export default {
     background-color: #fafafa;
     border-bottom: 1px solid #eee;
   }
-
-  .difficulty {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 9px;
-    border-radius: 999px;
-    font-size: 11.5px;
-    font-weight: 600;
-  }
-
-  .difficulty-easy   { background: #e6f7f0; color: #0b7a55; border: 1px solid #b8e8d5; }
-  .difficulty-medium { background: #fdf2e0; color: #b9740c; border: 1px solid #f3dcae; }
-  .difficulty-hard   { background: #fdeaea; color: #cc2a2a; border: 1px solid #f4c3c3; }
 
   .email-chip {
     display: inline-flex;

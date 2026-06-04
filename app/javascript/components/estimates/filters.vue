@@ -24,47 +24,67 @@
     title="Filters"
     submitText="Done"
     :onSubmit="close"
+    hideCancel
   >
     <template v-slot:content>
-      <b-form-group
-        label="Sort By"
-        label-for="sort_by"
-      >
-        <b-form-select v-model="sortBy" :options="sortOptions" @change="changeFilters()"></b-form-select>
-      </b-form-group>
+      <div class="filter-rows">
+        <div class="filter-row">
+          <span class="filter-label">Sort by</span>
+          <b-form-select class="filter-select" v-model="sortBy" :options="sortOptions" @change="changeFilters()" />
+        </div>
 
-      <b-form-group
-        label="Assigned To"
-        label-for="assigned_to"
-      >
-        <b-form-select v-model="assignedTo" :options="[{ value: 'everyone', text: 'Everyone' }, { value: 'me', text: 'Me' }]"  @change="changeFilters()" />
-      </b-form-group>
+        <div class="filter-row">
+          <span class="filter-label">Assigned</span>
+          <div class="seg">
+            <button
+              v-for="opt in assignedOptions"
+              :key="opt.value"
+              type="button"
+              :class="{ on: assignedTo === opt.value }"
+              @click="selectOption('assignedTo', opt.value)"
+            >{{ opt.text }}</button>
+          </div>
+        </div>
 
-      <b-form-group
-        label="Status"
-        label-for="status"
-      >
-        <b-form-select v-model="status" :options="statusOptions" @change="changeFilters()"></b-form-select>
-      </b-form-group>
+        <div class="filter-row">
+          <span class="filter-label">Status</span>
+          <b-form-select class="filter-select" v-model="status" :options="statusOptions" @change="changeFilters()" />
+        </div>
 
-      <b-form-group
-        label="Estimate Age"
-        label-for="created_after"
-      >
-        <b-form-select v-model="createdAfter" :options="createdOptions" @change="changeFilters()"></b-form-select>
-      </b-form-group>
+        <div class="filter-row">
+          <span class="filter-label">Difficulty</span>
+          <div class="seg">
+            <button
+              v-for="opt in difficultyOptions"
+              :key="opt.value"
+              type="button"
+              :class="{ on: difficulty === opt.value }"
+              @click="selectOption('difficulty', opt.value)"
+            >{{ opt.text }}</button>
+          </div>
+        </div>
 
-      <b-form-group
-        label="Difficulty"
-        label-for="difficulty"
-      >
-        <b-form-select v-model="difficulty" :options="difficultyOptions" @change="changeFilters()"></b-form-select>
-      </b-form-group>
+        <div class="filter-row">
+          <span class="filter-label">Age</span>
+          <div class="seg">
+            <button
+              v-for="opt in createdOptions"
+              :key="opt.value"
+              type="button"
+              :class="{ on: createdAfter === opt.value }"
+              @click="selectOption('createdAfter', opt.value)"
+            >{{ opt.text }}</button>
+          </div>
+        </div>
 
-      <app-tag-selector
-        id="tag-selector"
-        v-model="tagIds"
-      />
+        <div class="filter-row filter-row--top">
+          <span class="filter-label">Tags</span>
+          <app-tag-selector
+            id="tag-selector"
+            v-model="tagIds"
+          />
+        </div>
+      </div>
     </template>
   </app-right-sidebar>
 </template>
@@ -105,8 +125,12 @@ export default {
       difficultyOptions: [
         { value: 'all', text: 'All' },
         { value: 'easy', text: 'Easy' },
-        { value: 'medium', text: 'Medium' },
+        { value: 'medium', text: 'Med' },
         { value: 'hard', text: 'Hard' }
+      ],
+      assignedOptions: [
+        { value: 'everyone', text: 'Everyone' },
+        { value: 'me', text: 'Me' }
       ],
       statusOptions: [
         { value: 'all', text: 'All' },
@@ -123,11 +147,11 @@ export default {
         { value: 'cancelled', text: 'Cancelled' }
       ],
       createdOptions: [
-        { value: 'one_week', text: 'One Week' },
-        { value: 'one_month', text: 'One month' },
-        { value: 'six_months', text: 'Six Months' },
-        { value: 'one_year', text: 'One Year' },
-        { value: 'forever', text: 'Forever' }
+        { value: 'one_week', text: '1w' },
+        { value: 'one_month', text: '1m' },
+        { value: 'six_months', text: '6m' },
+        { value: 'one_year', text: '1y' },
+        { value: 'forever', text: 'All' }
       ],
       status: null,
       createdAfter: null,
@@ -155,6 +179,10 @@ export default {
       this.$emit('input', this.filterObject());
       // localStorage.setItem('estimateFilterStatus', JSON.stringify(this.filterObject()));
     },
+    selectOption(key, value) {
+      this[key] = value;
+      this.changeFilters();
+    },
     filterObject() {
       return { status: this.status, createdAfter: this.createdAfter, tagIds: this.tagIds, assignedTo: this.assignedTo, sortBy: this.sortBy, difficulty: this.difficulty };
     }
@@ -176,6 +204,71 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .filter-rows {
+    margin-top: 4px;
+  }
 
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .filter-row:last-child {
+    border-bottom: none;
+  }
+
+  .filter-row--top {
+    align-items: flex-start;
+  }
+
+  .filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    flex: 0 0 auto;
+    min-width: 74px;
+  }
+
+  .filter-row--top .filter-label {
+    padding-top: 4px;
+  }
+
+  .filter-select {
+    flex: 1 1 auto;
+    max-width: 240px;
+  }
+
+  .seg {
+    display: inline-flex;
+    border: 1px solid #e3e3e3;
+    border-radius: 7px;
+    overflow: hidden;
+    background: #fafafa;
+  }
+
+  .seg button {
+    border: none;
+    background: transparent;
+    padding: 5px 11px;
+    font-size: 12.5px;
+    cursor: pointer;
+    color: #555;
+    border-left: 1px solid #e3e3e3;
+    white-space: nowrap;
+  }
+
+  .seg button:first-child {
+    border-left: none;
+  }
+
+  .seg button.on {
+    background: var(--main-color);
+    color: white;
+    font-weight: 600;
+  }
 </style>

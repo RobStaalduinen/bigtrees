@@ -6,8 +6,13 @@
       <div id='search-field-container'>
         <app-search-field v-model='searchTerm'></app-search-field>
       </div>
-      <app-button text='Reset' :click='resetFiltering'></app-button>
-      <app-button text='Filters' icon='filter' :click="openFilters"></app-button>
+      <button type='button' class='control-btn control-btn--ghost control-btn--icon' @click='resetFiltering' title='Reset filters' aria-label='Reset filters'>
+        <b-icon icon='arrow-counterclockwise'></b-icon>
+      </button>
+      <button type='button' class='control-btn control-btn--filter' @click='openFilters'>
+        <b-icon icon='funnel'></b-icon>
+        Filters
+      </button>
     </div>
     <app-arrow-pagination :totalEntries='totalEntries' :perPage='perPage' v-model='page'></app-arrow-pagination>
   </div>
@@ -183,18 +188,63 @@ export default {
     width: 100%;
 
     background-color: white;
-    border-bottom: 4px var(--main-color) solid;
-    margin-bottom: 8px;
+    border-bottom: 1px #e3e3e3 solid;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
   }
 
   #search-container {
-    margin: 8px 0;
+    margin: 6px 0;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
   }
 
   #search-field-container {
-    width: 60%;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .control-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9px;
+    padding: 7px 12px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+  }
+
+  .control-btn--ghost {
+    border-color: #d6d6d6;
+    color: #555;
+  }
+
+  .control-btn--ghost:hover {
+    background: #f2f2f2;
+    color: #333;
+  }
+
+  .control-btn--icon {
+    padding: 7px 10px;
+    font-size: 16px;
+  }
+
+  .control-btn--filter {
+    border-color: var(--main-color);
+    color: var(--main-color);
+  }
+
+  .control-btn--filter:hover {
+    background: #faf7f7;
+  }
+
+  #estimate-stats-container {
+    margin-bottom: 10px;
   }
 
   @media(min-width: 760px) {

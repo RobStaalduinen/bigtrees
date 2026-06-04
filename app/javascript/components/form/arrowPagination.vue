@@ -1,9 +1,13 @@
 <template>
   <div class='pagination-control'>
-    {{ currentRange() }} of {{ totalEntries }}
+    <span class='pagination-range'><b>{{ currentRange() }}</b> of {{ totalEntries }}</span>
     <div class='pagination-buttons'>
-      <b-icon icon='chevron-left' class='pagination-button' @click='decreasePage()'></b-icon>
-      <b-icon icon='chevron-right' class='pagination-button' @click='increasePage()'></b-icon>
+      <button type='button' class='pagination-button' @click='decreasePage()'>
+        <b-icon icon='chevron-left'></b-icon>
+      </button>
+      <button type='button' class='pagination-button' @click='increasePage()'>
+        <b-icon icon='chevron-right'></b-icon>
+      </button>
     </div>
   </div>
 </template>
@@ -59,20 +63,44 @@ export default {
 
 <style scoped>
   .pagination-control {
-    background-color: #eeeeee;
     width: 100%;
-    padding: 6px;
-    font-size: 16px;
+    padding: 2px 2px;
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
+  .pagination-range {
+    color: #666;
+  }
+
+  .pagination-range b {
+    color: #222;
+  }
+
   .pagination-buttons {
     display: flex;
+    gap: 6px;
   }
 
   .pagination-button {
-    margin: 0 16px;
+    width: 30px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    color: #444;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .pagination-button:active {
+    border-color: var(--main-color);
+    color: var(--main-color);
+    background: #faf7f7;
   }
 </style>
