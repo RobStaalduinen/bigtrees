@@ -1,19 +1,19 @@
 <template>
   <div class='estimate-header'>
     <div class='chips-row'>
-      <app-meta-pill
+      <app-pill
         icon='person-fill'
         :text='estimate.arborist.name'
-        icon-color='var(--main-color)'
+        tone='brand'
         clickable
         v-b-toggle.edit-owner-sidebar
         role='button'
       />
 
-      <app-meta-pill
+      <app-pill
         icon='circle-fill'
         :text='formatState(estimate.state)'
-        :icon-color='stateColor'
+        :tone='stateTone'
         clickable
         v-b-toggle.edit-state-sidebar
         role='button'
@@ -27,10 +27,11 @@
         {{ estimate.state_reason }}
       </b-popover>
 
-      <app-meta-pill
+      <app-pill
         icon='bar-chart-fill'
         :text='estimate.difficulty'
-        :fill='estimate.difficulty'
+        :tone='difficultyTone'
+        filled
         capitalize
         clickable
         v-b-toggle.edit-difficulty-sidebar
@@ -57,23 +58,14 @@ import EditState from '@/components/estimateState/actions/editState.vue';
 import EditDifficulty from '@/components/estimateState/actions/editDifficulty.vue';
 import EditTags from '@/components/tags/views/editEstimateTags.vue';
 import EditOwner from '@/components/singleEstimate/editOwner.vue';
-import MetaPill from '@/components/estimates/metaPill.vue';
-
-const STATE_COLORS = {
-  in_progress: '#3b82f6',
-  on_hold:     '#f59e0b',
-  done:        '#10b981',
-  unknown:     '#9ca3af',
-  cancelled:   '#ef4444'
-};
+import { stateTone, difficultyTone } from '@/lib/estimateTones';
 
 export default {
   components: {
     'app-edit-state': EditState,
     'app-edit-difficulty': EditDifficulty,
     'app-edit-tags': EditTags,
-    'app-edit-owner': EditOwner,
-    'app-meta-pill': MetaPill
+    'app-edit-owner': EditOwner
   },
   props: {
     estimate: { required: true, type: Object }
@@ -82,8 +74,11 @@ export default {
     reasonId() {
       return `state-reason-${this.estimate.id}`;
     },
-    stateColor() {
-      return STATE_COLORS[this.estimate.state] || '#9ca3af';
+    stateTone() {
+      return stateTone(this.estimate.state);
+    },
+    difficultyTone() {
+      return difficultyTone(this.estimate.difficulty);
     }
   },
   methods: {

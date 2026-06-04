@@ -47,13 +47,10 @@ Vue.use(VueRouter);
 Vue.use(require('vue-moment'));
 
 import App from '../app.vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// Bootstrap + Bootstrap-Vue and all app global styles are imported via
+// stylesheets/custom_theme.scss (at the top of this file) so the cascade
+// order is deterministic. Only the third-party multiselect CSS is separate.
 import "vue-multiselect/dist/vue-multiselect.min.css"
-import '../stylesheets/variables'
-import '../stylesheets/bootstrap_overrides.css'
-import '../stylesheets/common_styles.css'
-import '../stylesheets/ui_styles.css'
 
 import moment from 'moment'
 
@@ -80,6 +77,8 @@ import ScrollableRightSidebar from '../components/ui/scrollableRightSidebar.vue'
 import Tag from '../components/ui/tag.vue'
 import ColourPicker from '../components/ui/colourPicker.vue';
 import UpdateBanner from '../components/ui/updateBanner.vue';
+import Pill from '../components/ui/pill.vue';
+import SegmentedControl from '../components/ui/segmentedControl.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -97,6 +96,8 @@ Vue.component('app-scrollable-sidebar', ScrollableRightSidebar)
 Vue.component('app-tag', Tag);
 Vue.component('app-colour-picker', ColourPicker);
 Vue.component('app-update-banner', UpdateBanner);
+Vue.component('app-pill', Pill);
+Vue.component('app-segmented-control', SegmentedControl);
 
 
 // Form components

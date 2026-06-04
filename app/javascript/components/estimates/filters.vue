@@ -35,15 +35,11 @@
 
         <div class="filter-row">
           <span class="filter-label">Assigned</span>
-          <div class="seg">
-            <button
-              v-for="opt in assignedOptions"
-              :key="opt.value"
-              type="button"
-              :class="{ on: assignedTo === opt.value }"
-              @click="selectOption('assignedTo', opt.value)"
-            >{{ opt.text }}</button>
-          </div>
+          <app-segmented-control
+            :value="assignedTo"
+            :options="assignedOptions"
+            @input="v => selectOption('assignedTo', v)"
+          />
         </div>
 
         <div class="filter-row">
@@ -53,28 +49,20 @@
 
         <div class="filter-row">
           <span class="filter-label">Difficulty</span>
-          <div class="seg">
-            <button
-              v-for="opt in difficultyOptions"
-              :key="opt.value"
-              type="button"
-              :class="{ on: difficulty === opt.value }"
-              @click="selectOption('difficulty', opt.value)"
-            >{{ opt.text }}</button>
-          </div>
+          <app-segmented-control
+            :value="difficulty"
+            :options="difficultyOptions"
+            @input="v => selectOption('difficulty', v)"
+          />
         </div>
 
         <div class="filter-row">
           <span class="filter-label">Age</span>
-          <div class="seg">
-            <button
-              v-for="opt in createdOptions"
-              :key="opt.value"
-              type="button"
-              :class="{ on: createdAfter === opt.value }"
-              @click="selectOption('createdAfter', opt.value)"
-            >{{ opt.text }}</button>
-          </div>
+          <app-segmented-control
+            :value="createdAfter"
+            :options="createdOptions"
+            @input="v => selectOption('createdAfter', v)"
+          />
         </div>
 
         <div class="filter-row filter-row--top">
@@ -241,34 +229,5 @@ export default {
   .filter-select {
     flex: 1 1 auto;
     max-width: 240px;
-  }
-
-  .seg {
-    display: inline-flex;
-    border: 1px solid #e3e3e3;
-    border-radius: 7px;
-    overflow: hidden;
-    background: #fafafa;
-  }
-
-  .seg button {
-    border: none;
-    background: transparent;
-    padding: 5px 11px;
-    font-size: 12.5px;
-    cursor: pointer;
-    color: #555;
-    border-left: 1px solid #e3e3e3;
-    white-space: nowrap;
-  }
-
-  .seg button:first-child {
-    border-left: none;
-  }
-
-  .seg button.on {
-    background: var(--main-color);
-    color: white;
-    font-weight: 600;
   }
 </style>

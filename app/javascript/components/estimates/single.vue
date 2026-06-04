@@ -17,7 +17,7 @@
 
     <!-- Meta strip: difficulty + last email action -->
     <div class='estimate-meta'>
-      <app-meta-pill icon='bar-chart-fill' :text='estimate.difficulty' :fill='estimate.difficulty' capitalize></app-meta-pill>
+      <app-pill icon='bar-chart-fill' :text='estimate.difficulty' :tone='difficultyTone' filled capitalize></app-pill>
       <span class='email-chip' :class="{ 'email-chip-empty': !lastEmail }">
         <b-icon :icon="lastEmail ? 'envelope-fill' : 'envelope'"></b-icon>
         <template v-if='lastEmail'><b>{{ formatKey(lastEmail.template_key) }}</b> · {{ lastEmail.sent_at | moment('from', 'now') }}</template>
@@ -68,7 +68,7 @@ import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
 import { mapState } from 'vuex'
 import TagList from '@/components/tags/views/list.vue'
-import MetaPill from './metaPill.vue'
+import { difficultyTone } from '@/lib/estimateTones'
 
 export default {
   props: {
@@ -80,8 +80,7 @@ export default {
   components: {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList,
-    'app-tag-list': TagList,
-    'app-meta-pill': MetaPill
+    'app-tag-list': TagList
   },
   computed: {
     ...mapState({
@@ -98,6 +97,9 @@ export default {
     },
     stateDotClass() {
       return `dot-state-${this.estimate.state}`;
+    },
+    difficultyTone() {
+      return difficultyTone(this.estimate.difficulty);
     },
     // Most recent email sent to the customer, from the email_records association
     // (serialized as { template_key, sent_at }).

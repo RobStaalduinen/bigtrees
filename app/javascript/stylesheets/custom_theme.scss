@@ -5,6 +5,16 @@ $primary: #0c2141;
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-vue/src/index.scss";
 
+// App global styles, imported here (after Bootstrap) so they reliably win
+// the cascade. Routing them through this SCSS entry keeps them inlined in a
+// single deterministic stylesheet instead of being hoisted into a shared
+// chunk that can load before Bootstrap (which silently dropped these
+// overrides — un-redding links, un-styling the nav, etc.).
+@import "variables";
+@import "bootstrap_overrides";
+@import "common_styles";
+@import "ui_styles";
+
 body {
   font-family: 'Roboto', sans-serif !important;
 }

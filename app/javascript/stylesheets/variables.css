@@ -1,10 +1,68 @@
 :root{
-  --main-color: #8A0000;
-  --secondary-red: rgb(180, 10, 10);
+  /* ----------------------------------------------------------------
+     Design tokens
+     The single source of truth for colour, spacing, radius, type and
+     effects. New components should reference these rather than literals.
+     Legacy aliases (--main-color, --secondary-red, --main-color-faded)
+     are preserved below because they are referenced widely.
+     ---------------------------------------------------------------- */
+
+  /* Brand */
+  --main-color: #8A0000;            /* legacy alias, still widely used   */
+  --secondary-red: rgb(180, 10, 10); /* legacy alias                     */
   --main-color-faded: rgba(138, 0, 0, 0.75);
+  --color-brand: #8A0000;
+  --color-brand-faded: rgba(138, 0, 0, 0.75);
+  --color-brand-wash: #faf7f7;      /* subtle brand-tinted hover surface */
+
+  /* Neutrals — text */
+  --ink: #222;                      /* primary / headings                */
+  --text: #444;                     /* body                              */
+  --text-muted: #777;               /* secondary / captions              */
+
+  /* Neutrals — lines & surfaces */
+  --border: #e3e3e3;
+  --border-strong: #c9c9c9;
+  --surface: #ffffff;
+  --surface-alt: #fafafa;           /* raised panels                     */
+  --surface-sunken: #f2f2f2;        /* hover / pressed backgrounds        */
+
+  /* Semantic (solid) — also used as status colours */
+  --info: #3b82f6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --neutral: #9ca3af;
+  --danger: #dc3545;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Spacing scale (4px rhythm) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+
+  /* Type scale */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 22px;
+  --text-3xl: 24px;
+
+  /* Effects */
+  --shadow-sm: 0 5px 3px -3px rgba(153, 153, 153, 0.5);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.10);
+  --transition-fast: 0.15s;
 }
 
 .shadow-box-entry{
   border: 1px solid lightgray;
-  box-shadow: 0 5px 3px -3px rgba(153, 153, 153, 0.5);
+  box-shadow: var(--shadow-sm);
 }
