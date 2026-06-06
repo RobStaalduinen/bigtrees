@@ -99,6 +99,16 @@ class Estimate < ActiveRecord::Base
 		joins(:taggings).where(taggings: { tag_id: tag_ids }).distinct
 	end
 
+	# Core pipeline steps shown in the stats bar. Each maps 1:1 to a status
+	# filter value (see for_status) so the stats counts and the filtered list
+	# always describe the same set of estimates.
+	scope :step_quoting,      -> { in_progress.where(status: [:needs_costs, :pending_quote]) }
+	scope :step_quote_sent,   -> { in_progress.where(status: :quote_sent) }
+	scope :step_approved,     -> { in_progress.where(status: :approved) }
+	scope :step_scheduled,    -> { in_progress.where(status: :work_scheduled) }
+	scope :step_working,      -> { in_progress.where(status: [:work_started, :work_paused, :work_completed]) }
+	scope :step_invoice_sent, -> { in_progress.where(status: :final_invoice_sent) }
+
   # Filters
   scope :created_after, -> (filter_string) do
     case filter_string
@@ -123,18 +133,22 @@ class Estimate < ActiveRecord::Base
 			submitted.in_progress.or(submitted.on_hold)
 		when 'needs_pricing'
 			submitted.in_progress.needs_costs
+		when 'quoting'
+			submitted.step_quoting
 		when 'pre_quote'
 			submitted.in_progress.pre_quote
+		when 'quote_sent'
+			submitted.step_quote_sent
 		when 'awaiting_response'
 			submitted.in_progress.sent
 		when 'to_pay'
-			submitted.in_progress.pending_payment
+			submitted.step_invoice_sent
 		when 'approved'
-			submitted.in_progress.where(status: :approved)
+			submitted.step_approved
 		when 'scheduled'
-			submitted.in_progress.where(status: :work_scheduled)
+			submitted.step_scheduled
 		when 'working'
-			submitted.in_progress.where(status: [:work_started, :work_paused, :work_completed])
+			submitted.step_working
 		when 'unknown'
 			submitted.unknown
 		when 'on_hold'

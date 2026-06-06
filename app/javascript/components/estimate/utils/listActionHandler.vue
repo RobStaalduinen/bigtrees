@@ -4,6 +4,7 @@
     :is='currentAction().inputComponent'
     :estimate='targetEstimate'
     :id='currentAction().inputComponent'
+    :states='currentAction().states'
     @cancelled="cancelled()"
   ></component>
 </template>
@@ -16,7 +17,7 @@ import SendInvoice from '@/components/invoice/actions/send';
 import PayInvoice from '@/components/invoice/actions/pay';
 import SendToTeam from '@/components/quote/actions/sendToTeam';
 import SendFollowup from '@/components/emailHistory/actions/sendFollowup';
-import Manage from '@/components/estimateState/actions/manage.vue'
+import EditState from '@/components/estimateState/actions/editState.vue'
 import SendSchedule from '@/components/estimate/actions/sendSchedule';
 
 const ACTIONS = {
@@ -44,9 +45,10 @@ const ACTIONS = {
     actionLabel: 'Send Followup',
     inputComponent: 'estimate-send-followup'
   },
-  'change_status': {
-    actionLabel: 'Status and Tags',
-    inputComponent: 'estimate-change-status'
+  'change_state': {
+    actionLabel: 'Change State',
+    inputComponent: 'estimate-change-state',
+    states: ['in_progress', 'on_hold', 'unknown']
   },
   'send_schedule_email': {
     actionLabel: 'Send Schedule Email',
@@ -68,7 +70,7 @@ export default {
     'estimate-pay-invoice': PayInvoice,
     'estimate-send-to-team': SendToTeam,
     'estimate-send-followup': SendFollowup,
-    'estimate-change-status': Manage,
+    'estimate-change-state': EditState,
     'estimate-send-schedule': SendSchedule
   },
   data() {

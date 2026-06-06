@@ -13,7 +13,7 @@
   </div>
 
   <div id='estimate-stats-container'>
-    <app-estimate-stats :filters="filters" :searchTerm="searchTerm"></app-estimate-stats>
+    <app-estimate-stats :filters="filters" :searchTerm="searchTerm" @select-step="selectStep"></app-estimate-stats>
   </div>
 
   <div id='estimates-container'>
@@ -98,6 +98,13 @@ export default {
     },
     openFilters() {
       this.$root.$emit('bv::toggle::collapse', "filters");
+    },
+    // Clicking a stats-bar step sets the list's status filter. Toggling the
+    // active step returns to the default 'active' pipeline view. A new object
+    // reference is assigned so the (shallow) filters watcher fires.
+    selectStep(status) {
+      const nextStatus = this.filters.status === status ? 'active' : status;
+      this.filters = { ...this.filters, status: nextStatus };
     },
     changeFilters(new_filters) {
       this.filters = new_filters;

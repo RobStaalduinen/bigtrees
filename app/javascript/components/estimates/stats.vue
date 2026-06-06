@@ -1,6 +1,15 @@
 <template>
   <div class="stats-container">
-    <div v-for="(value, key) in stats" :key="key" class="stat-item">
+    <div
+      v-for="(value, key) in stats"
+      :key="key"
+      class="stat-item"
+      :class="{ 'stat-item--active': isActive(key) }"
+      role="button"
+      tabindex="0"
+      @click="selectStep(key)"
+      @keydown.enter="selectStep(key)"
+    >
       <span class="stat-label">{{ labelFor(key) }}</span>
       <span class="stat-value">{{ value }}</span>
     </div>
@@ -29,6 +38,15 @@ export default {
         scheduled: 'Scheduled',
         working: 'Working',
         invoice_sent: 'Invoiced'
+      },
+      // Each core step maps to a status filter value (see Estimate#for_status).
+      stepFilterMap: {
+        quoting: 'quoting',
+        quote_sent: 'quote_sent',
+        approved: 'approved',
+        scheduled: 'scheduled',
+        working: 'working',
+        invoice_sent: 'to_pay'
       }
     }
   },
@@ -36,6 +54,15 @@ export default {
     labelFor(key) {
       return this.labelMap[key] ||
         key.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    },
+    selectStep(key) {
+      const status = this.stepFilterMap[key];
+      if (status) {
+        this.$emit('select-step', status);
+      }
+    },
+    isActive(key) {
+      return this.filters.status === this.stepFilterMap[key];
     },
     fetchStats() {
       var params = {
@@ -97,10 +124,24 @@ export default {
   text-align: center;
   padding: 6px 4px;
   border-left: 1px solid #f0eeee;
+  cursor: pointer;
+  transition: background-color var(--transition-fast, 0.15s);
 }
 
 .stat-item:first-child {
   border-left: none;
+}
+
+.stat-item:hover {
+  background-color: #faf5f5;
+}
+
+.stat-item--active {
+  background-color: var(--main-color-faded, #faecec);
+}
+
+.stat-item--active .stat-label {
+  color: var(--main-color);
 }
 
 .stat-label {

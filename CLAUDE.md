@@ -75,6 +75,19 @@ The admin panel (`/admin/*`) is a Vue 2 SPA mounted in `app/javascript/packs/app
 - **`app/javascript/mixins/axiosMixin.js`** — Global Vue mixin providing `axiosGet`, `axiosPost`, `axiosPut`, `axiosDelete`, `axiosDownload`. Sets CSRF token and org header automatically.
 - **`app/javascript/mixins/permissionMixin.js`** — Global Vue mixin providing `hasPermission(page, permissionType)` and `featureEnabled(feature)`.
 
+### Design System
+
+A token + shared-component layer sits on top of Bootstrap-Vue. **Prefer it over hand-rolled styles**, and reference tokens instead of hardcoding colours/sizes.
+
+- **Tokens** — `app/javascript/stylesheets/variables.css` defines CSS custom properties: colour (brand, neutrals, semantic `--info/--success/--warning/--neutral/--danger`), `--radius-*`, `--space-*`, `--text-*`, shadows, `--transition-fast`. `--main-color`/`--secondary-red`/`--main-color-faded` remain as legacy aliases.
+- **Shared components** (globally registered in `packs/admin.js`):
+  - `app-button` (`ui/button.vue`) — variants `default` (legacy grey) / `primary` / `outline` / `subtle` / `ghost`; sizes `sm`/`md`; `label` for accessible icon-only buttons.
+  - `app-pill` (`ui/pill.vue`) — pill/badge; `tone` (brand/neutral/info/success/warning/danger), plus `filled`, `clickable`, `capitalize`.
+  - `app-segmented-control` (`ui/segmentedControl.vue`) — `v-model` segmented toggle over an `options` array.
+  - Estimate enum → tone maps live in `lib/estimateTones.js`.
+
+**Global CSS load order (do not break):** the global stylesheets (`variables`, `bootstrap_overrides`, `common_styles`, `ui_styles`) are `@import`ed through `stylesheets/custom_theme.scss` **after** Bootstrap so overrides reliably win. Do **not** add separate per-pack imports of these — `mini-css-extract-plugin` will hoist them into a shared chunk that loads before Bootstrap and silently drops every override (un-redding links, un-styling the nav, etc.). New packs should pull global styles in via `custom_theme.scss`. (`onboarding.js`/`property_management.js` still import them directly and are not yet hardened.)
+
 ### Authorization Model
 
 Arborists have a `role` field. `Roles.for_name(role)` returns role permissions used by the `Authorization` JS class. Route guards in Vue Router check `store.getters.hasPermission(page, type)` before navigating.

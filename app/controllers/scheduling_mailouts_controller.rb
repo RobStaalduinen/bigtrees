@@ -20,7 +20,7 @@ class SchedulingMailoutsController < ApplicationController
       params[:dest_email],
       params[:subject],
       params[:content],
-      false
+      include_quote?
     )
 
     record_customer_email(
@@ -31,5 +31,11 @@ class SchedulingMailoutsController < ApplicationController
     )
 
     render json: @estimate
+  end
+
+  private
+
+  def include_quote?
+    ActiveModel::Type::Boolean.new.cast(params[:include_quote])
   end
 end

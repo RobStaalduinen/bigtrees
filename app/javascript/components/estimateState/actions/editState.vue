@@ -14,7 +14,13 @@ import EventBus from '@/store/eventBus';
 export default {
   props: {
     id: { required: true },
-    estimate: { required: true }
+    estimate: { required: true },
+    // Restrict the selectable states; defaults to the full set so the
+    // quote-page header keeps every option.
+    states: {
+      type: Array,
+      default: () => ['in_progress', 'on_hold', 'unknown', 'done', 'cancelled']
+    }
   },
   data() {
     return {
@@ -24,7 +30,7 @@ export default {
   },
   computed: {
     options() {
-      return ['in_progress', 'on_hold', 'unknown', 'done', 'cancelled'].map(option => ({
+      return this.states.map(option => ({
         value: option,
         text: option.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
       }));

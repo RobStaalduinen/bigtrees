@@ -9,6 +9,7 @@
       <div class='estimate-header-right'>
         <span class='estimate-status'>
           <span class='dot' :class='stateDotClass'></span>
+          <span v-if='stateLabel' class='estimate-state-note'>({{ stateLabel }})</span>
           {{ estimate.formatted_status }}
         </span>
         <b-icon icon='chevron-right' class='estimate-chevron'></b-icon>
@@ -17,7 +18,7 @@
 
     <!-- Meta strip: difficulty + last email action -->
     <div class='estimate-meta'>
-      <app-pill icon='bar-chart-fill' :text='estimate.difficulty' :tone='difficultyTone' filled capitalize></app-pill>
+      <app-pill icon='bar-chart-fill' :text='estimate.difficulty' :tone='difficultyTone' filled capitalize clickable v-b-toggle='difficultySidebarId' role='button'></app-pill>
       <span class='email-chip' :class="{ 'email-chip-empty': !lastEmail }">
         <b-icon :icon="lastEmail ? 'envelope-fill' : 'envelope'"></b-icon>
         <template v-if='lastEmail'><b>{{ formatKey(lastEmail.template_key) }}</b> · {{ lastEmail.sent_at | moment('from', 'now') }}</template>
@@ -51,14 +52,18 @@
     </div>
 
     <div class='estimate-footer'>
-      <div class='estimate-footer-left'>
-        <app-tag-list :tags='estimate.tags' :collapsed="true"></app-tag-list>
+      <div class='estimate-footer-left tags-edit' v-b-toggle='tagsSidebarId' role='button'>
+        <app-tag-list v-if='estimate.tags.length' :tags='estimate.tags' :collapsed="true"></app-tag-list>
+        <span v-else class='tags-empty'><i>+ Add tag</i></span>
       </div>
 
       <div class='estimate-footer-right'>
         <app-estimate-actions-list :estimate='estimate'></app-estimate-actions-list>
       </div>
     </div>
+
+    <app-edit-tags :id='tagsSidebarId' :estimate='estimate'></app-edit-tags>
+    <app-edit-difficulty :id='difficultySidebarId' :estimate='estimate'></app-edit-difficulty>
 
   </div>
 </template>
@@ -68,6 +73,8 @@ import TimelineModal from './timelineModal';
 import ActionsList from './actionsList';
 import { mapState } from 'vuex'
 import TagList from '@/components/tags/views/list.vue'
+import EditTags from '@/components/tags/views/editEstimateTags.vue'
+import EditDifficulty from '@/components/estimateState/actions/editDifficulty.vue'
 import { difficultyTone } from '@/lib/estimateTones'
 
 export default {
@@ -80,7 +87,9 @@ export default {
   components: {
     'app-timeline-modal': TimelineModal,
     'app-estimate-actions-list': ActionsList,
-    'app-tag-list': TagList
+    'app-tag-list': TagList,
+    'app-edit-tags': EditTags,
+    'app-edit-difficulty': EditDifficulty
   },
   computed: {
     ...mapState({
@@ -88,6 +97,12 @@ export default {
     }),
     estimateLink() {
       return `/admin/estimates/${this.estimate.id}`;
+    },
+    tagsSidebarId() {
+      return `edit-tags-sidebar-${this.estimate.id}`;
+    },
+    difficultySidebarId() {
+      return `edit-difficulty-sidebar-${this.estimate.id}`;
     },
     priority() {
       return this.estimate.customer && this.estimate.customer.priority;
@@ -97,6 +112,12 @@ export default {
     },
     stateDotClass() {
       return `dot-state-${this.estimate.state}`;
+    },
+    // Surface the state alongside the status only when it adds info the
+    // status doesn't already convey (unknown / on hold).
+    stateLabel() {
+      const labels = { unknown: 'Unknown', on_hold: 'On Hold' };
+      return labels[this.estimate.state] || '';
     },
     difficultyTone() {
       return difficultyTone(this.estimate.difficulty);
@@ -174,6 +195,11 @@ export default {
     font-weight: 700;
     font-size: 11px;
     white-space: nowrap;
+  }
+
+  .estimate-state-note {
+    color: #888;
+    font-weight: 600;
   }
 
   .estimate-chevron {
@@ -278,6 +304,21 @@ export default {
     flex-wrap: wrap;
     gap: 5px;
     padding: 5px 0;
+  }
+
+  .tags-edit {
+    cursor: pointer;
+    padding: 5px 6px;
+    border-radius: 4px;
+    transition: background-color 0.15s;
+  }
+
+  .tags-edit:hover {
+    background-color: #ececec;
+  }
+
+  .tags-empty {
+    color: #999;
   }
 
   .estimate-footer-right {

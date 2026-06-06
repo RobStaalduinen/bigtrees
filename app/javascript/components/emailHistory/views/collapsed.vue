@@ -25,29 +25,29 @@
         </div>
 
         <div class='single-estimate-link-row' v-if="hasPermission('estimates', 'update')">
-          <div class='single-estimate-link' v-b-toggle.send-followup>
-            Send Followup
+          <div class='single-estimate-link' v-b-toggle.send-customer-email>
+            Send Customer Email
           </div>
         </div>
       </template>
     </app-collapsable>
 
-    <estimate-send-followup
-      id='send-followup'
+    <estimate-send-customer-email
+      id='send-customer-email'
       :estimate='estimate'
       @sent='retrieveEmailRecords'
-    ></estimate-send-followup>
+    ></estimate-send-customer-email>
   </div>
 </template>
 
 <script>
-import SendFollowup from '@/components/emailHistory/actions/sendFollowup';
+import SendCustomerEmail from '@/components/emailHistory/actions/sendCustomerEmail';
 import EventBus from '@/store/eventBus';
 import moment from 'moment';
 
 export default {
   components: {
-    'estimate-send-followup': SendFollowup
+    'estimate-send-customer-email': SendCustomerEmail
   },
   props: {
     estimate: {

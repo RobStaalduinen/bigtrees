@@ -25,7 +25,8 @@ class QuoteMailoutsController < ApplicationController
       @estimate,
       params[:dest_email],
       params[:subject],
-      params[:content]
+      params[:content],
+      include_quote?
     )
 
     record_customer_email(
@@ -34,6 +35,14 @@ class QuoteMailoutsController < ApplicationController
       nylas_response: response,
       recipient_email: params[:dest_email]
     )
+  end
+
+  # Existing quote-send flows omit this param and expect the quote PDF to be
+  # attached, so default to true when it isn't provided.
+  def include_quote?
+    return true unless params.key?(:include_quote)
+
+    ActiveModel::Type::Boolean.new.cast(params[:include_quote])
   end
 
   def estimate_params

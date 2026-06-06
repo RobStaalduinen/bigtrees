@@ -48,8 +48,8 @@
       Re-Open Job
     </b-dropdown-item>
 
-    <b-dropdown-item @click='triggerAction("change_status")' v-if="estimate.state != 'completed'">
-      Status and Tags
+    <b-dropdown-item @click='triggerAction("change_state")' v-if="estimate.state != 'completed'">
+      Change State
     </b-dropdown-item>
 
     <!-- <b-dropdown-item v-if='estimate.status != "cancelled"' @click='triggerAction("cancel")'>

@@ -102,16 +102,18 @@ class EstimatesController < ApplicationController
 
     @estimates = base_estimate_query.in_progress
 
-    @estimates = filter_estimates(@estimates, params)
+    # The stats bar always shows the full in-progress pipeline, so the status
+    # filter is ignored here (otherwise selecting one step would zero the rest).
+    @estimates = filter_estimates(@estimates, params.except(:status))
     @estimates = search_estimates(@estimates, params[:q]) if params[:q]
 
     stats = {
-      quoting: @estimates.needs_costs.count + @estimates.pending_quote.count,
-      quote_sent: @estimates.quote_sent.count,
-      approved: @estimates.approved.count,
-      scheduled: @estimates.work_scheduled.count,
-      working: @estimates.work_started.count + @estimates.work_completed.count,
-      invoice_sent: @estimates.final_invoice_sent.count
+      quoting: @estimates.step_quoting.count,
+      quote_sent: @estimates.step_quote_sent.count,
+      approved: @estimates.step_approved.count,
+      scheduled: @estimates.step_scheduled.count,
+      working: @estimates.step_working.count,
+      invoice_sent: @estimates.step_invoice_sent.count
     }
     render json: stats
   end
