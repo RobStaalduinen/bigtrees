@@ -1,4 +1,5 @@
-<% estimate.tree_images.each_slice(9).each_with_index do |images, i| %>
+<% ready_images = estimate.tree_images.select { |i| i.image_url.present? || i.edited_image_url.present? } %>
+<% ready_images.each_slice(9).each_with_index do |images, i| %>
   <div class='alwaysbreak page'>
     <%= render 'quotes/pdf/header', organization: organization %>
 

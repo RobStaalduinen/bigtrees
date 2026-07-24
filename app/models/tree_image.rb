@@ -24,6 +24,8 @@ class TreeImage < ActiveRecord::Base
   end
 
   def imgix_url
+    return nil if url.blank?
+
     url.gsub(BUCKET_URL, IMGIX_CDN).split('?')[0]
   end
 

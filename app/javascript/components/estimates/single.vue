@@ -24,6 +24,7 @@
         <template v-if='lastEmail'><b>{{ formatKey(lastEmail.template_key) }}</b> · {{ lastEmail.sent_at | moment('from', 'now') }}</template>
         <template v-else>No email sent yet</template>
       </span>
+      <b-icon v-if='estimate.has_images' icon='images' class='images-icon' title='Has images'></b-icon>
     </div>
 
     <div class='estimate-body'>
@@ -261,6 +262,12 @@ export default {
   .email-chip >>> .b-icon { color: #9a9a9a; }
   .email-chip b { color: #444; font-weight: 600; }
   .email-chip-empty { color: #aaa; }
+
+  .images-icon {
+    margin-left: auto;
+    color: var(--main-color);
+    font-size: 13px;
+  }
 
   /* ---- Body ---- */
   .estimate-body {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_30_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -605,6 +605,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000000) do
     t.integer "estimate_id"
     t.datetime "created_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string "client_upload_id"
+    t.index ["client_upload_id"], name: "index_tree_images_on_client_upload_id", unique: true
     t.index ["estimate_id"], name: "index_tree_images_on_estimate_id"
     t.index ["tree_id"], name: "index_tree_images_on_tree_id"
   end

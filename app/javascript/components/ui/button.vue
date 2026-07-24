@@ -1,5 +1,6 @@
 <template>
   <button
+    type="button"
     :class="['ui-btn', `ui-btn--${variant}`, `ui-btn--${size}`, { 'ui-btn--icon-only': !hasText }]"
     :title="label"
     :aria-label="label"

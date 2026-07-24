@@ -18,7 +18,8 @@ class EstimatesController < ApplicationController
       includes(:customer).
       includes(:arborist).
       includes(:tags).
-      includes(:email_records)
+      includes(:email_records).
+      includes(:tree_images)
 
     @estimates = filter_estimates(@estimates, params)
 

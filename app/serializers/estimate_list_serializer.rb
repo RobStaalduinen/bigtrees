@@ -23,6 +23,12 @@ class EstimateListSerializer < ApplicationSerializer
   attribute :additional_message
   attribute :site_visit_required
 
+  # Lightweight flag so the list can show an image indicator without shipping
+  # the full tree_images payload. Uses the eager-loaded association (no N+1).
+  attribute :has_images do
+    object.tree_images.any?
+  end
+
   # Most recent email sent to the customer (from the email_records association,
   # eager-loaded in the controller so this stays in-memory / no N+1).
   attribute :last_email do

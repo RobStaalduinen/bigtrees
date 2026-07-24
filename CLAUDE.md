@@ -56,6 +56,7 @@ The app is a standard Rails MVC app that serves both HTML views and JSON APIs co
 - **`app/controllers/`** — Standard Rails controllers; `ApplicationController` sets up Pundit authorization and `OrganizationContext` (multi-tenant org scoping via `X-ORGANIZATION-ID` header or session).
 - **`app/models/`** — ActiveRecord models. `Estimate` is the central model with a rich state machine: it has both a `state` enum (`in_progress`, `on_hold`, `done`, `cancelled`) and a `status` enum (`needs_costs` → `needs_arborist` → `pending_quote` → `quote_sent` → `approved` → `work_scheduled` → `work_started` → `work_completed` → `final_invoice_sent` → `completed`). Status is automatically recalculated via `before_save :set_status`.
 - **`app/policies/`** — Pundit policies for authorization.
+- **`app/serializers/`** — ActiveModelSerializers. The adapter is `:json` with `default_includes = '**'` (set in `config/application.rb`), so **`render json: <model>` wraps the payload under a root key** derived from the model — `render json: tree` → `{ "tree": {...} }`, `render json: estimate` → `{ "estimate": {...} }`. Read it on the client as `response.data.<model>` (e.g. `response.data.tree`), and associations are serialized by default. Plain hashes (`render json: { status: :ok, ... }`) are returned as-is.
 - **`app/services/`** — Service objects (e.g., `estimates/duplicate.rb` for estimate duplication).
 - **`app/modules/`** — Reusable Ruby modules: `excel/` (Excel file generation), `reports/` (reporting logic).
 - **`lib/`** — Excel/PDF generation (uses `rubyXL`, `wicked_pdf`, `caxlsx`), scheduled tasks via `whenever`.
@@ -85,6 +86,7 @@ A token + shared-component layer sits on top of Bootstrap-Vue. **Prefer it over 
   - `app-pill` (`ui/pill.vue`) — pill/badge; `tone` (brand/neutral/info/success/warning/danger), plus `filled`, `clickable`, `capitalize`.
   - `app-segmented-control` (`ui/segmentedControl.vue`) — `v-model` segmented toggle over an `options` array.
   - Estimate enum → tone maps live in `lib/estimateTones.js`.
+- **Global icon classes** (in `common_styles.css`) — for inline action icons use `<b-icon icon='…' class='app-icon'>`; `.app-icon` colours it brand red and `.edit-icon` adds `cursor: pointer`. The standard **edit affordance** is `<b-icon icon='pencil-square' class='app-icon edit-icon' @click='…'>` (always red, no hover state) — reuse it rather than hand-rolling an edit button.
 
 **Global CSS load order (do not break):** the global stylesheets (`variables`, `bootstrap_overrides`, `common_styles`, `ui_styles`) are `@import`ed through `stylesheets/custom_theme.scss` **after** Bootstrap so overrides reliably win. Do **not** add separate per-pack imports of these — `mini-css-extract-plugin` will hoist them into a shared chunk that loads before Bootstrap and silently drops every override (un-redding links, un-styling the nav, etc.). New packs should pull global styles in via `custom_theme.scss`. (`onboarding.js`/`property_management.js` still import them directly and are not yet hardened.)
 

@@ -1,16 +1,16 @@
 <template>
   <div id='quick-costs-box'>
-    <div><b>Quick Costs</b></div>
+    <div class='quick-costs-label'>Quick Costs</div>
     <div id='quick-cost-actions'>
-      <b-button
+      <app-button
         v-for="(cost, index) in quick_costs"
         :key="index"
-        class='cost-button'
-        size="sm"
-        @click='addCost(cost.default_cost, cost.content)'
-      >
-        {{ cost.label }}
-      </b-button>
+        variant='outline'
+        size='md'
+        icon='plus'
+        :text='cost.label'
+        :click='() => addCost(cost.default_cost, cost.content)'
+      ></app-button>
     </div>
   </div>
 </template>
@@ -46,18 +46,23 @@ export default {
   #quick-costs-box {
     display: flex;
     flex-direction: column;
-    padding: 8px;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-2);
   }
 
+  .quick-costs-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Uniform gap in both axes keeps the wrapped grid evenly spaced and the
+     larger tap targets (md app-buttons) easier to hit. */
   #quick-cost-actions {
     display: flex;
     flex-wrap: wrap;
-  }
-
-  .cost-button {
-    margin-right: 8px;
-    margin-bottom: 8px;
-
-    padding: 4px 6px;
+    gap: var(--space-2);
   }
 </style>

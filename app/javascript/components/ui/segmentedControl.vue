@@ -5,6 +5,7 @@
       :key='opt.value'
       type='button'
       :class='{ on: value === opt.value }'
+      :disabled='opt.disabled'
       @click='select(opt.value)'
     >{{ opt.text }}</button>
   </div>
@@ -60,5 +61,10 @@ export default {
     background: var(--main-color);
     color: #fff;
     font-weight: 600;
+  }
+
+  .segmented button:disabled {
+    color: var(--neutral);
+    cursor: not-allowed;
   }
 </style>

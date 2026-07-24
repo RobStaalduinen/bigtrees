@@ -18,12 +18,21 @@
 class TreeImageSerializer < ApplicationSerializer
 
   attribute :tree_id
+  # Lets the client match a displayed (possibly pending) image back to its
+  # in-flight upload job, so it can be killed from the image grid.
+  attribute :client_upload_id
 
   attribute :image_url
   attribute :edited_image_url
 
   # Virtual
   attribute :url
+
+  # Distinguishes a ready image from a pending (URL-less) placeholder so the
+  # frontend never has to guess from a possibly-null image_url.
+  attribute :ready do
+    object.image_url.present?
+  end
   # attribute :image_url_sm
   # attribute :image_url_md
 

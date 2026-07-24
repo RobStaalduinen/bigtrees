@@ -18,9 +18,17 @@
 class TreeSerializer < ApplicationSerializer
   attribute :description
   attribute :stump_removal
+  attribute :in_backyard
   attribute :job_type
+  # Raw enum value (e.g. "removal") so the edit form can pre-select the type.
+  attribute :work_type
 
   # Virtual
   attribute :work_name
   attribute :formatted_job_type
+  # Core work-type label without the "+ Stump Removal" suffix that work_name
+  # adds — stump removal is surfaced as its own pill on the task card.
+  attribute :work_type_name do
+    object.work_type&.capitalize&.gsub("_", " ")
+  end
 end

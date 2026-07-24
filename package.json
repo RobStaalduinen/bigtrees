@@ -51,5 +51,8 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^4.15.0"
+  },
+  "scripts": {
+    "test:js": "node --test app/javascript"
   }
 }

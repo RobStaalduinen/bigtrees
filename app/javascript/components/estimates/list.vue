@@ -30,7 +30,6 @@
 
 <script>
 import SingleEstimate from './single';
-import ImageGallery from '@/components/tree_images/views/galleryModal';
 import Filters from './filters';
 import ListActionHandler from '@/components/estimate/utils/listActionHandler';
 import { mapState } from 'vuex'
@@ -41,7 +40,6 @@ export default {
   components: {
     'app-single-estimate': SingleEstimate,
     'app-estimate-filters': Filters,
-    'app-image-gallery': ImageGallery,
     'app-list-action-handler': ListActionHandler,
     'app-estimate-stats': EstimateStats
   },

@@ -28,6 +28,10 @@ class TreeImagesController < ApplicationController
     else
       image_url = tree_image.image_url
     end
+
+    # Pending (URL-less) placeholder: nothing to serve yet.
+    return head :no_content if image_url.blank?
+
     parsed_url = URI.parse(image_url)
     key = URI.decode_www_form_component(parsed_url.path.sub(/^\//, ''))
 
@@ -64,6 +68,25 @@ class TreeImagesController < ApplicationController
     tree_image.destroy
 
     render json: estimate
+  end
+
+  # Idempotent association keyed on the client-generated client_upload_id.
+  # Called once to create the pending placeholder row (no image_url), and
+  # again to fill in the URL once the S3 upload completes. A blank image_url
+  # never overwrites an existing one, so the two calls are order-independent.
+  def associate
+    authorize Estimate, :update?
+
+    tree_image = TreeImage.find_or_create_by(client_upload_id: params[:client_upload_id]) do |ti|
+      ti.estimate_id = params[:estimate_id]
+      ti.tree = tree
+    end
+
+    if params[:image_url].present?
+      tree_image.update(image_url: params[:image_url])
+    end
+
+    render json: tree_image, serializer: TreeImageSerializer
   end
 
   # Temporary, while supporting two different creation mechanisms

@@ -1,5 +1,5 @@
 <template>
-  <app-right-sidebar :id='id' title='Add Task' submitText='Save' :onSubmit='saveTask' :validate='validate'>
+  <app-right-sidebar :id='id' :title="isEditing ? 'Edit Task' : 'Add Task'" submitText='Save' :onSubmit='saveTask' :validate='validate'>
     <template v-slot:content>
       <validation-observer ref="observer">
 
@@ -74,39 +74,53 @@ export default {
   },
   data() {
     return {
-      work_type: 0,
-      stump_removal: false,
-      in_backyard: false,
+      work_type: 'removal',
+      stump_removal: 'false',
+      in_backyard: 'false',
       description: null,
+      // Set when the form is opened to edit an existing task; null = create.
+      editingTreeId: null,
       validationErrorMessage: null
     }
   },
   computed: {
+    isEditing() {
+      return this.editingTreeId != null;
+    },
+    // Values are enum keys so they round-trip directly to/from the serialized
+    // tree's work_type (no index mapping needed for edit pre-fill).
     options() {
       return [
-        {value: 0, text: 'Removal'},
-        {value: 1, text: 'Trim'},
-        {value: 2, text: 'Broken Limbs'},
-        {value: 3, text: 'Stump Removal'},
-        {value: 4, text: 'Other'},
-        {value: 5, text: 'Tree Services'}
+        {value: 'removal', text: 'Removal'},
+        {value: 'trim', text: 'Trim'},
+        {value: 'broken_limbs', text: 'Broken Limbs'},
+        {value: 'stump_removal', text: 'Stump Removal'},
+        {value: 'other', text: 'Other'},
+        {value: 'tree_services', text: 'Tree Services'}
       ]
     }
   },
   methods: {
     saveTask() {
-      // this.axiosPost to /trees
-      let params = {
+      const params = {
         work_type: this.work_type,
         stump_removal: this.stump_removal,
+        in_backyard: this.in_backyard,
         description: this.description,
         estimate_id: this.estimate.id
       }
 
-      this.axiosPost('/trees/admin_create', params)
+      const request = this.isEditing
+        ? this.axiosPut(`/trees/${this.editingTreeId}/admin_update`, params)
+        : this.axiosPost('/trees/admin_create', params);
+
+      request
         .then(response => {
-          let newTrees = this.estimate.trees.concat([response.data.tree])
-          EventBus.$emit('ESTIMATE_UPDATED', { trees: newTrees });
+          const tree = response.data.tree || response.data;
+          const trees = this.isEditing
+            ? this.estimate.trees.map(t => (t.id === tree.id ? tree : t))
+            : this.estimate.trees.concat([tree]);
+          EventBus.$emit('ESTIMATE_UPDATED', { trees });
           this.$root.$emit('bv::toggle::collapse', this.id);
         })
         .catch(error => {
@@ -114,10 +128,38 @@ export default {
         })
     },
     validate() {
-
-
       return true;
+    },
+    // Open blank for a new task.
+    resetForm() {
+      this.work_type = 'removal';
+      this.stump_removal = 'false';
+      this.in_backyard = 'false';
+      this.description = null;
+      this.editingTreeId = null;
+      this.validationErrorMessage = null;
+    },
+    // Pre-fill from an existing task and open the sidebar. Booleans become the
+    // radio group's string values so the right option shows selected.
+    loadForEdit(tree) {
+      this.work_type = tree.work_type;
+      this.stump_removal = tree.stump_removal ? 'true' : 'false';
+      this.in_backyard = tree.in_backyard ? 'true' : 'false';
+      this.description = tree.description;
+      this.editingTreeId = tree.id;
+      this.validationErrorMessage = null;
+      this.$root.$emit('bv::toggle::collapse', this.id);
     }
+  },
+  mounted() {
+    this._onEdit = (tree) => this.loadForEdit(tree);
+    this._onReset = () => this.resetForm();
+    EventBus.$on('TREE_FORM_EDIT', this._onEdit);
+    EventBus.$on('TREE_FORM_RESET', this._onReset);
+  },
+  beforeDestroy() {
+    EventBus.$off('TREE_FORM_EDIT', this._onEdit);
+    EventBus.$off('TREE_FORM_RESET', this._onReset);
   }
 }
 </script>

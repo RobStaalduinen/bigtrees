@@ -159,6 +159,10 @@ export default {
       // console.log(dataUrl);
     },
     setupCanvas() {
+      // Guard against a pending (URL-less) image — nothing to load into the editor.
+      if(!this.urlToEdit) {
+        return;
+      }
       this.canvasWidth = this.$refs.image.clientWidth;
       this.canvasHeight = this.$refs.image.clientHeight;
 

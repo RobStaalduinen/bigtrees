@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { breadcrumb, captureException } from './uploadTelemetry';
+import { breadcrumb, captureException } from './uploadTelemetry.js';
 
 // Dedicated S3 client — no CSRF/JSON/org headers that would interfere with
 // presigned URL signatures or cause CORS preflight failures.

@@ -55,9 +55,11 @@ Rails.application.routes.draw do
   resources :trees do
     post '/admin_create', to: 'trees#admin_create', on: :collection, as: 'admin_create'
     post '/bulk_create', to: 'trees#bulk_create', on: :collection
+    put '/admin_update', to: 'trees#admin_update', on: :member, as: 'admin_update'
   end
   resources :tree_images, only: [ :new, :show, :create, :update, :destroy ] do
     post '/create_from_urls', to: 'tree_images#create_from_urls', on: :collection
+    post '/associate', to: 'tree_images#associate', on: :collection
   end
   resources :extra_costs, only: [ :create, :destroy ]
   resources :work_records do

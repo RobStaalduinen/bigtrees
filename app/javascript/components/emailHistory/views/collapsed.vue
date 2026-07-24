@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-collapsable id='email-history-collapse'>
+    <app-collapsable id='email-history-collapse' :padded='false'>
       <template v-slot:title>
         <b>Email History ({{ emailRecords.length }})</b>
       </template>
@@ -98,8 +98,6 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 8px;
-    border: 1px solid lightgray;
-    margin: 4px 0;
   }
 
   .email-row:nth-child(even) {

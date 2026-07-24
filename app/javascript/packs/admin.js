@@ -79,6 +79,7 @@ import ColourPicker from '../components/ui/colourPicker.vue';
 import UpdateBanner from '../components/ui/updateBanner.vue';
 import Pill from '../components/ui/pill.vue';
 import SegmentedControl from '../components/ui/segmentedControl.vue';
+import Uploader from '../components/file/uploader.vue';
 
 Vue.component('app-header', Header)
 Vue.component('app-shadow-box', ShadowBox)
@@ -98,6 +99,7 @@ Vue.component('app-colour-picker', ColourPicker);
 Vue.component('app-update-banner', UpdateBanner);
 Vue.component('app-pill', Pill);
 Vue.component('app-segmented-control', SegmentedControl);
+Vue.component('app-uploader', Uploader);
 
 
 // Form components
@@ -187,6 +189,12 @@ import Organizations from '../pages/organizations.vue';
 import Schedule from '../pages/schedule.vue';
 
 import { store } from '../store/store.js';
+
+// Durable, global background upload queue. Hydrates persisted jobs and resumes
+// any non-terminal work once per session; exposed to components as $uploads.
+import { initUploadManager } from '../services/upload/uploadManager.js';
+const uploadManager = initUploadManager();
+Vue.prototype.$uploads = uploadManager;
 
 const routes = [
   { path: '/admin/hours', component: Hours, name: 'hours' },

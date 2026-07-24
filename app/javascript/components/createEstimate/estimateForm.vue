@@ -15,14 +15,18 @@
         </app-address-form>
       </estimate-form-section>
 
+      <estimate-form-section header='Tasks & Images'>
+        <estimate-task-form @input='onTasksImagesChange'></estimate-task-form>
+      </estimate-form-section>
+
+      <estimate-form-section header='Costs'>
+        <estimate-costs-form @input='(payload) => { this.costs = payload }'></estimate-costs-form>
+      </estimate-form-section>
+
       <estimate-form-section header='Equipment and Tool Requirements'>
         <estimate-tool-form
           v-model='toolSelection'
         ></estimate-tool-form>
-      </estimate-form-section>
-
-      <estimate-form-section header='Tasks'>
-        <estimate-task-form :value='tasks' @input='(payload) => { this.tasks = [...payload] }'></estimate-task-form>
       </estimate-form-section>
 
       <estimate-form-section header='Notes'>
@@ -40,8 +44,9 @@ import CustomerForm from './customerForm';
 import AddressForm from './addressForm';
 import SiteQuestions from './siteQuestions';
 import TaskForm from './taskForm';
+import CostsForm from './costsForm';
 import FormSection from './formSection'
-import ToolForm from '@/components/tools/forms/mutliSelect';
+import ToolForm from './equipmentForm';
 import NotesForm from './notesForm';
 
 export default {
@@ -50,6 +55,7 @@ export default {
     'app-address-form': AddressForm,
     'estimate-site-questions': SiteQuestions,
     'estimate-task-form': TaskForm,
+    'estimate-costs-form': CostsForm,
     'estimate-form-section': FormSection,
     'estimate-tool-form': ToolForm,
     'estimate-notes-form': NotesForm
@@ -60,8 +66,8 @@ export default {
       addresses: {},
       site: {},
       tasks: [],
+      uncategorizedImages: [],
       costs: [],
-      treeImages: [],
       toolSelection: [],
       notes: [],
       validationErrors: false,
@@ -73,6 +79,10 @@ export default {
     }
   },
   methods: {
+    onTasksImagesChange(payload) {
+      this.tasks = payload.tasks;
+      this.uncategorizedImages = payload.uncategorizedImages;
+    },
     onSubmit() {
 
       this.submitForm();
@@ -134,33 +144,67 @@ export default {
 
       this.axiosPost('/estimates', options).then(response => {
         var estimateId = response.data.estimate_id
-        let costOptions = {
-          costs: this.tasks.map(task => { return task.cost })
-        }
-        this.axiosPost(`/estimates/${estimateId}/costs`, costOptions).then(response => {
-          let trees = this.tasks.map(task => {
-            return {
-              tree_images_attributes: this.getTreeImageAttributes(task)
-            }
-          })
+
+        // Costs are now standalone invoice line items, no longer tied to tasks.
+        // Drop blank rows (e.g. the untouched starter row) so we don't persist
+        // empty costs.
+        const costs = this.costs.filter(cost => cost.amount != null && cost.amount !== '');
+        const costRequest = costs.length > 0
+          ? this.axiosPost(`/estimates/${estimateId}/costs`, { costs })
+          : Promise.resolve();
+
+        costRequest.then(() => {
+          // Trees are created without images; the durable queue associates each
+          // uploaded image to its tree in the background via resolveTarget.
           var treeOptions = {
             estimate_id: estimateId,
-            trees: trees
+            trees: this.tasks.map(task => ({ description: task.description }))
           }
 
           this.axiosPost('/trees/bulk_create', treeOptions).then(response => {
-            window.location.href = `/admin/estimates/${estimateId}`
+            // Persist each job's resolved target before navigating, so the
+            // background association survives the full page reload below.
+            this.resolveImageTargets(estimateId, response.data.tree_ids).then(() => {
+              window.location.href = `/admin/estimates/${estimateId}`
+            })
           })
         })
       })
     },
-    getTreeImageAttributes(task) {
-        if(task.image != undefined && task.image != null) {
-          return [{ image_url: task.image.url }];
-        }
-        else {
-          return [];
-        }
+    // Rewire pending upload jobs to their real target before navigating, so the
+    // placeholder + URL-fill complete in the background. Task images attach to
+    // the tree bulk_create returned (in task order); uncategorized images
+    // attach to the estimate only (tree_id null).
+    resolveImageTargets(estimateId, treeIds) {
+      const promises = [];
+
+      if (Array.isArray(treeIds) && treeIds.length === this.tasks.length) {
+        this.tasks.forEach((task, index) => {
+          const jobs = Array.isArray(task.images) ? task.images : [];
+          jobs.forEach(job => {
+            promises.push(this.$uploads.resolveTarget(job.id, {
+              type: 'tree_image',
+              estimate_id: estimateId,
+              tree_id: treeIds[index]
+            }));
+          });
+        });
+      } else {
+        // Guard against slot→tree mismaps; skip task association rather than
+        // risk attaching images to the wrong tree.
+        console.error('bulk_create returned', treeIds && treeIds.length, 'tree_ids for', this.tasks.length, 'tasks');
+      }
+
+      const uncategorized = Array.isArray(this.uncategorizedImages) ? this.uncategorizedImages : [];
+      uncategorized.forEach(job => {
+        promises.push(this.$uploads.resolveTarget(job.id, {
+          type: 'tree_image',
+          estimate_id: estimateId,
+          tree_id: null
+        }));
+      });
+
+      return Promise.all(promises);
     }
   },
   mounted() {

@@ -20,6 +20,7 @@
         <b-dropdown-item to='/admin/hours' v-if='permissions.canList("hours")'>Hours</b-dropdown-item>
         <b-dropdown-item to='/admin/company' v-if='permissions.canAdmin("organizations")'>My Company</b-dropdown-item>
         <b-dropdown-item to='/admin/organizations' v-if='$store.state.user.user_id === 14 && permissions.canCreate("organizations")'>Organizations</b-dropdown-item>
+        <app-upload-indicator></app-upload-indicator>
         <b-nav-item-dropdown class='interior-dropdown' text="My Details" toggle-class="text-dark">
             <b-dropdown-item :to="profileLink" v-if='permissions.canShow("arborists")'>Profile</b-dropdown-item>
             <b-dropdown-item v-if="hasMultipleCompanies()" @click='changeOrganization'>Change Company</b-dropdown-item>
@@ -40,11 +41,13 @@
 <script>
 import ChangeOrganization from '@/components/organizations/actions/change.vue'
 import EmailStatus from '@/components/company/views/email_status.vue'
+import UploadIndicator from '@/components/file/uploadIndicator.vue'
 
 export default {
   components: {
     'app-change-organization': ChangeOrganization,
-    'app-email-status': EmailStatus
+    'app-email-status': EmailStatus,
+    'app-upload-indicator': UploadIndicator
   },
   computed: {
     userId() {
@@ -64,7 +67,11 @@ export default {
     logout() {
       this.axiosGet('/logout').then(response => {
         localStorage.removeItem('selectedOrganizationId');
-        window.location.href='/login'
+        // Privacy on shared devices: abort in-flight uploads and empty the
+        // persisted queue before leaving.
+        Promise.resolve(this.$uploads && this.$uploads.clear())
+          .catch(() => {})
+          .finally(() => { window.location.href = '/login' });
       })
     },
     organizationName() {

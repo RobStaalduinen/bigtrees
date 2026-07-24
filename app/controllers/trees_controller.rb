@@ -12,29 +12,26 @@ class TreesController < ApplicationController
     render json: tree
   end
 
+  def admin_update
+    tree = estimate.trees.find(params[:id])
+    tree.update(tree_params)
+
+    render json: tree
+  end
+
   def bulk_create
-    params[:trees].each do |tree|
-      # image_attributes = (tree[:tree_image_attributes] || []).map do |image|
-      #   image.merge(estimate_id: estimate.id)
-      # end
-      new_tree = Tree.create(
+    # Images are no longer embedded here. The client uploads them via the
+    # durable background queue and associates each one to its tree using the
+    # returned tree_ids (in input order) + the idempotent associate endpoint.
+    trees = params[:trees].map do |tree|
+      Tree.create(
         estimate: estimate,
         description: tree[:description],
         work_type: 'other'
       )
-
-      tree[:tree_images_attributes]&.each do |image|
-        next unless image[:image_url].present?
-        
-        TreeImage.create(
-          tree: new_tree,
-          estimate: estimate,
-          image_url: image[:image_url]
-        )
-      end
     end
 
-    render json: { status: :ok }
+    render json: { status: :ok, tree_ids: trees.map(&:id) }
   end
 
   private

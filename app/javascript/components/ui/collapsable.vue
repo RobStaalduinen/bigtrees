@@ -7,7 +7,7 @@
       <slot name='title'></slot>
     </div>
 
-    <b-collapse :id='id + "_content"' class='collapsable-body'>
+    <b-collapse :id='id + "_content"' class='collapsable-body' :class="{ 'collapsable-body--flush': !padded }">
       <slot name='content'></slot>
     </b-collapse>
   </div>
@@ -20,6 +20,12 @@ export default {
       required: true
     },
     canExpand: {
+      type: Boolean,
+      default: true
+    },
+    // Body padding is on by default. Sections whose content brings its own
+    // layout/padding (e.g. Task Details and Images) can opt out with :padded='false'.
+    padded: {
       type: Boolean,
       default: true
     }
@@ -62,5 +68,9 @@ export default {
     border: 1px lightgray solid;
     border-width: 0 1px 1px 1px;
     padding: 4px 8px;
+  }
+
+  .collapsable-body--flush {
+    padding: 0;
   }
 </style>
