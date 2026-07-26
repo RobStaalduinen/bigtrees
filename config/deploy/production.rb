@@ -1,6 +1,6 @@
 require 'json'
 
-server '98.93.41.206',
+server '98.88.77.57',
        port: 22,
        user: 'ubuntu',
        roles: [:web, :app, :db],
