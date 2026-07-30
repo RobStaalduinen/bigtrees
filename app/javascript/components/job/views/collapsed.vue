@@ -55,6 +55,9 @@
                   <span v-for='(value, question, i) in job.completion_survey_responses' :key='i'>
                     {{ question }}: <span :style="{ color: value ? 'green' : 'red', fontWeight: 'bold' }">{{ value ? 'YES' : 'NO' }}</span><br>
                   </span>
+                  <span>
+                    All work completed: <span :style="{ color: allWorkCompleted(index) ? 'green' : 'red', fontWeight: 'bold' }">{{ allWorkCompleted(index) ? 'YES' : 'NO' }}</span><br>
+                  </span>
                 </div>
               </div>
 
@@ -115,6 +118,10 @@ export default {
       }
 
       return 'Paused';
+    },
+    allWorkCompleted(index) {
+      const isLastVisit = index === this.estimate.jobs.length - 1;
+      return isLastVisit && !!this.estimate.work_complete;
     },
     canEditJob(job) {
       const role = this.$store.state.user.role;
