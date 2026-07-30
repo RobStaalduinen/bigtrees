@@ -10,6 +10,12 @@ class EstimatePolicy < ApplicationPolicy
     @estimate = estimate
   end
 
+  # Transferring a quote to another org is a state-changing action gated on the
+  # same permission as other edits (cancel reuses update? the same way).
+  def transfer?
+    update?
+  end
+
   class Scope < ApplicationPolicy::Scope
     attr_reader :user, :scope, :role
 

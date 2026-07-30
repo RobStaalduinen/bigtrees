@@ -43,18 +43,26 @@ module Estimates
     private
 
     def duplicate_associations(new_estimate)
-      # Duplicate Trees and Tree Images
+      # Duplicate Trees (map original -> copy so images reattach correctly)
+      tree_map = {}
       @original_estimate.trees.each do |tree|
         new_tree = tree.dup
         new_tree.estimate = new_estimate
         new_tree.save!
+        tree_map[tree.id] = new_tree
+      end
 
-        tree.tree_images.each do |image|
-          new_image = image.dup
-          new_image.tree = new_tree
-          new_image.estimate = new_estimate
-          new_image.save!
-        end
+      # Duplicate Tree Images. Iterate the estimate's images directly so
+      # uncategorized images (tree_id nil) are copied too, not just those
+      # attached to a tree.
+      @original_estimate.tree_images.each do |image|
+        new_image = image.dup
+        new_image.estimate = new_estimate
+        new_image.tree = image.tree_id ? tree_map[image.tree_id] : nil
+        # client_upload_id has a unique index; it identifies the original
+        # client-side upload and must not be carried onto a copy.
+        new_image.client_upload_id = nil
+        new_image.save!
       end
 
       # Duplicate Costs
@@ -64,11 +72,17 @@ module Estimates
         new_cost.save!
       end
 
-      # Duplicate Notes
+      # Duplicate Notes (including the note's attached image, SingleImageable)
       @original_estimate.notes.each do |note|
         new_note = note.dup
         new_note.estimate = new_estimate
         new_note.save!
+
+        if note.image
+          new_note_image = note.image.dup
+          new_note_image.imageable = new_note
+          new_note_image.save!
+        end
       end
 
       # Duplicate Equipment Assignments

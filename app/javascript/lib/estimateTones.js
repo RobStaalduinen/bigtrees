@@ -13,7 +13,8 @@ const STATE_TONE = {
   on_hold: 'warning',
   done: 'success',
   unknown: 'neutral',
-  cancelled: 'danger'
+  cancelled: 'danger',
+  transferred: 'neutral'
 };
 
 export function difficultyTone(difficulty) {

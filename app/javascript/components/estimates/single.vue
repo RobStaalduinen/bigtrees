@@ -10,7 +10,7 @@
         <span class='estimate-status'>
           <span class='dot' :class='stateDotClass'></span>
           <span v-if='stateLabel' class='estimate-state-note'>({{ stateLabel }})</span>
-          {{ estimate.formatted_status }}
+          {{ statusLabel }}
         </span>
         <b-icon icon='chevron-right' class='estimate-chevron'></b-icon>
       </div>
@@ -120,6 +120,11 @@ export default {
       const labels = { unknown: 'Unknown', on_hold: 'On Hold' };
       return labels[this.estimate.state] || '';
     },
+    // A transferred quote is terminal: show "Transferred" rather than its
+    // (now frozen) pipeline status.
+    statusLabel() {
+      return this.estimate.state === 'transferred' ? 'Transferred' : this.estimate.formatted_status;
+    },
     difficultyTone() {
       return difficultyTone(this.estimate.difficulty);
     },
@@ -221,6 +226,7 @@ export default {
   .dot-state-done        { background-color: #10b981; }
   .dot-state-unknown     { background-color: #9ca3af; }
   .dot-state-cancelled   { background-color: #ef4444; }
+  .dot-state-transferred { background-color: #6b7280; }
 
   /* ---- Priority badge (mirrors the detail header) ---- */
   .priority-badge {

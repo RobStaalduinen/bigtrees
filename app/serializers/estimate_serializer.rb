@@ -68,6 +68,20 @@ class EstimateSerializer < ApplicationSerializer
   attribute :site_visit_required
   attribute :work_complete
 
+  # Cross-org transfer provenance. Kept lightweight (the linked quote lives in a
+  # different org and isn't in this request's scope) — just enough to render a
+  # "Transferred From / To {org}" line on the quote page.
+  attribute :transferred_from
+  attribute :transferred_to
+
+  def transferred_from
+    transfer_link(object.transferred_from)
+  end
+
+  def transferred_to
+    transfer_link(object.transferred_to)
+  end
+
   # Associations
   belongs_to :arborist
   belongs_to :customer
@@ -81,4 +95,16 @@ class EstimateSerializer < ApplicationSerializer
   has_many :vehicles
   has_many :notes
   has_many :tags
+
+  private
+
+  def transfer_link(estimate)
+    return nil unless estimate
+
+    {
+      id: estimate.id,
+      organization_name: estimate.organization&.name,
+      state: estimate.state
+    }
+  end
 end

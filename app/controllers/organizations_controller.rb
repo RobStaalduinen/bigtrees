@@ -42,6 +42,19 @@ class OrganizationsController < ApplicationController
     render json: { stats: Organizations::Stats.call(organizations) }
   end
 
+  # Valid targets for transferring a quote: every org except the current one.
+  # Deliberately not scoped to the user's memberships — any other org is a
+  # valid destination.
+  def transfer_targets
+    authorize Organization, :index?
+
+    organizations = Organization
+                    .where.not(id: OrganizationContext.current_organization.id)
+                    .order(:name)
+
+    render json: organizations, each_serializer: OrganizationOptionSerializer
+  end
+
   def public
     @organization = Organization.find_by(short_name: params[:short_name])
 

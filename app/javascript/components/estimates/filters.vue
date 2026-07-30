@@ -134,7 +134,8 @@ export default {
         { value: 'scheduled', text: 'Scheduled' },
         { value: 'working', text: 'Working' },
         { value: 'unknown', text: 'Unknown' },
-        { value: 'cancelled', text: 'Cancelled' }
+        { value: 'cancelled', text: 'Cancelled' },
+        { value: 'transferred', text: 'Transferred' }
       ],
       createdOptions: [
         { value: 'one_week', text: '1w' },

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_27_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -229,6 +229,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
     t.boolean "work_complete", default: false, null: false
     t.string "source"
     t.string "difficulty", default: "medium", null: false
+    t.integer "transferred_from_estimate_id"
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
@@ -241,6 +242,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
     t.index ["state"], name: "index_estimates_on_state"
     t.index ["status"], name: "index_estimates_on_status"
     t.index ["submission_completed"], name: "index_estimates_on_submission_completed"
+    t.index ["transferred_from_estimate_id"], name: "index_estimates_on_transferred_from_estimate_id"
   end
 
   create_table "expirations", id: :integer, charset: "latin1", force: :cascade do |t|
@@ -318,6 +320,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
     t.text "content"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "author_name"
     t.index ["arborist_id"], name: "index_notes_on_arborist_id"
     t.index ["estimate_id"], name: "index_notes_on_estimate_id"
   end
@@ -372,6 +375,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_000000) do
     t.string "legal_name"
     t.float "monthly_cost", default: 0.0
     t.json "notification_configuration"
+    t.boolean "can_transfer", default: false, null: false
   end
 
   create_table "payouts", id: :integer, charset: "latin1", force: :cascade do |t|

@@ -12,9 +12,12 @@
             </div>
           </template>
           <b-dropdown-item button @click="duplicate">Duplicate</b-dropdown-item>
+          <b-dropdown-item button v-if="canTransfer" @click="openTransfer">Transfer</b-dropdown-item>
         </b-dropdown>
       </template>
     </app-header>
+
+    <app-estimate-transfer id='estimate-transfer-sidebar' :estimate='estimate' v-if='estimate'/>
 
     <div v-if='estimate' id='estimate-body'>
 
@@ -101,6 +104,7 @@ import EmailHistory from '../components/emailHistory/views/collapsed';
 import EquipmentRequirements from '@/components/tools/views/collapsed';
 import Notes from '@/components/notes/views/collapsed';
 import Job from '@/components/job/views/collapsed';
+import Transfer from '@/components/estimate/actions/transfer.vue';
 
 import EventBus from '@/store/eventBus';
 
@@ -119,7 +123,8 @@ export default {
     'single-estimate-email-history': EmailHistory,
     'single-estimate-equipment': EquipmentRequirements,
     'single-estimate-notes': Notes,
-    'single-estimate-job': Job
+    'single-estimate-job': Job,
+    'app-estimate-transfer': Transfer
   },
   data() {
     return {
@@ -136,7 +141,17 @@ export default {
   beforeDestroy() {
     EventBus.$off('ESTIMATE_UPDATED', this.updateHandler)
   },
+  computed: {
+    canTransfer() {
+      return !!this.estimate &&
+        this.$store.state.organization.can_transfer &&
+        this.estimate.state !== 'transferred';
+    }
+  },
   methods: {
+    openTransfer() {
+      this.$root.$emit('bv::toggle::collapse', 'estimate-transfer-sidebar');
+    },
     retrieveEstimate() {
       this.axiosGet(`/estimates/${this.estimate_id}.json`)
         .then(response => {

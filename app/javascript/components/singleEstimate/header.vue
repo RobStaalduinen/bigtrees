@@ -46,6 +46,17 @@
       <span class='tags-empty' v-else><i>No tags</i></span>
     </div>
 
+    <div class='transfer-provenance' v-if='estimate.transferred_from || estimate.transferred_to'>
+      <span v-if='estimate.transferred_from'>
+        <b-icon icon='box-arrow-in-down-right'/>
+        Transferred from <strong>{{ estimate.transferred_from.organization_name }}</strong>
+      </span>
+      <span v-if='estimate.transferred_to'>
+        <b-icon icon='box-arrow-up-right'/>
+        Transferred to <strong>{{ estimate.transferred_to.organization_name }}</strong>
+      </span>
+    </div>
+
     <app-edit-state id='edit-state-sidebar' :estimate='estimate'/>
     <app-edit-difficulty id='edit-difficulty-sidebar' :estimate='estimate'/>
     <app-edit-tags id='edit-tags-sidebar' :estimate='estimate'/>
@@ -127,6 +138,15 @@ export default {
     color: var(--main-color);
     cursor: pointer;
     margin-left: -4px;
+  }
+
+  .transfer-provenance {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-basis: 100%;
+    font-size: 0.9em;
+    color: #555;
   }
 
   .tags-row {

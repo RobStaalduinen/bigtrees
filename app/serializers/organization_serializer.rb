@@ -60,6 +60,7 @@ class OrganizationSerializer < ApplicationSerializer
 
   attribute :configured_features
   attribute :arborists_count
+  attribute :can_transfer
 
   belongs_to :address
   has_one :nylas_account

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     post '/cancel', to: 'estimates#cancel', on: :member
 
     resources :duplications, module: :estimates, only: [:create]
+    resources :transfers, module: :estimates, only: [:create]
   end
 
   resources :sessions, only: [ :new, :create, :destroy ]
@@ -103,6 +104,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [ :index, :show, :create, :update ] do
     get 'public/:short_name', to: 'organizations#public', on: :collection
     get :stats, on: :collection
+    get :transfer_targets, on: :collection
 
     resources :quick_costs, only: [ :index, :create, :update, :destroy ]
     resources :tags, only: [ :index, :create, :update, :destroy ]

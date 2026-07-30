@@ -68,6 +68,12 @@ class Estimate < ActiveRecord::Base
 	belongs_to :arborist
   belongs_to :organization
 
+  # Cross-org transfer provenance. The source keeps its record; a deep copy is
+  # created in the target org with transferred_from pointing back here, so both
+  # quotes can show "Transferred From" / "Transferred To".
+  belongs_to :transferred_from, class_name: 'Estimate', foreign_key: :transferred_from_estimate_id, optional: true
+  has_one :transferred_to, class_name: 'Estimate', foreign_key: :transferred_from_estimate_id, dependent: :nullify
+
   accepts_nested_attributes_for :site
   accepts_nested_attributes_for :equipment_assignments
   accepts_nested_attributes_for :notes
@@ -157,6 +163,8 @@ class Estimate < ActiveRecord::Base
 			submitted.completed
 		when 'cancelled'
 			cancelled
+		when 'transferred'
+			transferred
     end
   end
 
@@ -165,7 +173,8 @@ class Estimate < ActiveRecord::Base
 		on_hold: 'on_hold',
 		done: 'done',
 		unknown: 'unknown',
-		cancelled: 'cancelled'
+		cancelled: 'cancelled',
+		transferred: 'transferred'
 	}
 
 	enum :difficulty, {
@@ -313,7 +322,9 @@ class Estimate < ActiveRecord::Base
 			if new_status.to_sym != old_status.to_sym && new_status.to_sym != :cancelled
 				self.picture_request_sent_at = nil
 				self.followup_sent_at = nil
-				if self.state.to_s != 'done'
+				# 'done' and 'transferred' are terminal: a recomputed status must
+				# not knock them back to in_progress.
+				if self.state.to_s != 'done' && self.state.to_s != 'transferred'
 					self.state = 'in_progress'
 					self.state_reason = nil
 				end
