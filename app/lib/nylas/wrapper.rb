@@ -123,16 +123,20 @@ module Nylas
       boundary = SecureRandom.hex(16)
       crlf = "\r\n"
 
+      # Every chunk is appended as binary (`.b`). Otherwise appending UTF-8 text
+      # with non-ASCII characters (accents, smart quotes) re-tags the buffer as
+      # UTF-8, and the subsequent `File.binread` append raises
+      # Encoding::CompatibilityError.
       body = String.new(encoding: 'BINARY')
-      body << "--#{boundary}#{crlf}"
-      body << "Content-Disposition: form-data; name=\"message\"#{crlf}"
-      body << "Content-Type: application/json#{crlf}#{crlf}"
-      body << "#{message.to_json}#{crlf}"
-      body << "--#{boundary}#{crlf}"
-      body << "Content-Disposition: form-data; name=\"file0\"; filename=\"#{attachment.name}\"#{crlf}"
-      body << "Content-Type: #{attachment.type}#{crlf}#{crlf}"
+      body << "--#{boundary}#{crlf}".b
+      body << "Content-Disposition: form-data; name=\"message\"#{crlf}".b
+      body << "Content-Type: application/json#{crlf}#{crlf}".b
+      body << "#{message.to_json}#{crlf}".b
+      body << "--#{boundary}#{crlf}".b
+      body << "Content-Disposition: form-data; name=\"file0\"; filename=\"#{attachment.name}\"#{crlf}".b
+      body << "Content-Type: #{attachment.type}#{crlf}#{crlf}".b
       body << File.binread(attachment.file_path)
-      body << "#{crlf}--#{boundary}--#{crlf}"
+      body << "#{crlf}--#{boundary}--#{crlf}".b
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true

@@ -41,8 +41,8 @@ class EquipmentRequest < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :arborist
-  belongs_to :vehicle
-  belongs_to :mechanic, class_name: 'Arborist'
+  belongs_to :vehicle, optional: true
+  belongs_to :mechanic, class_name: 'Arborist', optional: true
 
   CATEGORIES = %w[other mechanical equipment supplies paperwork].freeze
 

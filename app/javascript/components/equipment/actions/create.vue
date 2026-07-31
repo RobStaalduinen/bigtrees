@@ -85,7 +85,8 @@ export default {
         return { value: vehicle.id, text: vehicle.name }
       })
 
-      vehicleList.push({value: null, text: 'None'})
+      // Vehicle is optional, so 'None' leads as the default selection.
+      vehicleList.unshift({value: null, text: 'None'})
 
       return vehicleList;
     },
