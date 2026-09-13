@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-	# default_url_options :host => "https://thatsabigtree.ca"
+	# default_url_options :host => "https:f/thatsabigtree.ca"
 
   root 'sessions#new'
 
@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :estimates do
     resources :quotes, only: [ :index ] do
-      get '/receipt', to: 'quotes#receipt'
+      get '/receipt', to: 'quotes#receipt', on: :collection
       get '/pdf', to: 'quotes#pdf', on: :collection
     end
     resources :quote_mailouts, only: [ :create ]

@@ -34,7 +34,7 @@
         </b-row>
 
         <div class='single-estimate-link-row'>
-          <a :href='`/quotes/receipt?estimate_id=${estimate.id}`' class='single-estimate-link' v-if='estimate.invoice.paid_at != null'>
+          <a :href='`/estimates/${estimate.id}/quotes/receipt`' class='single-estimate-link' v-if='estimate.invoice.paid_at != null'>
             Receipt
           </a>
 
