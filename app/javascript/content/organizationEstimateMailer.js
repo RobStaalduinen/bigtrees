@@ -4,18 +4,6 @@ export default class OrganizationEstimateMailer {
     this.estimate = estimate;
   }
 
-  quoteContent(baseContent = "", extraContent = {}) {
-    let content = baseContent
-    if(extraContent.afterList != null) {
-      content = content.replace("[ADDITIONAL_CONTENT_SLOT]", `${extraContent.afterList}\n\n`);
-    }
-    else{
-      content = content.replace("[ADDITIONAL_CONTENT_SLOT]", "");
-    }
-
-    return this.replaceContentSlots(content)
-  }
-
   invoiceContent(baseContent="") {
     return this.replaceContentSlots(baseContent)
   }
@@ -38,7 +26,10 @@ export default class OrganizationEstimateMailer {
       .replace('[FIRST_NAME]', this.estimateFirstName())
       .replace('[SIGNATURE]', this.organization.email_signature)
       .replace('[TOTAL_COST]', this.estimate.total_cost)
-      .replace('[TOTAL_COST_WITH_TAX]', this.estimate.total_cost_with_tax);
+      .replace('[TOTAL_COST_WITH_TAX]', this.estimate.total_cost_with_tax)
+      // Retired in favour of the SCHEDULE_TEXT insertable; stripped in case an org template
+      // still carries it.
+      .replace('[ADDITIONAL_CONTENT_SLOT]', '');
 
     let job = this.estimate.job;
     

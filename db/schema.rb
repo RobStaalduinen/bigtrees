@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_27_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_14_000001) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -126,6 +126,26 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_27_000000) do
     t.date "expires_at"
     t.string "url"
     t.index ["arborist_id"], name: "index_documents_on_arborist_id"
+  end
+
+  create_table "email_insertable_options", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "email_insertable_id"
+    t.string "label", null: false
+    t.text "content", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_insertable_id"], name: "index_email_insertable_options_on_email_insertable_id"
+  end
+
+  create_table "email_insertables", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "key", null: false
+    t.string "label", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "key"], name: "index_email_insertables_on_organization_id_and_key", unique: true
+    t.index ["organization_id"], name: "index_email_insertables_on_organization_id"
   end
 
   create_table "email_records", charset: "latin1", force: :cascade do |t|

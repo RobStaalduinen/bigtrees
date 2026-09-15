@@ -21,7 +21,7 @@ class OrganizationCreator
     private
 
     def create_quote_mailout
-      content = "Hi [FIRST_NAME],\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[ADDITIONAL_CONTENT_SLOT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us at #{@organization.phone_number}. If I don't answer, I will return your message as soon as I have a moment.\n\nThanks,\n[SIGNATURE]\n"
+      content = "Hi [FIRST_NAME],\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[SCHEDULE_TEXT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us at #{@organization.phone_number}. If I don't answer, I will return your message as soon as I have a moment.\n\nThanks,\n[SIGNATURE]\n"
       create_email_template('quote_mailout', 'Your Quote from [ORGANIZATION_NAME]', content)
     end
 

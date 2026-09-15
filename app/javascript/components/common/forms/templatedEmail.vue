@@ -24,6 +24,16 @@
 
     <slot name='pre-body'></slot>
 
+    <app-select-field
+      v-for='insertable in activeInsertables'
+      :key='insertable.key'
+      :label='insertable.label'
+      :value='insertableSelections[insertable.key]'
+      @input='value => setInsertableSelection(insertable.key, value)'
+      :name='insertable.key.toLowerCase()'
+      :options='insertableOptions(insertable)'
+    />
+
     <b-form-group
       label="Email Body"
       label-for="email-body"
@@ -47,9 +57,10 @@
 
 <script>
 import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer';
+import { findInsertables, applyInsertables } from '../../../content/emailInsertables';
 
 export default {
-  props: ['value', 'initial_recipient', 'template', 'estimate', 'contentOptions'],
+  props: ['value', 'initial_recipient', 'template', 'estimate'],
   data() {
     return {
       recipients: [this.initial_recipient],
@@ -57,6 +68,8 @@ export default {
       emailBody: '',
       editBody: false,
       baseContent: "",
+      insertables: [],
+      insertableSelections: {},
       estimateMailer: new OrganizationEstimateMailer(this.$store.state.organization, this.estimate)
     }
   },
@@ -67,6 +80,9 @@ export default {
         subject: this.emailSubject,
         content: this.emailBody
       }
+    },
+    activeInsertables() {
+      return findInsertables(this.baseContent, this.insertables)
     }
   },
   methods: {
@@ -79,21 +95,45 @@ export default {
     deleteRecipient(index){
       this.recipients.splice(index, 1);
     },
+    insertableOptions(insertable) {
+      return [
+        { value: null, text: '' },
+        ...(insertable.options || []).map(option => ({ value: option.id, text: option.label }))
+      ]
+    },
+    setInsertableSelection(key, value) {
+      this.$set(this.insertableSelections, key, value)
+      this.updateEmailDefinition(this.emailSubject)
+    },
     updateEmailDefinition(subject = "") {
       let email = this.email != null ? this.email : this.estimate.customer_detail.email
 
       this.recipients = [email]
       this.emailSubject = subject
-      if(this.template=='quote_mailout') {
-        this.emailBody = this.estimateMailer.quoteContent(this.baseContent, this.contentOptions)
-      }
-      else {
-        this.emailBody = this.estimateMailer.defaultContent(this.baseContent)
-      }
+
+      let content = applyInsertables(this.baseContent, this.insertables, this.insertableSelections)
+
+      this.emailBody = this.estimateMailer.defaultContent(content)
+    },
+    // Not reactive — loadTemplate only awaits it. A failure here must not block the template,
+    // so it resolves to an empty list rather than rejecting.
+    loadInsertables() {
+      this.insertablesLoaded = this.axiosGet('/email_insertables').then(response => {
+        this.insertables = response.data.email_insertables;
+      }).catch(() => {
+        this.insertables = [];
+      })
+
+      return this.insertablesLoaded;
     },
     loadTemplate() {
       if(!this.template) { return; }
-      this.axiosGet(`/email_templates/${this.template}`).then(response => {
+
+      // Wait on the insertables so the preview never flashes a raw [KEY] placeholder.
+      Promise.all([
+        this.insertablesLoaded,
+        this.axiosGet(`/email_templates/${this.template}`)
+      ]).then(([_insertables, response]) => {
         this.baseContent = response.data.email_template.content;
         this.updateEmailDefinition(response.data.email_template.parsed_subject);
       })
@@ -106,16 +146,15 @@ export default {
     value() {
       this.emailBody = this.value.content
     },
-    contentOptions() {
-      this.updateEmailDefinition(this.emailSubject);
-    },
     template(newKey, oldKey) {
       if(newKey !== oldKey) {
+        this.insertableSelections = {};
         this.loadTemplate();
       }
     }
   },
   mounted(){
+    this.loadInsertables();
     this.loadTemplate();
   }
 }

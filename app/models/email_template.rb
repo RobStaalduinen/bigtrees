@@ -21,6 +21,21 @@ class EmailTemplate < ActiveRecord::Base
   CATEGORIES = %w[default followup scheduling].freeze
   USER_MANAGED_CATEGORIES = %w[followup scheduling].freeze
 
+  # Placeholders substituted by the client-side mailer (organizationEstimateMailer.js) or by
+  # #parsed_subject. An EmailInsertable may not claim any of these as its key.
+  # ADDITIONAL_CONTENT_SLOT is retired in favour of the SCHEDULE_TEXT insertable but stays
+  # reserved so it cannot be re-registered.
+  RESERVED_KEYS = %w[
+    FIRST_NAME
+    SIGNATURE
+    TOTAL_COST
+    TOTAL_COST_WITH_TAX
+    ARBORIST_NOTES
+    FOLLOWUP
+    ORGANIZATION_NAME
+    ADDITIONAL_CONTENT_SLOT
+  ].freeze
+
   validates :key, presence: true, uniqueness: { scope: :organization_id }
   validates :category, inclusion: { in: CATEGORIES }
 

@@ -37,6 +37,7 @@ class Organization < ActiveRecord::Base
   has_many :organization_memberships, dependent: :destroy
   has_many :arborists, through: :organization_memberships
   has_many :email_templates
+  has_many :email_insertables
   has_many :estimates
   has_many :quick_costs
   has_many :tags

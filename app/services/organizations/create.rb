@@ -40,6 +40,7 @@ module Organizations
         create_admin_arborist
 
         OrganizationCreator::EmailTemplateCreator.new(@organization).seed_email_templates
+        OrganizationCreator::EmailInsertableCreator.new(@organization).seed_email_insertables
       end
 
       { organization: @organization, temporary_password: @temporary_password }
