@@ -9,9 +9,13 @@
           <div class='logo-box'>
             <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
           </div>
-        <% else %>
+        <% elsif organization.logo_url.present? %>
           <div class='logo-box'>
             <img src="<%= organization.logo_url %>" class='pdf-logo'>
+          </div>
+        <% else %>
+          <div class='logo-box'>
+            <div class='pdf-logo-name'><%= organization.legal_name || organization.name %></div>
           </div>
         <% end %>
     </td>
