@@ -1,20 +1,12 @@
 <template>
   <app-right-sidebar :id='id' title='Send Followup' submitText='Send' :onSubmit='sendFollowup'>
     <template v-slot:content>
-      <app-select-field
-        v-if='templateOptions.length > 0'
-        label='Followup Template'
-        v-model='selectedTemplateKey'
-        name='followupTemplate'
-        :options='templateOptions'
-        validationRules='required'
-      />
-
       <app-email-form
-        v-if='selectedTemplateKey'
         :value='emailDefinition'
         @changed='payload => handleChange(payload)'
-        :template='selectedTemplateKey'
+        @template-changed='key => selectedTemplateKey = key'
+        category='followup'
+        pickerLabel='Followup Template'
         :estimate='estimate'
       >
         <template v-slot:pre-body>
@@ -32,7 +24,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail';
+import EmailForm from '../../common/forms/categorisedEmail';
 import EventBus from '@/store/eventBus';
 
 export default {
@@ -46,23 +38,11 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      followupTemplates: [],
       selectedTemplateKey: null,
       includeQuote: false
     }
   },
-  computed: {
-    templateOptions() {
-      return this.followupTemplates.map(t => ({
-        value: t.key,
-        text: this.formatLabel(t.key)
-      }))
-    }
-  },
   methods: {
-    formatLabel(key) {
-      return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    },
     handleChange(payload) {
       this.emailDefinition = { ...payload }
     },
@@ -80,14 +60,6 @@ export default {
       this.$root.$emit('bv::toggle::collapse', this.id)
       EventBus.$emit('ESTIMATE_UPDATED', response.data)
     }
-  },
-  mounted() {
-    this.axiosGet('/email_templates').then(response => {
-      this.followupTemplates = response.data.email_templates.filter(t => t.category === 'followup');
-      if (this.followupTemplates.length > 0) {
-        this.selectedTemplateKey = this.followupTemplates[0].key;
-      }
-    })
   }
 }
 </script>

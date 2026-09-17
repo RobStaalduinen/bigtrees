@@ -24,12 +24,12 @@ RSpec.describe FollowupsController, type: :controller do
     )
   end
 
-  let!(:default_template) do
+  let!(:quote_template) do
     organization.email_templates.create!(
       key: 'quote_mailout',
       subject: 'Quote',
       content: 'Quote body',
-      category: 'default'
+      category: 'quote'
     )
   end
 
@@ -101,7 +101,7 @@ RSpec.describe FollowupsController, type: :controller do
       end
     end
 
-    context 'with a default-category template key' do
+    context 'with a template key from another category' do
       it 'rejects with 422 and does not send or record' do
         expect_any_instance_of(QuoteMailer).not_to receive(:quote_email)
         expect {

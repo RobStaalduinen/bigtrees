@@ -1,16 +1,18 @@
 <template>
     <div class="email-templates">
-      <div v-for="group in groups" :key="group.category" class="email-template-group">
+      <p class="email-template-intro">
+        Every template belongs to a step of the workflow. The send form at that step offers each
+        template filed under it, so adding one here gives your team another wording to reach for
+        without replacing the one they already know.
+      </p>
+
+      <div v-for="group in groups" :key="group.key" class="email-template-group">
         <div class="email-template-group-header">
           <div class="email-template-group-title">{{ group.label }}</div>
-          <a
-            v-if="group.userManaged"
-            class="email-template-new"
-            @click="openCreate(group.category)"
-          >
-            New
-          </a>
+          <a class="email-template-new" @click="openCreate(group.key)">New</a>
         </div>
+
+        <p class="email-template-group-description">{{ group.description }}</p>
 
         <div v-if="group.templates.length === 0" class="email-template-empty">
           No templates.
@@ -38,7 +40,7 @@
             <div class='single-estimate-link-row'>
               <div class='single-estimate-link template-actions'>
                 <b-icon icon='pencil-square' class='app-icon template-action-icon' @click="editTemplate(emailTemplate)"></b-icon>
-                <template v-if="userManagedCategories.includes(emailTemplate.category)">
+                <template v-if="emailTemplate.deletable">
                   <div class='template-action-divider'></div>
                   <b-icon
                     icon='trash'
@@ -55,16 +57,7 @@
       <app-email-insertables />
 
       <app-template-update id='template-update' :emailTemplate='templateToEdit' @changed='retrieveEmailTemplates' />
-      <app-template-create
-        id='template-create-followup'
-        category='followup'
-        @changed='retrieveEmailTemplates'
-      />
-      <app-template-create
-        id='template-create-scheduling'
-        category='scheduling'
-        @changed='retrieveEmailTemplates'
-      />
+      <app-template-create ref='create' id='template-create' @changed='retrieveEmailTemplates' />
 
     </div>
 </template>
@@ -74,12 +67,7 @@
 import TemplateUpdate from '@/components/emailTemplates/actions/update';
 import TemplateCreate from '@/components/emailTemplates/actions/create';
 import EmailInsertables from '@/components/emailInsertables/views/list';
-
-const GROUP_DEFINITIONS = [
-  { category: 'default', label: 'System', userManaged: false },
-  { category: 'followup', label: 'Followup', userManaged: true },
-  { category: 'scheduling', label: 'Scheduling', userManaged: true }
-];
+import { EMAIL_CATEGORIES, formatTemplateKey } from '@/content/emailCategories';
 
 export default {
   components: {
@@ -95,13 +83,10 @@ export default {
   },
   computed: {
     groups() {
-      return GROUP_DEFINITIONS.map(group => ({
-        ...group,
-        templates: this.emailTemplates.filter(t => t.category === group.category)
+      return EMAIL_CATEGORIES.map(category => ({
+        ...category,
+        templates: this.emailTemplates.filter(t => t.category === category.key)
       }));
-    },
-    userManagedCategories() {
-      return GROUP_DEFINITIONS.filter(g => g.userManaged).map(g => g.category);
     }
   },
   methods: {
@@ -115,7 +100,7 @@ export default {
       this.$root.$emit('bv::toggle::collapse', 'template-update');
     },
     openCreate(category) {
-      this.$root.$emit('bv::toggle::collapse', `template-create-${category}`);
+      this.$refs.create.open(category);
     },
     deleteTemplate(template) {
       if (confirm(`Delete the "${this.formatTitle(template.key)}" template?`)) {
@@ -124,8 +109,8 @@ export default {
         });
       }
     },
-    formatTitle(title) {
-      return title.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    formatTitle(key) {
+      return formatTemplateKey(key);
     }
   },
   mounted() {
@@ -138,6 +123,12 @@ export default {
 <style scoped>
 .email-templates {
   margin-top: 8px;
+}
+
+.email-template-intro {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
 }
 
 .email-template-group {
@@ -156,6 +147,12 @@ export default {
 .email-template-group-title {
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.email-template-group-description {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
 }
 
 .email-template-new {

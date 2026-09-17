@@ -33,24 +33,17 @@
 <script>
 
 import EventBus from '@/store/eventBus';
-
-const CATEGORY_LABELS = {
-  followup: 'Followup',
-  scheduling: 'Scheduling'
-};
+import { categoryFor } from '@/content/emailCategories';
 
 export default {
   props: {
     id: {
       required: true
-    },
-    category: {
-      required: true,
-      type: String
     }
   },
   data() {
     return {
+      category: null,
       title: null,
       subject: null,
       content: null
@@ -58,11 +51,18 @@ export default {
   },
   computed: {
     sidebarTitle() {
-      const label = CATEGORY_LABELS[this.category] || 'Email';
-      return `New ${label} Template`;
+      const category = categoryFor(this.category);
+
+      return `New ${category ? category.label : 'Email'} Template`;
     }
   },
   methods: {
+    // Called by the list so one sidebar serves every category, seeded with the one being added to.
+    open(category) {
+      this.reset();
+      this.category = category;
+      this.$root.$emit('bv::toggle::collapse', this.id);
+    },
     createTemplate() {
       this.$refs.observer.validate().then(success => {
         if(!success) {

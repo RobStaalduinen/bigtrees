@@ -9,7 +9,7 @@
 #  content         :text(65535)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  category        :string(255)      default("default"), not null
+#  category        :string(255)      not null
 #
 class EmailTemplate < ActiveRecord::Base
   belongs_to :organization
@@ -18,8 +18,24 @@ class EmailTemplate < ActiveRecord::Base
     quote_mailout: 'quote_mailout'
   }
 
-  CATEGORIES = %w[default followup scheduling].freeze
-  USER_MANAGED_CATEGORIES = %w[followup scheduling].freeze
+  # A category names the point in the workflow a template is sent from, so the send form at that
+  # point can offer every template the organization has written for it. Listed in workflow order;
+  # the settings page and the customer email picker both render them in this order.
+  CATEGORIES = %w[quote followup approval scheduling job_progress invoice receipt].freeze
+
+  # The templates seeded into every organization. The workflow sends these by key, so they can be
+  # edited but never deleted — everything an organization adds alongside them is theirs to remove.
+  SYSTEM_KEYS = %w[
+    quote_mailout
+    no_response
+    image_request
+    approval_mailout
+    48_hour_notice
+    crew_on_the_way
+    job_progress
+    invoice_mailout
+    receipt_mailout
+  ].freeze
 
   # Placeholders substituted by the client-side mailer (organizationEstimateMailer.js) or by
   # #parsed_subject. An EmailInsertable may not claim any of these as its key.
@@ -38,6 +54,14 @@ class EmailTemplate < ActiveRecord::Base
 
   validates :key, presence: true, uniqueness: { scope: :organization_id }
   validates :category, inclusion: { in: CATEGORIES }
+
+  def system?
+    SYSTEM_KEYS.include?(key)
+  end
+
+  def deletable?
+    !system?
+  end
 
   def parsed_subject
     self.subject.gsub("[ORGANIZATION_NAME]", self.organization.name)

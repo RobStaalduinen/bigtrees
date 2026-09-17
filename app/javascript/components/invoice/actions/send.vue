@@ -15,7 +15,9 @@
         <app-email-form
           :value='emailDefinition'
           @changed='payload => handleChange(payload)'
-          template='invoice_mailout'
+          @template-changed='key => templateKey = key'
+          category='invoice'
+          defaultTemplateKey='invoice_mailout'
           :estimate='estimate'
         ></app-email-form>
       </validation-observer>
@@ -24,7 +26,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail';
+import EmailForm from '../../common/forms/categorisedEmail';
 import { invoiceSent } from '@/components/estimate/utils/stateTransitions';
 import EventBus from '@/store/eventBus'
 import { EmailDefinition } from '@/models';
@@ -45,6 +47,7 @@ export default {
   data() {
     return {
       emailDefinition: null,
+      templateKey: 'invoice_mailout',
       workCompletionDate: moment().format('YYYY-MM-DD'),
     }
   },
@@ -58,7 +61,7 @@ export default {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject,
-        template_key: 'invoice_mailout'
+        template_key: this.templateKey
       }
 
       this.$refs.observer.validate().then(success => {

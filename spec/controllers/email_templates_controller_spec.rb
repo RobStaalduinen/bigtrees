@@ -9,6 +9,20 @@ RSpec.describe EmailTemplatesController, type: :controller do
     request.headers['X-ORGANIZATION-ID'] = organization.id.to_s
   end
 
+  describe 'GET #index' do
+    it 'reports whether each template can be deleted' do
+      organization.email_templates.create!(key: 'quote_mailout', subject: 'x', content: 'y', category: 'quote')
+      organization.email_templates.create!(key: 'spring_promo', subject: 'x', content: 'y', category: 'quote')
+
+      get :index, params: { format: :json }
+
+      payload = JSON.parse(response.body)['email_templates'].index_by { |t| t['key'] }
+      expect(payload['quote_mailout']['deletable']).to eq(false)
+      expect(payload['spring_promo']['deletable']).to eq(true)
+      expect(payload['spring_promo']['category']).to eq('quote')
+    end
+  end
+
   describe 'POST #create' do
     let(:base_params) do
       {
@@ -44,7 +58,18 @@ RSpec.describe EmailTemplatesController, type: :controller do
       expect(template.key).to eq('second_attempt')
     end
 
-    it 'rejects creating a default-category template' do
+    it 'creates a template in every workflow category' do
+      EmailTemplate::CATEGORIES.each_with_index do |category, index|
+        post :create, params: base_params.deep_merge(
+          email_template: { category: category, title: "Template #{index}" }
+        )
+
+        expect(response).to have_http_status(:ok), "expected #{category} to be creatable"
+        expect(EmailTemplate.last.category).to eq(category)
+      end
+    end
+
+    it 'rejects the retired default category' do
       expect {
         post :create, params: base_params.deep_merge(email_template: { category: 'default' })
       }.not_to change(EmailTemplate, :count)
@@ -103,12 +128,21 @@ RSpec.describe EmailTemplatesController, type: :controller do
       )
     end
 
-    let!(:default_template) do
+    let!(:seeded_template) do
       organization.email_templates.create!(
         key: 'quote_mailout',
         subject: 'Quote',
         content: 'Body',
-        category: 'default'
+        category: 'quote'
+      )
+    end
+
+    let!(:seeded_followup_template) do
+      organization.email_templates.create!(
+        key: 'no_response',
+        subject: 'Following up',
+        content: 'Body',
+        category: 'followup'
       )
     end
 
@@ -128,9 +162,17 @@ RSpec.describe EmailTemplatesController, type: :controller do
       expect(response).to have_http_status(:no_content)
     end
 
-    it 'refuses to delete a default-category template' do
+    it 'refuses to delete a template the workflow sends by key' do
       expect {
-        delete :destroy, params: { id: default_template.key, format: :json }
+        delete :destroy, params: { id: seeded_template.key, format: :json }
+      }.not_to change(EmailTemplate, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'refuses to delete a seeded template even in a user-managed category' do
+      expect {
+        delete :destroy, params: { id: seeded_followup_template.key, format: :json }
       }.not_to change(EmailTemplate, :count)
 
       expect(response).to have_http_status(:unprocessable_entity)

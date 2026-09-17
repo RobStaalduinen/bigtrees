@@ -16,8 +16,8 @@ class EmailTemplatesController < ApplicationController
       return render json: { title: ["can't be blank"] }, status: :unprocessable_entity
     end
 
-    unless EmailTemplate::USER_MANAGED_CATEGORIES.include?(category)
-      return render json: { category: ["must be one of #{EmailTemplate::USER_MANAGED_CATEGORIES.join(', ')}"] }, status: :unprocessable_entity
+    unless EmailTemplate::CATEGORIES.include?(category)
+      return render json: { category: ["must be one of #{EmailTemplate::CATEGORIES.join(', ')}"] }, status: :unprocessable_entity
     end
 
     email_template = OrganizationContext.current_organization.email_templates.build(
@@ -46,8 +46,8 @@ class EmailTemplatesController < ApplicationController
 
     return head :not_found unless email_template
 
-    unless EmailTemplate::USER_MANAGED_CATEGORIES.include?(email_template.category)
-      return render json: { category: ['this template cannot be deleted'] }, status: :unprocessable_entity
+    unless email_template.deletable?
+      return render json: { key: ['this template cannot be deleted'] }, status: :unprocessable_entity
     end
 
     email_template.destroy

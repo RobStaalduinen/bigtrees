@@ -19,11 +19,18 @@ class JobProgressMailoutsController < ApplicationController
 
     record_customer_email(
       estimate: @estimate,
-      template_key: 'job_progress',
+      template_key: template_key,
       nylas_response: response,
       recipient_email: params[:dest_email]
     )
 
     render json: @estimate
+  end
+
+  private
+
+  # The send form offers every template in this category, so record whichever one was used.
+  def template_key
+    params[:template_key].presence || 'job_progress'
   end
 end

@@ -4,7 +4,9 @@
       <app-email-form
         :value='emailDefinition'
         @changed='payload => handleChange(payload)'
-        template='quote_mailout'
+        @template-changed='key => templateKey = key'
+        category='quote'
+        defaultTemplateKey='quote_mailout'
         :estimate='estimate'
       ></app-email-form>
     </template>
@@ -12,7 +14,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail';
+import EmailForm from '../../common/forms/categorisedEmail';
 import moment from 'moment';
 import EventBus from '@/store/eventBus'
 
@@ -30,7 +32,8 @@ export default {
   },
   data() {
     return {
-      emailDefinition: null
+      emailDefinition: null,
+      templateKey: 'quote_mailout'
     }
   },
   methods: {
@@ -42,7 +45,7 @@ export default {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject,
-        template_key: 'quote_mailout',
+        template_key: this.templateKey,
         quote_sent_date: moment().format('YYYY-MM-DD')
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {

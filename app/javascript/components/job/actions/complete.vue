@@ -46,7 +46,9 @@
                 v-if='sendProgressEmail'
                 :value='progressEmailDefinition'
                 @changed='payload => handleProgressEmailChange(payload)'
-                template='job_progress'
+                @template-changed='key => progressTemplateKey = key'
+                category='job_progress'
+                defaultTemplateKey='job_progress'
                 :estimate='estimate'
               />
             </app-conditional-box>
@@ -102,7 +104,7 @@
 import moment from 'moment';
 import EventBus from '@/store/eventBus';
 import ManageTags from '@/components/tags/views/manageEstimate.vue';
-import TemplatedEmailForm from '@/components/common/forms/templatedEmail';
+import TemplatedEmailForm from '@/components/common/forms/categorisedEmail';
 
 
 export default {
@@ -132,6 +134,7 @@ export default {
       allTasksComplete: false,
       sendProgressEmail: false,
       progressEmailDefinition: null,
+      progressTemplateKey: 'job_progress',
     }
   },
   computed: {
@@ -187,7 +190,8 @@ export default {
       return this.axiosPost(`/estimates/${this.estimate.id}/job_progress_mailouts`, {
         dest_email: this.progressEmailDefinition.email,
         subject: this.progressEmailDefinition.subject,
-        content: this.progressEmailDefinition.content
+        content: this.progressEmailDefinition.content,
+        template_key: this.progressTemplateKey
       });
     },
     handleProgressEmailChange(payload) {
