@@ -122,7 +122,7 @@ Rails.application.routes.draw do
 
   resources :customer_requests, only: [ :new, :create ]
   resources :email_templates, only: [ :index, :show, :create, :update, :destroy ]
-  resources :email_insertables, only: [ :index ]
+  resources :email_insertables, only: [ :index, :create, :update ]
   resources :commercial_requests, only: [ :create ]
 
   resources :vue_test, only: [ :new ]

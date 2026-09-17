@@ -68,6 +68,33 @@ RSpec.describe EmailInsertable do
       expect(duplicate.errors[:key]).to be_present
     end
 
+    it 'allows up to the maximum number of options' do
+      insertable = build(:email_insertable, organization: organization)
+      EmailInsertable::MAX_OPTIONS.times { |index| insertable.options.build(label: "Option #{index}", content: 'Content') }
+
+      expect(insertable).to be_valid
+    end
+
+    it 'rejects more than the maximum number of options' do
+      insertable = build(:email_insertable, organization: organization)
+      (EmailInsertable::MAX_OPTIONS + 1).times { |index| insertable.options.build(label: "Option #{index}", content: 'Content') }
+
+      expect(insertable).not_to be_valid
+      expect(insertable.errors[:options]).to include("cannot have more than #{EmailInsertable::MAX_OPTIONS}")
+    end
+
+    it 'ignores options marked for destruction when counting against the limit' do
+      insertable = create(:email_insertable, organization: organization)
+      EmailInsertable::MAX_OPTIONS.times { |index| create(:email_insertable_option, email_insertable: insertable, label: "Option #{index}") }
+
+      insertable.options_attributes = [
+        { id: insertable.options.first.id, _destroy: true },
+        { label: 'Replacement', content: 'Content' }
+      ]
+
+      expect(insertable).to be_valid
+    end
+
     it 'allows the same key in a different organization' do
       create(:email_insertable, organization: organization, key: 'SCHEDULE_TEXT')
       other = build(:email_insertable, organization: create(:organization), key: 'SCHEDULE_TEXT')

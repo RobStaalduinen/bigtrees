@@ -52,6 +52,8 @@
         </app-collapsable>
       </div>
 
+      <app-email-insertables />
+
       <app-template-update id='template-update' :emailTemplate='templateToEdit' @changed='retrieveEmailTemplates' />
       <app-template-create
         id='template-create-followup'
@@ -71,6 +73,7 @@
 
 import TemplateUpdate from '@/components/emailTemplates/actions/update';
 import TemplateCreate from '@/components/emailTemplates/actions/create';
+import EmailInsertables from '@/components/emailInsertables/views/list';
 
 const GROUP_DEFINITIONS = [
   { category: 'default', label: 'System', userManaged: false },
@@ -81,7 +84,8 @@ const GROUP_DEFINITIONS = [
 export default {
   components: {
     'app-template-update': TemplateUpdate,
-    'app-template-create': TemplateCreate
+    'app-template-create': TemplateCreate,
+    'app-email-insertables': EmailInsertables
   },
   data() {
     return {
