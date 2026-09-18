@@ -57,6 +57,8 @@ class EmailTemplatesController < ApplicationController
   def show
     @email_template = policy_scope(EmailTemplate).find_by(key: params[:id])
 
+    return head :not_found unless @email_template
+
     render json: @email_template
   end
 

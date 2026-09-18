@@ -187,6 +187,7 @@ import Employees from '../pages/employees.vue';
 import Company from '../pages/company.vue';
 import Organizations from '../pages/organizations.vue';
 import Schedule from '../pages/schedule.vue';
+import EmailTemplate from '../pages/emailTemplate.vue';
 
 import { store } from '../store/store.js';
 
@@ -254,6 +255,22 @@ const routes = [
   {
     path: '/admin/organizations',
     component: Organizations
+  },
+  {
+    path: '/admin/email_templates/new',
+    component: EmailTemplate,
+    meta: {
+      authRequired: true,
+      permission: { page: 'organizations', permission_type: 'admin' }
+    }
+  },
+  {
+    path: '/admin/email_templates/:key',
+    component: EmailTemplate,
+    meta: {
+      authRequired: true,
+      permission: { page: 'organizations', permission_type: 'admin' }
+    }
   }
 
 ]

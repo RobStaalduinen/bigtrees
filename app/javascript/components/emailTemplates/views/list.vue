@@ -1,92 +1,81 @@
 <template>
     <div class="email-templates">
-      <p class="email-template-intro">
-        Every template belongs to a step of the workflow. The send form at that step offers each
-        template filed under it, so adding one here gives your team another wording to reach for
-        without replacing the one they already know.
-      </p>
-
-      <div v-for="group in groups" :key="group.key" class="email-template-group">
-        <div class="email-template-group-header">
-          <div class="email-template-group-title">{{ group.label }}</div>
-          <a class="email-template-new" @click="openCreate(group.key)">New</a>
-        </div>
-
-        <p class="email-template-group-description">{{ group.description }}</p>
-
-        <div v-if="group.templates.length === 0" class="email-template-empty">
-          No templates.
-        </div>
-
-        <app-collapsable
-          v-for="emailTemplate in group.templates"
-          :key="emailTemplate.id"
-          :id="`email-template-${emailTemplate.id}`"
-          class="email-template"
-        >
-          <template v-slot:title>
-            {{ formatTitle(emailTemplate.key) }}
-          </template>
-
-          <template v-slot:content>
-            <div class='email-template-header'><b>Subject</b></div>
-
-            {{ emailTemplate.subject }}
-            <div class="email-template-header"><b>Body</b></div>
-            <div class="email-body">
-              {{ emailTemplate.content }}
-            </div>
-
-            <div class='single-estimate-link-row'>
-              <div class='single-estimate-link template-actions'>
-                <b-icon icon='pencil-square' class='app-icon template-action-icon' @click="editTemplate(emailTemplate)"></b-icon>
-                <template v-if="emailTemplate.deletable">
-                  <div class='template-action-divider'></div>
-                  <b-icon
-                    icon='trash'
-                    class='app-icon template-action-icon'
-                    @click="deleteTemplate(emailTemplate)"
-                  ></b-icon>
-                </template>
-              </div>
-            </div>
-          </template>
-        </app-collapsable>
+      <div class="email-template-section-header">
+        <div class="email-template-section-title">Email Templates</div>
+        <router-link class="email-template-new" to="/admin/email_templates/new">New</router-link>
       </div>
 
+      <p class="email-template-description">
+        Every template belongs to a step of the workflow, and the send form at that step offers
+        each template filed under it.
+      </p>
+
+      <div v-if="sortedTemplates.length === 0" class="email-template-empty">
+        No templates.
+      </div>
+
+      <app-collapsable
+        v-for="emailTemplate in sortedTemplates"
+        :key="emailTemplate.id"
+        :id="`email-template-${emailTemplate.id}`"
+        class="email-template"
+      >
+        <template v-slot:title>
+          <div class="email-template-title">
+            <span>{{ formatTitle(emailTemplate.key) }}</span>
+            <app-pill :text="categoryLabel(emailTemplate)" tone="neutral" filled />
+          </div>
+        </template>
+
+        <template v-slot:content>
+          <div class='email-template-header'><b>Subject</b></div>
+
+          {{ emailTemplate.subject }}
+          <div class="email-template-header"><b>Body</b></div>
+          <div class="email-body">
+            {{ emailTemplate.content }}
+          </div>
+
+          <div class='single-estimate-link-row'>
+            <div class='single-estimate-link template-actions'>
+              <b-icon icon='pencil-square' class='app-icon template-action-icon' @click="editTemplate(emailTemplate)"></b-icon>
+              <template v-if="emailTemplate.deletable">
+                <div class='template-action-divider'></div>
+                <b-icon
+                  icon='trash'
+                  class='app-icon template-action-icon'
+                  @click="deleteTemplate(emailTemplate)"
+                ></b-icon>
+              </template>
+            </div>
+          </div>
+        </template>
+      </app-collapsable>
+
       <app-email-insertables />
-
-      <app-template-update id='template-update' :emailTemplate='templateToEdit' @changed='retrieveEmailTemplates' />
-      <app-template-create ref='create' id='template-create' @changed='retrieveEmailTemplates' />
-
     </div>
 </template>
 
 <script>
 
-import TemplateUpdate from '@/components/emailTemplates/actions/update';
-import TemplateCreate from '@/components/emailTemplates/actions/create';
 import EmailInsertables from '@/components/emailInsertables/views/list';
-import { EMAIL_CATEGORIES, formatTemplateKey } from '@/content/emailCategories';
+import { categoryLabelFor, categoryOrder, formatTemplateKey } from '@/content/emailCategories';
 
 export default {
   components: {
-    'app-template-update': TemplateUpdate,
-    'app-template-create': TemplateCreate,
     'app-email-insertables': EmailInsertables
   },
   data() {
     return {
-      emailTemplates: [],
-      templateToEdit: null
+      emailTemplates: []
     }
   },
   computed: {
-    groups() {
-      return EMAIL_CATEGORIES.map(category => ({
-        ...category,
-        templates: this.emailTemplates.filter(t => t.category === category.key)
-      }));
+    // One list in workflow order, so templates for the same step still sit together.
+    sortedTemplates() {
+      return [...this.emailTemplates].sort((a, b) =>
+        categoryOrder(a.category) - categoryOrder(b.category) || a.key.localeCompare(b.key)
+      );
     }
   },
   methods: {
@@ -95,12 +84,11 @@ export default {
         this.emailTemplates = response.data.email_templates;
       })
     },
-    editTemplate(template) {
-      this.templateToEdit = template;
-      this.$root.$emit('bv::toggle::collapse', 'template-update');
+    categoryLabel(template) {
+      return categoryLabelFor(template.category);
     },
-    openCreate(category) {
-      this.$refs.create.open(category);
+    editTemplate(template) {
+      this.$router.push(`/admin/email_templates/${template.key}`);
     },
     deleteTemplate(template) {
       if (confirm(`Delete the "${this.formatTitle(template.key)}" template?`)) {
@@ -125,38 +113,29 @@ export default {
   margin-top: 8px;
 }
 
-.email-template-intro {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  margin-bottom: var(--space-4);
-}
-
-.email-template-group {
-  margin-bottom: 24px;
-}
-
-.email-template-group-header {
+.email-template-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #ccc;
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--border-strong);
 }
 
-.email-template-group-title {
+.email-template-section-title {
   font-size: 1.1rem;
   font-weight: 600;
 }
 
-.email-template-group-description {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  margin-bottom: var(--space-2);
+.email-template-new {
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.email-template-new {
-  cursor: pointer;
+.email-template-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
 }
 
 .email-template-empty {
@@ -167,6 +146,15 @@ export default {
 
 .email-template {
   margin-bottom: 8px;
+}
+
+/* Fills the collapsable header so the category pill sits against its right edge. */
+.email-template-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
 }
 
 .email-template-header {

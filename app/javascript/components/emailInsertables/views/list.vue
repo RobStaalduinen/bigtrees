@@ -99,6 +99,8 @@ export default {
 
 <style scoped>
 .email-insertables {
+  /* Sits below the template list, so it carries the gap between the two sections. */
+  margin-top: var(--space-6);
   margin-bottom: var(--space-6);
 }
 

@@ -23,6 +23,32 @@ RSpec.describe EmailTemplatesController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    it 'returns the template for the edit page' do
+      organization.email_templates.create!(key: 'spring_promo', subject: 'x', content: 'y', category: 'quote')
+
+      get :show, params: { id: 'spring_promo', format: :json }
+
+      payload = JSON.parse(response.body)['email_template']
+      expect(response).to have_http_status(:ok)
+      expect(payload['category']).to eq('quote')
+    end
+
+    it 'returns 404 for a key the organization does not have' do
+      get :show, params: { id: 'nonexistent', format: :json }
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'returns 404 for a template belonging to another organization' do
+      create(:organization).email_templates.create!(key: 'other_one', subject: 'x', content: 'y', category: 'quote')
+
+      get :show, params: { id: 'other_one', format: :json }
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe 'POST #create' do
     let(:base_params) do
       {

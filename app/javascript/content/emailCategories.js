@@ -70,6 +70,19 @@ const CATEGORY_STATUS_RULES = {
   receipt: status => status === 'completed'
 };
 
+function categoryLabelFor(key) {
+  const category = categoryFor(key);
+
+  return category ? category.label : key;
+}
+
+// Position in the workflow, used to sort a mixed list of templates into pipeline order.
+function categoryOrder(key) {
+  const index = EMAIL_CATEGORIES.findIndex(category => category.key === key);
+
+  return index === -1 ? EMAIL_CATEGORIES.length : index;
+}
+
 function categoryFor(key) {
   return EMAIL_CATEGORIES.find(category => category.key === key);
 }
@@ -88,6 +101,8 @@ function formatTemplateKey(key) {
 export {
   EMAIL_CATEGORIES,
   categoryFor,
+  categoryLabelFor,
+  categoryOrder,
   categoryAvailable,
   formatTemplateKey
 }
