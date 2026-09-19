@@ -103,13 +103,14 @@ export default {
     },
     setInsertableSelection(key, value) {
       this.$set(this.insertableSelections, key, value)
-      this.updateEmailDefinition(this.emailSubject)
+      this.updateEmailDefinition()
     },
-    updateEmailDefinition(subject = "") {
+    // Rebuilds the body for the current insertable selections. The subject is expanded once, when
+    // the template loads, so choosing an insertable does not throw away a hand-edited subject.
+    updateEmailDefinition() {
       let email = this.email != null ? this.email : this.estimate.customer_detail.email
 
       this.recipients = [email]
-      this.emailSubject = subject
 
       let content = applyInsertables(this.baseContent, this.insertables, this.insertableSelections)
 
@@ -135,7 +136,8 @@ export default {
         this.axiosGet(`/email_templates/${this.template}`)
       ]).then(([_insertables, response]) => {
         this.baseContent = response.data.email_template.content;
-        this.updateEmailDefinition(response.data.email_template.parsed_subject);
+        this.emailSubject = this.estimateMailer.parsedSubject(response.data.email_template.subject);
+        this.updateEmailDefinition();
       })
     }
   },

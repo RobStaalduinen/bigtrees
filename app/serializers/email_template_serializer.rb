@@ -16,7 +16,6 @@
 class EmailTemplateSerializer < ApplicationSerializer
   attribute :key
   attribute :subject
-  attribute :parsed_subject
   attribute :content
   attribute :category
   attribute :deletable

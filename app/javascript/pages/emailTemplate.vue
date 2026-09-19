@@ -3,55 +3,59 @@
     <app-header :title='pageTitle' :backLink='listLink' />
 
     <div id='email-template-page' v-if='loaded'>
-      <validation-observer ref='observer'>
-        <app-input-field
-          v-if='isNew'
-          v-model='title'
-          name='title'
-          label='Title'
-          validationRules='required'
-        />
+      <div id='email-template-form'>
+        <validation-observer ref='observer'>
+          <app-input-field
+            v-if='isNew'
+            v-model='title'
+            name='title'
+            label='Title'
+            validationRules='required'
+          />
 
-        <app-select-field
-          v-if='isNew'
-          v-model='category'
-          name='category'
-          label='Workflow Step'
-          :options='categoryOptions'
-          validationRules='required'
-        />
+          <app-select-field
+            v-if='isNew'
+            v-model='category'
+            name='category'
+            label='Workflow Step'
+            :options='categoryOptions'
+            validationRules='required'
+          />
 
-        <div v-else class='template-readonly-field'>
-          <div class='template-readonly-label'>Workflow Step</div>
-          <div>{{ categoryLabel }}</div>
-        </div>
+          <div v-else class='template-readonly-field'>
+            <div class='template-readonly-label'>Workflow Step</div>
+            <div>{{ categoryLabel }}</div>
+          </div>
 
-        <p class='template-step-hint'>{{ categoryDescription }}</p>
+          <p class='template-step-hint'>{{ categoryDescription }}</p>
 
-        <app-input-field
-          v-model='subject'
-          name='subject'
-          label='Subject'
-          validationRules='required'
-        />
+          <app-input-field
+            v-model='subject'
+            name='subject'
+            label='Subject'
+            validationRules='required'
+          />
 
-        <app-text-area
-          v-model='content'
-          name='content'
-          label='Content'
-          :noResize='true'
-          :rows=20
-        />
-      </validation-observer>
+          <app-text-area
+            v-model='content'
+            name='content'
+            label='Content'
+            :noResize='true'
+            :rows=20
+          />
+        </validation-observer>
 
-      <div v-if='formError' class='template-form-error'>{{ formError }}</div>
+        <div v-if='formError' class='template-form-error'>{{ formError }}</div>
 
-      <div id='email-template-actions'>
-        <app-button text='Cancel' variant='outline' :click='cancel' />
-        <div id='email-template-submit'>
-          <app-submit-button :label='submitLabel' :onSubmit='submit' />
+        <div id='email-template-actions'>
+          <app-button text='Cancel' variant='outline' :click='cancel' />
+          <div id='email-template-submit'>
+            <app-submit-button :label='submitLabel' :onSubmit='submit' />
+          </div>
         </div>
       </div>
+
+      <app-placeholder-reference id='email-template-placeholders' />
     </div>
   </page-template>
 </template>
@@ -59,11 +63,15 @@
 <script>
 
 import EventBus from '@/store/eventBus';
+import PlaceholderReference from '@/components/emailTemplates/views/placeholderReference';
 import { EMAIL_CATEGORIES, categoryFor } from '@/content/emailCategories';
 
 const LIST_LINK = '/admin/company?section=email_templates';
 
 export default {
+  components: {
+    'app-placeholder-reference': PlaceholderReference
+  },
   data() {
     return {
       templateKey: this.$route.params.key || null,
@@ -182,7 +190,32 @@ export default {
 
 <style scoped>
   #email-template-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  #email-template-form {
     max-width: 720px;
+  }
+
+  @media (min-width: 760px) {
+    #email-template-page {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    #email-template-form {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #email-template-placeholders {
+      width: 280px;
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--space-4);
+    }
   }
 
   .template-readonly-field {

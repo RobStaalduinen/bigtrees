@@ -37,9 +37,9 @@ class EmailTemplate < ActiveRecord::Base
     receipt_mailout
   ].freeze
 
-  # Placeholders substituted by the client-side mailer (organizationEstimateMailer.js) or by
-  # #parsed_subject. An EmailInsertable may not claim any of these as its key.
-  # ADDITIONAL_CONTENT_SLOT is retired in favour of the SCHEDULE_TEXT insertable but stays
+  # Macros the client expands into a template's subject and body when an email is sent — the
+  # table lives in content/emailMacros.js. An EmailInsertable may not claim any of these as its
+  # key. ADDITIONAL_CONTENT_SLOT is retired in favour of the SCHEDULE_TEXT insertable but stays
   # reserved so it cannot be re-registered.
   RESERVED_KEYS = %w[
     FIRST_NAME
@@ -61,10 +61,6 @@ class EmailTemplate < ActiveRecord::Base
 
   def deletable?
     !system?
-  end
-
-  def parsed_subject
-    self.subject.gsub("[ORGANIZATION_NAME]", self.organization.name)
   end
 
   def self.slugify_title(title)
