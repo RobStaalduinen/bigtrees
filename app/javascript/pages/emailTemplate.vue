@@ -49,10 +49,17 @@
 
         <div id='email-template-actions'>
           <app-button text='Cancel' variant='outline' :click='cancel' />
+          <app-button text='Preview' variant='subtle' icon='eye' :click='openPreview' />
           <div id='email-template-submit'>
             <app-submit-button :label='submitLabel' :onSubmit='submit' />
           </div>
         </div>
+
+        <app-template-preview
+          id='email-template-preview'
+          :subject='subject || ""'
+          :content='content || ""'
+        />
       </div>
 
       <app-placeholder-reference id='email-template-placeholders' />
@@ -64,13 +71,15 @@
 
 import EventBus from '@/store/eventBus';
 import PlaceholderReference from '@/components/emailTemplates/views/placeholderReference';
+import TemplatePreview from '@/components/emailTemplates/views/templatePreview';
 import { EMAIL_CATEGORIES, categoryFor } from '@/content/emailCategories';
 
 const LIST_LINK = '/admin/company?section=email_templates';
 
 export default {
   components: {
-    'app-placeholder-reference': PlaceholderReference
+    'app-placeholder-reference': PlaceholderReference,
+    'app-template-preview': TemplatePreview
   },
   data() {
     return {
@@ -112,6 +121,9 @@ export default {
   methods: {
     cancel() {
       this.$router.push(LIST_LINK);
+    },
+    openPreview() {
+      this.$bvModal.show('email-template-preview');
     },
     validate() {
       this.formError = null;

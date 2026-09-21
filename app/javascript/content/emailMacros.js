@@ -18,8 +18,22 @@ function firstName(estimate) {
   return first.charAt(0).toUpperCase() + first.slice(1);
 }
 
+// A serialized estimate carries `jobs`, and a fresh one is recorded every time work resumes, so
+// these read from the most recent job that actually recorded a value.
+function latestJobValue(estimate, field) {
+  const jobs = estimate?.jobs || [];
+
+  for (let index = jobs.length - 1; index >= 0; index--) {
+    const value = jobs[index]?.[field];
+
+    if (value != null) { return value; }
+  }
+
+  return null;
+}
+
 function arboristNotes(estimate) {
-  const notes = estimate?.job?.completion_notes;
+  const notes = latestJobValue(estimate, 'completion_notes');
 
   if (notes == null) { return ''; }
 
@@ -27,7 +41,7 @@ function arboristNotes(estimate) {
 }
 
 function followup(estimate) {
-  const year = estimate?.job?.followup_year;
+  const year = latestJobValue(estimate, 'followup_year');
 
   if (year == null) { return ''; }
 
