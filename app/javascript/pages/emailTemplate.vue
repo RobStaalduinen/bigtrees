@@ -70,7 +70,7 @@
 <script>
 
 import EventBus from '@/store/eventBus';
-import PlaceholderReference from '@/components/emailTemplates/views/placeholderReference';
+import PlaceholderReference from '@/components/common/forms/placeholderReference';
 import TemplatePreview from '@/components/emailTemplates/views/templatePreview';
 import { EMAIL_CATEGORIES, categoryFor } from '@/content/emailCategories';
 

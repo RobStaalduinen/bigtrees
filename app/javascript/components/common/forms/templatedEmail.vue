@@ -34,39 +34,36 @@
       :options='insertableOptions(insertable)'
     />
 
-    <b-form-group
-      label="Email Body"
-      label-for="email-body"
-      v-if='editBody'
-    >
-      <b-form-textarea
-        id="textarea"
-        name='email-body'
-        label='Email Body'
-        v-model="emailBody"
-        rows="15"
-        max-rows="15"
-      ></b-form-textarea>
-    </b-form-group>
-    <div v-else>
-      <div id='body-header'><b>Email Body</b> <span @click='editBody=true' id='edit-link'>Edit</span></div>
+    <div>
+      <div id='body-header'><b>Email Body</b> <span @click='openContentEditor' id='edit-link'>Edit</span></div>
       <pre class='sample-email-content'>{{ emailBody.trim() }}</pre>
     </div>
+
+    <app-edit-email-content
+      :id='contentEditorId'
+      :content='baseContent'
+      @saved='applyContentEdit'
+    />
   </div>
 </template>
 
 <script>
 import OrganizationEstimateMailer from '../../../content/organizationEstimateMailer';
+import EditEmailContent from '@/components/common/forms/editEmailContent';
 import { findInsertables, applyInsertables } from '../../../content/emailInsertables';
 
 export default {
+  components: {
+    'app-edit-email-content': EditEmailContent
+  },
   props: ['value', 'initial_recipient', 'template', 'estimate'],
   data() {
     return {
       recipients: [this.initial_recipient],
       emailSubject: '',
       emailBody: '',
-      editBody: false,
+      // Unique per form — several send sidebars can be mounted at once.
+      contentEditorId: `edit-email-content-${Math.random().toString(36).substr(2, 9)}`,
       baseContent: "",
       insertables: [],
       insertableSelections: {},
@@ -105,13 +102,25 @@ export default {
       this.$set(this.insertableSelections, key, value)
       this.updateEmailDefinition()
     },
-    // Rebuilds the body for the current insertable selections. The subject is expanded once, when
-    // the template loads, so choosing an insertable does not throw away a hand-edited subject.
-    updateEmailDefinition() {
+    openContentEditor() {
+      this.$bvModal.show(this.contentEditorId)
+    },
+    // The editor hands back template wording, so storing it as the base re-derives the body and
+    // re-computes activeInsertables — an insertable added or removed in the editor changes which
+    // selectors the form offers.
+    applyContentEdit(content) {
+      this.baseContent = content
+      this.updateEmailDefinition()
+    },
+    // Only on load: re-deriving the body must not discard recipients the sender has added.
+    setDefaultRecipient() {
       let email = this.email != null ? this.email : this.estimate.customer_detail.email
 
       this.recipients = [email]
-
+    },
+    // Rebuilds the body for the current insertable selections. The subject is expanded once, when
+    // the template loads, so choosing an insertable does not throw away a hand-edited subject.
+    updateEmailDefinition() {
       let content = applyInsertables(this.baseContent, this.insertables, this.insertableSelections)
 
       this.emailBody = this.estimateMailer.defaultContent(content)
@@ -137,6 +146,7 @@ export default {
       ]).then(([_insertables, response]) => {
         this.baseContent = response.data.email_template.content;
         this.emailSubject = this.estimateMailer.parsedSubject(response.data.email_template.subject);
+        this.setDefaultRecipient();
         this.updateEmailDefinition();
       })
     }
