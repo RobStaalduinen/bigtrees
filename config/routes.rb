@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 
   get '/health', to: ->(_env) { [200, { 'Content-Type' => 'text/plain' }, ['ok']] }
 
+  # Public marketing + legal pages (required for Google OAuth verification and
+  # Microsoft publisher verification of the Nylas email integration).
+  get '/home', to: 'static_pages#home'
+  get '/terms', to: 'static_pages#terms'
+  get '/privacy', to: 'static_pages#privacy'
+
   get '/admin/admin_panel', to: redirect('/estimates')
   # get '/arborists/:id', to: redirect { |params, request| "/admin/users/#{request.params[:id]}" }
 

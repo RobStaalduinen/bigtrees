@@ -1,0 +1,123 @@
+<% content_for :title, 'Arborist CRM' %>
+<% content_for :description, 'Big Tree Services is a CRM for arborist and tree care businesses: estimates, quoting, tree inventories, crew scheduling, invoicing and receipts in one place.' %>
+
+<section class="hero">
+  <h1>The CRM built for tree care work</h1>
+  <p class="lede">
+    Big Tree Services is a web application that arborist and tree care companies use to run
+    the job from first site visit to final invoice &mdash; estimates, tree inventories,
+    quotes, crew scheduling, invoicing and expense tracking in one place.
+  </p>
+  <div class="hero-actions">
+    <a class="btn" href="/login">Sign in to your account</a>
+    <a href="mailto:info@bigtreeservices.ca">Contact us</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>What the application does</h2>
+  <div class="feature-grid">
+    <div class="card">
+      <h3>Estimates &amp; site visits</h3>
+      <p>Book estimate appointments, capture site details and assign a certified arborist to attend.</p>
+    </div>
+    <div class="card">
+      <h3>Tree inventories</h3>
+      <p>Record each tree on a property with species, condition, planned work actions and photographs.</p>
+    </div>
+    <div class="card">
+      <h3>Quoting</h3>
+      <p>Build a costed quote from the tree list and send it to the customer as a branded PDF.</p>
+    </div>
+    <div class="card">
+      <h3>Scheduling &amp; dispatch</h3>
+      <p>Schedule approved work, assign crews and equipment, and track job progress in the field.</p>
+    </div>
+    <div class="card">
+      <h3>Invoicing &amp; payments</h3>
+      <p>Raise final invoices from completed work, issue receipts and follow up on outstanding balances.</p>
+    </div>
+    <div class="card">
+      <h3>Hours &amp; expenses</h3>
+      <p>Log crew hours, capture receipts and equipment requests, and export reporting for payroll.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Who uses it</h2>
+  <p>
+    Big Tree Services is a business tool, not a consumer product. Its users are the staff of a
+    tree care company: office administrators who manage the schedule and the books, and
+    certified arborists and crew members who carry out the work. Each company is a separate
+    tenant, and staff only ever see the data belonging to the company that invited them.
+  </p>
+</section>
+
+<section class="section">
+  <h2>Email integration</h2>
+  <p>
+    Quotes, invoices, receipts and appointment notices need to reach the customer from the
+    tree care company's own address &mdash; not from a generic no-reply mailbox. So a company
+    administrator can connect the company's Google Workspace or Microsoft 365 mailbox to
+    their account, and the application then sends those documents on the company's behalf.
+  </p>
+  <p>
+    The connection is made using OAuth, through our email infrastructure provider
+    <a href="https://www.nylas.com" rel="noopener" target="_blank">Nylas</a>. No mailbox
+    password is ever entered into or stored by the application, and an administrator can
+    disconnect the mailbox at any time from the company settings page, which revokes our
+    access immediately.
+  </p>
+
+  <h3>What we ask for, and what we do with it</h3>
+  <div class="table-scroll">
+    <table class="scopes">
+      <tr>
+        <th>Access requested</th>
+        <th>Why</th>
+      </tr>
+      <tr>
+        <td>Send mail on your behalf</td>
+        <td>
+          To deliver quotes, invoices, receipts, appointment confirmations and job updates
+          to your customers from your own business address, with the relevant PDF attached.
+        </td>
+      </tr>
+      <tr>
+        <td>Basic account details (email address)</td>
+        <td>
+          To show the connected sending address in your settings and to confirm the
+          connection is still valid before each send.
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p>
+      <strong>We do not read your mailbox.</strong> The application does not request or use
+      access to read, search, download or delete your existing mail, and it does not access
+      your contacts, calendars or files. Of each message it sends, it keeps only a record
+      that the send happened: the recipient address, the time, the type of document sent and
+      the provider's message identifier.
+    </p>
+  </div>
+
+  <p>
+    Our use and transfer of information received from Google APIs adheres to the
+    <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener" target="_blank">Google
+    API Services User Data Policy</a>, including its Limited Use requirements. The
+    <a href="/privacy">Privacy Policy</a> sets out in full what we collect, how long we keep
+    it and who we share it with.
+  </p>
+</section>
+
+<section class="section">
+  <h2>Get in touch</h2>
+  <p>
+    For access, support, security reports or privacy requests, email
+    <a href="mailto:info@bigtreeservices.ca">info@bigtreeservices.ca</a>. We aim to respond
+    to all enquiries within five business days.
+  </p>
+</section>

@@ -1,0 +1,284 @@
+<% content_for :title, 'Privacy Policy' %>
+<% content_for :description, 'How Big Tree Services collects, uses, stores and shares information in its arborist CRM, including data accessed through connected Google and Microsoft mailboxes.' %>
+
+<article class="doc">
+  <h1>Privacy Policy</h1>
+  <p class="meta">
+    Effective 23 September 2026 &middot; Last updated 23 September 2026
+  </p>
+
+  <div class="toc">
+    <ol>
+      <li><a href="#scope">Scope of this policy</a></li>
+      <li><a href="#roles">Our role and yours</a></li>
+      <li><a href="#collect">Information we collect</a></li>
+      <li><a href="#google">Google and Microsoft user data</a></li>
+      <li><a href="#use">How we use information</a></li>
+      <li><a href="#share">Sharing and service providers</a></li>
+      <li><a href="#location">Where data is held</a></li>
+      <li><a href="#retention">Retention</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#rights">Your rights</a></li>
+      <li><a href="#customers">Customers of our users</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <h2 id="scope">1. Scope of this policy</h2>
+  <p>
+    Big Tree Services ("we", "us", "our") provides a web-based CRM that arborist and tree care
+    companies use to manage estimates, quotes, scheduling, invoicing and field work. This policy
+    explains what information the application collects, how we use it, who we share it with and
+    what rights you have.
+  </p>
+  <p>
+    It covers the application and these public pages. It does not cover any third-party website
+    or service we link to, which is governed by that party's own policy.
+  </p>
+
+  <h2 id="roles">2. Our role and yours</h2>
+  <p>
+    The application is sold to businesses, and each subscribing company is a separate tenant.
+    In respect of the business records a company puts into the application &mdash; its customer
+    list, quotes, invoices, job records and so on &mdash; the <strong>company is the controller
+    of that data and we act as its processor</strong>. We handle that data on the company's
+    instructions and for the purpose of operating the service for them.
+  </p>
+  <p>
+    In respect of staff account information and technical logs, and of these public pages, we act
+    as the controller.
+  </p>
+  <p>
+    If you are a customer of a tree care company that uses our application and you want your
+    details corrected or removed, please contact that company directly; we will assist them in
+    responding. See <a href="#customers">section 11</a>.
+  </p>
+
+  <h2 id="collect">3. Information we collect</h2>
+
+  <h3>3.1 Staff account information</h3>
+  <p>
+    When a company creates an account for a member of staff, we collect that person's name, email
+    address, phone number, job role and permission level, a hashed password, and &mdash; where the
+    company uses these features &mdash; employment details such as pay rate, certifications and
+    licence expiry dates uploaded for compliance tracking.
+  </p>
+
+  <h3>3.2 Business data entered into the application</h3>
+  <p>
+    Staff users enter the records needed to run the business. This typically includes:
+  </p>
+  <ul>
+    <li>customer names, addresses, email addresses and phone numbers;</li>
+    <li>property and site details, including the location of work;</li>
+    <li>tree inventories &mdash; species, measurements, condition notes and planned work actions;</li>
+    <li>photographs of trees, sites and completed work;</li>
+    <li>estimates, costings, quotes, invoices, payments and receipts;</li>
+    <li>crew hours, equipment assignments, expense receipts and internal notes.</li>
+  </ul>
+  <p>
+    We do not ask for and do not want special categories of data (such as health information) or
+    payment card numbers to be entered into free-text fields.
+  </p>
+
+  <h3>3.3 Connected mailbox data</h3>
+  <p>
+    If a company administrator connects a Google Workspace or Microsoft 365 mailbox, we receive an
+    OAuth authorisation and the connected email address. See
+    <a href="#google">section 4</a>, which sets out exactly what we do and do not access.
+  </p>
+
+  <h3>3.4 Technical and usage data</h3>
+  <p>
+    Our servers record standard information about requests: IP address, browser and device type,
+    pages requested, timestamps and referring page. We use a cookie to keep you signed in, and we
+    store your selected organisation in your browser's local storage. We use
+    <strong>Sentry</strong> to capture error reports when something goes wrong, which may include
+    the URL, the signed-in user's identifier and a technical stack trace. These public pages do not
+    use advertising or tracking cookies.
+  </p>
+
+  <h2 id="google">4. Google and Microsoft user data</h2>
+
+  <div class="callout">
+    <p>
+      Big Tree Services' use and transfer of information received from Google APIs to any other app
+      will adhere to the
+      <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener" target="_blank">Google
+      API Services User Data Policy</a>, including the Limited Use requirements. We apply the same
+      standard to data received from Microsoft Graph.
+    </p>
+  </div>
+
+  <h3>4.1 Why we ask for access</h3>
+  <p>
+    Quotes, invoices, receipts and appointment notices need to reach the customer from the tree care
+    company's own business address. A company administrator therefore connects the company mailbox
+    so that the application can send those documents on the company's behalf.
+  </p>
+
+  <h3>4.2 What we access</h3>
+  <p>
+    We request only the permission needed to <strong>send mail on the connected account's behalf</strong>,
+    together with the basic account detail (the email address) needed to display and validate the
+    connection. The connection is made by OAuth through our email infrastructure provider, Nylas.
+    We never see, request or store the mailbox password.
+  </p>
+
+  <h3>4.3 What we do not access</h3>
+  <p>
+    We do <strong>not</strong> request or use permission to read, search, download, modify or delete
+    existing messages in the mailbox, and we do not access contacts, calendars, files or any other
+    Google or Microsoft service.
+  </p>
+
+  <h3>4.4 What we retain</h3>
+  <p>
+    For each message the application sends we store a delivery record consisting of the recipient
+    address, the time sent, the type of document sent, the staff user who sent it, the related job
+    record and the provider's message identifier. We store the message subject and body only as part
+    of the job record the message was generated from. We store the OAuth grant identifier, the
+    connected email address and the connection status.
+  </p>
+
+  <h3>4.5 Limits on our use</h3>
+  <p>
+    Data obtained through Google or Microsoft APIs is used <strong>only to provide and improve the
+    sending feature described above</strong>. We do not use it for advertising, we do not sell or
+    transfer it, we do not use it to train generalised artificial intelligence or machine learning
+    models, and no human at Big Tree Services reads it except where you have specifically asked us
+    to (for example to resolve a support ticket), where it is necessary for security purposes or to
+    comply with applicable law, or where the data is aggregated and anonymised.
+  </p>
+
+  <h3>4.6 Revoking access</h3>
+  <p>
+    An administrator can disconnect the mailbox at any time from the company settings page in the
+    application, which revokes our authorisation immediately. Access can also be revoked from
+    <a href="https://myaccount.google.com/permissions" rel="noopener" target="_blank">Google Account
+    permissions</a> or the equivalent Microsoft account page. On disconnection we delete the stored
+    grant; historical delivery records remain on the related job records as part of the company's
+    own business history.
+  </p>
+
+  <h2 id="use">5. How we use information</h2>
+  <ul>
+    <li>to provide the application and its features to the company that subscribes to it;</li>
+    <li>to authenticate users and enforce the permissions their company has assigned them;</li>
+    <li>to generate and send quotes, invoices, receipts and notifications on the company's behalf;</li>
+    <li>to produce reports and exports the company requests;</li>
+    <li>to provide support, diagnose faults and keep the service secure and available;</li>
+    <li>to bill for the service and keep the records required by law;</li>
+    <li>to comply with legal obligations and to establish or defend legal claims.</li>
+  </ul>
+  <p>
+    We do not sell personal information, we do not share it for behavioural advertising, and we do
+    not use customer business data to train artificial intelligence models.
+  </p>
+
+  <h2 id="share">6. Sharing and service providers</h2>
+  <p>
+    We share information only as follows.
+  </p>
+  <ul>
+    <li>
+      <strong>With the subscribing company.</strong> Staff of a company can see the data belonging
+      to that company, subject to the permissions their administrator sets.
+    </li>
+    <li>
+      <strong>With service providers</strong> who process data on our behalf under contract:
+      <em>Nylas</em> (email delivery and OAuth connection management), <em>Amazon Web Services</em>
+      (application hosting and file storage for uploaded photographs and documents), and
+      <em>Sentry</em> (error monitoring). Each is permitted to use the data only to provide its
+      service to us.
+    </li>
+    <li>
+      <strong>With recipients you direct us to email</strong> &mdash; the customers and staff a
+      company sends quotes, invoices and notifications to.
+    </li>
+    <li>
+      <strong>Where the law requires it</strong>, in response to a valid legal process, or where
+      necessary to protect our rights, our users or the public.
+    </li>
+    <li>
+      <strong>In a business transfer.</strong> If our business is sold or reorganised, information
+      may transfer with it, remaining subject to a policy no less protective than this one.
+    </li>
+  </ul>
+
+  <h2 id="location">7. Where data is held</h2>
+  <p>
+    The application and its database are hosted in North America. Uploaded photographs and documents
+    are stored in Amazon S3. Our service providers may process data in the United States and other
+    countries, which means information may be transferred outside your province or country and may
+    be accessible to the courts and authorities of those jurisdictions in accordance with their law.
+    We use contractual protections with our providers for these transfers.
+  </p>
+
+  <h2 id="retention">8. Retention</h2>
+  <p>
+    We retain a company's business data for as long as its account is active. Following termination
+    we retain it for <strong>90 days</strong> so it can be exported, after which we delete or
+    anonymise it, except where we are required to keep records for longer for tax, accounting or
+    legal reasons. Staff account records are deleted or anonymised when the account is removed and
+    the retention period has passed. Error reports and server logs are kept for up to 90 days.
+  </p>
+
+  <h2 id="security">9. Security</h2>
+  <p>
+    We protect information with measures appropriate to its sensitivity: encryption in transit
+    (HTTPS), hashed passwords, role-based access controls, tenant isolation so one company cannot
+    see another's data, restricted administrative access, and monitoring. No system is perfectly
+    secure, and we cannot guarantee absolute security. If a breach occurs that creates a real risk
+    of significant harm, we will notify the affected companies and the relevant regulator as the
+    law requires.
+  </p>
+
+  <h2 id="rights">10. Your rights</h2>
+  <p>
+    Subject to applicable law, you may ask us to give you access to the personal information we hold
+    about you, correct it if it is inaccurate, delete it, restrict or object to a particular use, or
+    provide it in a portable format. You may also withdraw a consent you have given, though this may
+    mean we can no longer provide part of the service.
+  </p>
+  <p>
+    Email <a href="mailto:info@bigtreeservices.ca">info@bigtreeservices.ca</a> to make a request. We
+    will respond within 30 days and may need to verify your identity first. Where we hold your
+    information as a processor for a subscribing company, we will refer your request to that company
+    and support them in answering it.
+  </p>
+  <p>
+    If you are not satisfied with our response, you may complain to the Office of the Privacy
+    Commissioner of Canada or to your local data protection authority.
+  </p>
+
+  <h2 id="customers">11. Customers of our users</h2>
+  <p>
+    If you received a quote, invoice or appointment notice generated by this application, your
+    details were entered by the tree care company you dealt with. That company decides what it
+    records about you and for how long. Please direct any request about your details to that
+    company; its contact information appears on the document you received.
+  </p>
+
+  <h2 id="children">12. Children</h2>
+  <p>
+    The application is a workplace tool intended for adults. It is not directed at children and we do
+    not knowingly collect personal information from anyone under 16. If we learn that we have, we
+    will delete it.
+  </p>
+
+  <h2 id="changes">13. Changes</h2>
+  <p>
+    We may update this policy from time to time. The effective date at the top shows when it last
+    changed. If a change materially affects how we handle personal information we will give notice
+    in the application or by email before it takes effect.
+  </p>
+
+  <h2 id="contact">14. Contact</h2>
+  <p>
+    Big Tree Services &mdash; Ontario, Canada<br>
+    Privacy enquiries: <a href="mailto:info@bigtreeservices.ca">info@bigtreeservices.ca</a>
+  </p>
+</article>

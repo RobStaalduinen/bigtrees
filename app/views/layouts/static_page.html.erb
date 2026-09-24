@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><%= yield(:title) %> &middot; Big Tree Services</title>
+  <meta name="description" content="<%= yield(:description) %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap">
+
+  <style>
+    :root {
+      --brand: #8A0000;
+      --brand-dark: #6b0000;
+      --brand-wash: #fbf6f6;
+      --ink: #1c1c1c;
+      --text: #3f3f3f;
+      --muted: #6f6f6f;
+      --border: #e4e0dd;
+      --surface: #ffffff;
+      --page: #faf9f7;
+      --radius: 10px;
+      --measure: 46rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--brand); }
+    a:hover { color: var(--brand-dark); }
+
+    .wrap {
+      width: 100%;
+      max-width: 64rem;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    /* ---------- header ---------- */
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      border-top: 4px solid var(--brand);
+    }
+
+    .site-header .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand strong {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--brand);
+    }
+
+    .brand span {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+    }
+
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 22px;
+      font-size: 15px;
+    }
+
+    .site-nav a {
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .site-nav a:hover { color: var(--brand); }
+    .site-nav a[aria-current] { color: var(--brand); font-weight: 600; }
+
+    .btn {
+      display: inline-block;
+      background: var(--brand);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 9px 18px;
+      border-radius: var(--radius);
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover { background: var(--brand-dark); color: #fff; }
+
+    /* `.site-nav a` is more specific than `.btn`, so restate the button colour. */
+    .site-nav a.btn { color: #fff; }
+    .site-nav a.btn:hover { color: #fff; }
+
+    /* ---------- content ---------- */
+
+    main { padding: 48px 0 64px; }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0 0 12px;
+    }
+
+    h2 {
+      font-size: 22px;
+      line-height: 1.3;
+      color: var(--ink);
+      margin: 40px 0 10px;
+    }
+
+    h3 {
+      font-size: 17px;
+      color: var(--ink);
+      margin: 26px 0 6px;
+    }
+
+    p, ul, ol { margin: 0 0 16px; }
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 7px; }
+
+    /* ---------- legal documents ---------- */
+
+    .doc { max-width: var(--measure); }
+
+    .doc .meta {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc h2 {
+      padding-top: 6px;
+      border-top: 1px solid var(--border);
+    }
+
+    .doc h2:first-of-type { border-top: 0; }
+
+    .callout {
+      background: var(--brand-wash);
+      border-left: 3px solid var(--brand);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin: 0 0 20px;
+      font-size: 16px;
+    }
+
+    .callout p:last-child { margin-bottom: 0; }
+
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+    .toc li { margin-bottom: 4px; break-inside: avoid; }
+
+    /* ---------- home ---------- */
+
+    .hero { max-width: var(--measure); margin-bottom: 8px; }
+
+    .hero h1 { font-size: 40px; }
+
+    .hero .lede {
+      font-size: 20px;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin: 20px 0 8px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+
+    .card h3 { margin-top: 0; }
+    .card p { margin-bottom: 0; font-size: 16px; color: var(--muted); }
+
+    .section { margin-top: 56px; }
+    .section > p,
+    .section > ul,
+    .section > h3,
+    .section > .callout { max-width: var(--measure); }
+
+    table.scopes {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 16px;
+      overflow: hidden;
+    }
+
+    table.scopes th,
+    table.scopes td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    table.scopes th {
+      background: var(--brand-wash);
+      color: var(--ink);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    table.scopes tr:last-child td { border-bottom: 0; }
+
+    .table-scroll { overflow-x: auto; max-width: var(--measure); }
+
+    /* ---------- footer ---------- */
+
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .site-footer .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+    .site-footer a { text-decoration: none; }
+
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .hero h1 { font-size: 30px; }
+      h1 { font-size: 27px; }
+      .toc ol { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/home">
+        <strong>Big Tree Services</strong>
+        <span>Arborist CRM</span>
+      </a>
+      <nav class="site-nav">
+        <a href="/home"<%= ' aria-current="page"'.html_safe if current_page?('/home') %>>Overview</a>
+        <a href="/privacy"<%= ' aria-current="page"'.html_safe if current_page?('/privacy') %>>Privacy</a>
+        <a href="/terms"<%= ' aria-current="page"'.html_safe if current_page?('/terms') %>>Terms</a>
+        <a class="btn" href="/login">Sign in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <%= yield %>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>&copy; <%= Date.current.year %> Big Tree Services. All rights reserved.</div>
+      <nav>
+        <a href="/home">Overview</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="mailto:info@bigtreeservices.ca">info@bigtreeservices.ca</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
