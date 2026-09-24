@@ -31,6 +31,10 @@ class OrganizationCreator
     EmailTemplateCreator.new(organization).seed_email_templates
   end
 
+  def seed_email_insertables
+    EmailInsertableCreator.new(organization).seed_email_insertables
+  end
+
   private
 
   def organization

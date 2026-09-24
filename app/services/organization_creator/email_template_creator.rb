@@ -21,18 +21,18 @@ class OrganizationCreator
     private
 
     def create_quote_mailout
-      content = "Hi [FIRST_NAME],\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[ADDITIONAL_CONTENT_SLOT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us at #{@organization.phone_number}. If I don't answer, I will return your message as soon as I have a moment.\n\nThanks,\n[SIGNATURE]\n"
-      create_email_template('quote_mailout', 'Your Quote from [ORGANIZATION_NAME]', content)
+      content = "Hi [FIRST_NAME],\n\nYour quote is attached with our firm price and all of our company information, including our insurance and certificate numbers. If you'd like to go ahead with the job, don't worry about signing the document, simply confirm you'd like to go ahead with the work by replying to this email.\n\n[SCHEDULE_TEXT]We do our best to maintain a reliable schedule for our customers and employees. As such, we ask that if you would like us to do any work above and beyond what we've quoted, please notify us before we schedule your work.\n\nIf you have any questions, you can call us at #{@organization.phone_number}. If I don't answer, I will return your message as soon as I have a moment.\n\nThanks,\n[SIGNATURE]\n"
+      create_email_template('quote_mailout', 'Your Quote from [ORGANIZATION_NAME]', content, category: 'quote')
     end
 
     def create_invoice_mailout
       content = "Hi [FIRST_NAME],\n\nYour tree work is complete. Thank you very much for your business.\n\nAttached is your final invoice. We accept all forms of payment, but prefer e-transfers or cheques. Credit card payments over the phone also work, but we do lose a percentage of the sale.\n\nE-transfers can be sent to #{@organization.email}\n\nCheques can be made out to Shadow River Tree Services. Arrangements can be made for pickup.\n\nCall me anytime at #{@organization.phone_number} for card payments or if you have any questions.\n\nThanks,\n[SIGNATURE]\n"
-      create_email_template('invoice_mailout', 'Your [ORGANIZATION_NAME] Invoice', content)
+      create_email_template('invoice_mailout', 'Your [ORGANIZATION_NAME] Invoice', content, category: 'invoice')
     end
 
     def create_receipt_mailout
       content = "Hi [FIRST_NAME],\n\nYour payment has been received. Here is your receipt.\n\nThank you so much for your business. Give us a call anytime!\n\n"
-      create_email_template('receipt_mailout', 'Your [ORGANIZATION_NAME] Receipt', content)
+      create_email_template('receipt_mailout', 'Your [ORGANIZATION_NAME] Receipt', content, category: 'receipt')
     end
 
     def create_no_response
@@ -52,7 +52,7 @@ class OrganizationCreator
                 "No action is required on your part at this time.\n\n" \
                 "Thank you, and we look forward to working with you!\n\n" \
                 "Best regards,\n[SIGNATURE]\n"
-      create_email_template('approval_mailout', 'Your [ORGANIZATION_NAME] Job', content)
+      create_email_template('approval_mailout', 'Your [ORGANIZATION_NAME] Job', content, category: 'approval')
     end
 
     def create_48_hour_notice
@@ -78,10 +78,10 @@ class OrganizationCreator
                 "A significant portion of the project was completed today. We will continue with the remaining work asap. Log pickup and Stump Grinding requires different vehicles and equipment so those are typically completed a day or so following the tree work. We apologize for any inconvenience. If anybody wants the logs, let them take them - it's easier on our backs!\n\n" \
                 "We look forward to completing your tree work.\n\n" \
                 "Best regards,\n[SIGNATURE]\n"
-      create_email_template('job_progress', 'Your [ORGANIZATION_NAME] Job', content)
+      create_email_template('job_progress', 'Your [ORGANIZATION_NAME] Job', content, category: 'job_progress')
     end
 
-    def create_email_template(key, subject, content, category: 'default')
+    def create_email_template(key, subject, content, category:)
       @organization.email_templates.find_or_create_by(key: key) do |t|
         t.subject = subject
         t.content = content

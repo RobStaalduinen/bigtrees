@@ -4,7 +4,9 @@
       <app-email-form
         :value='emailDefinition'
         @changed='payload => handleChange(payload)'
-        template='invoice_mailout'
+        @template-changed='key => templateKey = key'
+        category='invoice'
+        defaultTemplateKey='invoice_mailout'
         :estimate='estimate'
       ></app-email-form>
     </template>
@@ -12,7 +14,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail';
+import EmailForm from '../../common/forms/categorisedEmail';
 
 export default {
   components: {
@@ -28,7 +30,8 @@ export default {
   },
   data() {
     return {
-      emailDefinition: null
+      emailDefinition: null,
+      templateKey: 'invoice_mailout'
     }
   },
   methods: {
@@ -40,7 +43,7 @@ export default {
         dest_email: this.emailDefinition.email,
         content: this.emailDefinition.content,
         subject: this.emailDefinition.subject,
-        template_key: 'invoice_mailout'
+        template_key: this.templateKey
       }
       this.axiosPost(`/estimates/${this.estimate.id}/quote_mailouts`, params).then(response => {
         this.$root.$emit('bv::toggle::collapse', this.id);

@@ -21,17 +21,32 @@ RSpec.describe OrganizationCreator::EmailTemplateCreator do
       expect(template.subject).to eq('Your [ORGANIZATION_NAME] Job')
     end
 
-    it 'tags templates with their expected categories' do
+    it 'files every template under the workflow step it is sent from' do
       creator.seed_email_templates
-      scheduling_keys = organization.email_templates.where(category: 'scheduling').pluck(:key)
-      followup_keys = organization.email_templates.where(category: 'followup').pluck(:key)
-      default_keys = organization.email_templates.where(category: 'default').pluck(:key)
 
-      expect(scheduling_keys).to contain_exactly('48_hour_notice', 'crew_on_the_way')
-      expect(followup_keys).to contain_exactly('no_response', 'image_request')
-      expect(default_keys).to contain_exactly(
-        'quote_mailout', 'invoice_mailout', 'receipt_mailout', 'approval_mailout', 'job_progress'
+      expect(organization.email_templates.pluck(:key, :category)).to contain_exactly(
+        ['quote_mailout', 'quote'],
+        ['no_response', 'followup'],
+        ['image_request', 'followup'],
+        ['approval_mailout', 'approval'],
+        ['48_hour_notice', 'scheduling'],
+        ['crew_on_the_way', 'scheduling'],
+        ['job_progress', 'job_progress'],
+        ['invoice_mailout', 'invoice'],
+        ['receipt_mailout', 'receipt']
       )
+    end
+
+    it 'seeds only categories the model recognises' do
+      creator.seed_email_templates
+
+      expect(organization.email_templates.pluck(:category).uniq - EmailTemplate::CATEGORIES).to be_empty
+    end
+
+    it 'seeds every template the workflow sends by key' do
+      creator.seed_email_templates
+
+      expect(organization.email_templates.pluck(:key)).to match_array(EmailTemplate::SYSTEM_KEYS)
     end
 
     it 'is idempotent — running twice results in 9 templates, not 18' do
@@ -44,7 +59,8 @@ RSpec.describe OrganizationCreator::EmailTemplateCreator do
       organization.email_templates.create!(
         key: 'approval_mailout',
         subject: 'Custom Subject',
-        content: 'Custom content'
+        content: 'Custom content',
+        category: 'approval'
       )
       creator.seed_email_templates
       template = organization.email_templates.find_by(key: 'approval_mailout')
@@ -56,7 +72,8 @@ RSpec.describe OrganizationCreator::EmailTemplateCreator do
       existing = organization.email_templates.create!(
         key: 'quote_mailout',
         subject: 'Arborist Subject',
-        content: 'Arborist content'
+        content: 'Arborist content',
+        category: 'quote'
       )
       expect { creator.seed_email_templates }.to change(EmailTemplate, :count).by(8)
       existing.reload

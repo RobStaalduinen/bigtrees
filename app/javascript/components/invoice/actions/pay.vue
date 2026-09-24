@@ -23,7 +23,9 @@
             v-if='sendReceipt'
             :value='emailDefinition'
             @changed='payload => updateEmailContent(payload)'
-            template='receipt_mailout'
+            @template-changed='key => templateKey = key'
+            category='receipt'
+            defaultTemplateKey='receipt_mailout'
             :estimate='estimate'
           ></app-email-form>
         </b-form-group>
@@ -34,7 +36,7 @@
 
 <script>
 import InvoiceForm from '../forms/full';
-import EmailForm from '../../common/forms/templatedEmail';
+import EmailForm from '../../common/forms/categorisedEmail';
 import EventBus from '@/store/eventBus'
 import { PAYMENT_METHODS } from '@/constants';
 
@@ -55,6 +57,7 @@ export default {
     return {
       payment_method: null,
       sendReceipt: true,
+      templateKey: 'receipt_mailout',
       options: PAYMENT_METHODS,
       emailDefinition: null,
     }
@@ -69,7 +72,7 @@ export default {
         var params = {
           invoice: { payment_method: this.payment_method },
           send_receipt: this.sendReceipt,
-          email: { ...this.emailDefinition, template_key: 'receipt_mailout' }
+          email: { ...this.emailDefinition, template_key: this.templateKey }
         }
 
         this.axiosPost(`/estimates/${this.estimate.id}/invoice_receipts`, params).then(response => {

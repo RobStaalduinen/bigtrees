@@ -35,7 +35,9 @@ class SchedulingMailoutsController < ApplicationController
 
   private
 
+  # The scheduling send forms omit this param entirely, and casting a missing one gives nil rather
+  # than false — so default it, and hand the mailer a real boolean either way.
   def include_quote?
-    ActiveModel::Type::Boolean.new.cast(params[:include_quote])
+    ActiveModel::Type::Boolean.new.cast(params.fetch(:include_quote, false))
   end
 end

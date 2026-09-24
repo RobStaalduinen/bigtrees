@@ -11,13 +11,17 @@
 #  content         :text(65535)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  category        :string(255)      default("default"), not null
+#  category        :string(255)      not null
 #
 class EmailTemplateSerializer < ApplicationSerializer
   attribute :key
   attribute :subject
-  attribute :parsed_subject
   attribute :content
   attribute :category
+  attribute :deletable
   attribute :created_at
+
+  def deletable
+    object.deletable?
+  end
 end

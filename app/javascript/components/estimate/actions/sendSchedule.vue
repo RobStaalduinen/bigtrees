@@ -1,19 +1,12 @@
 <template>
   <app-right-sidebar :id='id' title='Send Schedule Email' submitText='Send' :onSubmit='sendScheduleEmail'>
     <template v-slot:content>
-      <app-select-field
-        v-if='templateOptions.length > 0'
-        label='Schedule Template'
-        v-model='selectedTemplateKey'
-        name='scheduleTemplate'
-        :options='templateOptions'
-        validationRules='required'
-      />
       <app-email-form
-        v-if='selectedTemplateKey'
         :value='emailDefinition'
         @changed='payload => handleChange(payload)'
-        :template='selectedTemplateKey'
+        @template-changed='key => selectedTemplateKey = key'
+        category='scheduling'
+        pickerLabel='Schedule Template'
         :estimate='estimate'
       />
     </template>
@@ -21,7 +14,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail'
+import EmailForm from '../../common/forms/categorisedEmail'
 import EventBus from '@/store/eventBus'
 
 export default {
@@ -35,22 +28,10 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      schedulingTemplates: [],
       selectedTemplateKey: null
     }
   },
-  computed: {
-    templateOptions() {
-      return this.schedulingTemplates.map(t => ({
-        value: t.key,
-        text: this.formatLabel(t.key)
-      }))
-    }
-  },
   methods: {
-    formatLabel(key) {
-      return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    },
     handleChange(payload) {
       this.emailDefinition = { ...payload }
     },
@@ -67,14 +48,6 @@ export default {
       this.$root.$emit('bv::toggle::collapse', this.id)
       EventBus.$emit('ESTIMATE_UPDATED', response.data)
     }
-  },
-  mounted() {
-    this.axiosGet('/email_templates').then(response => {
-      this.schedulingTemplates = response.data.email_templates.filter(t => t.category === 'scheduling');
-      if (this.schedulingTemplates.length > 0) {
-        this.selectedTemplateKey = this.schedulingTemplates[0].key;
-      }
-    })
   }
 }
 </script>

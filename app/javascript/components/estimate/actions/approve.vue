@@ -9,7 +9,9 @@
         v-if='sendEmail'
         :value='emailDefinition'
         @changed='payload => handleChange(payload)'
-        template='approval_mailout'
+        @template-changed='key => templateKey = key'
+        category='approval'
+        defaultTemplateKey='approval_mailout'
         :estimate='estimate'
       />
     </template>
@@ -17,7 +19,7 @@
 </template>
 
 <script>
-import EmailForm from '../../common/forms/templatedEmail'
+import EmailForm from '../../common/forms/categorisedEmail'
 import EventBus from '@/store/eventBus'
 
 export default {
@@ -31,7 +33,8 @@ export default {
   data() {
     return {
       emailDefinition: null,
-      sendEmail: false
+      sendEmail: false,
+      templateKey: 'approval_mailout'
     }
   },
   methods: {
@@ -47,7 +50,8 @@ export default {
         await this.axiosPost(`/estimates/${this.estimate.id}/approval_mailouts`, {
           dest_email: this.emailDefinition.email,
           subject: this.emailDefinition.subject,
-          content: this.emailDefinition.content
+          content: this.emailDefinition.content,
+          template_key: this.templateKey
         })
       }
 

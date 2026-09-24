@@ -56,9 +56,10 @@ export default {
     }
   },
   mounted() {
-    // Check URL for 'section' query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const sectionParam = urlParams.get('section')?.split('_')
+    // Check the route for a 'section' query parameter. Read off $route rather than
+    // window.location so a programmatic push (the email template page returning here)
+    // lands on the right section without depending on history having caught up.
+    const sectionParam = this.$route.query.section?.split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
 
