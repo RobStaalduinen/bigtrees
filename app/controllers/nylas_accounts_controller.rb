@@ -11,7 +11,7 @@ class NylasAccountsController < ApplicationController
   def show
     nylas_account = NylasAccount.find(params[:id])
 
-    nylas_account.validate!
+    nylas_account.refresh_status!
 
     render json: nylas_account
   rescue StandardError => e

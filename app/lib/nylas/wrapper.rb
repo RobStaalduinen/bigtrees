@@ -32,6 +32,46 @@ module Nylas
       "#{detail} (provider: #{provider})"
     end
 
+    # Provider scopes that permit sending mail. Nylas hands back the provider's
+    # own scope strings on the grant, so match on the trailing segment: Microsoft
+    # returns "Mail.Send" bare or prefixed ("https://graph.microsoft.com/Mail.Send",
+    # "https://outlook.office365.com/Mail.Send"), Google as a full auth URL.
+    #
+    # Deliberately absent: Microsoft's Mail.ReadWrite and Google's gmail.readonly.
+    # Neither authorizes a send, and mistaking them for one is the exact failure
+    # this check exists to catch.
+    SEND_SCOPE_SEGMENTS = %w[
+      gmail.send
+      gmail.compose
+      gmail.modify
+      mail.send
+      mail.send.shared
+    ].freeze
+
+    # Google's full-access scope has no meaningful trailing segment.
+    FULL_ACCESS_SCOPES = ['https://mail.google.com'].freeze
+
+    def self.send_scope?(scope)
+      normalized = scope.to_s.downcase.strip.chomp('/')
+      return false if normalized.empty?
+      return true if FULL_ACCESS_SCOPES.include?(normalized)
+
+      SEND_SCOPE_SEGMENTS.include?(normalized.split('/').last)
+    end
+
+    # Fails open on a grant that reports no scopes at all (IMAP grants, or a
+    # response shape we do not recognise). A false "insufficient" banner on a
+    # working account is worse than letting the send attempt surface the truth.
+    def self.missing_send_scope?(grant)
+      scopes = grant[:scope] || grant['scope']
+      scopes = scopes.split(/[\s,]+/) if scopes.is_a?(String)
+      scopes = Array(scopes).reject { |s| s.to_s.strip.empty? }
+
+      return false if scopes.empty?
+
+      scopes.none? { |scope| send_scope?(scope) }
+    end
+
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],
@@ -46,18 +86,38 @@ module Nylas
       )
     end
 
-    def validate_grant(nylas_account)
-      grant = @client.grants.find(grant_id: nylas_account.grant_id)
+    # Re-checks the grant against Nylas and persists the resulting status.
+    # Never raises for an unusable grant: callers that only report state (the
+    # status banner) need the status to come back, not an exception.
+    def refresh_status(nylas_account)
+      grant = @client.grants.find(grant_id: nylas_account.grant_id)&.first
 
-      if grant.nil? || grant.first[:grant_status] != 'valid'
-        nylas_account.update(status: 'unsynced')
-        raise "Email connection must be resynced"
-      else
-        nylas_account.update(status: 'active')
-      end
-    rescue Nylas::NylasApiError => e
+      status =
+        if grant.nil? || grant[:grant_status] != 'valid'
+          'unsynced'
+        elsif Wrapper.missing_send_scope?(grant)
+          'insufficient'
+        else
+          'active'
+        end
+
+      nylas_account.update(status: status)
+      status
+    rescue Nylas::AbstractNylasApiError => e
+      Sentry.capture_exception(e)
       nylas_account.update(status: 'unsynced')
+      'unsynced'
+    end
 
+    # Same check, but raises when the account cannot actually send. Use this on
+    # the send path.
+    def validate_grant(nylas_account)
+      case refresh_status(nylas_account)
+      when 'insufficient'
+        raise 'Email account is missing permission to send email. Please reconnect it and allow sending.'
+      when 'unsynced'
+        raise 'Email connection must be resynced'
+      end
     end
 
     def send_email(nylas_account, email_definition, attachment = nil, use_test_grant: Rails.env.development?)

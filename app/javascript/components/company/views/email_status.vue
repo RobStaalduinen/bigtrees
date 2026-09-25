@@ -1,8 +1,9 @@
 <template>
-  <div v-if="unsynced || none">
+  <div v-if="unsynced || none || insufficient">
     <div class="email-status-banner unsynced">
       <span v-if="unsynced">The email account for this organization needs to be re-synced.</span>
       <span v-if="none">The outgoing email needs to be set up for this organization.</span>
+      <span v-if="insufficient">The connected email account ({{ emailAddress }}) is not permitted to send email. Please reconnect it and allow the send email permission.</span>
 
       <span v-if="shouldLink()"><router-link to="/admin/company?section=outgoing_email">Update Outgoing Email Settings</router-link></span>
       <span v-else>Please contact your company administrator.</span>
@@ -24,6 +25,14 @@
       },
       none() {
         return this.emailStatus === 'none';
+      },
+      insufficient() {
+        return this.emailStatus === 'insufficient';
+      },
+      emailAddress() {
+        const account = this.$store.state.organization.nylas_account;
+
+        return account ? account.outgoing_email_address : '';
       }
     },
     mounted() {
