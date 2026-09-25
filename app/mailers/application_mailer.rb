@@ -15,7 +15,7 @@ class ApplicationMailer < ActionMailer::Base
       bcc: bcc.compact
     )
 
-    Nylas::Wrapper.new.send_email(organization.nylas_account, email_definition, attachment)
+    Nylas::Wrapper.for(organization.nylas_account).send_email(organization.nylas_account, email_definition, attachment)
   end
 
 end

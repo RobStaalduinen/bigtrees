@@ -19,6 +19,12 @@ class NylasAccount < ActiveRecord::Base
 
   enum :status, { active: 'active', unsynced: 'unsynced', insufficient: 'insufficient' }
 
+  # Which Nylas application owns this grant. A grant is only usable with the
+  # credentials of the application that created it, so this drives which
+  # Wrapper (and therefore which client_id/api_key) every call uses.
+  # Prefixed so the predicates do not collide with the status enum's.
+  enum :nylas_application, { production: 'production', sandbox: 'sandbox' }, prefix: true
+
   # Mailers check only for the presence of an organization's nylas_account
   # before sending, so a row without a grant reads as a working connection.
   # Never let one be written.
@@ -27,6 +33,6 @@ class NylasAccount < ActiveRecord::Base
   # Re-checks the grant with Nylas and persists the result. Returns the status
   # rather than raising, so the caller can report it.
   def refresh_status!
-    Nylas::Wrapper.new.refresh_status(self)
+    Nylas::Wrapper.for(self).refresh_status(self)
   end
 end
