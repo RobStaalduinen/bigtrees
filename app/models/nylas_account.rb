@@ -19,6 +19,11 @@ class NylasAccount < ActiveRecord::Base
 
   enum :status, { active: 'active', unsynced: 'unsynced' }
 
+  # Mailers check only for the presence of an organization's nylas_account
+  # before sending, so a row without a grant reads as a working connection.
+  # Never let one be written.
+  validates :grant_id, presence: true
+
   def validate!
     wrapper = Nylas::Wrapper.new
     wrapper.validate_grant(self)

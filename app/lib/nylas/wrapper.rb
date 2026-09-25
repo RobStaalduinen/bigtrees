@@ -18,6 +18,20 @@ module Nylas
       data[:id] || data['id']
     end
 
+    # Flattens an exception into a message worth showing. For Nylas API errors the
+    # useful part is usually `provider_error` — the verbatim Google/Microsoft
+    # complaint — which `message` alone leaves out.
+    def self.error_detail(error)
+      detail = error.message.to_s
+
+      return detail unless error.is_a?(Nylas::NylasApiError) && error.provider_error.present?
+
+      provider = error.provider_error
+      provider = provider.to_json if provider.is_a?(Hash) || provider.is_a?(Array)
+
+      "#{detail} (provider: #{provider})"
+    end
+
     def initialize
       @config = {
         client_id: ENV['NYLAS_CLIENT_ID'],
@@ -83,7 +97,7 @@ module Nylas
       end
     rescue StandardError => e
       Sentry.capture_exception(e)
-      raise "Failed to send email."
+      raise "Failed to send email: #{Wrapper.error_detail(e)}"
     end
 
     def remove_grant(nylas_account)
@@ -94,6 +108,7 @@ module Nylas
       @client.auth.url_for_oauth2({
         client_id: @config[:client_id],
         redirect_uri: @config[:callback_uri],
+        access_type: 'offline',
         state: organization.id
       })
     end
@@ -148,9 +163,35 @@ module Nylas
 
       response = http.request(request)
 
-      raise "Failed to send email." unless response.code.to_i == 200
+      raise multipart_send_error(response) unless response.code.to_i == 200
 
       JSON.parse(response.body)
+    end
+
+    # Nylas reports multipart send failures in the response body, shaped like
+    # {"request_id": "...", "error": {"type": ..., "message": ..., "provider_error": {...}}}.
+    # Rebuild it as the SDK's own error so the real cause survives.
+    def multipart_send_error(response)
+      status = response.code.to_i
+      body = begin
+        JSON.parse(response.body)
+      rescue JSON::ParserError, TypeError
+        nil
+      end
+
+      error = body.is_a?(Hash) ? body['error'] : nil
+      request_id = body.is_a?(Hash) ? body['request_id'] : nil
+
+      case error
+      when Hash
+        Nylas::NylasApiError.new(error['type'], error['message'], status,
+                                 error['provider_error'], request_id)
+      when String
+        Nylas::NylasApiError.new('NylasApiError', error, status, nil, request_id)
+      else
+        message = response.body.presence&.truncate(500) || "HTTP #{status} with no response body"
+        Nylas::NylasApiError.new('NylasApiError', message, status, nil, request_id)
+      end
     end
   end
 end
