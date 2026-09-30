@@ -1,0 +1,25 @@
+<%# Insurance and tax registration, demoted from the old bold boxed block to
+    a single quiet line. Still present and verifiable, no longer shouted.
+
+    NOTE: this is repeated per page rather than pinned to the bottom of the
+    sheet, so on a short document it floats up under the content, and a page
+    that overflows inherits no footer at all. The fix is wkhtmltopdf's
+    --footer-html, which needs a change to GenerateQuote/GenerateReceipt —
+    tracked as a follow-up, see .sdd/ENG-11/mockups/NOTES.md. %>
+<% insurance = [organization.insurance_provider,
+                organization.insurance_policy_number.present? ? "policy #{organization.insurance_policy_number}" : nil,
+                organization.insurance_description].compact_blank %>
+
+<table class='pdf-footer'>
+  <tr>
+    <td>
+      <% if insurance.any? %>
+        <span class='fl'>Insured with</span> <%= insurance.join(', ') %>
+      <% end %>
+      <% if organization.hst_number.present? %>
+        &nbsp;&nbsp;<span class='fl'>HST</span> <%= organization.hst_number %>
+      <% end %>
+    </td>
+    <td><%= estimate.quote_display_address %></td>
+  </tr>
+</table>

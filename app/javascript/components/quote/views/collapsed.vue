@@ -24,15 +24,52 @@
           </b-col>
         </b-row>
 
+        <b-row class='spaced-row'>
+          <b-col cols='4' class='right-column'>
+            <b>Scope of Work</b>
+          </b-col>
+          <b-col cols='8'>
+            <span v-if='scopeOfWork' class='scope-text'>{{ scopeOfWork }}</span>
+            <span v-else class='scope-unset'>Not set</span>
+          </b-col>
+        </b-row>
+
+        <b-row class='spaced-row'>
+          <b-col cols='4' class='right-column'>
+            <b>Included</b>
+          </b-col>
+          <b-col cols='8'>
+            <ul v-if='inclusions.length' class='scope-bullets'>
+              <li v-for='(item, index) in inclusions' :key='`inc-${index}`'>{{ item }}</li>
+            </ul>
+            <span v-else class='scope-unset'>Not set</span>
+          </b-col>
+        </b-row>
+
+        <b-row class='spaced-row'>
+          <b-col cols='4' class='right-column'>
+            <b>Excluded</b>
+          </b-col>
+          <b-col cols='8'>
+            <ul v-if='exclusions.length' class='scope-bullets'>
+              <li v-for='(item, index) in exclusions' :key='`exc-${index}`'>{{ item }}</li>
+            </ul>
+            <span v-else class='scope-unset'>Not set</span>
+          </b-col>
+        </b-row>
+
         <div class='single-estimate-link-row'>
           <a class='single-estimate-link' :href='`/estimates/${estimate.id}/quotes.pdf`'>
             Download
           </a>
+          <div class='single-estimate-link' v-b-toggle.quote-scope-edit v-if="hasPermission('estimates', 'update')">
+            Edit Scope
+          </div>
           <div class='single-estimate-link' v-b-toggle.quote-send-team v-if="hasPermission('estimates', 'update')">
             Send to Team
           </div>
           <div class='single-estimate-link' v-b-toggle.quote-send v-if="hasPermission('estimates', 'update')">
-            Resend
+            {{ estimate.quote_sent_date ? 'Resend' : 'Send' }}
           </div>
         </div>
 
@@ -41,21 +78,36 @@
 
     <app-quote-send id='quote-send' :estimate='estimate'></app-quote-send>
     <app-quote-send-team id='quote-send-team' :estimate='estimate'></app-quote-send-team>
+    <app-quote-scope-edit id='quote-scope-edit' :estimate='estimate'></app-quote-scope-edit>
   </div>
 </template>
 
 <script>
 import QuoteSend from '../actions/sendInitial';
 import QuoteSendTeam from '../actions/sendToTeam';
+import QuoteScopeEdit from '../actions/editScope';
 
 export default {
   components: {
     'app-quote-send': QuoteSend,
-    'app-quote-send-team': QuoteSendTeam
+    'app-quote-send-team': QuoteSendTeam,
+    'app-quote-scope-edit': QuoteScopeEdit
   },
   props: {
     estimate: {
       required: true
+    }
+  },
+  computed: {
+    // quote_scope is absent until the fields are first saved.
+    scopeOfWork() {
+      return (this.estimate.quote_scope && this.estimate.quote_scope.scope_of_work) || '';
+    },
+    inclusions() {
+      return (this.estimate.quote_scope && this.estimate.quote_scope.inclusions) || [];
+    },
+    exclusions() {
+      return (this.estimate.quote_scope && this.estimate.quote_scope.exclusions) || [];
     }
   },
   methods: {
@@ -75,5 +127,21 @@ export default {
 </script>
 
 <style scoped>
+  .scope-text {
+    white-space: pre-wrap;
+  }
 
+  .scope-unset {
+    color: gray;
+    font-style: italic;
+  }
+
+  .scope-bullets {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .scope-bullets li {
+    margin-bottom: 2px;
+  }
 </style>

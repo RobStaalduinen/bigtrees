@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_17_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_30_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -354,6 +354,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_17_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active", null: false
+    t.string "nylas_application", default: "production", null: false
     t.index ["organization_id"], name: "index_nylas_accounts_on_organization_id"
   end
 
@@ -412,6 +413,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_17_000000) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_quick_costs_on_organization_id"
+  end
+
+  create_table "quote_scopes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id", null: false
+    t.text "scope_of_work"
+    t.json "inclusions"
+    t.json "exclusions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_quote_scopes_on_estimate_id", unique: true
   end
 
   create_table "receipts", id: :integer, charset: "latin1", force: :cascade do |t|

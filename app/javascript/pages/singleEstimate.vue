@@ -46,7 +46,9 @@
           <single-estimate-site :estimate='estimate'></single-estimate-site>
         </section>
 
-        <section class ='estimate-section' v-if='estimate.quote_sent_date'>
+        <!-- Always rendered: the scope/included/excluded fields live in this box
+             and need to be editable before the quote is first sent. -->
+        <section class ='estimate-section'>
           <single-estimate-quotes :estimate='estimate'></single-estimate-quotes>
         </section>
 

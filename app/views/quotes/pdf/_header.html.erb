@@ -1,33 +1,32 @@
-<table class='header-table'>
+<%# Masthead for page 1. Carries the ONLY copy of the company's contact
+    details in the document — the old repeated block at the foot is gone. %>
+<table class='masthead'>
   <tr>
-    <td class='logo-cell'>
-        <% if organization.id == 2 %>
-          <div class='logo-box'>
-            <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
-          </div>
-        <% elsif organization.id == 1 %>
-          <div class='logo-box'>
-            <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
-          </div>
-        <% elsif organization.logo_url.present? %>
-          <div class='logo-box'>
-            <img src="<%= organization.logo_url %>" class='pdf-logo'>
-          </div>
-        <% else %>
-          <div class='logo-box'>
-            <div class='pdf-logo-name'><%= organization.legal_name || organization.name %></div>
-          </div>
-        <% end %>
+    <td>
+      <% if organization.id == 2 %>
+        <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
+      <% elsif organization.id == 1 %>
+        <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
+      <% elsif organization.logo_url.present? %>
+        <img src="<%= organization.logo_url %>" class='pdf-logo'>
+      <% else %>
+        <div class='pdf-logo-name'><%= organization.legal_name || organization.name %></div>
+      <% end %>
     </td>
-    <td class='address-cell'>
-      <div stlye='width: 100%; display: flex; justify-content: end;'>
-      <div>
-        <span class='company-name'><%= organization.legal_name || organization.name %></span> <br>
-        <%= organization.address.street %> <br>
-        <%= [organization.address.city, organization.address.postal_code].join(", ") %><br>
-        <%= organization.phone_number %>
-      </div>
-      </div>
+
+    <td class='company-block'>
+      <span class='company-name'><%= organization.legal_name || organization.name %></span>
+      <%= [organization.address&.street,
+           organization.address&.city,
+           organization.address&.postal_code].compact_blank.join(', ') %>
+      <% contact = [organization.phone_number, organization.email].compact_blank %>
+      <% if contact.any? %>
+        <br><%= contact.join(' &nbsp; ').html_safe %>
+      <% end %>
+      <% if organization.website.present? %>
+        <br><%= organization.website %>
+      <% end %>
     </td>
   </tr>
 </table>
+<div class='masthead-rule'></div>

@@ -88,6 +88,7 @@ class EstimateSerializer < ApplicationSerializer
   has_one :site, include_nested_associations: true
   has_one :invoice
   has_one :customer_detail
+  has_one :quote_scope
   has_many :jobs
   has_many :costs
   has_many :trees

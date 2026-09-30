@@ -1,232 +1,370 @@
+// ═══════════════════════════════════════════════════════════════════════
+// PDF styles — quote, invoice and receipt (ENG-11 redesign)
+//
+// Rendered by wkhtmltopdf 0.12.6 (Qt WebKit), which is roughly a decade
+// behind current browsers. Three constraints follow from that and are load
+// bearing here:
+//
+//   1. NO CSS custom properties. `var(--x)` resolves to nothing and fails
+//      silently — backgrounds vanish, text falls back to black. The SCSS
+//      variables below compile away before the engine ever sees them, so
+//      they are safe; never replace them with `:root { --token }`.
+//   2. NO flexbox or grid. Layout is tables and block flow.
+//   3. Positioned ::before pseudo-elements are unreliable. List markers use
+//      native `list-style`; the <li> carries the marker colour and an inner
+//      <span> carries the text colour back.
+//
+// Fonts must be installed on the server — see .sdd/ENG-11/mockups/NOTES.md.
+// Archivo needs weights 400/500/600/700 in /usr/local/share/fonts.
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── Tokens ─────────────────────────────────────────────────────────────
+// Drawn from the logo: sage conifers, maple-red leaf.
+$ink:        #22271F;   // bark black — headings, totals
+$body:       #3A3F35;   // running text
+$muted:      #6E7365;   // labels, secondary, footer
+$moss:       #7C8B6A;   // conifer sage — bullets, accent rules
+$rule:       #DDE0D6;   // hairlines
+$rule-firm:  #BFC4B4;   // section rules
+$wash:       #EFF1EA;   // panel tint
+$leaf:       #8A1C1C;   // maple red — used once, at full strength
+
+$pdf-font: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+// Shared inset for the whole pricing block — cost rows, subtotal/HST and the
+// total band all use it, so the descriptions line up down the left and the
+// amounts down the right, inside the band as well as above it. Matches the
+// parties panel's 14px so the two boxed elements agree.
+$price-inset: 14px;
+
+// ── Page ───────────────────────────────────────────────────────────────
 .alwaysbreak {
   page-break-before: always;
 }
 
 .page {
-  padding: 0px 24px;
-  font-family: 'Source Sans Pro'
+  // Deliberately no width. wkhtmltopdf does NOT map CSS inches to its page
+  // width the way a browser does — setting `max-width: 8.5in` here shrinks
+  // the content and leaves a dead right margin in the PDF (verified). To
+  // preview at true page width in a browser, use Chrome's print preview
+  // rather than constraining the element.
+  padding: 22px 44px 14px;
+  font-family: $pdf-font;
+  font-size: 9.5pt;
+  line-height: 1.4;
+  color: $body;
 }
 
-.pdf_header {
-  // display: -webkit-box;
-  // -webkit-box-pack: justify;
-  // display: flex;
-  // justify-content: space-between;
-  //display: table;
-  width: 100%;
-}
+.page table { border-collapse: collapse; width: 100%; }
+.page td, .page th { vertical-align: top; }
+.page p { margin: 0 0 8px; }
+.page p:last-child { margin-bottom: 0; }
 
-.pdf_header-image {
-  width: 400px;
-}
+// ── Masthead ───────────────────────────────────────────────────────────
+// Every piece of company contact detail lives here and nowhere else.
+.masthead { margin-bottom: 10px; }
+.masthead td { vertical-align: bottom; }
 
+.logo-box { width: 100%; }
+
+.pdf-logo,
+.pdf_header-image,
 .shadow-river-logo {
-  width: 200px;
-}
-
-.pdf-logo {
-  height: 100px;
-  width: auto;
-  max-width: 100%;
+  width: 220px;
+  height: auto;
   display: block;
 }
 
+.shadow-river-logo { width: 150px; }
+
 .pdf-logo-name {
-  height: 100px;
-  line-height: 100px;
-  font-size: 36px;
-  font-weight: 600;
-  color: #4d4d4d;
+  font-size: 20pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: $ink;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.header-table {
-  width: 100%;
-}
-
-.header-row{
-  //display: table-row;
-  width: 100%;
-}
-
-.address-cell {
-  font-size: 15px;
-  color: gray;
-  // margin-top: 40px;
-  //display: table-cell;
-  vertical-align: bottom;
-  width: 38%;
+.company-block {
+  text-align: right;
+  font-size: 8pt;
+  line-height: 1.6;
+  color: $muted;
+  white-space: nowrap;
+  width: 45%;
 }
 
 .company-name {
-  font-size: 18px;
-  color: #4d4d4d;
+  display: block;
+  font-size: 9.5pt;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: $ink;
+  margin-bottom: 1px;
 }
 
-.logo-cell {
-  width: 72%;
+.masthead-rule {
+  height: 2px;
+  background: $ink;
+  font-size: 0;
+  line-height: 0;
+  margin-bottom: 9px;
 }
 
-.contact-details {
-  margin-top: -24px;
-  margin-left: 112px;
-  color: #4d4d4d;
-  white-space: nowrap;
+// ── Document title ─────────────────────────────────────────────────────
+.title-block td { vertical-align: bottom; padding-bottom: 8px; }
+
+// `.spacious` is applied to the title block and parties panel when the quote
+// carries no scope/included/excluded sections — the common case. Without them
+// the masthead, parties panel and pricing table stack up tight against each
+// other; with them, those sections provide the separation themselves and this
+// extra space would cost a dense quote its one-page fit.
+.title-block.spacious td { padding-bottom: 22px; }
+
+.doc-title {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: $ink;
+  margin: 0;
 }
 
-.estimate-header {
-  margin-top: 16px;
-  padding: 4px;
-  border-width: 1px 0 1px 0;
-  border-color: lightgrey;
-  border-style: none;
-  border-top-style: solid;
-  border-bottom-style: solid;
-  font-size: 18px;
-}
-
-.info-table {
-  width: 100%;
-  padding: 8px 0px;
-  border: 1px solid lightgray;
-  margin-top: 16px;
-  font-size: 14px;
-}
-
-.info-row {
-  width: 100%;
-  padding-top: 2px;
+.doc-meta { text-align: right; font-size: 8.5pt; white-space: nowrap; }
+.doc-meta table { width: auto; margin-left: auto; }
+.doc-meta .k { color: $muted; padding: 0 12px 2px 0; text-align: right; }
+.doc-meta .v {
+  color: $ink;
+  font-weight: 600;
+  text-align: right;
   padding-bottom: 2px;
 }
 
-.title-column {
-  text-align: right;
-  width: 15%;
-  padding: 4px;
-  margin-right: 8px;
+// ── Parties panel ──────────────────────────────────────────────────────
+.parties {
+  background: $wash;
+  border-left: 3px solid $moss;
+  margin-bottom: 14px;
+}
+.parties.spacious { margin-bottom: 28px; }
+.parties td { padding: 8px 14px 9px; width: 50%; }
+.parties td + td { border-left: 1px solid $rule; }
+
+.party-label {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: $muted;
+  margin-bottom: 4px;
+}
+.party-name {
+  font-size: 11pt;
+  font-weight: 600;
+  color: $ink;
+  line-height: 1.25;
+  margin-bottom: 1px;
+}
+.party-detail { font-size: 8.5pt; color: $body; line-height: 1.5; }
+
+// ── Sections ───────────────────────────────────────────────────────────
+.section { margin-bottom: 9px; }
+
+.section-head {
+  font-size: 11.5pt;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: $ink;
+  border-bottom: 1px solid $rule-firm;
+  padding-bottom: 3px;
+  margin-bottom: 7px;
 }
 
-.entry-column {
-  // border-width: 0 0 1px 0;
-  border-width: 0;
-  border-style: none;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-color: lightgrey;
-  width: 30%;
-  padding: 4px;
-  text-align: center;
-  margin-right: 16px;
-  font-size: 14px;
+.scope-list { margin: 0; padding: 0 0 0 16px; }
+.scope-list li {
+  color: $moss;
+  margin-bottom: 2px;
+  line-height: 1.4;
 }
+.scope-list li:last-child { margin-bottom: 0; }
+.scope-list li span { color: $body; }
 
-.cost-summary {
-  border: 1px solid lightgray;
-  // display: -webkit-box;
-  // -webkit-box-orient: vertical;
-  // display: flex;
-  // flex-direction: column;
-  display: table;
-  margin-top: 32px;
-  width: 100%;
-}
+// Exclusions are constraints, not offerings — hollow marker, grey.
+.scope-list.exclusions { list-style: square; }
+.scope-list.exclusions li { color: $rule-firm; }
 
-.cost-summary-row {
-  width: 100%;
-  // display: -webkit-box;
-  // display: flex;
-  display: table-row;
-  // border-width: 0 0 1px 0;
-  // border-style: solid;
-  // border-color: lightgray;
-}
-
-.cost-summary-row-left {
-  width: 75%;
-  border-width: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: lightgray;
-  padding: 4px;
+// ── Pricing ────────────────────────────────────────────────────────────
+.pricing td {
+  // vertical only — the horizontal inset belongs to the column classes below,
+  // so a shorthand here would reset it
   padding-top: 6px;
-  height: 24px;
-  display: table-cell;
+  padding-bottom: 6px;
+  border-bottom: 1px solid $rule;
+  font-weight: 600;
+  color: $ink;
+}
+.pricing .item {
+  padding-left: $price-inset;
+  padding-right: 24px;
+}
+.pricing .amount {
+  padding-right: $price-inset;
+  text-align: right;
+  white-space: nowrap;
+  width: 118px;
+}
+.pricing .discount, .pricing .amount.credit { color: $moss; }
+
+.pricing tr.sum td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: none;
+  color: $muted;
+  font-weight: 400;
+}
+.pricing tr.first-sum td { padding-top: 8px; }
+.pricing tr.sum .amount { color: $body; font-weight: 500; }
+
+// The one loud element in the document.
+.total-band {
+  background: $leaf;
+  margin-top: 8px;
+  page-break-inside: avoid;
+}
+// Same $price-inset as the cost rows above, so "Total" sits directly under the
+// item descriptions and its amount under the other amounts. `baseline` keeps
+// the label and the amount on one line rather than top-aligned, which the
+// inherited `vertical-align: top` would otherwise do.
+.total-band td {
+  padding: 10px $price-inset;
+  border: none;
+  color: #ffffff;
+  vertical-align: baseline;
+  // Do NOT set line-height here. The inherited 1.4 distributes half-leading
+  // evenly above and below the glyphs, which is what centres them in the band.
+  // Forcing line-height:1 squeezes the line box and the taller ascent pushes
+  // the text visibly up against the band's top edge (tried, reverted).
+}
+.total-band .label {
+  font-size: 15.5pt;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.total-band .value {
+  text-align: right;
+  font-size: 15.5pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
-.cost-summary-row-right {
-  display: table-cell;
-  width: 25%;
-  height: 24px;
-  padding: 6px;
-
-  border-width: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: lightgray;
-}
-
-.totals {
-  // display: -webkit-box;
-  // -webkit-box-pack: end;
-  // display: flex;
-  // justify-content: flex-end;
+.paid-note {
+  margin-top: 7px;
+  padding-right: $price-inset;
+  font-size: 8.5pt;
+  color: $muted;
   text-align: right;
 }
 
-.signature-row {
-  margin-top: 32px;
+// ── Footer ─────────────────────────────────────────────────────────────
+// Insurance lives here now: present and verifiable, no longer shouted.
+.pdf-footer {
+  margin-top: 12px;
+  padding-top: 5px;
+  border-top: 1px solid $rule;
+  font-size: 7pt;
+  line-height: 1.5;
+  color: $muted;
+  page-break-inside: avoid;
+}
+.pdf-footer td { padding-right: 24px; }
+.pdf-footer td:last-child { padding-right: 0; text-align: right; white-space: nowrap; }
+.pdf-footer .fl { color: #9AA08E; }
+
+// ── Continuation pages ─────────────────────────────────────────────────
+.cont-head { margin-bottom: 8px; }
+.cont-head td { vertical-align: bottom; padding-bottom: 8px; }
+.cont-head .pdf-logo,
+.cont-head .pdf_header-image,
+.cont-head .shadow-river-logo { width: 168px; }
+.cont-head .shadow-river-logo { width: 115px; }
+.cont-head .pdf-logo-name { font-size: 14pt; }
+
+.cont-title {
+  text-align: right;
+  font-size: 8.5pt;
+  color: $muted;
+  white-space: nowrap;
+}
+.cont-title b { color: $ink; font-weight: 600; }
+
+.cont-rule {
+  height: 1px;
+  background: $rule-firm;
+  font-size: 0;
+  line-height: 0;
+  margin-bottom: 20px;
 }
 
-.signature-left {
-  font-size: 14px;
-  padding-right: 32px;
+.page-title {
+  font-size: 16pt;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: $ink;
+  margin: 0 0 16px;
+}
+.page-intro { font-size: 9.5pt; color: $muted; margin: -12px 0 18px; }
+
+// Numbered because these clauses genuinely get referenced by number.
+.numbered { margin: 0; padding: 0 0 0 26px; }
+.numbered li {
+  color: $moss;
+  margin-bottom: 11px;
+  line-height: 1.5;
+  page-break-inside: avoid;
+}
+.numbered li > span { color: $body; display: block; font-size: 9.5pt; }
+.numbered li b { color: $ink; font-weight: 600; }
+
+.note-box {
+  margin-top: 18px;
+  padding: 11px 15px;
+  background: $wash;
+  border-left: 3px solid $moss;
+  font-size: 8.5pt;
+  line-height: 1.55;
+  color: $muted;
 }
 
-.signature-box {
-  width: 300px;
-}
-
-.signature-field {
-  border-width: 0 0 1px 0;
-  border-color: lightgray;
-  border-style: none;
-  border-bottom-style: solid;
-}
-
-.signature-description {
-  text-align: center;
-}
-
-.liability-row {
-  border: 1px solid lightgray;
-  padding: 8px;
-  margin-top: 64px;
-  width: 100%;
-}
-
-.liability-column {
-  line-height: 30px;
-}
-
-.details-box {
-  margin-top: 16px;
-  font-size: 16px;
-}
-
-.image-row {
-  width: 100%;
-  display: -webkit-box;
-  display: flex;
-}
+// ── Work photos ────────────────────────────────────────────────────────
+// Cells are a fixed third-width so a photo is the same size everywhere in
+// the document regardless of how many a row happens to carry.
+.photos { margin-top: 8px; }
+.photos td { width: 33.33%; padding: 0 7px 10px 0; }
+.photos td:last-child { padding-right: 0; }
+.photos td.spacer { padding: 0; }
 
 .tree-image {
-  max-width: 250px;
-  min-width: 250px;
-  margin-right: 16px;
+  // width + height:auto only. Pairing a width with a max-height makes Qt
+  // WebKit scale the axes independently and distort the photo; three
+  // per row already caps the height at a sensible size.
+  width: 100%;
+  height: auto;
+  border: 1px solid $rule;
 }
 
-/* REPAIR TRACKER */
+.photo-caption {
+  font-size: 7.5pt;
+  color: $muted;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// REPAIR TRACKER  (equipment_requests/pdf) — untouched by the ENG-11
+// redesign; these views share the pdf layout and depend on these rules.
+// ═══════════════════════════════════════════════════════════════════════
 
 .vehicle-box {
   border: 1px solid gray;

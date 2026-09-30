@@ -2,19 +2,41 @@
 <% organization ||= estimate.organization %>
 <% compressed_view ||= false %>
 
+<%# One template serves all three documents; the title is the only switch. %>
+<% document_title =
+     if estimate.invoice&.number.present? && estimate.invoice.paid?
+       "Receipt for Invoice ##{estimate.invoice.number}"
+     elsif estimate.invoice&.number.present?
+       "Invoice ##{estimate.invoice.number}"
+     else
+       'Quote'
+     end %>
+
 <div class='alwaysbreak page'>
-  <%= render 'quotes/pdf/quote', estimate: estimate, organization: organization, compressed_view: compressed_view %>
+  <%= render 'quotes/pdf/quote',
+             estimate: estimate,
+             organization: organization,
+             document_title: document_title,
+             compressed_view: compressed_view %>
 </div>
 
 <% unless compressed_view %>
-  <%= render 'quotes/pdf/images', estimate: estimate, organization: organization  %>
-
+  <%= render 'quotes/pdf/images',
+             estimate: estimate,
+             organization: organization,
+             document_title: document_title %>
 
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/details', organization: organization %>
+    <%= render 'quotes/pdf/details',
+               organization: organization,
+               estimate: estimate,
+               document_title: document_title %>
   </div>
 
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/terms', organization: organization %>
+    <%= render 'quotes/pdf/terms',
+               organization: organization,
+               estimate: estimate,
+               document_title: document_title %>
   </div>
 <% end %>

@@ -1,92 +1,33 @@
 <% include_method ||= false %>
 
-<div class='cost-summary'>
-  <div class='cost-summary-row'>
-    <div class='cost-summary-row-left'>
-      <b>Description of Work</b>
-    </div>
-
-    <div class='cost-summary-row-right'>
-      <b>Cost</b>
-    </div>
-  </div>
-
+<%# One description per row. The old template padded to 8 blank rows, which
+    is most of why it read as a spreadsheet form; a short quote now simply
+    ends earlier. Verified to hold 8 items plus totals on one page. %>
+<table class='pricing'>
   <% estimate.costs.order(discount: :asc).each do |cost| %>
-    <div class='cost-summary-row'>
-      <div class='cost-summary-row-left'>
-        <%= cost.description %>
-      </div>
-
-      <div class='cost-summary-row-right'>
-        <span class='cost-amount'>
-          <%= number_to_currency(cost.amount) %>
-        </span>
-      </div>
-    </div>
+    <tr>
+      <td class='item <%= 'discount' if cost.discount? %>'><%= cost.description %></td>
+      <td class='amount <%= 'credit' if cost.discount? %>'><%= number_to_currency(cost.amount) %></td>
+    </tr>
   <% end %>
 
-  <% blank_rows = [(8-estimate.costs.count), 1].max %>
+  <tr class='sum first-sum'>
+    <td class='item'>Subtotal</td>
+    <td class='amount'><%= number_to_currency(estimate.total_cost.to_f) %></td>
+  </tr>
+  <tr class='sum'>
+    <td class='item'>HST</td>
+    <td class='amount'><%= number_to_currency(estimate.hst.to_f) %></td>
+  </tr>
+</table>
 
-  <% blank_rows.times do %>
-    <div class='cost-summary-row'>
-      <div class='cost-summary-row-left'>
+<table class='total-band'>
+  <tr>
+    <td class='label'>Total</td>
+    <td class='value'><%= number_to_currency(estimate.total_cost_with_tax.to_f) %></td>
+  </tr>
+</table>
 
-      </div>
-
-      <div class='cost-summary-row-right'>
-      </div>
-    </div>
-  <% end %>
-
-  <div class='cost-summary-row'>
-    <div class='cost-summary-row-left totals'>
-      SUBTOTAL
-    </div>
-
-    <div class='cost-summary-row-right'>
-      <div class='cost-amount'>
-        <%= number_to_currency(estimate.total_cost.to_f) %>
-      </div>
-    </div>
-  </div>
-
-  <div class='cost-summary-row'>
-    <div class='cost-summary-row-left totals'>
-      HST
-    </div>
-
-    <div class='cost-summary-row-right'>
-      <div class='cost-amount'>
-        <%= number_to_currency(estimate.hst.to_f) %>
-      </div>
-    </div>
-  </div>
-
-  <div class='cost-summary-row'>
-    <div class='cost-summary-row-left totals'>
-      TOTAL
-    </div>
-
-    <div class='cost-summary-row-right'>
-      <div class='cost-amount'>
-        <b><%= number_to_currency(estimate.total_cost_with_tax.to_f) %></b>
-      </div>
-    </div>
-  </div>
-
-  <% if include_method %>
-    <div class='cost-summary-row'>
-      <div class='cost-summary-row-left totals'>
-        PAID BY
-      </div>
-
-      <div class='cost-summary-row-right'>
-        <div class='cost-amount'>
-          <b><%= estimate.invoice.payment_method %></b>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-
-</div>
+<% if include_method && estimate.invoice&.payment_method.present? %>
+  <div class='paid-note'>Paid by <%= estimate.invoice.payment_method %></div>
+<% end %>

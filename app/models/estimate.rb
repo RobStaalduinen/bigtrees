@@ -61,6 +61,7 @@ class Estimate < ActiveRecord::Base
 	has_one :invoice, dependent: :destroy
   has_one :site, dependent: :destroy
   has_one :customer_detail, dependent: :destroy
+  has_one :quote_scope, dependent: :destroy
 	has_many :jobs, dependent: :destroy
 	has_many :email_records, dependent: :destroy
 
