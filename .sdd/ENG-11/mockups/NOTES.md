@@ -813,3 +813,108 @@ fallback paths.
 **One cosmetic change:** the grey `Insured with` / `HST` label styling is gone — those words
 are now just part of the organization's own text, so the footer renders in one uniform
 colour. Unavoidable once the whole line is user-authored.
+
+## Editable Terms and Before-We-Start pages
+
+Both pages' body copy is now organization-editable, with a minimal built-in rich text
+editor (bold / italic / underline / line breaks).
+
+| Layer | File |
+|---|---|
+| Stock copy | `app/lib/quote_content_defaults.rb` |
+| Columns | `quote_settings.pre_job_content`, `.terms_content` (migration `20261001000002`) |
+| Readers | `Organization#quote_pre_job_html` / `#quote_terms_html` / `#expand_quote_macros` |
+| Editor | `app/javascript/components/form/richText.vue` (`app-rich-text`) |
+| UI | two editors in `company/views/quote_customization.vue` |
+| PDF | `_details.html.erb` and `_terms.html.erb` render sanitised content |
+
+### Why no editor library
+
+Only three formats are needed, the app is Vue 2 (where most modern editors have moved on),
+and the output is rendered into a customer-facing PDF and whitelisted server-side anyway.
+A contenteditable box with `document.execCommand` produces *only* the tags the whitelist
+allows, so there is nothing to strip. `styleWithCSS` is disabled so it emits `<b>/<i>/<u>`
+rather than `<span style>`, which the sanitiser would drop.
+
+The editor writes `innerHTML` back into the DOM only when the incoming value differs from
+what is already there — assigning on every keystroke drops the caret to the start.
+
+### Deliberately NOT backfilled
+
+The columns stay null until an organization edits. Null means "use the stock copy", which
+`Organization#quote_*_html` resolves. Writing a copy into every row would freeze each
+organization's text at today's wording, so a later correction to the stock terms would
+never reach anyone who had not edited. Clearing a field in the UI (the "Reset to standard"
+button) writes `''`, putting them back on the stock copy for the same reason.
+
+### Flat paragraphs, not lists
+
+The stock copy was converted from `<ol>/<li>` to `<p>` with the clause numbers written
+literally. List semantics are easy to mangle in a contenteditable and hard to recover, and
+the terms' original numbering skips 3 — baking the numbers into the text preserves that
+instead of silently renumbering. `[ORGANIZATION_NAME]` is substituted at render time, the
+same macro convention the email templates use, so a rename flows through.
+
+### Verified
+
+| Case | Result |
+|---|---|
+| Defaults | stock terms + pre-job render, macro expanded, no raw `[ORGANIZATION_NAME]` |
+| Custom content | replaces stock entirely, both pages independent |
+| `<script>` / `<img>` / `<iframe>` / `<a>` | stripped |
+| `style` / `onclick` / `onerror` | stripped |
+| `<b>` `<i>` `<u>` `<p>` | kept |
+| Cleared to blank | falls back to stock |
+
+Stock copy is also asserted to survive the sanitiser unchanged, so the defaults can never
+drift onto a tag the PDF would strip.
+
+**Note:** `.rich-content b` uses `font-weight: 700`, not 600. 600 is not a reliable bold in
+the Helvetica fallback and may collapse with Archivo too (see the weight-matching note
+above).
+
+### Editor: bold had to be made unmistakable
+
+Bold *was* applying, but read as barely different in the editor box. Two causes:
+
+1. **Vue's scoped CSS never reached it.** `execCommand` creates `<b>`/`<i>`/`<u>` at
+   runtime, and those elements get no scoped-style data attribute — a plain
+   `.rich-editable b` rule compiles to `.rich-editable b[data-v-…]` and never matches.
+   The component had no bold rule at all; it was falling through to Bootstrap's
+   `b, strong { font-weight: bolder }`.
+2. **Source Sans Pro's 700 is a restrained bold**, and at 13px the weight change alone
+   was easy to miss. (The weight itself was fine — the admin layouts load 300/400/600/700,
+   so a real bold face was in use, not a synthesised one.)
+
+Fixed with `::v-deep` rules (the convention already used in `trees/views/singleRow.vue`)
+that give bold **both** the 700 weight and the darker `#22271F` the PDF uses for it, and by
+lifting the editor from 13px to 14px. The colour shift is what makes it read at a glance,
+and it matches how the output actually looks. Paragraph spacing was mirrored from the PDF
+at the same time, so the editor previews the document a little more honestly.
+
+## Brand colour on the quote
+
+The total band and the rule under the masthead now render in the organization's
+`primary_colour`.
+
+Both live in `pdf_styles.scss`, a compiled static asset, so a per-organization colour has
+to be an inline style. Applied in `_cost_summary.html.erb` and `_header.html.erb` via
+`Organization#quote_accent_colour`.
+
+**The value is validated, not escaped.** `primary_colour` is editable from the admin UI and
+ends up inside a `style` attribute, so `quote_accent_colour` returns it only if it matches
+`/\A#(\h{3}|\h{6})\z/` and nil otherwise — anything else falls back to the stylesheet's
+own colour rather than being injected. Verified: `#fff; background: url(javascript:alert(1))`
+produces no style attribute at all.
+
+| Input | Result |
+|---|---|
+| `#8A0000` | used |
+| `#abc` | used |
+| `  #151F73  ` | used, trimmed |
+| `red` | refused → stylesheet default |
+| `#fff; background: url(javascript:…)` | refused → stylesheet default |
+| nil / `''` | no inline style |
+
+Current data: all four organizations already have valid hex values, so all four pick up
+their own colour immediately.

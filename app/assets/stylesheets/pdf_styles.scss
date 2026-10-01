@@ -322,16 +322,26 @@ $price-inset: 14px;
 }
 .page-intro { font-size: 11.5pt; color: $muted; margin: -12px 0 18px; }
 
-// Numbered because these clauses genuinely get referenced by number.
-.numbered { margin: 0; padding: 0 0 0 26px; }
-.numbered li {
-  color: $moss;
-  margin-bottom: 11px;
+// Organization-authored copy for the pre-job and terms pages. Flat paragraphs
+// rather than lists — the clause numbers are part of the text, so the styling
+// only has to cope with <p>, <b>, <i>, <u> and <br>, whatever the editor emits.
+.rich-content p {
+  margin: 0 0 11px;
   line-height: 1.5;
+  font-size: 11.5pt;
+  color: $body;
   page-break-inside: avoid;
 }
-.numbered li > span { color: $body; display: block; font-size: 11.5pt; }
-.numbered li b { color: $ink; font-weight: 600; }
+.rich-content p:last-child { margin-bottom: 0; }
+// 700, not 600: a bold run inside body text has to resolve to an actual bold
+// face. With the Helvetica fallback (and potentially with Archivo — see the
+// weight-matching note in NOTES.md) 600 collapses back to regular.
+.rich-content b, .rich-content strong { color: $ink; font-weight: 700; }
+.rich-content u { text-decoration: underline; }
+// contenteditable emits bare <div>s for new lines in some browsers; treat them
+// as paragraphs so a document edited in one browser matches one edited in
+// another.
+.rich-content div { margin: 0 0 11px; line-height: 1.5; font-size: 11.5pt; }
 
 .note-box {
   margin-top: 18px;

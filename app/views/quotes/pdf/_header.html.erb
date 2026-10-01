@@ -29,4 +29,7 @@
     </td>
   </tr>
 </table>
-<div class='masthead-rule'></div>
+<%# Falls back to the stylesheet's ink colour when an organization has no
+    valid primary_colour set. %>
+<%= content_tag :div, '', class: 'masthead-rule',
+                style: (accent = organization.quote_accent_colour) ? "background: #{accent}" : nil %>

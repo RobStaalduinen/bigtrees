@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_01_000001) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_01_000002) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -434,6 +434,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_01_000001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "footer_text"
+    t.text "pre_job_content"
+    t.text "terms_content"
     t.index ["organization_id"], name: "index_quote_settings_on_organization_id", unique: true
   end
 

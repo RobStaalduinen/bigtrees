@@ -39,11 +39,38 @@
         :rows='4'
         v-model='settings.footer_text'
       ></app-text-area>
-
-      <b-button class='inverse-button' @click='save'>Save Footer</b-button>
     </div>
 
-    <div class='save-state' v-if='savedAt'>Saved</div>
+    <div class='page-content' v-if='!loading'>
+      <div class='section-title'>Before We Start Page</div>
+      <div class='settings-description footer-description'>
+        The notes that appear after the quote. Bold, italic and underline are available;
+        line breaks are kept.
+      </div>
+      <app-rich-text
+        v-model='settings.pre_job_content'
+        :resettable='true'
+        @reset='resetContent("pre_job_content")'
+      ></app-rich-text>
+    </div>
+
+    <div class='page-content' v-if='!loading'>
+      <div class='section-title'>Terms and Conditions Page</div>
+      <div class='settings-description footer-description'>
+        Your full terms. <b>[ORGANIZATION_NAME]</b> is replaced with your company name
+        wherever it appears.
+      </div>
+      <app-rich-text
+        v-model='settings.terms_content'
+        :resettable='true'
+        @reset='resetContent("terms_content")'
+      ></app-rich-text>
+    </div>
+
+    <div class='actions' v-if='!loading'>
+      <b-button class='inverse-button' @click='save'>Save Changes</b-button>
+      <span class='save-state' v-if='savedAt'>Saved</span>
+    </div>
   </div>
 </template>
 
@@ -58,7 +85,9 @@ export default {
         include_image_page: true,
         include_pre_job_page: true,
         include_terms: true,
-        footer_text: ''
+        footer_text: '',
+        pre_job_content: '',
+        terms_content: ''
       }
     }
   },
@@ -95,9 +124,23 @@ export default {
           }
         });
         this.settings.footer_text = payload.footer_text || '';
+        this.settings.pre_job_content = payload.pre_job_content || '';
+        this.settings.terms_content = payload.terms_content || '';
         this.loading = false;
       }).catch(() => {
         this.loading = false;
+      })
+    },
+    // Clearing the column (rather than pasting the stock text in) puts the
+    // organization back to tracking the standard wording, so later corrections
+    // to it still reach them.
+    resetContent(key) {
+      this.axiosPut(
+        `/organizations/${this.company.id}/quote_settings`,
+        { quote_settings: { [key]: '' } }
+      ).then(() => {
+        this.savedAt = Date.now();
+        this.retrieve();
       })
     },
     save() {
@@ -158,8 +201,18 @@ export default {
     max-width: 640px;
   }
 
+  .page-content {
+    margin-top: 28px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+
   .save-state {
-    margin-top: 12px;
+    margin-left: 12px;
     font-size: 12px;
     color: gray;
   }

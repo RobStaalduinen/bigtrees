@@ -71,6 +71,16 @@ class Organization < ActiveRecord::Base
     false
   end
 
+  # Only ever a 3- or 6-digit hex colour. This value is interpolated into a
+  # style attribute on the quote PDF and is editable from the admin UI, so it
+  # is validated at the point of use rather than trusted — anything else falls
+  # back to the stylesheet's own colour.
+  HEX_COLOUR = /\A#(\h{3}|\h{6})\z/
+
+  def quote_accent_colour
+    primary_colour.to_s.strip.presence&.match?(HEX_COLOUR) ? primary_colour.strip : nil
+  end
+
   # The quote footer's fine print. One implementation, three callers: the PDF
   # footer, the backfill migration, and the fallback for organizations with no
   # quote_settings record — so none of them can drift apart.
@@ -91,6 +101,23 @@ class Organization < ActiveRecord::Base
   # otherwise the insurance/HST line it has always shown.
   def quote_footer_text
     quote_settings&.footer_text.presence || default_quote_footer_text
+  end
+
+  # Editable page copy. Nil means the organization has never customised it, so
+  # they track the stock wording — see the migration for why that beats baking
+  # a copy into every row.
+  def quote_pre_job_html
+    expand_quote_macros(quote_settings&.pre_job_content.presence || QuoteContentDefaults::PRE_JOB)
+  end
+
+  def quote_terms_html
+    expand_quote_macros(quote_settings&.terms_content.presence || QuoteContentDefaults::TERMS)
+  end
+
+  # Matches the macro convention the email templates use, so an organization
+  # that renames itself sees it flow through copy it has not edited.
+  def expand_quote_macros(html)
+    html.to_s.gsub(QuoteContentDefaults::ORGANIZATION_MACRO, name.to_s)
   end
 
   # Quote PDF page toggles. No record means "include everything", which is how

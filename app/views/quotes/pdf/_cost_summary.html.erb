@@ -21,7 +21,10 @@
   </tr>
 </table>
 
-<table class='total-band'>
+<%# Same fallback as the masthead rule: the stylesheet's maple red when the
+    organization has no valid primary_colour. %>
+<% accent = estimate.organization.quote_accent_colour %>
+<table class='total-band' <%= tag.attributes(style: accent ? "background: #{accent}" : nil) %>>
   <tr>
     <td class='label'>Total</td>
     <td class='value'><%= number_to_currency(estimate.total_cost_with_tax.to_f) %></td>

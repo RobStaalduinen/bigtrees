@@ -15,4 +15,6 @@ class QuoteSettingSerializer < ApplicationSerializer
   attribute :include_pre_job_page
   attribute :include_terms
   attribute :footer_text
+  attribute :pre_job_content
+  attribute :terms_content
 end

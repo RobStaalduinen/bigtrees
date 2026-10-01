@@ -28,13 +28,16 @@ class QuoteSettingsController < ApplicationController
     # (everything on) rather than null.
     def quote_settings
       settings = organization.quote_settings || organization.build_quote_settings
-      # So the editor opens showing the insurance line it has always printed
-      # rather than an empty box, for any organization without a record.
-      settings.footer_text = organization.default_quote_footer_text if settings.footer_text.nil?
+      # The editor opens on whatever the PDF currently prints, rather than an
+      # empty box — the stock copy for anyone who has not customised it.
+      settings.footer_text     = organization.default_quote_footer_text if settings.footer_text.nil?
+      settings.pre_job_content = QuoteContentDefaults::PRE_JOB if settings.pre_job_content.nil?
+      settings.terms_content   = QuoteContentDefaults::TERMS   if settings.terms_content.nil?
       settings
     end
 
     def quote_settings_params
-      params.require(:quote_settings).permit(*QuoteSetting::PAGE_FLAGS, :footer_text)
+      params.require(:quote_settings)
+            .permit(*QuoteSetting::PAGE_FLAGS, :footer_text, :pre_job_content, :terms_content)
     end
 end
