@@ -28,6 +28,14 @@
           <td class='k'>Date tendered</td>
           <td class='v'><%= date_tendered.strftime('%d %B %Y') %></td>
         </tr>
+        <%# Optional expiry — only meaningful on a quote, so it is suppressed
+            once the document has become an invoice or receipt. %>
+        <% if estimate.quote_valid_until.present? && estimate.invoice&.number.blank? %>
+          <tr>
+            <td class='k'>Valid until</td>
+            <td class='v'><%= estimate.quote_valid_until.strftime('%d %B %Y') %></td>
+          </tr>
+        <% end %>
         <% if estimate.work_completion_date.present? %>
           <tr>
             <td class='k'>Work completed</td>

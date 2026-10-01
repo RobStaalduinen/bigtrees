@@ -50,7 +50,7 @@ $price-inset: 14px;
   // rather than constraining the element.
   padding: 22px 44px 14px;
   font-family: $pdf-font;
-  font-size: 9.5pt;
+  font-size: 11.5pt;
   line-height: 1.4;
   color: $body;
 }
@@ -78,7 +78,7 @@ $price-inset: 14px;
 .shadow-river-logo { width: 150px; }
 
 .pdf-logo-name {
-  font-size: 20pt;
+  font-size: 24pt;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: $ink;
@@ -88,7 +88,7 @@ $price-inset: 14px;
 
 .company-block {
   text-align: right;
-  font-size: 8pt;
+  font-size: 9.5pt;
   line-height: 1.6;
   color: $muted;
   white-space: nowrap;
@@ -97,7 +97,7 @@ $price-inset: 14px;
 
 .company-name {
   display: block;
-  font-size: 9.5pt;
+  font-size: 11.5pt;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: $ink;
@@ -123,7 +123,7 @@ $price-inset: 14px;
 .title-block.spacious td { padding-bottom: 22px; }
 
 .doc-title {
-  font-size: 22pt;
+  font-size: 26.5pt;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1;
@@ -131,7 +131,7 @@ $price-inset: 14px;
   margin: 0;
 }
 
-.doc-meta { text-align: right; font-size: 8.5pt; white-space: nowrap; }
+.doc-meta { text-align: right; font-size: 10pt; white-space: nowrap; }
 .doc-meta table { width: auto; margin-left: auto; }
 .doc-meta .k { color: $muted; padding: 0 12px 2px 0; text-align: right; }
 .doc-meta .v {
@@ -145,14 +145,16 @@ $price-inset: 14px;
 .parties {
   background: $wash;
   border-left: 3px solid $moss;
-  margin-bottom: 14px;
+  // matches .section's 20px so the gap above the first section is not tighter
+  // than the gaps between sections
+  margin-bottom: 20px;
 }
 .parties.spacious { margin-bottom: 28px; }
 .parties td { padding: 8px 14px 9px; width: 50%; }
 .parties td + td { border-left: 1px solid $rule; }
 
 .party-label {
-  font-size: 7pt;
+  font-size: 8.5pt;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -160,25 +162,29 @@ $price-inset: 14px;
   margin-bottom: 4px;
 }
 .party-name {
-  font-size: 11pt;
+  font-size: 13pt;
   font-weight: 600;
   color: $ink;
   line-height: 1.25;
   margin-bottom: 1px;
 }
-.party-detail { font-size: 8.5pt; color: $body; line-height: 1.5; }
+.party-detail { font-size: 10pt; color: $body; line-height: 1.5; }
 
 // ── Sections ───────────────────────────────────────────────────────────
-.section { margin-bottom: 9px; }
+// These were tuned at the old 9.5pt body size and stayed put when the type
+// scaled 20%, which left the scope sections reading jammed against each
+// other. Gap between sections is the larger of the two so each heading
+// clearly belongs to the block under it rather than floating between.
+.section { margin-bottom: 20px; }
 
 .section-head {
-  font-size: 11.5pt;
+  font-size: 14pt;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: $ink;
   border-bottom: 1px solid $rule-firm;
-  padding-bottom: 3px;
-  margin-bottom: 7px;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .scope-list { margin: 0; padding: 0 0 0 16px; }
@@ -247,13 +253,13 @@ $price-inset: 14px;
   // the text visibly up against the band's top edge (tried, reverted).
 }
 .total-band .label {
-  font-size: 15.5pt;
+  font-size: 18.5pt;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 .total-band .value {
   text-align: right;
-  font-size: 15.5pt;
+  font-size: 18.5pt;
   font-weight: 700;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -262,7 +268,7 @@ $price-inset: 14px;
 .paid-note {
   margin-top: 7px;
   padding-right: $price-inset;
-  font-size: 8.5pt;
+  font-size: 10pt;
   color: $muted;
   text-align: right;
 }
@@ -273,7 +279,7 @@ $price-inset: 14px;
   margin-top: 12px;
   padding-top: 5px;
   border-top: 1px solid $rule;
-  font-size: 7pt;
+  font-size: 8.5pt;
   line-height: 1.5;
   color: $muted;
   page-break-inside: avoid;
@@ -289,11 +295,11 @@ $price-inset: 14px;
 .cont-head .pdf_header-image,
 .cont-head .shadow-river-logo { width: 168px; }
 .cont-head .shadow-river-logo { width: 115px; }
-.cont-head .pdf-logo-name { font-size: 14pt; }
+.cont-head .pdf-logo-name { font-size: 17pt; }
 
 .cont-title {
   text-align: right;
-  font-size: 8.5pt;
+  font-size: 10pt;
   color: $muted;
   white-space: nowrap;
 }
@@ -308,13 +314,13 @@ $price-inset: 14px;
 }
 
 .page-title {
-  font-size: 16pt;
+  font-size: 19pt;
   font-weight: 700;
   letter-spacing: -0.025em;
   color: $ink;
   margin: 0 0 16px;
 }
-.page-intro { font-size: 9.5pt; color: $muted; margin: -12px 0 18px; }
+.page-intro { font-size: 11.5pt; color: $muted; margin: -12px 0 18px; }
 
 // Numbered because these clauses genuinely get referenced by number.
 .numbered { margin: 0; padding: 0 0 0 26px; }
@@ -324,7 +330,7 @@ $price-inset: 14px;
   line-height: 1.5;
   page-break-inside: avoid;
 }
-.numbered li > span { color: $body; display: block; font-size: 9.5pt; }
+.numbered li > span { color: $body; display: block; font-size: 11.5pt; }
 .numbered li b { color: $ink; font-weight: 600; }
 
 .note-box {
@@ -332,7 +338,7 @@ $price-inset: 14px;
   padding: 11px 15px;
   background: $wash;
   border-left: 3px solid $moss;
-  font-size: 8.5pt;
+  font-size: 10pt;
   line-height: 1.55;
   color: $muted;
 }
@@ -355,7 +361,7 @@ $price-inset: 14px;
 }
 
 .photo-caption {
-  font-size: 7.5pt;
+  font-size: 9pt;
   color: $muted;
   margin-top: 4px;
   line-height: 1.4;

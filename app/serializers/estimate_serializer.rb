@@ -46,6 +46,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :status
   attribute :difficulty
   attribute :quote_sent_date
+  attribute :quote_valid_until
   attribute :quote_accepted_date
   attribute :work_start_date
   attribute :work_end_date

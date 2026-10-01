@@ -7,9 +7,10 @@ RSpec.describe 'quotes/pdf/_images.html.erb', type: :view do
   let(:estimate) { create(:estimate, :complete, organization: organization, arborist: arborist, customer: customer) }
 
   before do
-    # The partial renders the shared header sub-partial; stub it so this spec
-    # focuses on the pending-image filtering.
-    stub_template 'quotes/pdf/_header.html.erb' => ''
+    # The partial renders the continuation header and footer sub-partials;
+    # stub them so this spec focuses on the pending-image filtering.
+    stub_template 'quotes/pdf/_cont_header.html.erb' => ''
+    stub_template 'quotes/pdf/_footer.html.erb' => ''
   end
 
   it 'renders ready images and omits pending (URL-less) images without raising' do
@@ -28,6 +29,6 @@ RSpec.describe 'quotes/pdf/_images.html.erb', type: :view do
 
     render partial: 'quotes/pdf/images', locals: { estimate: estimate.reload, organization: organization }
 
-    expect(rendered).not_to include('Proposed Work')
+    expect(rendered).not_to include('The work, on site')
   end
 end

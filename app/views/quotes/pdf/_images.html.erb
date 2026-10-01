@@ -3,6 +3,7 @@
     on tree_images carries a grouping or per-group description yet, so this
     is the uncategorised fallback. Both layouts are mocked in
     .sdd/ENG-11/mockups/quote.html. %>
+<% document_title ||= 'Quote' %>
 <% ready_images = estimate.tree_images.select { |i| i.image_url.present? || i.edited_image_url.present? } %>
 
 <% ready_images.each_slice(6).each_with_index do |images, page_index| %>

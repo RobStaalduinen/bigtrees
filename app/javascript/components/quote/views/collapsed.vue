@@ -15,6 +15,25 @@
           </b-col>
         </b-row>
 
+        <b-row class='spaced-row'>
+          <b-col cols='4' class='right-column'>
+            <b>Valid Until</b>
+          </b-col>
+          <b-col cols='8'>
+            <span v-if='estimate.quote_valid_until'>
+              {{ estimate.quote_valid_until | localizeDate }}
+            </span>
+            <span v-else class='scope-unset'>Not set</span>
+            <b-icon
+              v-if="hasPermission('estimates', 'update')"
+              icon='pencil-square'
+              class='app-icon edit-icon valid-until-edit'
+              aria-label='Edit the valid until date'
+              v-b-toggle.quote-valid-until-edit
+            ></b-icon>
+          </b-col>
+        </b-row>
+
         <b-row class='spaced-row' v-if='estimate.work_start_date'>
           <b-col cols='4' class='right-column'>
             <b>Work Date</b>
@@ -79,6 +98,7 @@
     <app-quote-send id='quote-send' :estimate='estimate'></app-quote-send>
     <app-quote-send-team id='quote-send-team' :estimate='estimate'></app-quote-send-team>
     <app-quote-scope-edit id='quote-scope-edit' :estimate='estimate'></app-quote-scope-edit>
+    <app-quote-valid-until id='quote-valid-until-edit' :estimate='estimate'></app-quote-valid-until>
   </div>
 </template>
 
@@ -86,12 +106,14 @@
 import QuoteSend from '../actions/sendInitial';
 import QuoteSendTeam from '../actions/sendToTeam';
 import QuoteScopeEdit from '../actions/editScope';
+import QuoteValidUntil from '../actions/editValidUntil';
 
 export default {
   components: {
     'app-quote-send': QuoteSend,
     'app-quote-send-team': QuoteSendTeam,
-    'app-quote-scope-edit': QuoteScopeEdit
+    'app-quote-scope-edit': QuoteScopeEdit,
+    'app-quote-valid-until': QuoteValidUntil
   },
   props: {
     estimate: {
@@ -143,5 +165,9 @@ export default {
 
   .scope-bullets li {
     margin-bottom: 2px;
+  }
+
+  .valid-until-edit {
+    margin-left: 8px;
   }
 </style>

@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%# Without this wkhtmltopdf decodes the page as Latin-1, so every
+        non-ASCII character mojibakes in the PDF — an em dash in a cost
+        description came out as "a€"", and accented customer names and curly
+        apostrophes break the same way. Must stay first in <head>. %>
+    <meta charset="utf-8">
     <title><%= title || 'Tree Services Quote' %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>

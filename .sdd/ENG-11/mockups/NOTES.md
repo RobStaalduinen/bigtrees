@@ -602,3 +602,126 @@ before the first send. `Resend` now reads `Send` until a quote has gone out.
   controller.
 - `CLAUDE.md` lists `bundle exec rubocop`, but rubocop is **not in the bundle** — that
   command fails. Same file also says Rails 6; it is Rails 8.0.5.
+
+## Type scale bumped ~20%
+
+Every `pt` font-size in `pdf_styles.scss` multiplied by **1.2**, rounded to the nearest
+half-point. `font-size: 0` on the hairline rules left alone.
+
+| Role | Before | After |
+|---|---|---|
+| Body / list text | 9.5pt | 11.5pt |
+| Footer (insurance line) | 7pt | 8.5pt |
+| Photo caption | 7.5pt | 9pt |
+| Company block | 8pt | 9.5pt |
+| Meta, party detail, note box | 8.5pt | 10pt |
+| Party name | 11pt | 13pt |
+| Section heading | 11.5pt | 14pt |
+| Continuation page title | 16pt | 19pt |
+| Total band (label + amount) | 15.5pt | 18.5pt |
+| Logo-name fallback | 20pt | 24pt |
+| Document title | 22pt | 26.5pt |
+
+Spacing was deliberately **not** scaled — the paddings are px-based and the page still
+holds, so the extra density reads as intentional rather than cramped.
+
+### Page fit at the new size
+
+Verified against real data, with the dense case built inside a rolled-back transaction so
+the dev database was untouched: **8 cost rows plus a full scope block (3-line paragraph,
+6 inclusions, 4 exclusions) still fits page 1**, with the footer landing near the bottom
+rather than mid-page. The page is now well used at that size instead of half empty.
+
+## Bug found and fixed: PDF had no charset
+
+`app/views/layouts/pdf.html.erb` never declared one, so wkhtmltopdf decoded the page as
+**Latin-1** and mojibaked every non-ASCII character. An em dash in a cost description came
+out as `a€"`; accented customer names and curly apostrophes would break identically.
+
+Confirmed it was the render path, not the database: an em dash round-trips intact through
+both `costs` (latin1_swedish_ci) and `quote_scopes` (utf8mb4) — the connection charset
+handles it.
+
+Fix is one line, `<meta charset="utf-8">` first in `<head>`, with a comment saying why it
+must stay there. Re-rendered and the dashes are correct.
+
+This was **pre-existing and affects every quote, invoice and receipt ever generated** — it
+just became visible because the redesign's content uses em dashes and the new scope field
+is free-form prose where people will type them naturally.
+
+## Section rhythm reopened after the type bump
+
+The section spacing was tuned at the old 9.5pt body size and stayed put when the type
+scaled 20%, which left the scope sections reading jammed against each other.
+
+| | Before | After |
+|---|---|---|
+| Between sections (`.section` margin-bottom) | 9px | **20px** |
+| Heading to its own content (`.section-head` margin-bottom) | 7px | **10px** |
+| Heading rule padding | 3px | 4px |
+| Parties panel to first section | 14px | **20px** — matches `.section` |
+
+The parties panel gap was raised alongside them: at 14px the space above the *first*
+section was tighter than the gaps between sections, which made the panel look attached to
+the scope block.
+
+Page fit re-checked with the dense case (8 cost rows + full scope, in a rolled-back
+transaction): page 1 still holds, with the footer near the bottom. An odd extra gap that
+had appeared mid-pricing-table at the tighter spacing is gone too.
+
+## Optional "Valid Until" date
+
+**Stored on `estimates`, not on `quote_scopes`.** The estimates table already holds the
+quote date family — `quote_sent_date`, `quote_accepted_date` — so `quote_valid_until` sits
+with its siblings. `quote_scopes` holds the scope prose; a single nullable date is a
+different kind of thing and putting it there would have made that table's name a misnomer.
+Say the word if you'd rather it moved.
+
+| Layer | Change |
+|---|---|
+| Migration | `20260930000001_add_quote_valid_until_to_estimates.rb` |
+| Params | `:quote_valid_until` added to `estimate_params` — reuses the existing `PUT /estimates/:id` |
+| Serializer | `attribute :quote_valid_until` on EstimateSerializer |
+| UI | "Valid Until" row in the Quote box with the standard `pencil-square` edit affordance |
+| Editor | `components/quote/actions/editValidUntil.vue` — date picker plus an explicit "Clear the date" |
+| PDF | `Valid until` row in the meta block, directly under `Date tendered` |
+
+**Suppressed on invoices and receipts.** An expiry is only meaningful while the document is
+still a quote, so the PDF row is gated on `estimate.invoice&.number.blank?` as well as the
+date being present.
+
+**Clearing sends `''`, not `null`.** Rails casts an empty string to nil for a date column,
+whereas a JSON null gets dropped by `permit` and the date would silently stay set.
+
+**One thing to note about an existing component:** `estimateState/actions/editDifficulty.vue`
+emits `EventBus.$emit('ESTIMATE_UPDATED', { difficulty: ... })`, but singleEstimate's handler
+only acts on payloads shaped `{ estimate: ... }` — so that emit is a no-op and the page does
+not refresh after a difficulty change. The new component passes `response.data` through
+instead, which is the shape the handler expects. Not fixed here since it is out of scope.
+
+Verified end to end in a rolled-back transaction: set → serialized → appears in HTML and
+PDF; cleared → row gone; on an invoice → suppressed. New spec
+`spec/views/quotes/pdf/_quote.html.erb_spec.rb` covers all three plus the scope-section
+and `.spacious` behaviour.
+
+### Datepicker sidebar: use the non-scrolling wrapper
+
+`editValidUntil.vue` first used `app-scrollable-sidebar`, copied from the cost editor. That
+wrapper sets `#sidebar-top { max-height: 90%; overflow: scroll; }`, which **clips the
+datepicker's dropdown calendar** to a sliver — the calendar is absolutely positioned and
+the overflow container cuts it off.
+
+Every other datepicker sidebar in the app already avoids this:
+
+| Component | Wrapper |
+|---|---|
+| `estimate/actions/schedule` | `app-right-sidebar-form` |
+| `vehicles/actions/addExpiration` | `app-right-sidebar-form` |
+| `job/actions/start`, `job/actions/complete` | `app-right-sidebar` |
+| `invoice/actions/send` | `app-right-sidebar` |
+
+Switched to `app-right-sidebar-form`, with a comment at the top of the file so it does not
+get changed back.
+
+`editScope.vue` correctly keeps `app-scrollable-sidebar` — the inclusion/exclusion lists
+can grow long and genuinely need to scroll, and it contains no dropdowns.

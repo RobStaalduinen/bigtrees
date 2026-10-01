@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_30_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_30_000001) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -250,6 +250,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_30_000000) do
     t.string "source"
     t.string "difficulty", default: "medium", null: false
     t.integer "transferred_from_estimate_id"
+    t.date "quote_valid_until"
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
