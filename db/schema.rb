@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_30_000001) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_01_000001) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -424,6 +424,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_30_000001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["estimate_id"], name: "index_quote_scopes_on_estimate_id", unique: true
+  end
+
+  create_table "quote_settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.boolean "include_image_page", default: true, null: false
+    t.boolean "include_pre_job_page", default: true, null: false
+    t.boolean "include_terms", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "footer_text"
+    t.index ["organization_id"], name: "index_quote_settings_on_organization_id", unique: true
   end
 
   create_table "receipts", id: :integer, charset: "latin1", force: :cascade do |t|

@@ -122,6 +122,7 @@ Rails.application.routes.draw do
     end
 
 
+    resource :quote_settings, only: [ :show, :update ]
     resources :configurations, only: [ :index, :update ]
     resources :notification_configurations, only: [ :index, :update ]
   end

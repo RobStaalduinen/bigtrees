@@ -64,4 +64,5 @@ class OrganizationSerializer < ApplicationSerializer
 
   belongs_to :address
   has_one :nylas_account
+  has_one :quote_settings, serializer: QuoteSettingSerializer
 end

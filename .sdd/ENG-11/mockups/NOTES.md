@@ -725,3 +725,91 @@ get changed back.
 
 `editScope.vue` correctly keeps `app-scrollable-sidebar` — the inclusion/exclusion lists
 can grow long and genuinely need to scroll, and it contains no dropdowns.
+
+## Per-organization Quote Customization
+
+A "Quote Customization" section in My Company with three checkboxes controlling which
+optional pages a quote PDF carries.
+
+| Layer | File |
+|---|---|
+| Migration | `db/migrate/20261001000000_create_quote_settings.rb` |
+| Model | `app/models/quote_setting.rb` |
+| Readers | `Organization#include_quote_image_page?` / `_pre_job_page?` / `_terms?` |
+| Serializer | `quote_setting_serializer.rb` + `has_one :quote_settings` on OrganizationSerializer |
+| Controller | `quote_settings_controller.rb` — `show` (effective values) + `update` (upsert) |
+| Routes | `GET/PATCH /organizations/:organization_id/quote_settings` |
+| UI | `components/company/views/quote_customization.vue`, added to `pages/company.vue` |
+| PDF | `main.html.erb` gates each of the three page renders |
+
+**Association is `quote_settings`, model is `QuoteSetting`.** The association reads as a
+set of settings; the model stays singular and idiomatic. Costs one explicit `class_name`.
+
+**Columns default to TRUE and a missing record means "all pages".** Every existing quote
+includes all three pages, so both the column defaults *and* the nil case had to preserve
+that — otherwise rolling this out would silently strip pages from every organization that
+never opens the screen. `Organization#include_quote_*?` encode the nil case in one place
+so the template never branches on it.
+
+`show` builds an unsaved record when none exists, so the screen reports the effective
+defaults rather than nulls, and merely viewing the page writes nothing.
+
+### Verified against real data
+
+Toggled each flag in a rolled-back transaction and counted pages in the rendered PDF:
+
+| State | Pages | Images | Pre-job | Terms |
+|---|---|---|---|---|
+| no record (default) | 4 | yes | yes | yes |
+| image page off | 3 | **no** | yes | yes |
+| pre-job off | 2* | — | **no** | yes |
+| terms off | 2* | — | yes | **no** |
+| all off | 1 | no | no | no |
+| invoice (compressed) | 1 | — | — | — |
+
+\* measured on an estimate with no photos, so the image page was absent regardless —
+the image toggle was verified separately on an estimate that has three photos.
+
+Invoices and receipts were already single-page via `compressed_view` and are unaffected.
+
+## Customisable quote footer
+
+The fine print at the foot of every quote page — previously the hardcoded insurance/HST
+line — is now a free-text field per organization, stored as `quote_settings.footer_text`.
+
+**One implementation, three callers.** `Organization#default_quote_footer_text` builds the
+insurance/HST string; `#quote_footer_text` returns the stored text or falls back to that
+default. The PDF footer, the backfill migration and the no-record fallback all go through
+them, so they cannot drift apart.
+
+**Backfilled, so nothing changes on deploy.** `20261001000001` writes each organization's
+*current* rendered footer into the new column. Dev run: 2 of 4 organizations backfilled —
+the other two have no insurance or tax details, so they were skipped and simply keep
+rendering nothing.
+
+Deliberately backfilled as a **single line**, matching exactly what the footer prints
+today. Organizations can split it across lines themselves now that the field supports it.
+
+**Newlines are honoured** via `h(text).gsub(/\r?\n/, '<br>')` — escaped first, since this
+is user-entered text. `simple_format` was avoided because its `<p>` wrappers carry margins
+into a footer that is deliberately tight.
+
+**Blank falls back, it does not blank the footer.** Clearing the field restores the
+insurance line rather than printing nothing, which is almost certainly what someone who
+empties a box expects to be recoverable.
+
+### Verified
+
+| Case | Result |
+|---|---|
+| Backfilled text | footer byte-identical to before |
+| Three lines | 2 `<br>`, lines kept |
+| `<script>` in the text | escaped, no raw tag |
+| Cleared to empty | falls back to the insurance line |
+
+Model specs cover the default builder (full, partial and empty organizations) and all three
+fallback paths.
+
+**One cosmetic change:** the grey `Insured with` / `HST` label styling is gone — those words
+are now just part of the organization's own text, so the footer renders in one uniform
+colour. Unavoidable once the whole line is user-authored.

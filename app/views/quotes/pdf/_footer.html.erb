@@ -1,23 +1,24 @@
-<%# Insurance and tax registration, demoted from the old bold boxed block to
-    a single quiet line. Still present and verifiable, no longer shouted.
+<%# The quiet fine print at the foot of every page — insurance and tax
+    registration by default, but editable per organization under Quote
+    Customization, so it may be anything they want.
+
+    Newlines are honoured: the field is a textarea and organizations are
+    expected to use several lines. `simple_format` is avoided because it wraps
+    in <p> tags that carry their own margins into the footer; `<br>` keeps the
+    lines tight. Escaped first — this is user-entered text.
 
     NOTE: this is repeated per page rather than pinned to the bottom of the
     sheet, so on a short document it floats up under the content, and a page
     that overflows inherits no footer at all. The fix is wkhtmltopdf's
     --footer-html, which needs a change to GenerateQuote/GenerateReceipt —
     tracked as a follow-up, see .sdd/ENG-11/mockups/NOTES.md. %>
-<% insurance = [organization.insurance_provider,
-                organization.insurance_policy_number.present? ? "policy #{organization.insurance_policy_number}" : nil,
-                organization.insurance_description].compact_blank %>
+<% footer_text = organization.quote_footer_text %>
 
 <table class='pdf-footer'>
   <tr>
     <td>
-      <% if insurance.any? %>
-        <span class='fl'>Insured with</span> <%= insurance.join(', ') %>
-      <% end %>
-      <% if organization.hst_number.present? %>
-        &nbsp;&nbsp;<span class='fl'>HST</span> <%= organization.hst_number %>
+      <% if footer_text.present? %>
+        <%= h(footer_text).gsub(/\r?\n/, '<br>').html_safe %>
       <% end %>
     </td>
     <td><%= estimate.quote_display_address %></td>

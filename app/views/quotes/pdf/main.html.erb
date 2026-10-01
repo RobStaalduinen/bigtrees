@@ -20,23 +20,33 @@
              compressed_view: compressed_view %>
 </div>
 
+<%# Invoices and receipts never carry the extra pages; beyond that each
+    organization chooses which ones its quotes include (Quote Customization in
+    My Company). No quote_settings record means all three, which is how quotes
+    behaved before the setting existed. %>
 <% unless compressed_view %>
-  <%= render 'quotes/pdf/images',
-             estimate: estimate,
-             organization: organization,
-             document_title: document_title %>
-
-  <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/details',
-               organization: organization,
+  <% if organization.include_quote_image_page? %>
+    <%= render 'quotes/pdf/images',
                estimate: estimate,
-               document_title: document_title %>
-  </div>
-
-  <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/terms',
                organization: organization,
-               estimate: estimate,
                document_title: document_title %>
-  </div>
+  <% end %>
+
+  <% if organization.include_quote_pre_job_page? %>
+    <div class='alwaysbreak page'>
+      <%= render 'quotes/pdf/details',
+                 organization: organization,
+                 estimate: estimate,
+                 document_title: document_title %>
+    </div>
+  <% end %>
+
+  <% if organization.include_quote_terms? %>
+    <div class='alwaysbreak page'>
+      <%= render 'quotes/pdf/terms',
+                 organization: organization,
+                 estimate: estimate,
+                 document_title: document_title %>
+    </div>
+  <% end %>
 <% end %>
