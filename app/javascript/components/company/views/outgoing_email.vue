@@ -2,24 +2,56 @@
   <div>
     <app-header title='Outgoing Email' />
 
+    <div class="email-intro">
+      <p>
+        Connect a Google or Microsoft email account and we will send emails from your
+        real inbox on your behalf. That keeps every message with your customers in one
+        place, and means your customers receive quotes and invoices from an address
+        they already trust.
+      </p>
+
+      <app-button
+        v-if="!nylasAccount"
+        text="Connect Account"
+        :click="connectAccount"
+        variant="primary"
+        class="email-connect-button"
+      />
+
+      <div class="email-intro-note">
+        <h5>Connecting a Google account</h5>
+        <ul>
+          <li>
+            You can safely continue past the &ldquo;Unverified app&rdquo; screen &mdash; we are
+            in the process of verifying with Google.
+          </li>
+          <li>
+            Be sure to tick the permission for <strong>sending email</strong>. Without it we
+            cannot send quotes and invoices for you.
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div v-if="nylasAccount" class="email-info-container">
       <h4>Attached Account</h4>
       <div class="email-info">
         <div>{{ nylasAccount.outgoing_email_address }}</div>
-        <div class="status-badge" :class="{ 'active': nylasAccount.status === 'active', 'unsynced': nylasAccount.status === 'unsynced' }">
-          {{ nylasAccount.status }}
+        <div class="account-badges">
+          <app-pill
+            v-if="sandboxAccount"
+            tone="warning"
+            filled
+            text="Sandbox connection — reconnect to migrate"
+          />
+          <div class="status-badge" :class="nylasAccount.status">
+            {{ nylasAccount.status }}
+          </div>
         </div>
       </div>
       <div class="email-actions">
         <app-button text="Disconnect Account" :click="disconnectAccount" class="secondary" />
         <app-button text="Refresh Account" :click="connectAccount" class="primary" />
-      </div>
-    </div>
-    <div v-else class="email-info-container">
-      <span class="email-info-text">Connect an Gmail account to use as your primary outgoing email.</span>
-
-      <div class="email-actions">
-        <app-button text="Connect Account" :click="connectAccount" class="primary" />
       </div>
     </div>
 
@@ -39,6 +71,9 @@
     computed:{
       nylasAccount() {
         return this.$store.state.organization.nylas_account;
+      },
+      sandboxAccount() {
+        return this.nylasAccount && this.nylasAccount.nylas_application === 'sandbox';
       }
     },
     methods: {
@@ -95,6 +130,12 @@
     align-items: center;
   }
 
+  .account-badges {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
   .status-badge {
     padding: 5px 10px;
     border-radius: 5px;
@@ -109,6 +150,10 @@
     background-color: rgb(248, 52, 52);
   }
 
+  .status-badge.insufficient {
+    background-color: var(--warning);
+  }
+
   .email-actions {
     display: flex;
     gap: 10px;
@@ -118,5 +163,44 @@
   .email-info-text {
     color: #666;
     margin-bottom: 10px;
+  }
+
+  .email-intro {
+    margin-bottom: var(--space-4);
+    color: var(--text);
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+
+  .email-intro p {
+    margin-bottom: var(--space-3);
+  }
+
+  .email-connect-button {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-base);
+    margin-bottom: var(--space-4);
+  }
+
+  .email-intro-note {
+    border-left: 3px solid var(--color-brand);
+    background-color: var(--color-brand-wash);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .email-intro-note h5 {
+    font-size: var(--text-base);
+    color: var(--ink);
+    margin-bottom: var(--space-2);
+  }
+
+  .email-intro-note ul {
+    margin-bottom: 0;
+    padding-left: var(--space-4);
+  }
+
+  .email-intro-note li + li {
+    margin-top: var(--space-1);
   }
 </style>

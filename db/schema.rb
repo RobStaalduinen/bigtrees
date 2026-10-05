@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_17_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_25_000000) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -354,6 +354,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_17_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active", null: false
+    t.string "nylas_application", default: "production", null: false
     t.index ["organization_id"], name: "index_nylas_accounts_on_organization_id"
   end
 
