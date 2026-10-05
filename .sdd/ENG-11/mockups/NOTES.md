@@ -918,3 +918,57 @@ produces no style attribute at all.
 
 Current data: all four organizations already have valid hex values, so all four pick up
 their own colour immediately.
+
+## Per-organization sales tax
+
+Organizations outside Ontario do not all charge HST, so the rate and its name are now
+per-organization rather than a hardcoded 13%.
+
+| Column | Type | Default |
+|---|---|---|
+| `organizations.tax_description` | string, not null | `HST` |
+| `organizations.tax_rate` | integer, not null | `13` |
+
+Stored as a whole-number percentage because that is how people enter and talk about it;
+`Organization#tax_multiplier` does the `/100` in exactly one place.
+
+### Every site that multiplied by the old rate
+
+Searched for `TAX_RATE`, `0.13`, `1.13` and `.13` across Ruby, ERB, axlsx and the frontend.
+Five computation sites and two labels:
+
+| File | Was | Now |
+|---|---|---|
+| `models/estimate.rb` | `total_cost * TAX_RATE` | `total_cost * tax_multiplier` |
+| `quotes/pdf/_cost_summary.html.erb` | literal `HST` label | `estimate.tax_description` |
+| `quotes/quote.xlsx.axlsx` | `subtotal * 0.13`, `* 1.13`, `"HST"` | organization rate + label |
+| `lib/generate_master_tracker.rb` | `* 0.13`, `* 1.13`, `* 1.13` | **per-row** organization rate |
+
+The master tracker matters most: it spans organizations, so one hardcoded rate would have
+misreported every organization not on 13%.
+
+The frontend does no tax arithmetic — it only displays the serialized `total_cost_with_tax`,
+so there was nothing to change there.
+
+### `hst` is now an alias
+
+`Estimate#tax_amount` is the real method; `hst` is kept as an alias because
+`EstimateSerializer` exposes it to the client. New code should use `tax_amount` — the tax
+is not HST for every organization any more.
+
+`Estimate#tax_multiplier` falls back to the `TAX_RATE = 0.13` constant if an estimate
+somehow has no organization, so the constant stays as a safety net rather than a live rate.
+
+### Verified
+
+| Case | Result |
+|---|---|
+| Default HST 13% | subtotal 100 → tax 13.00, total 113.00 (unchanged) |
+| GST 5% | tax 5.00, total 105.00, PDF label reads `GST`, no `HST` anywhere |
+| 0% | tax 0.00, total equals subtotal |
+| rate 150 / -1 / 12.5 | rejected by validation |
+| blank description | rejected |
+| `hst` alias | still equals `tax_amount` |
+
+Editable on the company edit form and settable when creating an organization (prefilled
+with HST / 13 to match the column defaults).

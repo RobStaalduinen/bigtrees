@@ -68,11 +68,15 @@ class GenerateMasterTracker
       total_cost = estimate.aggregated_cost
       if estimate.quote_sent_date.present? && total_cost.present?
         insert(worksheet, row, 22, total_cost)
-        insert(worksheet, row, 23, total_cost * 0.13)
-        insert(worksheet, row, 24, total_cost * 1.13)
+        # Each row carries its own organization's rate — the tracker spans
+        # organizations, so a single hardcoded rate would misreport any of them
+        # that is not on 13%.
+        tax_multiplier = estimate.tax_multiplier
+        insert(worksheet, row, 23, total_cost * tax_multiplier)
+        insert(worksheet, row, 24, total_cost * (1 + tax_multiplier))
 
         if estimate.invoice.present? && estimate.invoice.sent_at.present? && !estimate.is_unknown
-          insert(worksheet, row, 25, estimate.outstanding_amount * 1.13)
+          insert(worksheet, row, 25, estimate.outstanding_amount * (1 + tax_multiplier))
         end
       end
       raw_link = Rails.application.routes.url_helpers.estimate_path(estimate)

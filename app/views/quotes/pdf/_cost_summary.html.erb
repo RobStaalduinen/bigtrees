@@ -16,8 +16,8 @@
     <td class='amount'><%= number_to_currency(estimate.total_cost.to_f) %></td>
   </tr>
   <tr class='sum'>
-    <td class='item'>HST</td>
-    <td class='amount'><%= number_to_currency(estimate.hst.to_f) %></td>
+    <td class='item'><%= estimate.tax_label %></td>
+    <td class='amount'><%= number_to_currency(estimate.tax_amount.to_f) %></td>
   </tr>
 </table>
 

@@ -49,6 +49,19 @@
           inputType='number'
         ></app-input-field>
 
+        <app-input-field
+          v-model='organization.tax_description'
+          name='tax_description'
+          label='Tax Name'
+        ></app-input-field>
+
+        <app-input-field
+          v-model='organization.tax_rate'
+          name='tax_rate'
+          label='Tax Rate (%)'
+          inputType='number'
+        ></app-input-field>
+
         <div class='field-group'>
           <label>Logo</label>
           <b-form-file
@@ -107,7 +120,10 @@ export default {
     return {
       organization: {
         primary_colour: '#000000',
-        secondary_colour: '#000000'
+        secondary_colour: '#000000',
+        // mirrors the column defaults so the form shows what will be saved
+        tax_description: 'HST',
+        tax_rate: 13
       },
       logoFile: null,
       submitting: false,

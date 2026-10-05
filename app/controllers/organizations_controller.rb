@@ -66,7 +66,8 @@ class OrganizationsController < ApplicationController
   def organization_create_params
     params.require(:organization).permit(
       :name, :legal_name, :contact_person, :email, :website,
-      :logo_url, :primary_colour, :secondary_colour, :monthly_cost
+      :logo_url, :primary_colour, :secondary_colour, :monthly_cost,
+      :tax_description, :tax_rate
     )
   end
 
@@ -75,6 +76,7 @@ class OrganizationsController < ApplicationController
       :name, :legal_name, :email, :phone_number, :website, :email_author, :email_signature,
       :outgoing_quote_email, :quote_bcc, :insurance_provider, :insurance_policy_number,
       :insurance_description, :hst_number, :logo_url, :primary_colour, :secondary_colour,
+      :tax_description, :tax_rate,
       address_attributes: [:street, :city, :postal_code]
     )
   end

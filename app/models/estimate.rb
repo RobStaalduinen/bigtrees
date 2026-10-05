@@ -42,6 +42,8 @@ class Estimate < ActiveRecord::Base
 	SIGN_DISCOUNT_MESSAGE = 'Discount for Sign Placement'
 	SIGN_DISCOUNT = -25.0
 
+	# Fallback only, for an estimate with no organization. Live rates come from
+	# Organization#tax_multiplier — see #tax_multiplier below.
 	TAX_RATE = 0.13
 
 	before_save :set_status
@@ -248,12 +250,32 @@ class Estimate < ActiveRecord::Base
 		self.costs.sum(:amount).round(2)
 	end
 
-	def hst
-		(self.total_cost * TAX_RATE).round(2)
+	# The organization's rate, falling back to the historic 13% if an estimate
+	# somehow has no organization.
+	def tax_multiplier
+		organization&.tax_multiplier || TAX_RATE
 	end
 
+	def tax_description
+		organization&.tax_description.presence || 'HST'
+	end
+
+	# What the quote prints beside the tax amount, e.g. "HST (13%)".
+	def tax_label
+		rate = organization&.tax_rate || (TAX_RATE * 100).round
+		"#{tax_description} (#{rate}%)"
+	end
+
+	def tax_amount
+		(self.total_cost * tax_multiplier).round(2)
+	end
+
+	# Kept because the serializer exposes `hst` to the client; tax_amount is the
+	# name to use in new code, since the tax is not HST for every organization.
+	alias_method :hst, :tax_amount
+
 	def total_cost_with_tax
-		(self.total_cost + self.hst).round(2)
+		(self.total_cost + self.tax_amount).round(2)
 	end
 
   def quote_display_address

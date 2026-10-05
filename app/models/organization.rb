@@ -71,6 +71,16 @@ class Organization < ActiveRecord::Base
     false
   end
 
+  # Sales tax. Stored as a whole-number percentage; everything that multiplies
+  # uses #tax_multiplier so the /100 happens in exactly one place.
+  validates :tax_description, presence: true
+  validates :tax_rate,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+
+  def tax_multiplier
+    tax_rate.to_i / 100.0
+  end
+
   # Only ever a 3- or 6-digit hex colour. This value is interpolated into a
   # style attribute on the quote PDF and is editable from the admin UI, so it
   # is validated at the point of use rather than trusted — anything else falls
