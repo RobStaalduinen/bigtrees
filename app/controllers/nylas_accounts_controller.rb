@@ -21,7 +21,7 @@ class NylasAccountsController < ApplicationController
   def destroy
     nylas_account = NylasAccount.find(params[:id])
 
-    wrapper = Nylas::Wrapper.for(nylas_account)
+    wrapper = Nylas::Wrapper.new
 
     wrapper.remove_grant(nylas_account) if !Rails.env.development?
     nylas_account.destroy
@@ -36,14 +36,13 @@ class NylasAccountsController < ApplicationController
   # the mere presence of an organization's nylas_account as "email is
   # configured", so a half-written row silently breaks outgoing mail.
   def receive_grant
-    organization_id, application = Nylas::Wrapper.decode_state(params[:state])
-    organization = Organization.find(organization_id)
+    organization = Organization.find(params[:state])
     code = params[:code]
 
     # A failed provider leg comes back with error/error_description and no code.
     return redirect_with_email_error(callback_error_message) if code.blank?
 
-    response = Nylas::Wrapper.new(application).exchange_code_for_token(code)
+    response = Nylas::Wrapper.new.exchange_code_for_token(code)
     grant_id = response[:grant_id]
 
     return redirect_with_email_error('Nylas did not return a grant for this account.') if grant_id.blank?
@@ -53,7 +52,6 @@ class NylasAccountsController < ApplicationController
       code: code,
       grant_id: grant_id,
       status: 'active',
-      nylas_application: application,
       outgoing_email_address: response[:email],
       raw_response: response
     )

@@ -17,5 +17,4 @@
 class NylasAccountSerializer < ApplicationSerializer
   attribute :outgoing_email_address
   attribute :status
-  attribute :nylas_application
 end

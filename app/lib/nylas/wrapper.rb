@@ -72,78 +72,22 @@ module Nylas
       scopes.none? { |scope| send_scope?(scope) }
     end
 
-    APPLICATIONS = %w[production sandbox].freeze
-
-    # Which application new connections are authorized into. Setting
-    # NYLAS_DEFAULT_APPLICATION=sandbox is the kill switch: it sends every new
-    # connect, and every path with no account to read a binding from, back to
-    # the sandbox app.
-    def self.default_application
-      configured = ENV['NYLAS_DEFAULT_APPLICATION'].presence
-
-      APPLICATIONS.include?(configured) ? configured : 'production'
-    end
-
-    def self.other_application(application)
-      (APPLICATIONS - [application.to_s]).first
-    end
-
     # Built per call rather than memoized at load, so Figaro and per-test env
     # overrides are picked up.
-    def self.credentials_for(application)
-      prefix = application.to_s == 'sandbox' ? 'NYLAS_SANDBOX_' : 'NYLAS_'
-
+    def self.credentials
       {
-        application: application.to_s,
-        client_id: ENV["#{prefix}CLIENT_ID"],
-        api_key: ENV["#{prefix}API_KEY"],
-        test_grant_id: ENV[application.to_s == 'sandbox' ? 'NYLAS_SANDBOX_TEST_GRANT_ID' : 'TEST_NYLAS_GRANT_ID'],
-        # Shared across both applications: one region host, one callback URI
-        # registered on both apps (the app is carried in `state`).
+        client_id: ENV['NYLAS_CLIENT_ID'],
+        api_key: ENV['NYLAS_API_KEY'],
+        test_grant_id: ENV['TEST_NYLAS_GRANT_ID'],
         api_uri: ENV['NYLAS_API_URI'],
         callback_uri: ENV['NYLAS_CALLBACK_URI']
       }
     end
 
-    def self.configured?(application)
-      credentials = credentials_for(application)
+    def initialize
+      @config = Wrapper.credentials
 
-      credentials[:client_id].present? && credentials[:api_key].present?
-    end
-
-    def self.for(nylas_account)
-      new(nylas_account.nylas_application)
-    end
-
-    # The OAuth `state` has to carry the application as well as the org: at
-    # callback time there is no account row yet to read a binding from.
-    def self.encode_state(organization, application)
-      "#{organization.id}:#{application}"
-    end
-
-    # Accepts the legacy bare organization id too — a user who started the OAuth
-    # dance before this shipped comes back without an application. Remove that
-    # fallback once no sandbox-bound accounts remain.
-    def self.decode_state(state)
-      organization_id, application = state.to_s.split(':', 2)
-      application = default_application unless APPLICATIONS.include?(application)
-
-      [organization_id, application]
-    end
-
-    attr_reader :application
-
-    def initialize(application = Wrapper.default_application)
-      unless Wrapper::APPLICATIONS.include?(application.to_s)
-        raise ArgumentError, "Unknown Nylas application: #{application.inspect}"
-      end
-
-      @application = application.to_s
-      @config = Wrapper.credentials_for(@application)
-
-      if @config[:client_id].blank? || @config[:api_key].blank?
-        raise "Nylas credentials for the #{@application} application are not configured."
-      end
+      raise 'Nylas credentials are not configured.' if @config[:client_id].blank? || @config[:api_key].blank?
 
       @client = Nylas::Client.new(
         api_key: @config[:api_key],
@@ -154,20 +98,13 @@ module Nylas
     # Re-checks the grant against Nylas and persists the resulting status.
     # Never raises for an unusable grant: callers that only report state (the
     # status banner) need the status to come back, not an exception.
-    def refresh_status(nylas_account, allow_rebind: true)
+    def refresh_status(nylas_account)
       grant = @client.grants.find(grant_id: nylas_account.grant_id)&.first
 
       status = Wrapper.status_for_grant(grant)
       nylas_account.update(status: status)
       status
     rescue Nylas::AbstractNylasApiError => e
-      # A 404 means this application has never heard of the grant, which is what
-      # a wrong `nylas_application` looks like. Try the other application once;
-      # if it owns the grant, correct the binding and keep going. Deliberately
-      # narrow: any other error, and a grant that is merely revoked, must still
-      # surface as 'unsynced' rather than being retried into silence.
-      return rebind_and_refresh(nylas_account, e) if allow_rebind && rebindable?(e)
-
       Sentry.capture_exception(e)
       nylas_account.update(status: 'unsynced')
       'unsynced'
@@ -194,7 +131,7 @@ module Nylas
     def send_email(nylas_account, email_definition, attachment = nil, use_test_grant: Rails.env.development?)
       if use_test_grant
         grant_id = @config[:test_grant_id]
-        raise "No test Nylas grant is configured for the #{@application} application." if grant_id.blank?
+        raise 'No test Nylas grant is configured.' if grant_id.blank?
       else
         validate_grant(nylas_account)
         grant_id = nylas_account.grant_id
@@ -240,7 +177,7 @@ module Nylas
         client_id: @config[:client_id],
         redirect_uri: @config[:callback_uri],
         access_type: 'offline',
-        state: Wrapper.encode_state(organization, @application)
+        state: organization.id.to_s
       })
     end
 
@@ -253,40 +190,6 @@ module Nylas
     end
 
     private
-
-    def not_found?(error)
-      error.respond_to?(:status_code) && error.status_code.to_i == 404
-    end
-
-    def rebindable?(error)
-      not_found?(error) && Wrapper.configured?(Wrapper.other_application(@application))
-    end
-
-    # Retry the status check once under the other Nylas application. If it owns
-    # the grant, the account was bound to the wrong application — correct it.
-    def rebind_and_refresh(nylas_account, original_error)
-      other = Wrapper.other_application(@application)
-      other_wrapper = Wrapper.new(other)
-
-      status = other_wrapper.refresh_status(nylas_account, allow_rebind: false)
-
-      if status == 'unsynced'
-        Sentry.capture_exception(original_error)
-        return status
-      end
-
-      Rails.logger.warn(
-        "[Nylas] grant #{nylas_account.grant_id} not found under #{@application}; " \
-        "rebinding account #{nylas_account.id} to #{other}"
-      )
-      nylas_account.update(nylas_application: other)
-
-      status
-    rescue StandardError => e
-      Sentry.capture_exception(e)
-      nylas_account.update(status: 'unsynced')
-      'unsynced'
-    end
 
     def send_email_multipart(grant_id, to_list, author, from_email, email_definition, attachment)
       uri = URI("#{@config[:api_uri]}/v3/grants/#{grant_id}/messages/send")

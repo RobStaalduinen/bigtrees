@@ -37,16 +37,8 @@
       <h4>Attached Account</h4>
       <div class="email-info">
         <div>{{ nylasAccount.outgoing_email_address }}</div>
-        <div class="account-badges">
-          <app-pill
-            v-if="sandboxAccount"
-            tone="warning"
-            filled
-            text="Sandbox connection — reconnect to migrate"
-          />
-          <div class="status-badge" :class="nylasAccount.status">
-            {{ nylasAccount.status }}
-          </div>
+        <div class="status-badge" :class="nylasAccount.status">
+          {{ nylasAccount.status }}
         </div>
       </div>
       <div class="email-actions">
@@ -71,9 +63,6 @@
     computed:{
       nylasAccount() {
         return this.$store.state.organization.nylas_account;
-      },
-      sandboxAccount() {
-        return this.nylasAccount && this.nylasAccount.nylas_application === 'sandbox';
       }
     },
     methods: {
@@ -128,12 +117,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .account-badges {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
   }
 
   .status-badge {

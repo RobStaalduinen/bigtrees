@@ -19,6 +19,6 @@ class PingEmailJob < ApplicationJob
       bcc: []
     )
 
-    Nylas::Wrapper.for(organization.nylas_account).send_email(organization.nylas_account, email_definition, nil, use_test_grant: true)
+    Nylas::Wrapper.new.send_email(organization.nylas_account, email_definition, nil, use_test_grant: true)
   end
 end
