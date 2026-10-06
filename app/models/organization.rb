@@ -46,6 +46,10 @@ class Organization < ActiveRecord::Base
 
   has_one :nylas_account, dependent: :destroy
 
+  # Association is named for the thing it holds (a set of settings) while the
+  # model stays singular and idiomatic, hence the explicit class_name.
+  has_one :quote_settings, class_name: 'QuoteSetting', dependent: :destroy
+
   def arborists_count
     arborists.active.count
   end
@@ -65,6 +69,80 @@ class Organization < ActiveRecord::Base
     return true if configured_features[feature.to_s]
 
     false
+  end
+
+  # Sales tax. Stored as a whole-number percentage; everything that multiplies
+  # uses #tax_multiplier so the /100 happens in exactly one place.
+  validates :tax_description, presence: true
+  validates :tax_rate,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+
+  def tax_multiplier
+    tax_rate.to_i / 100.0
+  end
+
+  # Only ever a 3- or 6-digit hex colour. This value is interpolated into a
+  # style attribute on the quote PDF and is editable from the admin UI, so it
+  # is validated at the point of use rather than trusted — anything else falls
+  # back to the stylesheet's own colour.
+  HEX_COLOUR = /\A#(\h{3}|\h{6})\z/
+
+  def quote_accent_colour
+    primary_colour.to_s.strip.presence&.match?(HEX_COLOUR) ? primary_colour.strip : nil
+  end
+
+  # The quote footer's fine print. One implementation, three callers: the PDF
+  # footer, the backfill migration, and the fallback for organizations with no
+  # quote_settings record — so none of them can drift apart.
+  def default_quote_footer_text
+    insurance = [
+      insurance_provider,
+      insurance_policy_number.present? ? "policy #{insurance_policy_number}" : nil,
+      insurance_description
+    ].compact_blank
+
+    parts = []
+    parts << "Insured with #{insurance.join(', ')}" if insurance.any?
+    parts << "HST #{hst_number}" if hst_number.present?
+    parts.join('   ')
+  end
+
+  # What the PDF actually prints: the organization's own text once set,
+  # otherwise the insurance/HST line it has always shown.
+  def quote_footer_text
+    quote_settings&.footer_text.presence || default_quote_footer_text
+  end
+
+  # Editable page copy. Nil means the organization has never customised it, so
+  # they track the stock wording — see the migration for why that beats baking
+  # a copy into every row.
+  def quote_pre_job_html
+    expand_quote_macros(quote_settings&.pre_job_content.presence || QuoteContentDefaults::PRE_JOB)
+  end
+
+  def quote_terms_html
+    expand_quote_macros(quote_settings&.terms_content.presence || QuoteContentDefaults::TERMS)
+  end
+
+  # Matches the macro convention the email templates use, so an organization
+  # that renames itself sees it flow through copy it has not edited.
+  def expand_quote_macros(html)
+    html.to_s.gsub(QuoteContentDefaults::ORGANIZATION_MACRO, name.to_s)
+  end
+
+  # Quote PDF page toggles. No record means "include everything", which is how
+  # quotes behaved before these settings existed — so organizations that never
+  # open the Quote Customization screen are unaffected.
+  def include_quote_image_page?
+    quote_settings.nil? || quote_settings.include_image_page?
+  end
+
+  def include_quote_pre_job_page?
+    quote_settings.nil? || quote_settings.include_pre_job_page?
+  end
+
+  def include_quote_terms?
+    quote_settings.nil? || quote_settings.include_terms?
   end
 
   def configured_features

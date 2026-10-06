@@ -27,6 +27,9 @@ Rails.application.routes.draw do
       post '/create_single', to: 'costs#create_single', on: :collection
       post '/update', to: 'costs#update', on: :collection, as: :update
     end
+    resource :quote_scope, only: [] do
+      post '/update', to: 'quote_scopes#update', as: :update
+    end
     resources :approval_mailouts, only: [ :create ]
     resources :scheduling_mailouts, only: [ :create ]
     resources :job_progress_mailouts, only: [ :create ]
@@ -119,6 +122,7 @@ Rails.application.routes.draw do
     end
 
 
+    resource :quote_settings, only: [ :show, :update ]
     resources :configurations, only: [ :index, :update ]
     resources :notification_configurations, only: [ :index, :update ]
   end

@@ -1,29 +1,24 @@
-<%= render 'quotes/pdf/header', organization: organization %>
+<%# Body copy is editable per organization under Quote Customization; the
+    stock wording lives in QuoteContentDefaults. Sanitised on the way out — it
+    is user-authored HTML heading into a customer-facing document, so only the
+    editor's own small tag set survives. %>
+<%= render 'quotes/pdf/cont_header',
+           organization: organization,
+           estimate: estimate,
+           document_title: document_title %>
 
-<div class='estimate-header'>
-  Further Details
+<h2 class='page-title'>Before we start</h2>
+
+<div class='rich-content'>
+  <%= sanitize organization.quote_pre_job_html,
+               tags: QuoteContentDefaults::ALLOWED_TAGS,
+               attributes: [] %>
 </div>
 
-<div class='details-box'>
-Before we begin, there are a few important things that you should know:
-<br><br>
-1. We've done this thousands of times. Don't feel you need to schedule a day off the day we do your work. We don't collect payment until the work is done and we don't expect payment the same day.
-<br><br>
-2. Please make sure the route (ie. driveway, path, yard) to the tree is clear so we can remove the branches.
-<br><br>
-3. Anything of value (ie. statues, pots, birdfeeders, lights, furniture, bbq's,) are moved from the tree. Please notify us of anything you couldn't move. Also, if you have sprinkler systems or septic tanks, we need to know before we start.
-<br><br>
-4. Please notify your neighbours of the work. Feel free to give them our number in case they have any questions. Have them reference your name and address.
-<br><br>
-5. We cannot do a thorough cleanup of the small branches if the lawn is unkempt (ie. long, weeds, dog droppings)
-<br><br>
-6. Our work is physically demanding both on our bodies and equipment. Breakdowns and delays do occur from time to time. Please keep that in mind when it comes to scheduling. Often times we are running a little behind. Also, the weather plays a huge role in whether or not we can work but we do our best to keep you updated as our week progresses.
-<br><br>
-7. If an existing customer has called in an emergency for tree work, whether from a natural disaster such as severe weather conditions or an unexpected accident, emergency situations and customers take priority. We will revise our plans and schedules to accommodate the needs and priorities of our existing clients and emergency situations.
-<br><br>
-8. Delays: Weather, Equipment malfunction, Employee injury/illness.
-Unsafe weather conditions can affect our job (rain, snow, wind, natural disasters) which can make it dangerous to work.
-Equipment malfunction can occur from time to time. We are constantly maintaining our equipment, but if a piece of machinery is not working properly or is down, it can make it unsafe to perform our job properly.
-Employee injury/illness: If an employee is unable to attend work due to one of these circumstances, it may make it unsafe to perform our job while shorthanded.
-We will delay/reschedule any work due to these circumstances as we see fit.
-</div>
+<% if organization.phone_number.present? %>
+  <div class='note-box'>
+    Questions about any of this before the crew arrives? Call <%= organization.phone_number %>.
+  </div>
+<% end %>
+
+<%= render 'quotes/pdf/footer', organization: organization, estimate: estimate %>

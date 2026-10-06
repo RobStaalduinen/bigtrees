@@ -46,6 +46,7 @@ class EstimateSerializer < ApplicationSerializer
   attribute :status
   attribute :difficulty
   attribute :quote_sent_date
+  attribute :quote_valid_until
   attribute :quote_accepted_date
   attribute :work_start_date
   attribute :work_end_date
@@ -88,6 +89,7 @@ class EstimateSerializer < ApplicationSerializer
   has_one :site, include_nested_associations: true
   has_one :invoice
   has_one :customer_detail
+  has_one :quote_scope
   has_many :jobs
   has_many :costs
   has_many :trees

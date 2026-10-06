@@ -75,6 +75,20 @@
         />
 
         <app-input-field
+          v-model='editableCompany.tax_description'
+          label='Tax Name'
+          name='tax_description'
+        />
+        <div class='field-hint'>Shown on the quote beside the tax amount, e.g. HST, GST, GST + PST.</div>
+
+        <app-number-field
+          v-model='editableCompany.tax_rate'
+          label='Tax Rate (%)'
+          name='tax_rate'
+        />
+        <div class='field-hint'>A whole number. 13 means 13%.</div>
+
+        <app-input-field
           v-model='editableCompany.outgoing_quote_email'
           label='Outgoing Quote Email'
           name='outgoing_quote_email'
@@ -147,3 +161,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  /* Sits directly under its field, so it pulls up into the form-group's
+     bottom margin rather than adding a gap of its own. */
+  .field-hint {
+    font-size: 12px;
+    color: gray;
+    margin-top: -12px;
+    margin-bottom: 14px;
+  }
+</style>

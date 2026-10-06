@@ -68,10 +68,12 @@ wb.add_worksheet(name: "Quote") do |sheet|
     subtotal = costs.map{ |c| c[1] }.sum
     sheet.add_row ([nil] * 6) + ["SUB TOTAL", subtotal.round(2)],
     style: ([nil] * 6) + [right, currency, currency, currency]
-    sheet.add_row ([nil] * 6) + ["HST", (subtotal * 0.13).round(2)],
+    tax_label = @estimate.tax_label
+    tax_multiplier = @estimate.tax_multiplier
+    sheet.add_row ([nil] * 6) + [tax_label, (subtotal * tax_multiplier).round(2)],
     style: ([nil] * 6) + [right, currency, currency, currency]
     sheet.add_row ([nil] * 6)
-    sheet.add_row ([nil] * 6) + ["TOTAL", (subtotal * 1.13).round(2)],
+    sheet.add_row ([nil] * 6) + ["TOTAL", (subtotal * (1 + tax_multiplier)).round(2)],
     style: ([nil] * 6) + [right, currency, currency, currency]
 
     (21..24).each do |cell|

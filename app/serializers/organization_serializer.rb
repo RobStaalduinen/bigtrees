@@ -48,6 +48,8 @@ class OrganizationSerializer < ApplicationSerializer
   attribute :insurance_policy_number
   attribute :insurance_description
   attribute :hst_number
+  attribute :tax_description
+  attribute :tax_rate
 
   attribute :logo_url
   attribute :condensed_logo_url
@@ -64,4 +66,5 @@ class OrganizationSerializer < ApplicationSerializer
 
   belongs_to :address
   has_one :nylas_account
+  has_one :quote_settings, serializer: QuoteSettingSerializer
 end

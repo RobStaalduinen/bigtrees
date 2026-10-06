@@ -1,0 +1,23 @@
+<% document_title ||= 'Quote' %>
+<%# Lighter masthead for continuation pages. Identifies the document by
+    service address, since quotes carry no reference number. %>
+<table class='cont-head'>
+  <tr>
+    <td>
+      <% if organization.id == 2 %>
+        <img src='https://bigtreecare.s3.amazonaws.com/public/ShadowRiverLogo.JPG' class='shadow-river-logo'>
+      <% elsif organization.id == 1 %>
+        <img src='https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png' class='pdf_header-image'>
+      <% elsif organization.logo_url.present? %>
+        <img src="<%= organization.logo_url %>" class='pdf-logo'>
+      <% else %>
+        <div class='pdf-logo-name'><%= organization.legal_name || organization.name %></div>
+      <% end %>
+    </td>
+
+    <td class='cont-title'>
+      <%= document_title %> &nbsp;&mdash;&nbsp; <b><%= estimate.quote_display_address %></b>
+    </td>
+  </tr>
+</table>
+<div class='cont-rule'></div>

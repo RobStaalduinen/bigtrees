@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Big Tree Services — Quote</title>
+<style>
+  /* Archivo, served as TrueType from local files. Qt WebKit cannot read
+     woff2, so a Google Fonts <link> silently falls back to Helvetica —
+     the fonts have to be shipped as .ttf and referenced directly. In
+     production these live in app/assets/fonts and are referenced with
+     font-url() from pdf_styles.scss. */
+  @font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/archivo-400.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 500;
+    src: url('fonts/archivo-500.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 600;
+    src: url('fonts/archivo-600.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 700;
+    src: url('fonts/archivo-700.ttf') format('truetype');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     PALETTE  (literal hex throughout — wkhtmltopdf's Qt WebKit has NO
+     support for CSS custom properties. In pdf_styles.scss these become
+     SCSS variables, which compile away before the PDF engine sees them.)
+
+       ink        #22271F   bark black — headings, totals
+       body       #3A3F35   running text
+       muted      #6E7365   labels, secondary, footer
+       moss       #7C8B6A   conifer sage — bullets, accent rules
+       rule       #DDE0D6   hairlines
+       rule-firm  #BFC4B4   section rules
+       wash       #EFF1EA   panel tint
+       leaf       #8A1C1C   maple red — used once, at full strength
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* wkhtmltopdf is invoked with zero margins and the page padding below
+     does the work; this makes a browser's own print path agree. */
+  @page { size: Letter; margin: 0; }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    margin: 0;
+    font-family: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.4;
+    color: #3A3F35;
+    background: #ffffff;
+  }
+
+  .page {
+    width: 8.5in;
+    padding: 22px 44px 14px;
+    margin: 0 auto;
+    background: #ffffff;
+  }
+
+  .break { page-break-before: always; }
+
+  table { border-collapse: collapse; width: 100%; }
+  td, th { vertical-align: top; }
+  p { margin: 0 0 8px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Masthead ─────────────────────────────────────────────────────── */
+  /* Every piece of company contact detail lives here and nowhere else.  */
+  .masthead { margin-bottom: 10px; }
+  .masthead td { vertical-align: bottom; }
+
+  .logo { width: 220px; height: auto; display: block; }
+
+  .logo-name {                    /* fallback for orgs with no logo file */
+    font-size: 20pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #22271F;
+  }
+
+  .company {
+    text-align: right;
+    font-size: 8pt;
+    line-height: 1.6;
+    color: #6E7365;
+    white-space: nowrap;
+  }
+  .company .legal {
+    display: block;
+    font-size: 9.5pt;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #22271F;
+    margin-bottom: 1px;
+  }
+
+  .masthead-rule {
+    height: 2px;
+    background: #22271F;
+    font-size: 0;
+    line-height: 0;
+    margin-bottom: 9px;
+  }
+
+  /* ── Document title ───────────────────────────────────────────────── */
+  .title-block td { vertical-align: bottom; padding-bottom: 8px; }
+
+  .doc-title {
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: #22271F;
+    margin: 0;
+  }
+
+  .meta { text-align: right; font-size: 8.5pt; white-space: nowrap; }
+  .meta table { width: auto; margin-left: auto; }
+  .meta .k { color: #6E7365; padding: 0 12px 2px 0; text-align: right; }
+  .meta .v {
+    color: #22271F;
+    font-weight: 600;
+    text-align: right;
+    padding-bottom: 2px;
+  }
+
+  /* ── Parties panel ────────────────────────────────────────────────── */
+  .parties {
+    background: #EFF1EA;
+    border-left: 3px solid #7C8B6A;
+    margin-bottom: 14px;
+  }
+  .parties td { padding: 8px 14px 9px; width: 50%; }
+  .parties td + td { border-left: 1px solid #DDE0D6; }
+
+  .party-label {
+    font-size: 7pt;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #6E7365;
+    margin-bottom: 4px;
+  }
+  .party-name {
+    font-size: 11pt;
+    font-weight: 600;
+    color: #22271F;
+    line-height: 1.25;
+    margin-bottom: 1px;
+  }
+  .party-detail { font-size: 8.5pt; color: #3A3F35; line-height: 1.5; }
+
+  /* ── Sections ─────────────────────────────────────────────────────── */
+  .section { margin-bottom: 9px; }
+
+  .section-head {
+    font-size: 11.5pt;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: #22271F;
+    border-bottom: 1px solid #BFC4B4;
+    padding-bottom: 3px;
+    margin-bottom: 7px;
+  }
+
+  /* Native list markers — reliable in Qt WebKit where positioned
+     pseudo-elements are not. The marker inherits the li colour, so the
+     sage dot comes free and the span carries the text colour back. */
+  .list { margin: 0; padding: 0 0 0 16px; }
+  .list li {
+    color: #7C8B6A;
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+  .list li:last-child { margin-bottom: 0; }
+  .list li span { color: #3A3F35; }
+
+  /* Exclusions are constraints, not offerings — hollow marker, grey. */
+  .list.exclusions { list-style: square; }
+  .list.exclusions li { color: #BFC4B4; }
+
+  /* ── Pricing ──────────────────────────────────────────────────────── */
+  /* One description per row, no sub-text. Sized so eight items plus the
+     totals still clear the page without crowding. */
+  .pricing td {
+    padding: 6px 0;
+    border-bottom: 1px solid #DDE0D6;
+    font-weight: 600;
+    color: #22271F;
+  }
+  .pricing .item { padding-right: 24px; }
+  .pricing .amount {
+    text-align: right;
+    white-space: nowrap;
+    width: 118px;
+  }
+  .pricing .discount, .pricing .amount.credit { color: #7C8B6A; }
+
+  .pricing tr.sum td {
+    padding: 5px 0;
+    border-bottom: none;
+    color: #6E7365;
+    font-weight: 400;
+  }
+  .pricing tr.first-sum td { padding-top: 8px; }
+  .pricing tr.sum .amount { color: #3A3F35; font-weight: 500; }
+
+  /* The one loud element in the document. */
+  .total {
+    background: #8A1C1C;
+    margin-top: 8px;
+    page-break-inside: avoid;
+  }
+  .total td { padding: 9px 15px; border: none; color: #ffffff; }
+  .total .label { font-size: 11pt; font-weight: 600; }
+  .total .value {
+    text-align: right;
+    font-size: 15.5pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────────────── */
+  /* Insurance lives here now: present and verifiable, no longer shouted. */
+  .footer {
+    margin-top: 12px;
+    padding-top: 5px;
+    border-top: 1px solid #DDE0D6;
+    font-size: 7pt;
+    line-height: 1.5;
+    color: #6E7365;
+    page-break-inside: avoid;
+  }
+  .footer td { padding-right: 24px; }
+  .footer td:last-child { padding-right: 0; text-align: right; white-space: nowrap; }
+  .footer .fl { color: #9AA08E; }
+
+  /* ── Continuation pages ───────────────────────────────────────────── */
+  .cont-head { margin-bottom: 8px; }
+  .cont-head td { vertical-align: bottom; padding-bottom: 8px; }
+  .cont-head .logo { width: 168px; }
+  .cont-title {
+    text-align: right;
+    font-size: 8.5pt;
+    color: #6E7365;
+    white-space: nowrap;
+  }
+  .cont-title b { color: #22271F; font-weight: 600; }
+  .cont-rule {
+    height: 1px;
+    background: #BFC4B4;
+    font-size: 0;
+    line-height: 0;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 16pt;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #22271F;
+    margin: 0 0 16px;
+  }
+  .page-intro { font-size: 9.5pt; color: #6E7365; margin: -12px 0 18px; }
+
+  /* Numbered because these clauses genuinely get referenced by number. */
+  .numbered { margin: 0; padding: 0 0 0 26px; }
+  .numbered li {
+    color: #7C8B6A;
+    margin-bottom: 11px;
+    line-height: 1.5;
+    page-break-inside: avoid;
+  }
+  .numbered li > span { color: #3A3F35; display: block; font-size: 9.5pt; }
+  .numbered li b { color: #22271F; font-weight: 600; }
+
+  .terms-note {
+    margin-top: 18px;
+    padding: 11px 15px;
+    background: #EFF1EA;
+    border-left: 3px solid #7C8B6A;
+    font-size: 8.5pt;
+    line-height: 1.55;
+    color: #6E7365;
+  }
+
+  /* ── Work photos ──────────────────────────────────────────────────── */
+  /* Photos group under a task where the estimate has them categorised,
+     and fall back to a plain grid where it doesn't. Cell width is fixed
+     at a third either way, so a photo is the same size everywhere in the
+     document however many a task happens to have. */
+  .task { margin-bottom: 15px; page-break-inside: avoid; }
+
+  .task-head {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: #22271F;
+    border-bottom: 1px solid #BFC4B4;
+    padding-bottom: 3px;
+  }
+  .task-desc {
+    font-size: 8.5pt;
+    color: #6E7365;
+    margin-top: 4px;
+    line-height: 1.45;
+  }
+
+  .photos { margin-top: 8px; }
+  .photos td { width: 33.33%; padding: 0 7px 0 0; }
+  .photos td.spacer { padding: 0; }
+  .photo {
+    width: 100%;
+    height: 132px;
+    background: #EFF1EA;
+    border: 1px solid #DDE0D6;
+  }
+  .photo-caption {
+    font-size: 7.5pt;
+    color: #6E7365;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .photos tr.captions td { padding-bottom: 9px; }
+  .photo-ph {                      /* mockup-only placeholder label */
+    text-align: center;
+    font-size: 8pt;
+    color: #B3B8A6;
+    padding-top: 60px;
+  }
+
+  .variant-note {
+    margin-bottom: 18px;
+    padding: 9px 14px;
+    background: #EFF1EA;
+    border-left: 3px solid #BFC4B4;
+    font-size: 8.5pt;
+    line-height: 1.5;
+    color: #6E7365;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ PAGE 1 — QUOTE ══════════════════════════ -->
+<div class="page">
+
+  <table class="masthead">
+    <tr>
+      <td>
+        <img class="logo" src="https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png" alt="Big Tree Services">
+      </td>
+      <td class="company">
+        <span class="legal">Big Tree Incorporated</span>
+        4 McGregor Dr., Caledon Village, ON&nbsp; L7K 0B2<br>
+        1-877-542-5551 &nbsp; quotes@bigtreeservices.ca<br>
+        bigtreeservices.ca
+      </td>
+    </tr>
+  </table>
+  <div class="masthead-rule"></div>
+
+  <table class="title-block">
+    <tr>
+      <td>
+        <h1 class="doc-title">Quote</h1>
+      </td>
+      <td class="meta">
+        <table>
+          <tr><td class="k">Issued</td><td class="v">24 September 2026</td></tr>
+          <tr><td class="k">Valid through</td><td class="v">24 October 2026</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table class="parties">
+    <tr>
+      <td>
+        <div class="party-label">Prepared for</div>
+        <div class="party-name">Marla Chen</div>
+        <div class="party-detail">613-555-0142 &nbsp; marla.chen@gmail.com</div>
+      </td>
+      <td>
+        <div class="party-label">Service address</div>
+        <div class="party-name">47 Chesterfield Drive</div>
+        <div class="party-detail">Loyalist, ON&nbsp; K7N 1A4</div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="section">
+    <div class="section-head">Scope of work</div>
+    <p>Remove two silver maples from the rear yard's north fence line, both with heavy deadwood
+    and a split union over the pool deck. Reduce the rear-corner Norway maple, deadwood and crown
+    clean the front-walk bur oak, trim the east cedar hedge, and grind both maple stumps below
+    grade.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-head">What's included</div>
+    <ul class="list">
+      <li><span>Sectional removal of two silver maples, rigged down over the pool deck</span></li>
+      <li><span>Crown reduction of the rear-corner Norway maple, roughly 20 per cent</span></li>
+      <li><span>Deadwood removal and crown clean of the front-walk bur oak</span></li>
+      <li><span>Cedar hedge trimmed to a level line along the east property edge</span></li>
+      <li><span>Stump grinding on both maples to 8 in. below grade, grindings raked level</span></li>
+      <li><span>All brush chipped and hauled off site, logs cut to 16 in. on request, and a full cleanup before we leave</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Not included</div>
+    <ul class="list exclusions">
+      <li><span>Topsoil, sod or replanting over the ground stumps</span></li>
+      <li><span>Removal of surface roots or root flare beyond the stump collar</span></li>
+      <li><span>Repair of fence, pool deck or hardscape damage that predates the work</span></li>
+      <li><span>Town of Loyalist permit fees, should the front-yard oak require one</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Pricing</div>
+    <table class="pricing">
+      <tr>
+        <td class="item">Silver maple removal &mdash; rear yard, north fence</td>
+        <td class="amount">$2,850.00</td>
+      </tr>
+      <tr>
+        <td class="item">Bur oak deadwood and crown clean &mdash; front walk</td>
+        <td class="amount">$625.00</td>
+      </tr>
+      <tr>
+        <td class="item">Norway maple crown reduction &mdash; rear corner</td>
+        <td class="amount">$540.00</td>
+      </tr>
+      <tr>
+        <td class="item">Stump grinding &mdash; two stumps, 8 in. below grade</td>
+        <td class="amount">$480.00</td>
+      </tr>
+      <tr>
+        <td class="item">Cedar hedge trim &mdash; east property line</td>
+        <td class="amount">$320.00</td>
+      </tr>
+      <tr>
+        <td class="item">Brush chipping and haul-away</td>
+        <td class="amount">$260.00</td>
+      </tr>
+      <tr>
+        <td class="item">Ground protection matting &mdash; chipper route</td>
+        <td class="amount">$145.00</td>
+      </tr>
+      <tr>
+        <td class="item discount">Multi-tree discount</td>
+        <td class="amount credit">&minus;$150.00</td>
+      </tr>
+
+      <tr class="sum first-sum">
+        <td class="item">Subtotal</td>
+        <td class="amount">$5,070.00</td>
+      </tr>
+      <tr class="sum">
+        <td class="item">HST (13%)</td>
+        <td class="amount">$659.10</td>
+      </tr>
+    </table>
+
+    <table class="total">
+      <tr>
+        <td class="label">Total</td>
+        <td class="value">$5,729.10</td>
+      </tr>
+    </table>
+  </div>
+
+  <table class="footer">
+    <tr>
+      <td><span class="fl">Insured with</span> Intact Insurance, policy 501381704 &mdash;
+          $2,000,000 commercial general liability &nbsp;&nbsp;
+          <span class="fl">HST</span> 752547802RT0001</td>
+      <td>47 Chesterfield Drive &nbsp;&nbsp; Page 1 of 4</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<!-- ═══════════════ PAGE 2 — WORK PHOTOS, GROUPED BY TASK ══════════════ -->
+<div class="page break">
+
+  <table class="cont-head">
+    <tr>
+      <td><img class="logo" src="https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png" alt="Big Tree Services"></td>
+      <td class="cont-title">Quote &nbsp;&mdash;&nbsp; <b>47 Chesterfield Drive</b></td>
+    </tr>
+  </table>
+  <div class="cont-rule"></div>
+
+  <h2 class="page-title">The work, on site</h2>
+
+  <div class="task">
+    <div class="task-head">Task 1 &mdash; Silver maple removal, rear yard</div>
+    <div class="task-desc">Both maples come down in sections and rig out over the pool deck. The
+    split union on the eastern tree is why neither one gets felled whole.</div>
+    <table class="photos">
+      <tr>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+      </tr>
+      <tr class="captions">
+        <td><div class="photo-caption">Split union above the pool deck</div></td>
+        <td><div class="photo-caption">Deadwood through the upper crown</div></td>
+        <td><div class="photo-caption">North fence line, rigging approach</div></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="task">
+    <div class="task-head">Task 2 &mdash; Bur oak crown clean, front walk</div>
+    <div class="task-desc">Climbing access only, no crane. Deadwood is concentrated in the south
+    leader.</div>
+    <table class="photos">
+      <tr>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+        <td class="spacer"></td>
+      </tr>
+      <tr class="captions">
+        <td><div class="photo-caption">Bur oak at the front walk</div></td>
+        <td><div class="photo-caption">Deadwood in the south leader</div></td>
+        <td class="spacer"></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- A task with no description and a single photo. -->
+  <div class="task">
+    <div class="task-head">Task 3 &mdash; Cedar hedge, east property line</div>
+    <table class="photos">
+      <tr>
+        <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+        <td class="spacer"></td>
+        <td class="spacer"></td>
+      </tr>
+      <tr class="captions">
+        <td><div class="photo-caption">Hedge run, looking north</div></td>
+        <td class="spacer"></td>
+        <td class="spacer"></td>
+      </tr>
+    </table>
+  </div>
+
+  <table class="footer">
+    <tr>
+      <td><span class="fl">Insured with</span> Intact Insurance, policy 501381704 &mdash;
+          $2,000,000 commercial general liability &nbsp;&nbsp;
+          <span class="fl">HST</span> 752547802RT0001</td>
+      <td>47 Chesterfield Drive &nbsp;&nbsp; Page 2 of 4</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<!-- ══════════════════ PAGE 3 — BEFORE WE START ════════════════════════ -->
+<div class="page break">
+
+  <table class="cont-head">
+    <tr>
+      <td><img class="logo" src="https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png" alt="Big Tree Services"></td>
+      <td class="cont-title">Quote &nbsp;&mdash;&nbsp; <b>47 Chesterfield Drive</b></td>
+    </tr>
+  </table>
+  <div class="cont-rule"></div>
+
+  <h2 class="page-title">Before we start</h2>
+  <p class="page-intro">A few things that make the day go smoothly.</p>
+
+  <ol class="numbered">
+    <li><span><b>You don't need to be home.</b> We've done this thousands of times. Don't take a
+    day off for it — we don't collect payment on the day, and we don't expect it same-day.</span></li>
+
+    <li><span><b>Clear the route to the tree.</b> The driveway, path and yard need to be open
+    enough for us to carry branches out.</span></li>
+
+    <li><span><b>Move anything you'd hate to lose.</b> Statues, pots, birdfeeders, lights,
+    furniture, barbecues. Tell us about anything you couldn't move, and about any sprinkler lines
+    or septic tanks, before we start.</span></li>
+
+    <li><span><b>Let your neighbours know.</b> Pass along our number if they have questions — have
+    them reference your name and address.</span></li>
+
+    <li><span><b>Mow beforehand if you can.</b> We can't do a thorough cleanup of small branches
+    in long grass.</span></li>
+
+    <li><span><b>Schedules move.</b> The work is hard on bodies and equipment, and weather decides
+    a lot of it. Breakdowns and delays happen, we often run a little behind, and we'll keep you
+    updated as the week goes.</span></li>
+
+    <li><span><b>Emergencies come first.</b> If an existing customer calls in storm damage or an
+    unexpected hazard, we'll revise the schedule to handle it.</span></li>
+
+    <li><span><b>What causes a delay.</b> Unsafe weather — rain, snow, wind, storms. Equipment
+    down for repair. An injured or ill crew member leaving us shorthanded. We'll reschedule when
+    any of these make the work unsafe.</span></li>
+  </ol>
+
+  <div class="terms-note">
+    Questions about any of this before the crew arrives? Call 1-877-542-5551 and ask for Tom.
+  </div>
+
+  <table class="footer">
+    <tr>
+      <td><span class="fl">Insured with</span> Intact Insurance, policy 501381704 &mdash;
+          $2,000,000 commercial general liability &nbsp;&nbsp;
+          <span class="fl">HST</span> 752547802RT0001</td>
+      <td>47 Chesterfield Drive &nbsp;&nbsp; Page 3 of 4</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<!-- ═══════════════════ PAGE 4 — TERMS AND CONDITIONS ══════════════════ -->
+<div class="page break">
+
+  <table class="cont-head">
+    <tr>
+      <td><img class="logo" src="https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png" alt="Big Tree Services"></td>
+      <td class="cont-title">Quote &nbsp;&mdash;&nbsp; <b>47 Chesterfield Drive</b></td>
+    </tr>
+  </table>
+  <div class="cont-rule"></div>
+
+  <h2 class="page-title">Terms and conditions</h2>
+  <p class="page-intro">Each party agrees to the following.</p>
+
+  <ol class="numbered">
+    <li><span><b>Completion.</b> Big Tree Services agrees to perform the services set out in this
+    contract in a proper and expeditious manner. The services shall not commence until the
+    commencement date, and shall be completed by the completion date.</span></li>
+
+    <li><span><b>Laws and regulations.</b> Each party shall comply with all applicable codes,
+    laws, rules and regulations of federal, provincial or local authorities as they affect the
+    services, and shall be responsible for any and all damages resulting from their respective
+    failure to comply. Each party shall procure at its expense all permits and licences required
+    to perform its portion of the services.</span></li>
+
+    <li><span><b>Damages.</b> Big Tree Services shall be responsible for any and all injury or
+    damage to any persons or property, including loss of life, arising directly or indirectly from
+    or in connection with services performed under this contract, and shall indemnify and hold the
+    other harmless from any loss, damage or expense (including legal fees) from any such injury,
+    damage or death, except as may be due to the negligence of the other party.</span></li>
+
+    <li><span><b>Acts of God.</b> Big Tree Services shall not be responsible for loss or damage to
+    the work, including materials used or to be used, caused by fire, lightning, explosion,
+    vehicles, smoke, hail, aircraft, windstorm, flood, earthquake or other acts of the elements,
+    excepting loss or damage to materials under Big Tree Services' control.</span></li>
+
+    <li><span><b>Insurance.</b> Big Tree Services agrees to maintain such insurance as will fully
+    protect it from claims under workers' compensation acts; from claims for damages because of
+    bodily injury, including personal injury, sickness, disease or death of any of its employees
+    or any other person; and from claims for damages because of injury to or destruction of
+    tangible property, including loss of use. Limits of coverage for bodily injury and property
+    damage liability shall be $2,000,000.00 per occurrence. Each party shall also maintain
+    insurance for its own equipment, materials and personal property to full insurable
+    value.</span></li>
+
+    <li><span><b>Termination.</b> Big Tree Services may terminate this contract by giving notice
+    at any time without cause. The customer may terminate on at least thirty (30) days' written
+    notice upon the repeated and substantial failure of Big Tree Services to perform in accordance
+    with these terms, provided that failure is through no fault of the customer. The customer
+    agrees to pay the reasonable value of the services performed to the date of
+    termination.</span></li>
+
+    <li><span><b>Services rendered.</b> On completion of all services set out in this contract,
+    Big Tree Services shall submit one invoice covering those services, together with any other
+    documentation the customer reasonably requests. The customer shall make payment within
+    fourteen (14) days of the date the invoice is received. Payment constitutes a waiver of all
+    claims by the customer.</span></li>
+
+    <li><span><b>Payment terms.</b> Net payment is due 30 days from the invoice date. Accounts
+    unpaid after 30 days are subject to a 30% increase and may be sent to collections where no
+    prior arrangement has been made.</span></li>
+  </ol>
+
+  <table class="footer">
+    <tr>
+      <td><span class="fl">Insured with</span> Intact Insurance, policy 501381704 &mdash;
+          $2,000,000 commercial general liability &nbsp;&nbsp;
+          <span class="fl">HST</span> 752547802RT0001</td>
+      <td>47 Chesterfield Drive &nbsp;&nbsp; Page 4 of 4</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<!-- ═══════ ALTERNATIVE — UNCATEGORISED PHOTOS (not part of the doc) ════ -->
+<div class="page break">
+
+  <table class="cont-head">
+    <tr>
+      <td><img class="logo" src="https://bigtreecare.s3.amazonaws.com/public/LogoHorizontal.png" alt="Big Tree Services"></td>
+      <td class="cont-title">Quote &nbsp;&mdash;&nbsp; <b>47 Chesterfield Drive</b></td>
+    </tr>
+  </table>
+  <div class="cont-rule"></div>
+
+  <div class="variant-note">
+    Mockup only &mdash; this is the same photos page when an estimate's images have no tasks
+    against them. Photos run as a plain grid and no task headings appear.
+  </div>
+
+  <h2 class="page-title">The work, on site</h2>
+
+  <table class="photos">
+    <tr>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+    </tr>
+    <tr class="captions">
+      <td><div class="photo-caption">Split union above the pool deck</div></td>
+      <td><div class="photo-caption">Deadwood through the upper crown</div></td>
+      <td><div class="photo-caption">North fence line, rigging approach</div></td>
+    </tr>
+    <tr>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+      <td><div class="photo"><div class="photo-ph">tree photo</div></div></td>
+    </tr>
+    <tr class="captions">
+      <td><div class="photo-caption">Bur oak at the front walk</div></td>
+      <td><div class="photo-caption">Deadwood in the south leader</div></td>
+      <td><div class="photo-caption">Hedge run, looking north</div></td>
+    </tr>
+  </table>
+
+  <table class="footer">
+    <tr>
+      <td><span class="fl">Insured with</span> Intact Insurance, policy 501381704 &mdash;
+          $2,000,000 commercial general liability &nbsp;&nbsp;
+          <span class="fl">HST</span> 752547802RT0001</td>
+      <td>Alternative layout &mdash; not numbered</td>
+    </tr>
+  </table>
+
+</div>
+
+</body>
+</html>

@@ -69,6 +69,14 @@
         <div class='company-information-label'>HST Number:</div>
         <div class='company-information-value'>{{ company.hst_number }}</div>
       </div>
+      <div class='company-information-row'>
+        <div class='company-information-label'>Tax Name:</div>
+        <div class='company-information-value'>{{ company.tax_description }}</div>
+      </div>
+      <div class='company-information-row'>
+        <div class='company-information-label'>Tax Rate:</div>
+        <div class='company-information-value'>{{ company.tax_rate }}%</div>
+      </div>
 
       <div class='company-section-header'>
         Outgoing Email Settings

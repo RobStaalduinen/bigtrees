@@ -1,24 +1,35 @@
+<%# Flat photo grid. ENG-11 also designed a task-grouped variant (photos
+    under "Task 1 — …" headings with an optional description), but nothing
+    on tree_images carries a grouping or per-group description yet, so this
+    is the uncategorised fallback. Both layouts are mocked in
+    .sdd/ENG-11/mockups/quote.html. %>
+<% document_title ||= 'Quote' %>
 <% ready_images = estimate.tree_images.select { |i| i.image_url.present? || i.edited_image_url.present? } %>
-<% ready_images.each_slice(9).each_with_index do |images, i| %>
+
+<% ready_images.each_slice(6).each_with_index do |images, page_index| %>
   <div class='alwaysbreak page'>
-    <%= render 'quotes/pdf/header', organization: organization %>
+    <%= render 'quotes/pdf/cont_header',
+               organization: organization,
+               estimate: estimate,
+               document_title: document_title %>
 
-    <div class='estimate-header'>
-      <% if i == 0 %>
-        Proposed Work
-      <% else %>
-        Proposed Work Cont.
-      <% end %>
-    </div>
+    <h2 class='page-title'>
+      <%= page_index.zero? ? 'The work, on site' : 'The work, on site (continued)' %>
+    </h2>
 
-    <div class='details-box'>
-      <% images.each_slice(3).each do |image_row| %>
-        <div class='image-row'>
-          <% image_row.each do |image| %>
-            <img class='tree-image' src="<%= image.edited_image_url || image.image_url %>">
+    <table class='photos'>
+      <% images.each_slice(3) do |row| %>
+        <tr>
+          <% row.each do |image| %>
+            <td><img class='tree-image' src="<%= image.edited_image_url || image.image_url %>"></td>
           <% end %>
-        </div>
+          <% (3 - row.size).times do %>
+            <td class='spacer'></td>
+          <% end %>
+        </tr>
       <% end %>
-    </div>
+    </table>
+
+    <%= render 'quotes/pdf/footer', organization: organization, estimate: estimate %>
   </div>
 <% end %>

@@ -1,89 +1,108 @@
+<% date_tendered = estimate&.invoice&.sent_at.presence || Date.today %>
+
+<%# All three are optional. Each section is omitted when empty rather than
+    rendered as a bare heading — these go to customers, and an empty
+    "Scope of work" heading reads as broken rather than as not-yet-filled-in. %>
+<% quote_scope   = estimate.quote_scope %>
+<% scope_of_work = quote_scope&.scope_of_work %>
+<% inclusions    = quote_scope&.inclusions || [] %>
+<% exclusions    = quote_scope&.exclusions || [] %>
+
+<%# With no scope block between the parties panel and the pricing, the top of
+    the page reads as cramped. Open it up in that case only — when the scope
+    sections ARE present they supply the separation themselves, and the extra
+    space would cost a dense quote its one-page fit. %>
+<% scope_present = scope_of_work.present? || inclusions.any? || exclusions.any? %>
+
+
 <%= render 'quotes/pdf/header', organization: organization %>
 
-<div class='estimate-header'>
-  <% if estimate.invoice&.number&.present? && estimate.invoice.paid? %>
-    <b>Receipt for Invoice #<%= estimate.invoice.number %></b>
-  <% elsif estimate.invoice&.number&.present? %>
-    <b>Invoice #<%= estimate.invoice.number %></b>
-  <% else %>
-    <b>Quote</b>
-  <% end %>
+<table class='title-block <%= 'spacious' unless scope_present %>'>
+  <tr>
+    <td>
+      <h1 class='doc-title'><%= document_title %></h1>
+    </td>
+    <td class='doc-meta'>
+      <table>
+        <tr>
+          <td class='k'>Date tendered</td>
+          <td class='v'><%= date_tendered.strftime('%d %B %Y') %></td>
+        </tr>
+        <%# Optional expiry — only meaningful on a quote, so it is suppressed
+            once the document has become an invoice or receipt. %>
+        <% if estimate.quote_valid_until.present? && estimate.invoice&.number.blank? %>
+          <tr>
+            <td class='k'>Valid until</td>
+            <td class='v'><%= estimate.quote_valid_until.strftime('%d %B %Y') %></td>
+          </tr>
+        <% end %>
+        <% if estimate.work_completion_date.present? %>
+          <tr>
+            <td class='k'>Work completed</td>
+            <td class='v'><%= estimate.work_completion_date.strftime('%d %B %Y') %></td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<table class='parties <%= 'spacious' unless scope_present %>'>
+  <tr>
+    <td>
+      <%# customer_detail is a has_one and can be absent; the previous
+          template dereferenced it unguarded. %>
+      <% detail = estimate.customer_detail %>
+      <div class='party-label'>Prepared for</div>
+      <div class='party-name'>
+        <%= detail&.name.presence || estimate.customer&.name %>
+      </div>
+      <div class='party-detail'>
+        <%= [detail&.phone || estimate.customer&.phone,
+             detail&.email || estimate.customer&.email].compact_blank.join(' &nbsp; ').html_safe %>
+      </div>
+    </td>
+    <td>
+      <div class='party-label'>Service address</div>
+      <div class='party-name'><%= estimate.quote_display_address %></div>
+    </td>
+  </tr>
+</table>
+
+<% if scope_of_work.present? %>
+  <div class='section'>
+    <div class='section-head'>Scope of work</div>
+    <p><%= simple_format(scope_of_work, {}, sanitize: true) %></p>
+  </div>
+<% end %>
+
+<% if inclusions.any? %>
+  <div class='section'>
+    <div class='section-head'>What's included</div>
+    <ul class='scope-list'>
+      <% inclusions.each do |line| %>
+        <li><span><%= line %></span></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% if exclusions.any? %>
+  <div class='section'>
+    <div class='section-head'>Not included</div>
+    <ul class='scope-list exclusions'>
+      <% exclusions.each do |line| %>
+        <li><span><%= line %></span></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class='section'>
+  <div class='section-head'>Pricing</div>
+  <%= render 'quotes/pdf/cost_summary',
+             estimate: estimate,
+             include_method: estimate.invoice&.paid? %>
 </div>
 
-<% date_tendered = estimate&.invoice&.sent_at.present? ? estimate.invoice.sent_at : Date.today %>
-
-<table class='info-table'>
-  <tr class='info-row'>
-    <td class='title-column'><b>Date Tendered:</b></td>
-    <td class='entry-column'><%= date_tendered.strftime("%m/%d/%Y") %></td>
-    <td class='title-column'><b>Completion Date:</b></td>
-    <td class='entry-column'><%= estimate.work_completion_date&.strftime("%m/%d/%Y") %></td>
-  </tr>
-
-  <tr class='info-row'>
-    <td class='title-column'><b>Customer Name:</b></td>
-    <td class='entry-column'><%= estimate.customer_detail.name %></td>
-    <td class='title-column'><b>Email:</b></td>
-    <td class='entry-column'><%= estimate.customer_detail.email %></td>
-  </tr>
-
-  <tr class='info-row'>
-    <td class='title-column'><b>Phone Number:</b></td>
-    <td class='entry-column'><%= estimate.customer_detail.phone %></td>
-    <td class='title-column'><b>Address:</b></td>
-    <td class='entry-column'><%= estimate.quote_display_address %></td>
-  </tr>
-
-  <tr class='info-row'>
-    <td class='title-column'><b>Company Number:</b></td>
-    <td class='entry-column'><%= organization.phone_number %></td>
-    <td class='title-column'><b>Email:</b></td>
-    <td class='entry-column'><%= organization.email %></td>
-  </tr>
-</table>
-
-<%= render 'quotes/pdf/cost_summary', estimate: estimate, include_method: estimate.invoice&.paid? %>
-
-<table class='signature-row'>
-  <tr>
-    <td>
-      <div class='signature-left'>
-        We propose to furnish material and labor, complete in accordance with the above specifications for the total. This proposal may be withdrawn by us if not accepted within 10 days. Acceptance of Proposal - the above prices, specifications and conditions included on Pages 1 and 3 are satisfactory and are hereby accepted. <%= organization.name %> is authorized to do the work as specified.  Payment will be made within 14 days of completion.
-      </div>
-    </td>
-    <td>
-      <div class='signature-box'>
-        <div class='signature-field'>
-          X:
-        </div>
-        <div class='signature-description'>
-          Customer's Signature
-        </div>
-      </div>
-    </td>
-  </tr>
-</table>
-
-<table class='liability-row'>
-  <tr>
-    <td class='liability-column'>
-      <b><%= organization.name %></b><br>
-      <b><%= organization.address.street %></b><br>
-      <b><%= organization.address.city %></b><br>
-      <b><%= organization.email %></b><br>
-      <b><%= organization.phone_number %></b>
-    </td>
-    <td class='liability-column'>
-      <b><%= organization.insurance_provider %></b><br>
-      <b>Policy # <%= organization.insurance_policy_number %></b><br>
-      <b><%= organization.insurance_description %></b><br>
-      <% if organization.hst_number %>
-        <% if date_tendered >= "2022-01-01".to_date %>
-          <b>HST # <%= organization.hst_number %></b>
-        <% else %>
-          <b>HST # <%= organization.hst_number %></b>
-        <% end %>
-      <% end %>
-    </td>
-  </tr>
-</table>
+<%= render 'quotes/pdf/footer', organization: organization, estimate: estimate %>

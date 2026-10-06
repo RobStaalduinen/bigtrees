@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_25_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_01_000003) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -250,6 +250,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_25_000000) do
     t.string "source"
     t.string "difficulty", default: "medium", null: false
     t.integer "transferred_from_estimate_id"
+    t.date "quote_valid_until"
     t.index ["arborist_id"], name: "index_estimates_on_arborist_id"
     t.index ["cancelled_at"], name: "index_estimates_on_cancelled_at"
     t.index ["created_at"], name: "index_estimates_on_created_at"
@@ -397,6 +398,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_25_000000) do
     t.float "monthly_cost", default: 0.0
     t.json "notification_configuration"
     t.boolean "can_transfer", default: false, null: false
+    t.string "tax_description", default: "HST", null: false
+    t.integer "tax_rate", default: 13, null: false
   end
 
   create_table "payouts", id: :integer, charset: "latin1", force: :cascade do |t|
@@ -413,6 +416,29 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_25_000000) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_quick_costs_on_organization_id"
+  end
+
+  create_table "quote_scopes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "estimate_id", null: false
+    t.text "scope_of_work"
+    t.json "inclusions"
+    t.json "exclusions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["estimate_id"], name: "index_quote_scopes_on_estimate_id", unique: true
+  end
+
+  create_table "quote_settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.boolean "include_image_page", default: true, null: false
+    t.boolean "include_pre_job_page", default: true, null: false
+    t.boolean "include_terms", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "footer_text"
+    t.text "pre_job_content"
+    t.text "terms_content"
+    t.index ["organization_id"], name: "index_quote_settings_on_organization_id", unique: true
   end
 
   create_table "receipts", id: :integer, charset: "latin1", force: :cascade do |t|
