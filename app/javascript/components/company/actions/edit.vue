@@ -51,30 +51,6 @@
         />
 
         <app-input-field
-          v-model='editableCompany.insurance_provider'
-          label='Insurance Provider'
-          name='insurance_provider'
-        />
-
-        <app-input-field
-          v-model='editableCompany.insurance_policy_number'
-          label='Insurance Policy Number'
-          name='insurance_policy_number'
-        />
-
-        <app-input-field
-          v-model='editableCompany.insurance_description'
-          label='Insurance Description'
-          name='insurance_description'
-        />
-
-        <app-input-field
-          v-model='editableCompany.hst_number'
-          label='HST Number'
-          name='hst_number'
-        />
-
-        <app-input-field
           v-model='editableCompany.tax_description'
           label='Tax Name'
           name='tax_description'

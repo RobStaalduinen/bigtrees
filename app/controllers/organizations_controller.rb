@@ -74,8 +74,7 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit(
       :name, :legal_name, :email, :phone_number, :website, :email_author, :email_signature,
-      :outgoing_quote_email, :quote_bcc, :insurance_provider, :insurance_policy_number,
-      :insurance_description, :hst_number, :logo_url, :primary_colour, :secondary_colour,
+      :outgoing_quote_email, :quote_bcc, :logo_url, :primary_colour, :secondary_colour,
       :tax_description, :tax_rate,
       address_attributes: [:street, :city, :postal_code]
     )

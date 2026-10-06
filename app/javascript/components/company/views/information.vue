@@ -51,23 +51,7 @@
 
 
       <div class='company-section-header'>
-        Legal Information
-      </div>
-      <div class='company-information-row'>
-        <div class='company-information-label'>Insurance Provider:</div>
-        <div class='company-information-value'>{{ company.insurance_provider }}</div>
-      </div>
-      <div class='company-information-row'>
-        <div class='company-information-label'>Insurance Policy Number:</div>
-        <div class='company-information-value'>{{ company.insurance_policy_number }}</div>
-      </div>
-      <div class='company-information-row'>
-        <div class='company-information-label'>Insurance Description:</div>
-        <div class='company-information-value'>{{ company.insurance_description }}</div>
-      </div>
-      <div class='company-information-row'>
-        <div class='company-information-label'>HST Number:</div>
-        <div class='company-information-value'>{{ company.hst_number }}</div>
+        Tax Information
       </div>
       <div class='company-information-row'>
         <div class='company-information-label'>Tax Name:</div>
