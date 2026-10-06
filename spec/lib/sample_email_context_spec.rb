@@ -35,6 +35,8 @@ RSpec.describe 'sampleEmailContext.json' do
                       skip_schedule: false,
                       site_visit: true)
 
+    create(:address, addressable: estimate.site, street: '42 Maple Avenue', city: 'Springfield')
+
     Job.create!(estimate: estimate,
                 arborist: arborist,
                 completed_by: arborist,
@@ -113,6 +115,7 @@ RSpec.describe 'sampleEmailContext.json' do
     expect(estimate.dig('customer_detail', 'name')).to be_present
     expect(estimate['total_cost']).to be_present
     expect(estimate['total_cost_with_tax']).to be_present
+    expect(estimate.dig('site', 'address', 'full_address')).to be_present
     expect(sample.dig('organization', 'name')).to be_present
     expect(sample.dig('organization', 'email_signature')).to be_present
   end

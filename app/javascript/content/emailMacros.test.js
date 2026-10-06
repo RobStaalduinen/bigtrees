@@ -68,6 +68,20 @@ test('includes the job paragraphs only when the job carries them', () => {
   assert.equal(expandBody('[ARBORIST_NOTES]', context()), '');
 });
 
+test('expands the site address to the full address of the site being worked on', () => {
+  const ctx = context({
+    estimate: { site: { address: { street: '42 Maple Avenue', city: 'Springfield', full_address: '42 Maple Avenue, Springfield' } } }
+  });
+
+  assert.equal(expandSubject('Your job at [SITE_ADDRESS]', ctx), 'Your job at 42 Maple Avenue, Springfield');
+  assert.equal(expandBody('We will be at [SITE_ADDRESS] tomorrow.', ctx), 'We will be at 42 Maple Avenue, Springfield tomorrow.');
+});
+
+test('renders a missing site address as empty', () => {
+  assert.equal(expandBody('At [SITE_ADDRESS].', context()), 'At .');
+  assert.equal(expandBody('At [SITE_ADDRESS].', context({ estimate: { site: { address: null } } })), 'At .');
+});
+
 test('strips the retired content slot', () => {
   assert.equal(expandBody('before[ADDITIONAL_CONTENT_SLOT]after', context()), 'beforeafter');
 });
@@ -96,7 +110,7 @@ test('every reserved key the server guards has a macro behind it', () => {
   // precisely because the macro table owns them.
   const reservedKeys = [
     'FIRST_NAME', 'SIGNATURE', 'TOTAL_COST', 'TOTAL_COST_WITH_TAX',
-    'ARBORIST_NOTES', 'FOLLOWUP', 'ORGANIZATION_NAME', 'ADDITIONAL_CONTENT_SLOT'
+    'ARBORIST_NOTES', 'FOLLOWUP', 'ORGANIZATION_NAME', 'SITE_ADDRESS', 'ADDITIONAL_CONTENT_SLOT'
   ];
 
   assert.deepEqual([...MACRO_KEYS].sort(), [...reservedKeys].sort());

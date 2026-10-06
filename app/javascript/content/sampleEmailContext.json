@@ -63,6 +63,17 @@
       "address": null
     },
 
+    "site": {
+      "id": 4630,
+      "address": {
+        "id": 8120,
+        "street": "42 Maple Avenue",
+        "city": "Springfield",
+        "postal_code": "A1B 2C3",
+        "full_address": "42 Maple Avenue, Springfield"
+      }
+    },
+
     "arborist": {
       "id": 7,
       "name": "Sam Reid",

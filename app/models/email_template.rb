@@ -49,6 +49,7 @@ class EmailTemplate < ActiveRecord::Base
     ARBORIST_NOTES
     FOLLOWUP
     ORGANIZATION_NAME
+    SITE_ADDRESS
     ADDITIONAL_CONTENT_SLOT
   ].freeze
 

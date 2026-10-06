@@ -56,6 +56,7 @@ const MACROS = {
   ARBORIST_NOTES: ({ estimate }) => arboristNotes(estimate),
   FOLLOWUP: ({ estimate }) => followup(estimate),
   ORGANIZATION_NAME: ({ organization }) => organization?.name,
+  SITE_ADDRESS: ({ estimate }) => estimate?.site?.address?.full_address,
   // Retired in favour of the SCHEDULE_TEXT insertable, but still stripped in case a template
   // written before the switch still carries it.
   ADDITIONAL_CONTENT_SLOT: () => ''

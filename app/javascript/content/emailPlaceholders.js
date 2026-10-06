@@ -11,7 +11,8 @@ const PLACEHOLDER_DETAILS = {
   TOTAL_COST_WITH_TAX: { description: 'The quoted total, including tax.' },
   ARBORIST_NOTES: { description: "The crew's completion notes, when the job has them." },
   FOLLOWUP: { description: 'A follow-up visit paragraph, when the job has a follow-up year.' },
-  ORGANIZATION_NAME: { description: "Your organization's name." }
+  ORGANIZATION_NAME: { description: "Your organization's name." },
+  SITE_ADDRESS: { description: 'The full address (street and city) of the site being worked on.' }
 };
 
 // Still reserved so it cannot be reused as an insertable key, but no longer substituted into
