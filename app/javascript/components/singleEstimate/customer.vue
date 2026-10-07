@@ -95,6 +95,9 @@ export default {
     },
     priorityBadgeClass() {
       return `priority-badge-${this.customerDetails.priority}`
+    },
+    savedCustomer() {
+      return this.customer();
     }
   },
   methods: {
@@ -131,8 +134,13 @@ export default {
     }
   },
   watch: {
-    estimate() {
-      this.customerDetails = this.customer();
+    // The page swaps in a fresh estimate whenever anything on it changes (an image upload
+    // finishing, say), so reload only when the saved customer differs — otherwise an edit in
+    // progress would be thrown away.
+    savedCustomer(newCustomer, oldCustomer) {
+      if (JSON.stringify(newCustomer) === JSON.stringify(oldCustomer)) { return; }
+
+      this.customerDetails = newCustomer;
     }
   }
 }

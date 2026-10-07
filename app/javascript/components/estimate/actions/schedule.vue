@@ -231,17 +231,17 @@ export default {
       }
     });
   },
+  // Built once: from here on the email form drives it through handleChange. Rebuilding it whenever
+  // the estimate refreshed (an image upload finishing, say) silently dropped the recipients and any
+  // edits, while the form still showed them.
+  created() {
+    this.emailDefinition = new EmailDefinition(
+      null,
+      this.subject(),
+      'Take a look at this quote'
+    )
+  },
   watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          null,
-          this.subject(),
-          'Take a look at this quote'
-        )
-      }
-    },
     work_start_date() {
       if(this.work_end_date == null || this.work_end_date === undefined) {
         this.work_end_date = this.work_start_date;

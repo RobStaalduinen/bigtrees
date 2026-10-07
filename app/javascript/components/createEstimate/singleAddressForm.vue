@@ -51,7 +51,11 @@ export default {
     address: function() {
       this.$emit('addressChange', this.address);
     },
-    initialAddress: function() {
+    // A refetched estimate hands over a new but identical address object; only reload the fields
+    // when the saved address actually changed, so an edit in progress survives.
+    initialAddress: function(newAddress, oldAddress) {
+      if (newAddress?.street === oldAddress?.street && newAddress?.city === oldAddress?.city) { return; }
+
       this.updateInitialAddress();
     }
   },

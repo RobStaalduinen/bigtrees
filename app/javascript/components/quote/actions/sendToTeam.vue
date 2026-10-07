@@ -67,17 +67,15 @@ export default {
       return `Quote - ${customer} - ${address}`
     }
   },
-  watch: {
-    estimate: {
-      immediate: true,
-      handler() {
-        this.emailDefinition = new EmailDefinition(
-          null,
-          this.subject(),
-          'Take a look at this quote'
-        )
-      }
-    }
+  // Built once: from here on the email form drives it through handleChange. Rebuilding it whenever
+  // the estimate refreshed (an image upload finishing, say) silently dropped the recipients and any
+  // edits, while the form still showed them.
+  created() {
+    this.emailDefinition = new EmailDefinition(
+      null,
+      this.subject(),
+      'Take a look at this quote'
+    )
   }
 }
 </script>

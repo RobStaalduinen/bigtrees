@@ -100,7 +100,12 @@ export default {
     this.reset();
   },
   watch: {
-    estimate() {
+    // The page swaps in a fresh estimate whenever anything on it changes (an image upload
+    // finishing, say), so reload only when the saved scope differs — otherwise an edit in
+    // progress would be thrown away.
+    'estimate.quote_scope'(newScope, oldScope) {
+      if (JSON.stringify(newScope) === JSON.stringify(oldScope)) { return; }
+
       this.reset();
     }
   }

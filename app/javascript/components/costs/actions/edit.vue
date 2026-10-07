@@ -34,7 +34,10 @@ export default {
   },
   data() {
     return {
-      costs: null
+      costs: null,
+      // The saved costs the form was last loaded from, to tell a real change apart from an
+      // unrelated refresh of the estimate.
+      loadedCosts: null
     }
   },
   methods: {
@@ -58,15 +61,21 @@ export default {
       )
     },
     reset() {
-      this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
+      this.loadedCosts = JSON.stringify(this.estimate.costs);
+      this.costs = JSON.parse(this.loadedCosts);
     }
   },
   mounted() {
     this.reset();
   },
   watch: {
-    estimate() {
-      this.costs = JSON.parse(JSON.stringify(this.estimate.costs))
+    // The page swaps in a fresh estimate whenever anything on it changes (an image upload
+    // finishing, say), so reload only when the saved costs differ — otherwise an edit in
+    // progress would be thrown away.
+    'estimate.costs'() {
+      if (JSON.stringify(this.estimate.costs) === this.loadedCosts) { return; }
+
+      this.reset();
     }
   }
 }

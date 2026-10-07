@@ -49,12 +49,19 @@ export default {
   mounted() {
     this.reset();
   },
+  computed: {
+    savedRequirements() {
+      return this.estimate ? this.estimate.vehicles.map(v => v.id) : null;
+    }
+  },
   watch: {
-    estimate() {
-      if(this.estimate == null) {
-        return
-      }
-      this.equipmentRequirements = this.estimate.vehicles.map (v => v.id)
+    // The page swaps in a fresh estimate whenever anything on it changes (an image upload
+    // finishing, say), so reload only when the saved equipment differs — otherwise a selection
+    // in progress would be thrown away.
+    savedRequirements(newIds, oldIds) {
+      if (newIds == null || JSON.stringify(newIds) === JSON.stringify(oldIds)) { return; }
+
+      this.reset();
     }
   }
 }
