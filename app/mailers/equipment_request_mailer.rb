@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class EquipmentRequestMailer < ApplicationMailer
 	default from: 'Tyler, Big Tree Services <tbrewer@bigislandgroup.ca>'
 
@@ -29,14 +31,9 @@ class EquipmentRequestMailer < ApplicationMailer
     @equipment_request = equipment_request
     @content = content
 
-    file_path = "tmp/equipment-request-#{equipment_request.id}.png"
-
-    if equipment_request.image_path
-      open(file_path, 'wb') do |file|
-        file << open(equipment_request.image_url).read
-      end
-
-      attachments["equipment-request-#{equipment_request.id}.png"] = File.read(file_path)
+    equipment_request.image_urls.each_with_index do |image_url, index|
+      extension = File.extname(URI.parse(image_url).path).presence || '.png'
+      attachments["equipment-request-#{equipment_request.id}-#{index + 1}#{extension}"] = URI.open(image_url).read
     end
 
 		mail(to: email, subject: subject, bcc: ['rob.staalduinen@gmail.com'])

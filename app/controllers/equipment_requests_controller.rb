@@ -6,7 +6,7 @@ class EquipmentRequestsController < ApplicationController
 
     @equipment_requests = policy_scope(EquipmentRequest)
 
-    @equipment_requests = @equipment_requests.includes(:vehicle).includes(:arborist).order('created_at DESC')
+    @equipment_requests = @equipment_requests.includes(:vehicle, :arborist, :mechanic, :images).order('created_at DESC')
 
     if params[:state]
       @equipment_requests = @equipment_requests.where(state: params[:state])
@@ -102,7 +102,7 @@ class EquipmentRequestsController < ApplicationController
   def equipment_request_parameters
     params
     .require(:equipment_request)
-    .permit(:category, :description, :image_url, :vehicle_id, :submitted_at, :resolution_notes)
+    .permit(:category, :description, :vehicle_id, :submitted_at, :resolution_notes, image_urls: [])
     .merge({ organization_id: OrganizationContext.current_organization.id })
   end
 end

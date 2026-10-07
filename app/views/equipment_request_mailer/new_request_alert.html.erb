@@ -11,3 +11,11 @@ A new Equipment Repair/Maintenance Request has been submitted by <%= @equipment_
 
 <b>Description:</b> <br>
 <%= @equipment_request.description %>
+
+<% if @equipment_request.image_urls.any? %>
+  <br><br>
+  <b>Images:</b> <br>
+  <% @equipment_request.image_urls.each_with_index do |image_url, index| %>
+    <a href="<%= image_url %>">Image <%= index + 1 %></a> <br>
+  <% end %>
+<% end %>

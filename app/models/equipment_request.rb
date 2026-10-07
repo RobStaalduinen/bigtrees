@@ -44,14 +44,29 @@ class EquipmentRequest < ActiveRecord::Base
   belongs_to :vehicle, optional: true
   belongs_to :mechanic, class_name: 'Arborist', optional: true
 
+  has_many :images,
+           -> { order(:position, :id) },
+           class_name: 'EquipmentRequestImage',
+           dependent: :destroy,
+           autosave: true
+
   CATEGORIES = %w[other mechanical equipment supplies paperwork].freeze
 
-  def image_path
-    image_url
+  def image_urls
+    images.map(&:image_url)
   end
 
-  def file_name
-    image_path.gsub('%2F', '/').split('/').last
+  # Replaces the request's images with exactly these URLs, in this order.
+  # Existing images whose URL is kept are reused rather than recreated.
+  def image_urls=(urls)
+    urls = Array(urls).map(&:to_s).reject(&:blank?).uniq
+    existing = images.index_by(&:image_url)
+
+    self.images = urls.each_with_index.map do |url, position|
+      image = existing[url] || EquipmentRequestImage.new(image_url: url)
+      image.position = position
+      image
+    end
   end
 
   validates :category, inclusion: { in: CATEGORIES }, presence: true

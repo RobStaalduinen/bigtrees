@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_01_000003) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_07_000001) do
   create_table "addresses", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "street"
     t.string "city"
@@ -185,6 +185,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_01_000003) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["estimate_id"], name: "index_equipment_assignments_on_estimate_id"
     t.index ["vehicle_id"], name: "index_equipment_assignments_on_vehicle_id"
+  end
+
+  create_table "equipment_request_images", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "equipment_request_id", null: false
+    t.string "image_url", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["equipment_request_id"], name: "index_equipment_request_images_on_equipment_request_id"
   end
 
   create_table "equipment_requests", id: :integer, charset: "latin1", force: :cascade do |t|

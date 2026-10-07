@@ -32,13 +32,31 @@
           ></app-input-field>
 
           <div>
-            <label class='d-block'>Image</label>
-            <app-file-upload
-              v-model='image_url'
+            <label class='d-block'>Images</label>
+
+            <!-- Already-saved images (edit mode). New picks go through app-uploader below. -->
+            <div v-if='existingImageUrls.length' class='existing-images'>
+              <div v-for='url in existingImageUrls' :key='url' class='existing-image'>
+                <img :src='url' class='existing-image__thumb' />
+                <b-icon
+                  icon='x-circle-fill'
+                  class='existing-image__remove'
+                  title='Remove'
+                  @click='removeExistingImage(url)'
+                ></b-icon>
+              </div>
+            </div>
+
+            <app-uploader
+              :key='uploaderKey'
+              :value='uploads'
+              :multiple='true'
+              :target='null'
               accept=".jpg, .jpeg, .png"
               bucketName='equipment-requests'
-              @upload-status-changed='handleUploadStatus'
-            ></app-file-upload>
+              presignPath='/files/new'
+              @input='uploads = $event'
+            ></app-uploader>
           </div>
 
           <div class='error-box' v-if='errorMessage'>
@@ -50,7 +68,7 @@
 </template>
 
 <script>
-import FileUpload from '@/components/file/actions/upload';
+// app-uploader is registered globally (packs/admin.js).
 import EventBus from '@/store/eventBus';
 import moment from 'moment';
 
@@ -64,18 +82,19 @@ export default {
       type: Object
     }
   },
-  components: {
-    'app-file-upload': FileUpload
-  },
   data() {
     return {
       description: null,
       vehicle_id: null,
       category: 'other',
-      image_url: null,
+      // URLs of images already saved on the request being edited.
+      existingImageUrls: [],
+      // app-uploader's emitted job list: [{ id, clientUploadId, status, url }]
+      uploads: [],
+      // Bumped on reset so app-uploader remounts with an empty job list.
+      uploaderKey: 0,
       errorMessage: null,
       vehicles: [],
-      uploading: false,
       submitting: false
     }
   },
@@ -97,6 +116,18 @@ export default {
           text: category.charAt(0).toUpperCase() + category.slice(1)
         }
       })
+    },
+    // Uploads still transferring to S3 ('success' is done, 'fatalError' is
+    // shown as failed in the uploader and simply skipped on submit).
+    pendingUploads() {
+      return this.uploads.filter(upload => upload.status !== 'success' && upload.status !== 'fatalError');
+    },
+    imageUrls() {
+      const uploadedUrls = this.uploads
+        .filter(upload => upload.status === 'success' && upload.url)
+        .map(upload => upload.url);
+
+      return this.existingImageUrls.concat(uploadedUrls);
     }
   },
   methods: {
@@ -104,10 +135,14 @@ export default {
       this.errorMessage = null;
       this.submitting = true;
       this.$refs.observer.validate().then(success => {
-        if (!success) { return; }
+        if (!success) {
+          this.submitting = false;
+          return;
+        }
 
-        if(this.uploading && !this.image_url) {
-          this.errorMessage = 'Please wait for upload to finish before submitting';
+        if(this.pendingUploads.length) {
+          this.errorMessage = 'Please wait for uploads to finish before submitting';
+          this.submitting = false;
           return
         }
 
@@ -115,7 +150,7 @@ export default {
           description: this.description,
           category: this.category,
           vehicle_id: this.vehicle_id,
-          image_url: this.image_url
+          image_urls: this.imageUrls
         }}
 
         let promise = null;
@@ -132,10 +167,10 @@ export default {
           setTimeout(() => {
             this.reset();
           }, 500);
+        }).finally(() => {
+          this.submitting = false;
         })
       })
-
-      this.submitting = false;
     },
     populateVehicles() {
       this.axiosGet('/vehicles').then(response => {
@@ -143,12 +178,14 @@ export default {
       })
     },
     setInitialData() {
+      this.reset();
+
       if(!this.equipmentRequest) {
         return
       }
 
       this.description = this.equipmentRequest.description;
-      this.image_url = this.equipmentRequest.image_path;
+      this.existingImageUrls = [...(this.equipmentRequest.image_urls || [])];
       this.category = this.equipmentRequest.category;
 
       if(this.equipmentRequest.vehicle){
@@ -159,10 +196,13 @@ export default {
       this.description = null;
       this.vehicle_id = null;
       this.category = 'other';
-      this.image_url = null;
+      this.existingImageUrls = [];
+      this.uploads = [];
+      this.uploaderKey += 1;
+      this.errorMessage = null;
     },
-    handleUploadStatus(uploadStatus) {
-      this.uploading = uploadStatus;
+    removeExistingImage(url) {
+      this.existingImageUrls = this.existingImageUrls.filter(existingUrl => existingUrl !== url);
     }
   },
   mounted() {
@@ -188,5 +228,39 @@ export default {
   #delete-button {
     margin-top: 64px;
     padding: 2px;
+  }
+
+  /* Mirrors app-uploader's thumbnail grid so saved and new images line up. */
+  .existing-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .existing-image {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--neutral);
+  }
+
+  .existing-image__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .existing-image__remove {
+    position: absolute;
+    top: var(--space-1);
+    right: var(--space-1);
+    color: #fff;
+    font-size: var(--text-lg);
+    cursor: pointer;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
   }
 </style>

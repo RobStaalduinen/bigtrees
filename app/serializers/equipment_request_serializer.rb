@@ -28,7 +28,7 @@ class EquipmentRequestSerializer < ApplicationSerializer
   attribute :category
   attribute :description
   attribute :submitted_at
-  attribute :image_path
+  attribute :image_urls
   attribute :resolution_notes
 
   belongs_to :vehicle

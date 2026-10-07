@@ -68,8 +68,12 @@
           {{ equipmentRequest.resolution_notes }}
         </div>
 
-        <div v-if='equipmentRequest.image_path' class='modal-row'>
-          <b-img fluid :src='equipmentRequest.image_path' />
+        <div
+          v-for='(imageUrl, index) in (equipmentRequest.image_urls || [])'
+          :key='`${imageUrl}-${index}`'
+          class='modal-row'
+        >
+          <b-img fluid :src='imageUrl' />
         </div>
 
         <div class='modal-button-row'>

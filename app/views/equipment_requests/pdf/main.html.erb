@@ -22,8 +22,10 @@
         </div>
 
         <div class='content-element image-element'>
-          <% if request.image_path %>
-            <img src="<%= request.image_path %>" class='request-image'>
+          <% if request.image_urls.any? %>
+            <% request.image_urls.each do |image_url| %>
+              <img src="<%= image_url %>" class='request-image'>
+            <% end %>
           <% else %>
             No Image
           <% end %>
