@@ -69,6 +69,38 @@ RSpec.describe Customer, type: :model do
     end
   end
 
+  describe '#site_address' do
+    def estimate_at(customer, street)
+      estimate = create(:estimate, customer: customer)
+      create(:site, estimate: estimate, address: build(:address, street: street))
+      estimate
+    end
+
+    it 'uses the most recent estimate with a site by default' do
+      customer = create(:customer)
+      estimate_at(customer, 'Old St')
+      estimate_at(customer, 'New St')
+
+      expect(customer.site_address['street']).to eq('New St')
+    end
+
+    it 'uses the source estimate when given' do
+      customer = create(:customer)
+      source = estimate_at(customer, 'Old St')
+      estimate_at(customer, 'New St')
+
+      expect(customer.site_address(source)['street']).to eq('Old St')
+    end
+
+    it 'falls back to the most recent site when the source estimate has none' do
+      customer = create(:customer)
+      estimate_at(customer, 'New St')
+      source = create(:estimate, customer: customer)
+
+      expect(customer.site_address(source)['street']).to eq('New St')
+    end
+  end
+
   describe '#last_activity_date' do
     context 'when the customer has estimates' do
       it 'returns the created_at date of the most recent estimate' do

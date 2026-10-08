@@ -42,8 +42,10 @@ class Customer < ActiveRecord::Base
      address&.slice(:street, :city)
   end
 
-  def site_address
-    estimate = estimates.joins(:site).last
+  # Seeds a new estimate's site from source_estimate when given (New Estimate from inside an
+  # estimate), otherwise from the customer's most recent estimate with a site.
+  def site_address(source_estimate = nil)
+    estimate = source_estimate&.site.present? ? source_estimate : estimates.joins(:site).last
     if estimate.present? && estimate.site.present?
       estimate.site.address&.slice(:street, :city)
     end

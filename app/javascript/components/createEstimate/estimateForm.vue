@@ -210,14 +210,20 @@ export default {
   mounted() {
     var query = this.$route.query;
     if(query.customer_id) {
-      this.axiosGet(`/customers/${query.customer_id}`).then(response => {
+      // Opened from inside an estimate, estimate_id makes that estimate the seed instead of the latest one.
+      var url = `/customers/${query.customer_id}`;
+      if(query.estimate_id) {
+        url += `?estimate_id=${query.estimate_id}`;
+      }
+      this.axiosGet(url).then(response => {
         if(response.data.customer.id == query.customer_id) {
           var customer = response.data.customer;
+          var details = customer.source_customer_detail || customer;
           this.customer = {
             id: customer.id,
-            name: customer.name,
-            email: customer.email,
-            phone: customer.phone
+            name: details.name,
+            email: details.email,
+            phone: details.phone
           }
 
           var addresses = {}

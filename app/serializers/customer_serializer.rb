@@ -22,7 +22,14 @@ class CustomerSerializer < ApplicationSerializer
   attribute :recent_estimate_id
 
   attribute :customer_address, if: -> { instance_options[:include_addresses] }
-  attribute :site_address, if: -> { instance_options[:include_addresses] }
+  attribute :site_address, if: -> { instance_options[:include_addresses] } do
+    object.site_address(instance_options[:source_estimate])
+  end
+
+  # The display customer of the estimate a new one is being created from.
+  attribute :source_customer_detail, if: -> { instance_options[:source_estimate]&.customer_detail.present? } do
+    instance_options[:source_estimate].customer_detail.slice(:name, :email, :phone)
+  end
 
   has_one :address
 end

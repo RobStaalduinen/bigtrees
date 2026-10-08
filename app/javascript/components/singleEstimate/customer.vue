@@ -39,7 +39,7 @@
         </b-row>
 
         <div class='single-estimate-link-row' v-if="hasPermission('estimates', 'update')">
-          <router-link :to='"/admin/estimates/new?customer_id=" + estimate.customer.id' class='single-estimate-link' v-if="isParentCustomer">New Estimate</router-link>
+          <router-link :to='`/admin/estimates/new?customer_id=${estimate.customer.id}&estimate_id=${estimate.id}`' class='single-estimate-link' v-if="isParentCustomer">New Estimate</router-link>
 
           <div class='single-estimate-link' v-b-toggle='collapsableName + "-edit"'>
             <b-icon icon='pencil-square' class='app-icon'></b-icon>

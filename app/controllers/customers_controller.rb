@@ -25,8 +25,9 @@ class CustomersController < ApplicationController
     authorize Customer, :show?
 
     @customer = policy_scope(Customer).find(params[:id])
+    source_estimate = @customer.estimates.find_by(id: params[:estimate_id]) if params[:estimate_id].present?
 
-    render json: @customer, serializer: CustomerSerializer, include_addresses: true
+    render json: @customer, serializer: CustomerSerializer, include_addresses: true, source_estimate: source_estimate
   end
 
   def create
